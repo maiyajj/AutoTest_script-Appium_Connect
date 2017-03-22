@@ -1,0 +1,14 @@
+# 打开APP超时时间
+open_app_timeout:60s
+# 搜索设备超时时间
+search_device_timeout:60s
+# 操作响应超时时间
+request_timeout:30s
+# 离线恢复超时时间
+offline_recovery_timeout:10s
+# 程序操作等待时间
+operate_wait_time:0.1s
+# 待添加的设备Mac
+MAC:'C4-11-E0-00-46-26;C4-11-E0-00-46-26;3C-2C-94-0F-36-DA;3C-2C-94-0F-36-DA;C4-11-E0-00-00-2C'
+# Mac地址列表选取标志位
+mac_choose_flag:1

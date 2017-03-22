@@ -1,0 +1,24 @@
+1、先安装mysql数据库。
+1.1、登录到MySQL
+
+当 MySQL 服务已经运行时, 我们可以通过MySQL自带的客户端工具登录到MySQL数据库中, 首先打开命令提示符, 输入以下格式的命名:
+
+mysql -h 主机名 -u 用户名 -p
+
+-h : 该命令用于指定客户端所要登录的MySQL主机名, 登录当前机器该参数可以省略;
+-u : 所要登录的用户名;
+-p : 告诉服务器将会使用一个密码来登录, 如果所要登录的用户名密码为空, 可以忽略此选项。
+以登录刚刚安装在本机的MySQL数据库为例, 在命令行下输入 mysql -u root -p 按回车确认, 如果安装正确且MySQL正在运行, 会得到以下响应:
+
+Enter password:
+
+若密码存在, 输入密码登录, 不存在则直接按回车登录, 按照本文中的安装方法, 默认 root 账号是无密码的。登录成功后你将会看到 Welecome to the MySQL monitor... 的提示语。
+
+然后命令提示符会一直以 mysql> 加一个闪烁的光标等待命令的输入, 输入 exit 或 quit 退出登录。
+
+总结：
+运行数据库：mysql -h 主机名 -u 用户名 -p
+创建mysql数据库：create database IOT_BULL_APP;(一条语句一定要加分号；)
+创建mysql数据库并以utf-8格式编码：create database IOT_BULL_APP character set UTF8;
+删除mysql数据库：DROP DATABASE 公牛智联;
+查看已建立mysql数据库：show databases;
