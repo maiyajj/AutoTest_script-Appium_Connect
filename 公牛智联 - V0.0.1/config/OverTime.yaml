@@ -15,4 +15,3 @@ mac_choose_flag: 1
 # 京东微联
 App:
     JD: ["com.jd.smart", "com.jd.smart.activity.LoadingActivity"]
-    GN: ["com.iotbull.android.superapp", "com.iotbull.android.superapp.activitys.regist_login.SplashActivity"]

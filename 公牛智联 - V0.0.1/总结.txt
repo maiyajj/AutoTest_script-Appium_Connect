@@ -22,3 +22,7 @@ Enter password:
 创建mysql数据库并以utf-8格式编码：create database IOT_BULL_APP character set UTF8;
 删除mysql数据库：DROP DATABASE 公牛智联;
 查看已建立mysql数据库：show databases;
+
+
+2、adb 获取设备所有信息使用adb shell getprop。指定设备的信息为adb -s 85GABMN9UDD2 shell getprop（-s）
+3、
