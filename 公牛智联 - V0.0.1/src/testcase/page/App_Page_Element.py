@@ -3,6 +3,8 @@
 class MainPageWidget(object):
     def login_page(self):
         d = {}
+        # 页面的activity
+        d["activity"] = [".activitys.regist_login.LoginActivity", "activity"]
         # 用户名输入框
         d["username"] = ["com.iotbull.android.superapp:id/loginUserNameEditText", "id"]
         # 密码输入框
@@ -31,6 +33,8 @@ class MainPageWidget(object):
 
     def register_page(self):
         d = {}
+        # 页面的activity
+        d["activity"] = [".activitys.regist_login.LoginActivity", "activity"]
         # 用户名
         d["username"] = ["com.iotbull.android.superapp:id/registUserNameEditText", "id"]
         # 密码

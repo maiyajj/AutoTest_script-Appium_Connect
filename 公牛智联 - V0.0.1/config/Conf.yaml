@@ -7,7 +7,7 @@ request_timeout: 30
 # 离线恢复超时时间
 offline_recovery_timeout: 10
 # 程序操作等待时间
-operate_wait_time: 0.1
+operate_wait_time: 0.5
 # 待添加的设备Mac
 MAC: 'C4-11-E0-00-46-26;C4-11-E0-00-46-26;3C-2C-94-0F-36-DA;3C-2C-94-0F-36-DA;C4-11-E0-00-00-2C'
 # Mac地址列表选取标志位

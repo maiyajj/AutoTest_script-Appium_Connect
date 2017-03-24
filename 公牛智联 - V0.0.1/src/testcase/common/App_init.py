@@ -12,7 +12,7 @@ from src.utils.ReadConf import *
 desired_caps = {}
 desired_caps['driver'] = '%s' % device.keys()[0]
 desired_caps['platformName'] = '%s' % device.values()[0]["platformName"]
-desired_caps['browserName'] = 'Chrome'
+desired_caps['browserName'] = ''
 desired_caps["unicodeKeyboard"] = "True"
 desired_caps["resetKeyboard"] = "True"
 desired_caps['platformVersion'] = '%s' % device.values()[0]["platformVersion"]
@@ -31,3 +31,4 @@ def open_app():
         except urllib2.URLError:
             time.sleep(1)
     database["driver"] = driver
+

@@ -1,7 +1,5 @@
 # coding=utf-8
 import os
-import time
-from multiprocessing import Process
 
 from src.utils.Get_Phone_Info import *
 
@@ -12,29 +10,9 @@ class Launch_Appium_Services(object):
         os.system(command)
 
     def sim_cmd(self):
-        # 小米5
         command = "appium -a 127.0.0.1 -p 4723  -U  %s  --no-reset" % device.values()[0]["udid"]
-        # 小米4
-        # command = "appium -a 127.0.0.1 -p 4723  -U  f2209864  --no-reset"
-        # 360奇酷手机
-        # command = "appium -a 127.0.0.1 -p 4723  -U  8681-M02-0xa0a151df  --no-reset"
         os.system(command)
 
-    # def func_main(self):
-    #     command = "python test_case\TestCase.py"
-    #     os.system(command)
-
     def main(self):
-        plan = Process(target=self.kill_adb)
-        plan.start()
-        plan.join()
-        time.sleep(0.5)
-        server = Process(target=self.sim_cmd)
-        server.start()
-        # App = Process(target=self.func_main)
-        # App.start()
-        server.join()
-        # App.join()
-
-# if __name__ == '__main__':
-#     Launch_Appium_Services().main()
+        self.kill_adb()
+        self.sim_cmd()
