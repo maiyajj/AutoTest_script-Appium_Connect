@@ -1,6 +1,5 @@
 # coding:utf-8
 import time
-import urllib2
 from multiprocessing import Process
 
 from appium import webdriver
@@ -21,14 +20,13 @@ desired_caps['appPackage'] = '%s' % App["GN"][0]
 desired_caps['appActivity'] = '%s' % App["GN"][1]
 
 
+def run_app():
+    driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
+    database["driver"] = driver
+    database["open_app_flag"] = 1
+
 def open_app():
     Appium = Process(target=Launch_Appium_Services().main)
     Appium.start()
-    while True:
-        try:
-            driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
-            break
-        except urllib2.URLError:
-            time.sleep(1)
-    database["driver"] = driver
-
+    time.sleep(5)
+    run_app()

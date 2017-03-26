@@ -1,7 +1,6 @@
 # coding=utf-8
-import os
 
-from src.utils.Get_Phone_Info import *
+from Get_Phone_Info import *
 
 
 class Launch_Appium_Services(object):

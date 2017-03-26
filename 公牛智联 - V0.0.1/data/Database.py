@@ -1,6 +1,7 @@
 # coding=utf-8
 
 database = {
+    "open_app_flag": 0,
     # 程序运行循环次数
     "program_loop_time": 0,
     # 打开APP失败次数统计
