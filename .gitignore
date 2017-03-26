@@ -87,3 +87,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+.idea/workspace.xml
+JD-V4.0.1/report/
+"\345\205\254\347\211\233\346\231\272\350\201\224 - V0.0.1/data/page_database - \345\211\257\346\234\254.py"
+"\345\205\254\347\211\233\346\231\272\350\201\224 - V0.0.1/log/"
