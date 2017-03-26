@@ -16,8 +16,8 @@ desired_caps["unicodeKeyboard"] = "True"
 desired_caps["resetKeyboard"] = "True"
 desired_caps['platformVersion'] = '%s' % device.values()[0]["platformVersion"]
 desired_caps['deviceName'] = '%s' % device.values()[0]["deviceName"]
-desired_caps['appPackage'] = '%s' % App["GN"][0]
-desired_caps['appActivity'] = '%s' % App["GN"][1]
+desired_caps['appPackage'] = '%s' % App["JD"][0]
+desired_caps['appActivity'] = '%s' % App["JD"][1]
 
 
 def run_app():
