@@ -1,10 +1,8 @@
 # coding:utf-8
-import time,re
+import re
+import time
 from multiprocessing import Process
 
-from appium import webdriver
-from data.Database import *
-from src.utils.Get_Phone_Info import *
 from src.utils.Launch_Appium_Services import *
 from src.utils.ReadConf import *
 
@@ -20,19 +18,16 @@ desired_caps['appPackage'] = '%s' % App["GN"][0]
 desired_caps['appActivity'] = '%s' % App["GN"][1]
 
 
-def run_app():
-    driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
-    database["driver"] = driver
-    database["open_app_flag"] = 1
-
 def follow(thefile):
-    thefile.seek(0,2)
+    thefile.seek(0, 2)
     while True:
         line = thefile.readline()
         if not line:
             time.sleep(0.1)
             continue
         yield line
+
+
 def log():
     with open('../log/myapp.log', 'r') as logfile:
         loglines = follow(logfile)
@@ -44,10 +39,10 @@ def log():
             else:
                 pass
 
-def open_app():
+
+def launch_appium_services():
     Appium = Process(target=Launch_Appium_Services().main)
     Appium.start()
     del_log = Process(target=log)
     del_log.start()
     time.sleep(10)
-    run_app()

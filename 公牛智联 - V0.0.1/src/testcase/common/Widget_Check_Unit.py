@@ -1,14 +1,11 @@
 # coding:utf-8 
 import inspect
-import time
 
-from data.Database import *
 from selenium.common.exceptions import *
-from selenium.common.exceptions import TimeoutException
-from src.testcase.common.App_init import *
 from src.utils.Collect_Log import *
 from src.utils.ReadConf import *
 
+from App_init import *
 
 class TimeoutError(Exception):
     def __init__(self, value):
@@ -25,7 +22,6 @@ class Widget_Check_Unit(Exception):
 
     def wait_widget(self, locate=None, widget=None, timeout=1, interval=1):
         end_time = time.time() + timeout
-        element = None
         while True:
             try:
                 if locate == "id":
@@ -120,10 +116,3 @@ class Widget_Check_Unit(Exception):
                 time.sleep(operate_wait_time)
                 # err_request_timeout(request_timeout)
         return page
-
-    def popups_unit(self, locate=None, key=None):
-        driver = database["driver"]
-        self.driver = driver
-        logger.info(u"正在检测是否进入 %s 弹窗" % driver.current_activity)
-        print self.wait_widget("id", "com.iotbull.android.superapp:id/loginCommitButton", 5, 1)
-        print self.wait_widget("id", "nCommitButton", 5, 1)
