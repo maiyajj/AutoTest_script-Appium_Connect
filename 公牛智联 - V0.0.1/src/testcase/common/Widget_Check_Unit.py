@@ -20,7 +20,6 @@ class TimeoutError(Exception):
 
 class Widget_Check_Unit(Exception):
     def __init__(self, driver):
-        print "begin"
         self.driver = driver
         print self.driver
 
@@ -30,16 +29,15 @@ class Widget_Check_Unit(Exception):
         while True:
             try:
                 if locate == "id":
-                    element = self.driver.find_element_by_id(widget)
+                    return self.driver.find_element_by_id(widget)
                 elif locate == "name":
-                    element = self.driver.find_element_by_name(widget)
+                    return self.driver.find_element_by_name(widget)
                 elif locate == "CName":
-                    element = self.driver.find_element_by_class_name(widget)
+                    return self.driver.find_element_by_class_name(widget)
                 elif locate == "xpath":
-                    element = self.driver.find_element_by_xpath(widget)
+                    return self.driver.find_element_by_xpath(widget)
                 elif locate == None:
                     raise KeyError('key must be "id" or "name" or "CName" or "xpath"')
-                return element
             except NoSuchElementException:
                 time.sleep(interval)
                 if time.time() > end_time:
@@ -75,12 +73,12 @@ class Widget_Check_Unit(Exception):
                          
         :return FALSE
         '''
-        if check_page == None:
-            raise KeyError("check_page must be not None!")
-        elif operate_widget == None:
-            raise KeyError("operate_widget must be not None!")
-        elif wait_page == None:
-            raise KeyError("wait_page must be not None!")
+        if not isinstance(check_page, list):
+            raise TypeError("check_page must be list! [widget_id, type(widget_id)]")
+        elif not isinstance(operate_widget, list):
+            raise TypeError("operate_widget must be list! [widget_id, type(widget_id)]")
+        elif not isinstance(wait_page, list):
+            raise TypeError("wait_page must be list! [widget_id, type(widget_id)]")
         end_time = time.time() + timeout
         while True:
             try:
@@ -96,7 +94,7 @@ class Widget_Check_Unit(Exception):
                     raise TimeoutError("Failed to operate element." + "\n" +
                                        "UiSelector[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
                                        % (operate_widget[0], timeout) + "\n")
-            except KeyError:
+            except TypeError:
                 return False
             except TimeoutError:
                 return False

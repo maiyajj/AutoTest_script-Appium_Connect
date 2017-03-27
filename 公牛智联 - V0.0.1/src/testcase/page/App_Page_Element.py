@@ -3,27 +3,24 @@
 class MainPageWidget(object):
     def login_page(self):
         d = {}
-
-        d["tmp"] = [u"微联", "name"]
-
-
-
         # 页面的activity
         d["activity"] = [".activitys.regist_login.LoginActivity", "activity"]
         # 用户名输入框
         d["username"] = ["com.iotbull.android.superapp:id/loginUserNameEditText", "id"]
         # 密码输入框
         d["password"] = ["com.iotbull.android.superapp:id/loginPasswordEditText", "id"]
-        # 忘记密码"com.iotbull.android.superapp:id/loginFindPasswordTextView"
-        d["to_find_password"] = ["com.jd.smart:id/iv_right", "id"]
-        # 登录按钮"com.iotbull.android.superapp:id/loginCommitButton"
-        d["login_button"] = ["com.jd.smart:id/iv_history", "id"]
+        # 忘记密码
+        d["to_find_password"] = ["com.iotbull.android.superapp:id/loginFindPasswordTextView", "id"]
+        # 登录按钮
+        d["login_button"] = ["com.iotbull.android.superapp:id/loginCommitButton", "id"]
         # 新账号注册
         d["to_register"] = ["com.iotbull.android.superapp:id/loginToRegistTextView", "id"]
         return d
 
     def find_password_page(self):
         d = {}
+        # 标题
+        d["title"] = [u"密码找回", "name"]
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class"]
         # 手机号

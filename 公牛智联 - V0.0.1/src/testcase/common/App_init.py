@@ -1,5 +1,5 @@
 # coding:utf-8
-import time
+import time,re
 from multiprocessing import Process
 
 from appium import webdriver
@@ -16,8 +16,8 @@ desired_caps["unicodeKeyboard"] = "True"
 desired_caps["resetKeyboard"] = "True"
 desired_caps['platformVersion'] = '%s' % device.values()[0]["platformVersion"]
 desired_caps['deviceName'] = '%s' % device.values()[0]["deviceName"]
-desired_caps['appPackage'] = '%s' % App["JD"][0]
-desired_caps['appActivity'] = '%s' % App["JD"][1]
+desired_caps['appPackage'] = '%s' % App["GN"][0]
+desired_caps['appActivity'] = '%s' % App["GN"][1]
 
 
 def run_app():
@@ -25,8 +25,29 @@ def run_app():
     database["driver"] = driver
     database["open_app_flag"] = 1
 
+def follow(thefile):
+    thefile.seek(0,2)
+    while True:
+        line = thefile.readline()
+        if not line:
+            time.sleep(0.1)
+            continue
+        yield line
+def log():
+    with open('../log/myapp.log', 'r') as logfile:
+        loglines = follow(logfile)
+        for line in loglines:
+            tmp = re.findall(r".+localhost", line)
+            if tmp == []:
+                with open('../log/report.log', 'a') as files:
+                    files.write(loglines)
+            else:
+                pass
+
 def open_app():
     Appium = Process(target=Launch_Appium_Services().main)
     Appium.start()
-    time.sleep(5)
+    del_log = Process(target=log)
+    del_log.start()
+    time.sleep(10)
     run_app()

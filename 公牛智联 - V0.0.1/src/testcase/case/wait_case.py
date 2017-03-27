@@ -8,3 +8,4 @@ from GNAPP_LOGIN_1 import *
 class Wait_Case(object):
     def __init__(self):
         GN_app_login_1()
+        GN_app_login_1()
