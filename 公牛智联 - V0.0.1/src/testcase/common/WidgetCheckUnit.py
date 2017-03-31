@@ -1,11 +1,13 @@
 # coding:utf-8 
-import inspect
-
+import time
+from data.Database import *
+from AppInit import *
+from appium import webdriver
 from selenium.common.exceptions import *
-from src.utils.Collect_Log import *
+from src.utils.CollectLog import *
 from src.utils.ReadConf import *
+from src.utils.ReadAPPElement import *
 
-from App_init import *
 
 class TimeoutError(Exception):
     def __init__(self, value):
@@ -15,40 +17,40 @@ class TimeoutError(Exception):
         return repr(self.value)
 
 
-class Widget_Check_Unit(Exception):
+class WidgetCheckUnit(Exception):
     def __init__(self, driver):
         self.driver = driver
-        print self.driver
+        database["driver"] = driver
 
-    def wait_widget(self, locate=None, widget=None, timeout=1, interval=1):
+    def wait_widget(self, locate=None, widget=None, timeout=1, interval=1, log=1):
+        if locate == None or locate not in ["id", "name", "class", "xpath", "activity"]:
+            raise KeyError('[list][1] must be "id" or "name" or "class" or "xpath"')
         end_time = time.time() + timeout
+        element = None
         while True:
             try:
                 if locate == "id":
-                    return self.driver.find_element_by_id(widget)
+                    element = self.driver.find_element_by_id(widget)
                 elif locate == "name":
-                    return self.driver.find_element_by_name(widget)
-                elif locate == "CName":
-                    return self.driver.find_element_by_class_name(widget)
+                    element = self.driver.find_element_by_name(widget)
+                elif locate == "class":
+                    element = self.driver.find_element_by_class_name(widget)
                 elif locate == "xpath":
-                    return self.driver.find_element_by_xpath(widget)
-                elif locate == None:
-                    raise KeyError('key must be "id" or "name" or "CName" or "xpath"')
+                    element = self.driver.find_element_by_xpath(widget)
+                elif locate == "activity":
+                    element = self.driver.wait_activity(widget)
+                return element
             except NoSuchElementException:
                 time.sleep(interval)
                 if time.time() > end_time:
-                    raise TimeoutException("Failed to locate element.\n"
-                                           "UiSelector[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]\n"
-                                           % (widget, timeout))
-            except TimeoutException:
-                return False
+                    raise TimeoutException()
 
     def widget_click(self, check_page=None, operate_widget=None, wait_page=None,
-                     wait_time1=1, wait_time2=1, wait_time3=1, timeout=1, interval=1):
+                     wait_time1=1, wait_time2=1, wait_time3=1, timeout=1, interval=1, log=1):
         '''
             Using click operation widgets - 使用点击方式操作控件
             widget_click(self, check_page=None,operate_widget=None,wait_page=None,
-                     wait_time1=1,wait_time2=1,wait_time3=1,interval=1,timeout=1)
+                     wait_time1=1,wait_time2=1,wait_time3=1,timeout=1,interval=1)
         Args:
             - check_page - Operating widgets before check whether to enter the widgets pages
                            操作控件前检查是否进入该控件所在页面
@@ -62,10 +64,12 @@ class Widget_Check_Unit(Exception):
                            operate_widget操作等待时间，超时报错
             - wait_time3 - wait_page——wait_time
                            wait_page操作等待时间，超时报错
-            - timeout - Operate timeout
-                        操作超时
             - interval - Polling time
                          轮询时间
+            - timeout - Operate timeout
+                        操作超时
+            - log - The flag of record the log
+                        是否记录log
                          
         :return FALSE
         '''
@@ -76,29 +80,46 @@ class Widget_Check_Unit(Exception):
         elif not isinstance(wait_page, list):
             raise TypeError("wait_page must be list! [widget_id, type(widget_id)]")
         end_time = time.time() + timeout
+        flag = 0
         while True:
             try:
+                flag = 0
                 self.wait_widget(check_page[1], check_page[0], wait_time1, interval)
+                # logger.info('[APP_CLICK] check_page ["%s"] success' % check_page[2])
                 time.sleep(0.1)
-                self.wait_widget(operate_widget[1], operate_widget[0], wait_time2, interval).click()
+                flag = 1
+                widget = self.wait_widget(operate_widget[1], operate_widget[0], wait_time2, interval)
+                widget.click()
+                if log != 0:
+                    logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
                 time.sleep(0.1)
+                flag = 2
                 self.wait_widget(wait_page[1], wait_page[0], wait_time3, interval)
-                break
+                # logger.info('[APP_CLICK] wait_page ["%s"] success' % wait_page[2])
+                return widget
             except TimeoutException:
                 time.sleep(interval)
                 if time.time() > end_time:
-                    raise TimeoutError("Failed to operate element." + "\n" +
-                                       "UiSelector[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
-                                       % (operate_widget[0], timeout) + "\n")
+                    if flag == 0 and log != 0:
+                        logger.info('[APP_CLICK] check_page ["%s"] error' % check_page[2])
+                    elif flag == 1 and log != 0:
+                        logger.info('[APP_CLICK] operate_widget ["%s"] error' % operate_widget[2])
+                    elif flag == 2 and log != 0:
+                        logger.info('[APP_CLICK] wait_page ["%s"] error' % wait_page[2])
+                    database["err_request_timeout_count"] += 1
+                    if log != 0:
+                        logger.error("[ERROR]Failed to operate element.UiSelector"
+                                     "[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
+                                     % (operate_widget[0], timeout))
+                    return False
             except TypeError:
                 return False
-            except TimeoutError:
-                return False
+            # except AttributeError:
+            #     raise TimeoutException()
 
     def page_unit(self, id=None, name=None, xpath=None):
         driver = database["driver"]
         page = None
-        func_name = inspect.stack()[1][3]
         logger.info(u"L_loading...%s " % func_name)
         # wait_old_time = time.time()
         while True:

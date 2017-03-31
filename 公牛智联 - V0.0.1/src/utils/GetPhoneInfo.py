@@ -26,3 +26,8 @@ for k, v in device.items():
     command = "adb -s %s shell getprop net.bt.name" % v["udid"]
     platformName = os.popen(command).read().split()[0]
     device[k]["platformName"] = platformName
+
+    command = "adb shell dumpsys window displays"
+    DPI = os.popen(command).read()
+    tmp = re.findall("init=(.+?) ", DPI)[0].split("x")
+    device[k]["dpi"] = tmp

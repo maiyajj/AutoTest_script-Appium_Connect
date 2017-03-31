@@ -1,8 +1,8 @@
 # coding=utf-8
-from Get_Phone_Info import *
+from GetPhoneInfo import *
 
 
-class Launch_Appium_Services(object):
+class LaunchAppiumServices(object):
     def kill_adb(self):
         command = "taskkill /f /t /im adb.exe"
         os.system(command)

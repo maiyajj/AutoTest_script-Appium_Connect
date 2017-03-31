@@ -12,6 +12,14 @@ operate_wait_time: 0.5
 MAC: 'C4-11-E0-00-46-26;C4-11-E0-00-46-26;3C-2C-94-0F-36-DA;3C-2C-94-0F-36-DA;C4-11-E0-00-00-2C'
 # Mac地址列表选取标志位
 mac_choose_flag: 1
+# 用户名
+user_name: '3138303432303738393237'
+# 登录密码
+login_pwd: '6368656e6768616f'
+# 旧密码
+old_pwd: '6368656e6768616f'
+# 新密码
+new_pwd: '6368656e6768616f31'
 # 京东微联
 App:
     JD: ["com.jd.smart", "com.jd.smart.activity.LoadingActivity"]

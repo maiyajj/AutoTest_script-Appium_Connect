@@ -2,8 +2,7 @@
 import re
 import time
 from multiprocessing import Process
-
-from src.utils.Launch_Appium_Services import *
+from src.utils.LaunchAppiumServices import *
 from src.utils.ReadConf import *
 
 desired_caps = {}
@@ -14,8 +13,8 @@ desired_caps["unicodeKeyboard"] = "True"
 desired_caps["resetKeyboard"] = "True"
 desired_caps['platformVersion'] = '%s' % device.values()[0]["platformVersion"]
 desired_caps['deviceName'] = '%s' % device.values()[0]["deviceName"]
-desired_caps['appPackage'] = '%s' % App["GN"][0]
-desired_caps['appActivity'] = '%s' % App["GN"][1]
+desired_caps['appPackage'] = '%s' % conf_App["GN"][0]
+desired_caps['appActivity'] = '%s' % conf_App["GN"][1]
 
 
 def follow(thefile):
@@ -40,9 +39,9 @@ def log():
                 pass
 
 
-def launch_appium_services():
-    Appium = Process(target=Launch_Appium_Services().main)
+def app_init_launch_appium():
+    Appium = Process(target=LaunchAppiumServices().main)
     Appium.start()
-    del_log = Process(target=log)
-    del_log.start()
+    # del_log = Process(target=log)
+    # del_log.start()
     time.sleep(10)

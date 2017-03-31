@@ -2,9 +2,10 @@
 import sys
 
 sys.path.append("..")
-from src.testcase.case.wait_case import *
+
+from src.testcase.case.WaitCase import *
 
 if __name__ == '__main__':
     print device
-    launch_appium_services()
-    Wait_Case()
+    app_init_launch_appium()
+    WaitCase()

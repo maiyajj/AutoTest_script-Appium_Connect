@@ -1,9 +1,10 @@
 # coding=utf-8
 
 database = {
-    "open_app_flag": 0,
+    # log名称
+    "log_name": "myapp.log",
     # 程序运行循环次数
-    "program_loop_time": 0,
+    "program_loop_time": 1,
     # 打开APP失败次数统计
     "err_open_app_fail_count": 0,
     # 搜索设备超时次数统计

@@ -28,4 +28,5 @@ Enter password:
 3、如果appium服务未启动或在启动中运行测试脚本会产生
 INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for host: localhost
 避免appium服务未完全启动开始使用监听端口的方法，监听appium服务器的绑定端口，使用了一些方法后发现获取不到端口，
-或者读取不了端口数据，应该还是绑定端口有误的原因。故采用监测log日志的方式，监测到localhost的日志就删掉
+或者读取不了端口数据，应该还是绑定端口有误的原因。故采用监测log日志的方式，监测到localhost的日志就删掉,此种方式太麻烦，暂时不用，使用调整等待时间
+4、获取当前运行文件名os.path.basename(__file__)
