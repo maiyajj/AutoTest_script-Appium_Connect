@@ -86,6 +86,8 @@ class MainPageWidget(object):
         d = {}
         # 标题
         d["title"] = [u"账户设置", "name", u"标题"]
+        # 页面activity
+        d["activity"] = [".activitys.main_setting.HomeActivity", "activity", u"页面activity"]
         # 头像
         d["head_image"] = ["com.iotbull.android.superapp:id/home_setting_head_image_view", "id", u"头像"]
         # 昵称
@@ -110,6 +112,8 @@ class MainPageWidget(object):
         d = {}
         # 标题
         d["title"] = [u"账户设置", "name", u"关于我们"]
+        # 页面activity
+        d["activity"] = [".activitys.main_setting.userinfo_setting.UserInfoSettingActivity", "activity", u"页面activity"]
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 昵称
@@ -130,6 +134,8 @@ class MainPageWidget(object):
         d = {}
         # 标题
         d["title"] = [u"修改昵称", "name", u"标题"]
+        # 页面activity
+        d["activity"] = [".activitys.main_setting.userinfo_setting.UserNameUpdateActivity", "activity", u"页面activity"]
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 输入框
@@ -153,6 +159,8 @@ class MainPageWidget(object):
         d = {}
         # 标题
         d["title"] = [u"修改密码", "name", u"标题"]
+        # 页面activity
+        d["activity"] = [".activitys.main_setting.password_update.UserPasswordUpdateActivity", "activity", u"页面activity"]
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 旧密码
@@ -167,10 +175,25 @@ class MainPageWidget(object):
         d["commit"] = ["com.iotbull.android.superapp:id/user_password_update_commit_button", "id", u"返回"]
         return d
 
+    def app_help_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"使用帮助", "name", u"标题"]
+        # 页面activity
+        d["activity"] = [".activitys.main_setting.AppHelpActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
+        return d
+
+    # .activitys.main_setting.AppUpgradeActivity 版本信息
+    # .activitys.main_setting.AppAboutActivity 关于我们
     def feedback_page(self):
         d = {}
         # 标题
         d["title"] = [u"意见反馈", "name", u"标题"]
+        # 页面activity
+        d["activity"] = [".activitys.main_setting.feedback.FeedbackActivity", "activity",
+                         u"页面activity"]
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 问题类型
@@ -235,10 +258,10 @@ class PopupWidget(object):
         # 取消
         d["cancel"] = ["android:id/button2", "id", u"取消"]
         return d
-    def quit_popup(self):
+    def logout_popup(self):
         d = {}
         # 标题
-        d["title"] = [u"操作失败，账号超时未操作或异地登录，请重新登录。", "name", u"退出确认"]
+        d["title"] = [u"是否确认退出登录？", "name", u"退出确认"]
         # 确认
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消

@@ -9,6 +9,7 @@ class GNAppPersonalSettings1(object):
         logger.info('app start [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
         widget_check_unit = WidgetCheckUnit(self.driver)
         self.widget_click = widget_check_unit.widget_click
+        self.wait_widget = widget_check_unit.wait_widget
         self.case_title = u'账户设置-修改密码页面，"返回"按钮功能检查'
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_TITLE="%s"]'
                     % (os.path.basename(__file__).split(".")[0], self.case_title))

@@ -1,6 +1,15 @@
 # encoding:utf-8
 a = "1"
-b = "2"
-l = "1"
-print l=="sd" or l is not "gg"
-print l=="sd"
+class tmp(object):
+    def __init__(self):
+        self.flag = True
+        self.a()
+    def a(self):
+        self.flag = False
+        if self.flag == False:
+            print self.flag
+        self.close()
+    def close(self):
+        print "close"
+
+tmp()

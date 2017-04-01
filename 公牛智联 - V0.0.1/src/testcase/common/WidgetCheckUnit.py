@@ -22,7 +22,7 @@ class WidgetCheckUnit(Exception):
         self.driver = driver
         database["driver"] = driver
 
-    def wait_widget(self, locate=None, widget=None, timeout=1, interval=1, log=1):
+    def wait_widget(self, locate=None, widget=None, timeout=1, interval=1):
         if locate == None or locate not in ["id", "name", "class", "xpath", "activity"]:
             raise KeyError('[list][1] must be "id" or "name" or "class" or "xpath"')
         end_time = time.time() + timeout
@@ -50,7 +50,7 @@ class WidgetCheckUnit(Exception):
         '''
             Using click operation widgets - 使用点击方式操作控件
             widget_click(self, check_page=None,operate_widget=None,wait_page=None,
-                     wait_time1=1,wait_time2=1,wait_time3=1,timeout=1,interval=1)
+                     wait_time1=1,wait_time2=1,wait_time3=1,timeout=1,interval=1,log=1)
         Args:
             - check_page - Operating widgets before check whether to enter the widgets pages
                            操作控件前检查是否进入该控件所在页面
