@@ -1,0 +1,8 @@
+# coding:utf-8
+from src.testcase.case.GNAPP_PERSONAL_SETTINGS.GNAPP_PERSONAL_SETTINGS_1 import *
+from src.testcase.case.GNAPP_PERSONAL_SETTINGS.GNAPP_PERSONAL_SETTINGS_2 import *
+from src.testcase.case.GNAPP_PERSONAL_SETTINGS.GNAPP_PERSONAL_SETTINGS_3 import *
+from src.testcase.case.GNAPP_PERSONAL_SETTINGS.GNAPP_PERSONAL_SETTINGS_4 import *
+# from src.testcase.case.GNAPP_PERSONAL_SETTINGS.GNAPP_PERSONAL_SETTINGS_5 import *
+# from src.testcase.case.GNAPP_PERSONAL_SETTINGS.GNAPP_PERSONAL_SETTINGS_6 import *
+# from src.testcase.case.GNAPP_PERSONAL_SETTINGS.GNAPP_PERSONAL_SETTINGS_7 import *

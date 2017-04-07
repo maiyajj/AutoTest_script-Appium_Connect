@@ -2,6 +2,7 @@
 import re
 import time
 from multiprocessing import Process
+
 from src.utils.LaunchAppiumServices import *
 from src.utils.ReadConf import *
 

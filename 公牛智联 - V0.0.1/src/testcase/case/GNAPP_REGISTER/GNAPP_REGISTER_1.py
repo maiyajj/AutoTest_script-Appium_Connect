@@ -3,14 +3,14 @@ from src.testcase.case.ToLoginPage import *
 from src.testcase.common.WidgetCheckUnit import *
 
 
-class GNAppLogin1(object):
+class GNAppRegister1(object):
     def __init__(self):
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
         logger.info('app start [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
         widget_check_unit = WidgetCheckUnit(self.driver)
         self.widget_click = widget_check_unit.widget_click
-        self.case_title = u"登录页面—新用户注册页面跳转"
-
+        self.wait_widget = widget_check_unit.wait_widget
+        self.case_title = u'注册页面-已有账户登录按钮，跳转页面检查'
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_TITLE="%s"]'
                     % (os.path.basename(__file__).split(".")[0], self.case_title))
         ToLoginPage()
@@ -22,7 +22,12 @@ class GNAppLogin1(object):
             self.widget_click(login_page["title"],
                               login_page["to_register"],
                               register_page["title"],
-                              10, 10, 1, 60, 0.5)
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(register_page["title"],
+                              register_page["to_login"],
+                              login_page["title"],
+                              1, 1, 1, 10, 0.5)
 
             self.case_over(1)
         except TimeoutException:

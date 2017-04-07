@@ -1,13 +1,16 @@
 # coding:utf-8
-from data.Database import *
-from GNAppLogin import *
-from GNAppPersonalSettings import *
 from CheckUI import *
+from INPUT_CASE.GNAppForgetPassword import *
+from INPUT_CASE.GNAppLogin import *
+from INPUT_CASE.GNAppMessageClassify import *
+from INPUT_CASE.GNAppPersonalSettings import *
+from INPUT_CASE.GNAppRegister import *
+from data.Database import *
 
 
 class WaitCase(object):
     def __init__(self):
-        os.remove(r"../log/"+database["log_name"])
+        os.remove(r"../log/" + database["log_name"])
         logger.info("*" * 30)
         logger.info(u"[APP_INF]deviceName：.....%s" % device.values()[0]['deviceName'])
         logger.info(u"[APP_INF]UDID：...........%s" % device.values()[0]['udid'])
@@ -19,8 +22,15 @@ class WaitCase(object):
         while True:
             logger.info("run times [%s]" % database["program_loop_time"])
             # CheckUI()
-            # GNAppLogin1()
-            # GNAppLogin2()
-            # GNAppLogin3()
+            GNAppLogin1()
+            GNAppLogin2()
+            GNAppLogin3()
             GNAppPersonalSettings1()
+            GNAppPersonalSettings2()
+            GNAppPersonalSettings3()
+            GNAppPersonalSettings4()
+            GNAppRegister1()
+            GNAppForgetPassword1()
+            GNAppMessageClassify1()
+
             database["program_loop_time"] += 1

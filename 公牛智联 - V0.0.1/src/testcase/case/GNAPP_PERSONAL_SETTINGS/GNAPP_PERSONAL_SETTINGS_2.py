@@ -1,6 +1,6 @@
 # coding:utf-8
-from src.testcase.common.WidgetCheckUnit import *
 from src.testcase.case.ToDevicePage import *
+from src.testcase.common.WidgetCheckUnit import *
 
 
 class GNAppPersonalSettings2(object):
@@ -14,83 +14,63 @@ class GNAppPersonalSettings2(object):
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_TITLE="%s"]'
                     % (os.path.basename(__file__).split(".")[0], self.case_title))
         ToDevicePage()
-        self.result = True
         self.case()
 
     # 用例动作
     def case(self):
-        self.result = self.widget_click(device_page["title"],
-                                        device_page["user_image"],
-                                        personal_settings_page["title"],
+        try:
+            self.widget_click(device_page["title"],
+                              device_page["user_image"],
+                              personal_settings_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(personal_settings_page["title"],
+                              personal_settings_page["account_setting"],
+                              account_setting_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(account_setting_page["title"],
+                              account_setting_page["change_pwd"],
+                              change_pwd_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            old_pwd = self.widget_click(change_pwd_page["title"],
+                                        change_pwd_page["old_pwd"],
+                                        change_pwd_page["title"],
                                         1, 1, 1, 10, 0.5)
-        if self.result is False:
-            self.case_over(0)
-            return False
+            data = conf_old_pwd.decode('hex')
+            old_pwd.send_keys(data)
+            logger.info(u'[APP_INPUT] ["旧密码"] input success')
+            time.sleep(0.5)
 
-        self.result = self.widget_click(personal_settings_page["title"],
-                                        personal_settings_page["account_setting"],
-                                        account_setting_page["title"],
+            new_pwd = self.widget_click(change_pwd_page["title"],
+                                        change_pwd_page["new_pwd"],
+                                        change_pwd_page["title"],
                                         1, 1, 1, 10, 0.5)
-        if self.result is False:
+            data = conf_new_pwd.decode('hex')
+            new_pwd.send_keys(data)
+            logger.info(u'[APP_INPUT] ["新密码"] input success')
+            time.sleep(0.5)
+
+            conform_pwd = self.widget_click(change_pwd_page["title"],
+                                            change_pwd_page["conform_pwd"],
+                                            change_pwd_page["title"],
+                                            1, 1, 1, 10, 0.5)
+            data = conf_new_pwd.decode('hex')
+            conform_pwd.send_keys(data)
+            logger.info(u'[APP_INPUT] ["确认新密码"] input success')
+            time.sleep(0.5)
+
+            self.widget_click(change_pwd_page["title"],
+                              change_pwd_page["commit"],
+                              login_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.case_over(1)
+        except TimeoutException:
             self.case_over(0)
-            return False
 
-        self.result = self.widget_click(account_setting_page["title"],
-                                        account_setting_page["logout"],
-                                        logout_popup["title"],
-                                        1, 1, 1, 10, 0.5)
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        self.result = self.widget_click(logout_popup["title"],
-                                        logout_popup["confirm"],
-                                        login_page["title"],
-                                        1, 1, 1, 10, 0.5)
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        self.result = self.widget_click(account_setting_page["title"],
-                                        account_setting_page["logout"],
-                                        logout_popup["title"],
-                                        1, 1, 1, 10, 0.5)
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        x = self.driver.get_window_size()['width']
-        y = self.driver.get_window_size()['height']
-        x = int(x * 0.1)
-        y = int(y * 0.1)
-        self.driver.tap([(x, y)])
-        self.result = self.widget_click(account_setting_page["title"],
-                                        account_setting_page["title"],
-                                        account_setting_page["title"],
-                                        1, 1, 1, 10, 0.5)
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        username = self.wait_widget(login_page["username"][1],
-                                    login_page["username"][0], 10, 1).get_attribute("name")
-        if username != conf_user_name.decode("hex"):
-            self.result = False
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        password = self.wait_widget(login_page["password"][1],
-                                    login_page["password"][0], 10, 1).get_attribute("name")
-        if password != conf_login_pwd.decode("hex"):
-            self.result = False
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        self.case_over()
-
-    def case_over(self, success=1):
+    def case_over(self, success):
         if success == 1:
             logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] success!' % self.case_title)
         elif success == 0:

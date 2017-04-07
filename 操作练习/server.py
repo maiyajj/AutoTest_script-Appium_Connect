@@ -20,8 +20,8 @@ class Main:
         # command = "appium -a 127.0.0.1 -p 4723  -U  54a9608b  --no-reset"
         # 华为荣耀
         # command = "appium -a 127.0.0.1 -p 4723  -U  WPV0216928015105  --no-reset"
-
         os.system(command)
+
 
     def func_main(self):
         command = "python test_case\TestCase.py"

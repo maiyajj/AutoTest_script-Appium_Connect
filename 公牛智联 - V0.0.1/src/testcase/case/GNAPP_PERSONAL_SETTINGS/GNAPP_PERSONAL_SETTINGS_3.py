@@ -1,9 +1,9 @@
 # coding:utf-8
-from src.testcase.common.WidgetCheckUnit import *
 from src.testcase.case.ToDevicePage import *
+from src.testcase.common.WidgetCheckUnit import *
 
 
-class GNAppPersonalSettings2(object):
+class GNAppPersonalSettings3(object):
     def __init__(self):
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
         logger.info('app start [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
@@ -13,67 +13,51 @@ class GNAppPersonalSettings2(object):
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_TITLE="%s"]'
                     % (os.path.basename(__file__).split(".")[0], self.case_title))
         ToDevicePage()
-        self.result = True
         self.case()
 
     # 用例动作
     def case(self):
-        self.result = self.widget_click(device_page["title"],
-                                        device_page["user_image"],
-                                        personal_settings_page["title"],
-                                        1, 1, 1, 10, 0.5)
-        if self.result is False:
+        try:
+            self.widget_click(device_page["title"],
+                              device_page["user_image"],
+                              personal_settings_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(personal_settings_page["title"],
+                              personal_settings_page["account_setting"],
+                              account_setting_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(account_setting_page["title"],
+                              account_setting_page["logout"],
+                              logout_popup["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(logout_popup["title"],
+                              logout_popup["cancel"],
+                              account_setting_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(account_setting_page["title"],
+                              account_setting_page["logout"],
+                              logout_popup["title"],
+                              1, 1, 1, 10, 0.5)
+
+            x = self.driver.get_window_size()['width']
+            y = self.driver.get_window_size()['height']
+            x = int(x * 0.1)
+            y = int(y * 0.1)
+            self.driver.tap([(x, y)])
+            self.widget_click(account_setting_page["title"],
+                              account_setting_page["title"],
+                              account_setting_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.case_over(1)
+        except TimeoutException:
             self.case_over(0)
-            return False
 
-        self.result = self.widget_click(personal_settings_page["title"],
-                                        personal_settings_page["account_setting"],
-                                        account_setting_page["title"],
-                                        1, 1, 1, 10, 0.5)
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        self.result = self.widget_click(account_setting_page["title"],
-                                        account_setting_page["logout"],
-                                        logout_popup["title"],
-                                        1, 1, 1, 10, 0.5)
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        self.result = self.widget_click(logout_popup["title"],
-                                        logout_popup["cancel"],
-                                        account_setting_page["title"],
-                                        1, 1, 1, 10, 0.5)
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        self.result = self.widget_click(account_setting_page["title"],
-                                        account_setting_page["logout"],
-                                        logout_popup["title"],
-                                        1, 1, 1, 10, 0.5)
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        x = self.driver.get_window_size()['width']
-        y = self.driver.get_window_size()['height']
-        x = int(x * 0.1)
-        y = int(y * 0.1)
-        self.driver.tap([(x, y)])
-        self.result = self.widget_click(account_setting_page["title"],
-                                        account_setting_page["title"],
-                                        account_setting_page["title"],
-                                        1, 1, 1, 10, 0.5)
-        if self.result is False:
-            self.case_over(0)
-            return False
-
-        self.case_over()
-
-    def case_over(self, success=1):
+    def case_over(self, success):
         if success == 1:
             logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] success!' % self.case_title)
         elif success == 0:

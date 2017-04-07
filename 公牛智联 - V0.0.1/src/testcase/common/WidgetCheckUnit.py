@@ -1,12 +1,14 @@
 # coding:utf-8 
 import time
-from data.Database import *
+import urllib2
+
 from AppInit import *
 from appium import webdriver
+from data.Database import *
 from selenium.common.exceptions import *
 from src.utils.CollectLog import *
-from src.utils.ReadConf import *
 from src.utils.ReadAPPElement import *
+from src.utils.ReadConf import *
 
 
 class TimeoutError(Exception):
@@ -111,11 +113,13 @@ class WidgetCheckUnit(Exception):
                         logger.error("[ERROR]Failed to operate element.UiSelector"
                                      "[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
                                      % (operate_widget[0], timeout))
-                    return False
+                    raise TimeoutException("[ERROR]Failed to operate element.UiSelector"
+                                           "[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
+                                           % (operate_widget[0], timeout))
             except TypeError:
                 return False
-            # except AttributeError:
-            #     raise TimeoutException()
+                # except AttributeError:
+                #     raise TimeoutException()
 
     def page_unit(self, id=None, name=None, xpath=None):
         driver = database["driver"]

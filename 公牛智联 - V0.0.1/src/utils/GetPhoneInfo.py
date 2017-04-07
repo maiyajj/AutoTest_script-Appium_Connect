@@ -28,6 +28,9 @@ for k, v in device.items():
     device[k]["platformName"] = platformName
 
     command = "adb shell dumpsys window displays"
-    DPI = os.popen(command).read()
-    tmp = re.findall("init=(.+?) ", DPI)[0].split("x")
-    device[k]["dpi"] = tmp
+    try:
+        DPI = os.popen(command).read()
+        tmp = re.findall("init=(.+?) ", DPI)[0].split("x")
+        device[k]["dpi"] = tmp
+    except WindowsError:
+        pass

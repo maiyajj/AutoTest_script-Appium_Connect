@@ -1,4 +1,7 @@
 # coding=utf-8
+god_page = {}
+god_page["title"] = ["android.widget.FrameLayout", "class", u"万能控件"]
+
 
 class MainPageWidget(object):
     def view_pager_page(self):
@@ -38,9 +41,27 @@ class MainPageWidget(object):
         # 验证码
         d["check_code"] = ["com.iotbull.android.superapp:id/forget_password_check_code_edit_text", "id", u"验证码"]
         # 获取验证码
-        d["get_check_code"] = ["com.iotbull.android.superapp:id/forget_password_get_check_code_text_view", "id", u"获取验证码"]
+        d["get_check_code"] = ["com.iotbull.android.superapp:id/forget_password_get_check_code_text_view", "id",
+                               u"获取验证码"]
         # 下一步
         d["to_next"] = ["com.iotbull.android.superapp:id/forget_password_commit_button", "id", u"下一步"]
+        return d
+
+    def new_password_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"新密码设置", "name", u"标题"]
+        # 页面activity
+        d["activity"] = [".activitys.regist_login.ForgetPasswordActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
+        # 新密码
+        d["new_pwd"] = ["com.iotbull.android.superapp:id/forget_password_new_password_password_edit_text", "id", u"新密码"]
+        # 确认新密码
+        d["conform_pwd"] = ["com.iotbull.android.superapp:id/forget_password_new_password_commit_password_edit_text",
+                            "id", u"确认新密码"]
+        # 完成
+        d["commit"] = ["com.iotbull.android.superapp:id/forget_password_new_password_commit_button", "id", u"完成"]
         return d
 
     def register_page(self):
@@ -160,7 +181,8 @@ class MainPageWidget(object):
         # 标题
         d["title"] = [u"修改密码", "name", u"标题"]
         # 页面activity
-        d["activity"] = [".activitys.main_setting.password_update.UserPasswordUpdateActivity", "activity", u"页面activity"]
+        d["activity"] = [".activitys.main_setting.password_update.UserPasswordUpdateActivity", "activity",
+                         u"页面activity"]
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 旧密码
@@ -172,7 +194,7 @@ class MainPageWidget(object):
             "com.iotbull.android.superapp:id/user_password_update_new_password_commit_password_edit_text",
             "id", u"确认新密码"]
         # 确定
-        d["commit"] = ["com.iotbull.android.superapp:id/user_password_update_commit_button", "id", u"返回"]
+        d["commit"] = ["com.iotbull.android.superapp:id/user_password_update_commit_button", "id", u"确定"]
         return d
 
     def app_help_page(self):
@@ -228,6 +250,51 @@ class MainPageWidget(object):
         d["change_layout"] = ["com.iotbull.android.superapp:id/device_iv_change_layout", "id", u"切换九宫格"]
         return d
 
+    def home_message_page(self):
+        d = {}
+        # 标题
+        d["title"] = ["com.iotbull.android.superapp:id/message_tab_btn_activity", "id", u"标题"]
+        # 页面activity
+        d["activity"] = [".activitys.main_setting.HomeActivity", "activity", u"页面activity"]
+        # 活动
+        d["message_activity"] = ["com.iotbull.android.superapp:id/message_tab_btn_activity", "id", u"活动"]
+        # 设备
+        d["device"] = ["com.iotbull.android.superapp:id/message_tab_btn_alert", "id", u"设备"]
+        # 消息分类
+        d["classify"] = ["android.widget.ImageButton", "class", u"消息分类"]
+        # 设置
+        d["setting"] = ["//android.support.v7.widget.LinearLayoutCompat/android.widget.TextView", "xpath", u"设置"]
+        return d
+
+    # 消息分类
+    def message_classify_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"消息分类", "name", u"标题"]
+        # 页面activity
+        d["activity"] = [".activitys.message_mall.message_classify.MessageClassifyActivity", "activity", u"页面activity"]
+        # 全部设备
+        d["all_device"] = ["//android.widget.LinearLayout[1]//android.widget.RadioButton", "xpath", u"全部设备"]
+        # 展示体验数据
+        d["experience_data"] = ["//android.widget.LinearLayout[2]//android.widget.RadioButton", "xpath", u"展示体验数据"]
+        # A2 管理者
+        d["A2"] = ["//android.widget.LinearLayout[3]//android.widget.RadioButton", "xpath", u"A2 管理者"]
+        # A3 体验
+        d["A3"] = ["//android.widget.LinearLayout[4]//android.widget.RadioButton", "xpath", u"A3 体验"]
+        # A4 分享者
+        d["A4"] = ["//android.widget.LinearLayout[5]//android.widget.RadioButton", "xpath", u"A4 分享者"]
+        # A5 体验
+        d["A5"] = ["//android.widget.LinearLayout[6]//android.widget.RadioButton", "xpath", u"A5 体验"]
+        return d
+
+        # 消息设置.activitys.message_mall.message_setting.MessageSettingActivity
+        # 选择产品类型 .activitys.device_scene.SelectProductActivity
+        # 扫描二维码 com.google.zxing.activity.CaptureActivity
+        # 公牛智能网关-硬件 .activitys.device_scene.device_add.PrepareSetNetworkActivity
+        # 配置网络 .activitys.device_scene.device_add.SetNetworkActivity
+        # 添加设备 .activitys.device_scene.device_add.ScanWithSubscribeActivity
+        # 添加失败 .activitys.device_scene.device_add.AddFailedActivity
+
 
 class PopupWidget(object):
     def update_popup(self):
@@ -247,6 +314,7 @@ class PopupWidget(object):
         # 打开
         d["install_cancel"] = ["com.android.packageinstaller:id/launch_button", "id", u"打开"]
         return d
+
     def login_popup(self):
         d = {}
         # 标题
@@ -258,6 +326,7 @@ class PopupWidget(object):
         # 取消
         d["cancel"] = ["android:id/button2", "id", u"取消"]
         return d
+
     def logout_popup(self):
         d = {}
         # 标题

@@ -8,20 +8,36 @@ class ToLoginPage(object):
         widget_check_unit = WidgetCheckUnit(self.driver)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
+        self.driver.find_element_by_class_name("android.widget.FrameLayout").click()
+        time.sleep(0.01)
         self.case()
 
     def case(self):
         # 用例动作
         while True:
             if self.driver.current_activity == login_popup["activity"][0]:
-                if self.wait_widget(login_popup["title"][1], login_popup["title"][0], 3, 1):
-                    logger.info(u"[APP_INF] 设备需要重新登陆")
+                try:
+                    self.wait_widget(update_popup["title"][1], update_popup["title"][0], 3, 1)
+                    logger.info(u"[APP_INF] APP有最新版本，可以更新")
+                    self.widget_click(update_popup["title"],
+                                      update_popup["cancel"],
+                                      god_page["title"],
+                                      1, 1, 1, 10, 0.5, 0)
+                    logger.info(u"[APP_INF] 取消更新")
+                except TimeoutException:
+                    pass
+                try:
+                    self.wait_widget(login_popup["title"][1], login_popup["title"][0], 3, 1)
+                    logger.info(u"[APP_INF] APP需要重新登陆，等待重新登录")
                     self.widget_click(login_popup["title"],
                                       login_popup["confirm"],
                                       login_page["title"],
                                       1, 1, 1, 10, 0.5, 0)
+                except TimeoutException:
+                    pass
+
             if self.driver.current_activity == device_page["activity"][0]:
-                logger.info(u"[APP_INF] APP当前页面为设备主页面")
+                logger.info(u"[APP_INF] APP当前页面为主页面,等待退出")
                 self.widget_click(device_page["title"],
                                   device_page["user_image"],
                                   personal_settings_page["title"],
@@ -34,15 +50,15 @@ class ToLoginPage(object):
 
                 self.widget_click(account_setting_page["title"],
                                   account_setting_page["logout"],
-                                  quit_popup["title"],
+                                  logout_popup["title"],
                                   1, 1, 1, 10, 0.5, 0)
 
-                self.widget_click(quit_popup["title"],
-                                  quit_popup["confirm"],
+                self.widget_click(logout_popup["title"],
+                                  logout_popup["confirm"],
                                   login_page["activity"],
                                   1, 1, 1, 10, 0.5, 0)
 
             if self.driver.current_activity == login_page["activity"][0]:
                 logger.info(u"[APP_INF] APP当前页面为登录页面")
                 break
-            return True
+        return True
