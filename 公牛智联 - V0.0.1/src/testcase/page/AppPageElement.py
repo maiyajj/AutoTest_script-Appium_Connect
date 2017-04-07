@@ -256,6 +256,8 @@ class MainPageWidget(object):
         d["title"] = ["com.iotbull.android.superapp:id/message_tab_btn_activity", "id", u"标题"]
         # 页面activity
         d["activity"] = [".activitys.main_setting.HomeActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 活动
         d["message_activity"] = ["com.iotbull.android.superapp:id/message_tab_btn_activity", "id", u"活动"]
         # 设备
@@ -273,6 +275,8 @@ class MainPageWidget(object):
         d["title"] = [u"消息分类", "name", u"标题"]
         # 页面activity
         d["activity"] = [".activitys.message_mall.message_classify.MessageClassifyActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 全部设备
         d["all_device"] = ["//android.widget.LinearLayout[1]//android.widget.RadioButton", "xpath", u"全部设备"]
         # 展示体验数据
@@ -292,8 +296,21 @@ class MainPageWidget(object):
         # 扫描二维码 com.google.zxing.activity.CaptureActivity
         # 公牛智能网关-硬件 .activitys.device_scene.device_add.PrepareSetNetworkActivity
         # 配置网络 .activitys.device_scene.device_add.SetNetworkActivity
-        # 添加设备 .activitys.device_scene.device_add.ScanWithSubscribeActivity
-        # 添加失败 .activitys.device_scene.device_add.AddFailedActivity
+    # 添加设备
+    def device_add_scan_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"消息分类", "name", u"标题"]
+        # 页面activity
+        d["activity"] = [".activitys.device_scene.device_add.ScanWithSubscribeActivity", "activity",
+                         u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
+        # 全部设备
+        d["all_device"] = ["//android.widget.LinearLayout[1]//android.widget.RadioButton", "xpath", u"全部设备"]
+        return d
+            # 添加失败 .activitys.device_scene.device_add.AddFailedActivity
+        # 天气 .activitys.main_setting.weather.CitySelectorActivity
 
 
 class PopupWidget(object):
