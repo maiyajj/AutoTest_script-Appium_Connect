@@ -1,4 +1,11 @@
 # coding:utf-8
+from CheckUI import *
+from INPUT_CASE.GNAppForgetPassword import *
+from INPUT_CASE.GNAppLogin import *
+from INPUT_CASE.GNAppMessageClassify import *
+from INPUT_CASE.GNAppPersonalSettings import *
+from INPUT_CASE.GNAppRegister import *
+from INPUT_CASE.GNAppDevicePage import *
 from data.Database import *
 
 
