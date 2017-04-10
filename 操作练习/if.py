@@ -1,9 +1,32 @@
 # encoding:utf-8
-from appium import webdriver
-desired_caps = {'driver':'KIW-AL10','platformName':'Android','unicodeKeyboard':'True','browserName':'',
-                'resetKeyboard':'True','platformVersion':'5.1.1','deviceName':'EMUI 3.1',
-                'appPackage':'com.iotbull.android.superapp','appActivity':'com.iotbull.android.superapp.activitys.regist_login.SplashActivity'}
-driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
-driver.get('http://release.thy360.com/o2o_weixin/index.html#/tab/platformHome')
-driver.implicitly_wait(30)
-driver.switch_to.context('WEBVIEW_1')
+
+
+class a(object):
+    def __init__(self):
+        print "sdafasdfasdf"
+        self.b()
+
+    def b(self):
+        print "hhg"
+        self.flag = 1
+
+    def c(self):
+        print "bb"
+        return self.flag, "jj"
+
+
+def write_report(case):
+    CASE = case
+    report = u"[CASE_TITLE=%s, RESULT=%s]" % \
+             (CASE[1], CASE[0])
+    return report
+
+
+report = open(r"Report.log", "w")
+report.write("sdafdf")
+report.write("sdafdf")
+report.close()
+
+# with open(r"Report.log", "a") as report:
+#     report.write(write_report(a().c()))
+# a().c()

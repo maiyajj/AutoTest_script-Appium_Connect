@@ -1,17 +1,19 @@
 # coding:utf-8
-import sys
+import time
 
-import yaml
+from data.Database import *
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
-conf = yaml.load(file(r"../config/Conf.yaml"))
-request_timeout = conf["request_timeout"]
-operate_wait_time = conf["operate_wait_time"]
-MAC = conf["MAC"]
-offline_recovery_timeout = conf["offline_recovery_timeout"]
-open_app_timeout = conf["open_app_timeout"]
-search_device_timeout = conf["search_device_timeout"]
-mac_choose_flag = conf["mac_choose_flag"]
-App = conf["App"]
+def write_report():
+    with open(r"../report/Report.log", "w") as report:
+        while True:
+            report.write("adsfasdfasdfasdfasdfasdfas")
+            print "adsfasdfasdfasdfasdfasdfas"
+            time.sleep(1)
+            if report_data != []:
+                report.write(report_data[0])
+                report_data.pop()
+                time.sleep(1)
+            else:
+                time.sleep(1)
+            break

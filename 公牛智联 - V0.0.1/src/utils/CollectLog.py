@@ -14,6 +14,15 @@ def init_log_save_mode(file_name, logger):
     return logger
 
 
-logger = logging.getLogger()
-logger = init_log_save_mode(r"../log/" + database["log_name"], logger)
+def init_report(file_name, logger):
+    logging.basicConfig(level=logging.INFO)  # 设置打印级别
+    formatter = logging.Formatter("%(message)s")  # log文件写入内容，此处为正文
+    handler = logging.FileHandler(file_name)
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)  # 初始化完毕
+    return logger
+
+
+logger = init_log_save_mode(r"../log/" + database["log_name"], logging.getLogger("1"))
+write_report = init_report(r"../report/Report.log", logging.getLogger("2"))
 logging.shutdown()

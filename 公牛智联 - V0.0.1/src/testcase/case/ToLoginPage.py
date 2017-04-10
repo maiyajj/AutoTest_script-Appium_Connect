@@ -2,6 +2,25 @@
 from src.testcase.common.WidgetCheckUnit import *
 
 
+class LaunchApp(object):
+    def launch_app(self, title):
+        self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
+        logger.info('app start [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
+        self.case_title = title  # u'忘记密码页面-点击"返回"按钮，页面检查'
+        logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_TITLE="%s"]'
+                    % (os.path.basename(__file__).split(".")[0], self.case_title))
+        return self.driver
+
+    def case_over(self, success):
+        if success == 1:
+            logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] success!' % self.case_title)
+        elif success == 0:
+            logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] failed!' % self.case_title)
+        time.sleep(1)
+        self.driver.close_app()
+        logger.info('app closed [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
+        self.driver.quit()
+
 class ToLoginPage(object):
     def __init__(self):
         self.driver = database["driver"]

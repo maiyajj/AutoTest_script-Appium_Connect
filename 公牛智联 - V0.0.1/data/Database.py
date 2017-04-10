@@ -21,3 +21,5 @@ database = {
     "bind_device_bind_count": 0,
     # 设备绑定失败次数统计
     "bind_device_fail_count": 0}
+
+report_data = []

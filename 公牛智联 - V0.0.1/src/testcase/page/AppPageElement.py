@@ -13,19 +13,21 @@ class MainPageWidget(object):
     def login_page(self):
         d = {}
         # 标题
-        d["title"] = ["com.iotbull.android.superapp:id/loginCommitButton", "id", u"标题"]
+        d["title"] = ["com.iotbull.android.superapp:id/login_btn_commit", "id", u"标题"]
         # 页面activity
         d["activity"] = [".activitys.regist_login.LoginActivity", "activity", u"页面activity"]
         # 用户名输入框
-        d["username"] = ["com.iotbull.android.superapp:id/loginUserNameEditText", "id", u"用户名输入框"]
+        d["username"] = ["com.iotbull.android.superapp:id/login_et_username", "id", u"用户名输入框"]
         # 密码输入框
-        d["password"] = ["com.iotbull.android.superapp:id/loginPasswordEditText", "id", u"密码输入框"]
+        d["password"] = ["com.iotbull.android.superapp:id/login_et_password", "id", u"密码输入框"]
+        # 显示密码
+        d["check_box"] = ["com.iotbull.android.superapp:id/login_cb_show_password", "id", u"密码可见/不可见"]
         # 忘记密码
-        d["to_find_password"] = ["com.iotbull.android.superapp:id/loginFindPasswordTextView", "id", u"忘记密码"]
+        d["to_find_password"] = ["com.iotbull.android.superapp:id/login_tv_go_find_password", "id", u"忘记密码"]
         # 登录按钮
-        d["login_button"] = ["com.iotbull.android.superapp:id/loginCommitButton", "id", u"登录按钮"]
+        d["login_button"] = ["com.iotbull.android.superapp:id/login_btn_commit", "id", u"登录按钮"]
         # 新账号注册
-        d["to_register"] = ["com.iotbull.android.superapp:id/loginToRegistTextView", "id", u"新账号注册"]
+        d["to_register"] = ["com.iotbull.android.superapp:id/login_tv_go_regist", "id", u"新账号注册"]
         return d
 
     def find_password_page(self):
@@ -71,21 +73,21 @@ class MainPageWidget(object):
         # 页面activity
         d["activity"] = [".activitys.regist_login.RegistActivity", "activity", u"页面activity"]
         # 用户名
-        d["username"] = ["com.iotbull.android.superapp:id/registUserNameEditText", "id", u"用户名"]
+        d["username"] = ["com.iotbull.android.superapp:id/regist_et_username", "id", u"用户名"]
         # 密码
-        d["password"] = ["com.iotbull.android.superapp:id/registPasswordEditText", "id", u"密码"]
+        d["password"] = ["com.iotbull.android.superapp:id/regist_et_password", "id", u"密码"]
         # 验证码
-        d["check_code"] = ["com.iotbull.android.superapp:id/registCheckCodeEditText", "id", u"验证码"]
+        d["check_code"] = ["com.iotbull.android.superapp:id/regist_et_check_code", "id", u"验证码"]
         # 获取验证码
-        d["get_check_code"] = ["com.iotbull.android.superapp:id/registGetCheckCodeTextView", "id", u"获取验证码"]
+        d["get_check_code"] = ["com.iotbull.android.superapp:id/regist_tv_get_check_code", "id", u"获取验证码"]
         # 立即注册按钮
         d["register_button"] = ["com.iotbull.android.superapp:id/regist_commit_button", "id", u"立即注册按钮"]
         # 公牛服务协议
-        d["to_protocol"] = ["com.iotbull.android.superapp:id/registToRegistProtocolTextView", "id", u"公牛服务协议"]
+        d["to_protocol"] = ["com.iotbull.android.superapp:id/regist_tv_go_regist_protocol", "id", u"公牛服务协议"]
         # 已有账户登录
-        d["to_login"] = ["com.iotbull.android.superapp:id/registToLoginTextView", "id", u"已有账户登录"]
+        d["to_login"] = ["com.iotbull.android.superapp:id/regist_tv_go_login", "id", u"已有账户登录"]
         # 密码可见/不可见
-        d["check_box"] = ["com.iotbull.android.superapp:id/checkBox", "id", u"密码可见/不可见"]
+        d["check_box"] = ["com.iotbull.android.superapp:id/regist_cb_show_password", "id", u"密码可见/不可见"]
         return d
 
     def protocol_page(self):

@@ -4,6 +4,7 @@ import time
 from multiprocessing import Process
 
 from src.utils.LaunchAppiumServices import *
+from src.utils.OutputReport import *
 from src.utils.ReadConf import *
 
 desired_caps = {}
@@ -43,6 +44,4 @@ def log():
 def app_init_launch_appium():
     Appium = Process(target=LaunchAppiumServices().main)
     Appium.start()
-    # del_log = Process(target=log)
-    # del_log.start()
     time.sleep(10)

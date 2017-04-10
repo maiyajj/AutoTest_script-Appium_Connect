@@ -1,4 +1,5 @@
 # coding:utf-8
+from selenium.common.exceptions import *
 from src.testcase.common.WidgetCheckUnit import *
 
 
