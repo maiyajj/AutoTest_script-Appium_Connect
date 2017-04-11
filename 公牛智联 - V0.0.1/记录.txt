@@ -7,6 +7,9 @@
     src
         testcase
             case
+				GNAPP_DEVICE_PAGE
+				...
+				INPUT_CASE
             common
             page
             suite
@@ -22,3 +25,8 @@
 10、utils→Collect_Log 收集log
 11、utils→Output_Report 输出报告
 12、common→Widget_Check_Uint 控件控制单元
+13、case→GNAPP_DEVICE_PAGE 文件夹，包含测试用例
+14、GNAPP_DEVICE_PAGE→GNAPP_DEVICE_PAGE_1 登录模块的测试用例
+15、INPUT_CASE→GNAppLogin 需要测试的模块
+16、case→ToDevicePage 使APP处于设备主页面
+17、case→ToLoginPage 使APP处于设备登录页面

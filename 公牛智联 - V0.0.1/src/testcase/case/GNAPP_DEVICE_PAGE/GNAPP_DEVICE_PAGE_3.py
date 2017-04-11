@@ -3,9 +3,9 @@ from src.testcase.case.ToDevicePage import *
 from src.testcase.common.WidgetCheckUnit import *
 
 
-class GNAppPersonalSettings4(object):
+class GNAppDevicePage3(object):
     def __init__(self):
-        self.case_title = u'使用帮助-返回按钮功能确认'
+        self.case_title = u'设备配网过程中，弹出终止配网提示框，取消按钮功能检查'
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_TITLE="%s"]'
                     % (os.path.basename(__file__).split(".")[0], self.case_title))
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
@@ -14,24 +14,42 @@ class GNAppPersonalSettings4(object):
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
         ToDevicePage()
+        self.success = 0
         self.case()
 
     # 用例动作
     def case(self):
         try:
             self.widget_click(device_page["title"],
-                              device_page["user_image"],
-                              personal_settings_page["title"],
+                              device_page["add_device"],
+                              device_add_scan_page["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(personal_settings_page["title"],
-                              personal_settings_page["using_help"],
-                              app_help_page["title"],
+            self.widget_click(device_add_scan_page["title"],
+                              device_add_scan_page["gateway_hw"],
+                              prepare_set_network["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(app_help_page["title"],
-                              app_help_page["to_return"],
-                              personal_settings_page["title"],
+            self.widget_click(prepare_set_network["title"],
+                              prepare_set_network["prepare_next"],
+                              set_network["title"],
+                              1, 1, 1, 10, 0.5)
+
+            wifi_pwd = self.wait_widget(set_network["wifi_pwd"], 3, 1)
+
+            data = conf_wifi_pwd.decode('hex')
+            wifi_pwd.send_keys(data)
+            logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
+            time.sleep(0.5)
+
+            self.widget_click(set_network["title"],
+                              set_network["prepare_next"],
+                              scan_with_subscribe["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(scan_with_subscribe["title"],
+                              scan_with_subscribe["to_return"],
+                              terminate_add_device_popup["title"],
                               1, 1, 1, 10, 0.5)
 
             self.case_over(1)

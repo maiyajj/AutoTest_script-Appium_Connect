@@ -4,16 +4,18 @@ god_page["title"] = ["android.widget.FrameLayout", "class", u"万能控件"]
 
 
 class MainPageWidget(object):
+    # 引导页
     def view_pager_page(self):
         d = {}
         # 标题
         d["title"] = ["com.iotbull.android.superapp:id/indicator", "id", u"引导页"]
         return d
 
+    # 登录页
     def login_page(self):
         d = {}
         # 标题
-        d["title"] = ["com.iotbull.android.superapp:id/login_btn_commit", "id", u"标题"]
+        d["title"] = ["com.iotbull.android.superapp:id/login_btn_commit", "id", u"登录页"]
         # 页面activity
         d["activity"] = [".activitys.regist_login.LoginActivity", "activity", u"页面activity"]
         # 用户名输入框
@@ -30,10 +32,11 @@ class MainPageWidget(object):
         d["to_register"] = ["com.iotbull.android.superapp:id/login_tv_go_regist", "id", u"新账号注册"]
         return d
 
+    # 忘记密码页
     def find_password_page(self):
         d = {}
         # 标题
-        d["title"] = [u"忘记密码", "name", u"标题"]
+        d["title"] = [u"忘记密码", "name", u"忘记密码页"]
         # 页面activity
         d["activity"] = [".activitys.regist_login.ForgetPasswordActivity", "activity", u"页面activity"]
         # 返回
@@ -49,10 +52,11 @@ class MainPageWidget(object):
         d["to_next"] = ["com.iotbull.android.superapp:id/forget_password_commit_button", "id", u"下一步"]
         return d
 
+    # 忘记密码→重置密码页
     def new_password_page(self):
         d = {}
         # 标题
-        d["title"] = [u"新密码设置", "name", u"标题"]
+        d["title"] = [u"新密码设置", "name", u"忘记密码→重置密码页"]
         # 页面activity
         d["activity"] = [".activitys.regist_login.ForgetPasswordActivity", "activity", u"页面activity"]
         # 返回
@@ -66,10 +70,11 @@ class MainPageWidget(object):
         d["commit"] = ["com.iotbull.android.superapp:id/forget_password_new_password_commit_button", "id", u"完成"]
         return d
 
+    # 注册页
     def register_page(self):
         d = {}
         # 标题
-        d["title"] = ["com.iotbull.android.superapp:id/regist_commit_button", "id", u"标题"]
+        d["title"] = ["com.iotbull.android.superapp:id/regist_commit_button", "id", u"注册页"]
         # 页面activity
         d["activity"] = [".activitys.regist_login.RegistActivity", "activity", u"页面activity"]
         # 用户名
@@ -90,25 +95,28 @@ class MainPageWidget(object):
         d["check_box"] = ["com.iotbull.android.superapp:id/regist_cb_show_password", "id", u"密码可见/不可见"]
         return d
 
+    # 用户使用协议页
     def protocol_page(self):
         d = {}
         # 标题
-        d["title"] = [u"用户注册协议", "name", u"标题"]
+        d["title"] = [u"用户注册协议", "name", u"用户使用协议页"]
         # 页面activity
         d["activity"] = [".activitys.regist_login.RegistProtocolActivity", "activity", u"页面activity"]
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         return d
 
+    # 设备控制页
     def devices_page(self):
         d = {}
         pass
         return d
 
+    # 个人设置页
     def personal_settings_page(self):
         d = {}
         # 标题
-        d["title"] = [u"账户设置", "name", u"标题"]
+        d["title"] = [u"账户设置", "name", u"个人设置页"]
         # 页面activity
         d["activity"] = [".activitys.main_setting.HomeActivity", "activity", u"页面activity"]
         # 头像
@@ -131,10 +139,11 @@ class MainPageWidget(object):
         d["about_us"] = [u"关于我们", "name", u"关于我们"]
         return d
 
+    # 账户设置页
     def account_setting_page(self):
         d = {}
         # 标题
-        d["title"] = [u"账户设置", "name", u"关于我们"]
+        d["title"] = [u"账户设置", "name", u"账户设置页"]
         # 页面activity
         d["activity"] = [".activitys.main_setting.userinfo_setting.UserInfoSettingActivity", "activity", u"页面activity"]
         # 返回
@@ -153,10 +162,11 @@ class MainPageWidget(object):
         d["logout"] = ["com.iotbull.android.superapp:id/user_info_btn_logout", "id", u"退出登录"]
         return d
 
+    # 修改昵称页
     def change_nickname_page(self):
         d = {}
         # 标题
-        d["title"] = [u"修改昵称", "name", u"标题"]
+        d["title"] = [u"修改昵称", "name", u"修改昵称页"]
         # 页面activity
         d["activity"] = [".activitys.main_setting.userinfo_setting.UserNameUpdateActivity", "activity", u"页面activity"]
         # 返回
@@ -178,10 +188,11 @@ class MainPageWidget(object):
         d["submit"] = [u"确定", "name", u"确定"]
         return d
 
+    # 修改密码页
     def change_pwd_page(self):
         d = {}
         # 标题
-        d["title"] = [u"修改密码", "name", u"标题"]
+        d["title"] = [u"修改密码", "name", u"修改密码页"]
         # 页面activity
         d["activity"] = [".activitys.main_setting.password_update.UserPasswordUpdateActivity", "activity",
                          u"页面activity"]
@@ -199,22 +210,22 @@ class MainPageWidget(object):
         d["commit"] = ["com.iotbull.android.superapp:id/user_password_update_commit_button", "id", u"确定"]
         return d
 
+    # 使用帮助页
     def app_help_page(self):
         d = {}
         # 标题
-        d["title"] = [u"使用帮助", "name", u"标题"]
+        d["title"] = [u"使用帮助", "name", u"使用帮助页"]
         # 页面activity
         d["activity"] = [".activitys.main_setting.AppHelpActivity", "activity", u"页面activity"]
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         return d
 
-    # .activitys.main_setting.AppUpgradeActivity 版本信息
-    # .activitys.main_setting.AppAboutActivity 关于我们
+    # 意见反馈页
     def feedback_page(self):
         d = {}
         # 标题
-        d["title"] = [u"意见反馈", "name", u"标题"]
+        d["title"] = [u"意见反馈", "name", u"意见反馈页"]
         # 页面activity
         d["activity"] = [".activitys.main_setting.feedback.FeedbackActivity", "activity",
                          u"页面activity"]
@@ -232,14 +243,23 @@ class MainPageWidget(object):
         d["commit"] = ["com.iotbull.android.superapp:id/feedback_add_button", "id", u"提交"]
         return d
 
+    # 设备页
     def device_page(self):
         d = {}
         # 标题
-        d["title"] = ["com.iotbull.android.superapp:id/device_user_image_view", "id", u"标题"]
+        d["title"] = ["com.iotbull.android.superapp:id/device_user_image_view", "id", u"设备页"]
         # 页面activity
         d["activity"] = [".activitys.main_setting.HomeActivity", "activity", u"页面activity"]
         # 用户头像
         d["user_image"] = ["com.iotbull.android.superapp:id/device_user_image_view", "id", u"主页面头像"]
+        # 上午好/下午好
+        d["welcome"] = ["com.iotbull.android.superapp:id/device_tv_welcome_text", "id", u"主页面头像"]
+        # 城市信息
+        d["city"] = ["com.iotbull.android.superapp:id/device_city_name_text_view", "id", u"天气信息"]
+        # 天气信息
+        d["weather"] = ["com.iotbull.android.superapp:id/device_tv_weather_desc", "id", u"天气信息"]
+        # 天气图标
+        d["city"] = ["com.iotbull.android.superapp:id/device_iv_weather_image", "id", u"天气信息"]
         # 设备table
         d["device_table"] = ["com.iotbull.android.superapp:id/home_nav_btn_device", "id", u"设备table"]
         # 消息table
@@ -252,10 +272,11 @@ class MainPageWidget(object):
         d["change_layout"] = ["com.iotbull.android.superapp:id/device_iv_change_layout", "id", u"切换九宫格"]
         return d
 
+    # 设备页→消息
     def home_message_page(self):
         d = {}
         # 标题
-        d["title"] = ["com.iotbull.android.superapp:id/message_tab_btn_activity", "id", u"标题"]
+        d["title"] = ["com.iotbull.android.superapp:id/message_tab_btn_activity", "id", u"设备页→消息"]
         # 页面activity
         d["activity"] = [".activitys.main_setting.HomeActivity", "activity", u"页面activity"]
         # 返回
@@ -270,11 +291,11 @@ class MainPageWidget(object):
         d["setting"] = ["//android.support.v7.widget.LinearLayoutCompat/android.widget.TextView", "xpath", u"设置"]
         return d
 
-    # 消息分类
+    # 消息→消息分类
     def message_classify_page(self):
         d = {}
         # 标题
-        d["title"] = [u"消息分类", "name", u"标题"]
+        d["title"] = [u"消息分类", "name", u"消息→消息分类"]
         # 页面activity
         d["activity"] = [".activitys.message_mall.message_classify.MessageClassifyActivity", "activity", u"页面activity"]
         # 返回
@@ -293,29 +314,97 @@ class MainPageWidget(object):
         d["A5"] = ["//android.widget.LinearLayout[6]//android.widget.RadioButton", "xpath", u"A5 体验"]
         return d
 
-        # 消息设置.activitys.message_mall.message_setting.MessageSettingActivity
-        # 选择产品类型 .activitys.device_scene.SelectProductActivity
-        # 扫描二维码 com.google.zxing.activity.CaptureActivity
-        # 公牛智能网关-硬件 .activitys.device_scene.device_add.PrepareSetNetworkActivity
-        # 配置网络 .activitys.device_scene.device_add.SetNetworkActivity
-    # 添加设备
+    # 设备页→选择产品类型
     def device_add_scan_page(self):
         d = {}
         # 标题
-        d["title"] = [u"消息分类", "name", u"标题"]
+        d["title"] = [u"选择产品类型", "name", u"设备页→选择产品类型"]
         # 页面activity
-        d["activity"] = [".activitys.device_scene.device_add.ScanWithSubscribeActivity", "activity",
-                         u"页面activity"]
+        d["activity"] = [".activitys.device_scene.SelectProductActivity", "activity", u"页面activity"]
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
-        # 全部设备
-        d["all_device"] = ["//android.widget.LinearLayout[1]//android.widget.RadioButton", "xpath", u"全部设备"]
+        # 公牛智能网关-硬件 .activitys.device_scene.device_add.PrepareSetNetworkActivity
+        d["gateway_hw"] = [u"公牛智能网关-硬件", "name", u"公牛智能网关-硬件"]
+        # 公牛智能网关-模拟器
+        d["gateway_sim"] = [u"公牛智能网关-设备模拟器", "name", u"公牛智能网关-设备模拟器"]
+        # 公牛Wi-Fi智能插座二代-硬件
+        d["gn_wifi_hw"] = [u"公牛Wi-Fi智能插座二代-硬件", "name", u"公牛Wi-Fi智能插座二代-硬件"]
+        # 公牛Wi-Fi智能插座二代-设备模拟器
+        d["gn_wifi_sim"] = [u"公牛Wi-Fi智能插座二代-设备模拟器", "name", u"公牛Wi-Fi智能插座二代-设备模拟器"]
+        # 扫描二维码
+        d["capture"] = ["//android.support.v7.widget.LinearLayoutCompat", "xpath", u"扫描二维码"]
         return d
-            # 添加失败 .activitys.device_scene.device_add.AddFailedActivity
-        # 天气 .activitys.main_setting.weather.CitySelectorActivity
 
+    # 选择产品类型→配网说明
+    def prepare_set_network(self):
+        d = {}
+        # 标题
+        d["title"] = [u"配网说明", "name", u"选择产品类型→配网说明"]
+        # 页面activity
+        d["activity"] = [".activitys.device_scene.device_add.PrepareSetNetworkActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
+        # 下一步
+        d["prepare_next"] = ["com.iotbull.android.superapp:id/prepare_next_button", "id", u"下一步"]
+        return d
+
+    # 配网说明→配置网络
+    def set_network(self):
+        d = {}
+        # 标题
+        d["title"] = [u"配置网络", "name", u"配网说明→配置网络"]
+        # 页面activity
+        d["activity"] = [".activitys.device_scene.device_add.SetNetworkActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
+        # SSID
+        d["ssid"] = ["com.iotbull.android.superapp:id/editText_hiflying_smartlinker_ssid", "id", u"SSID"]
+        # WiFi密码
+        d["wifi_pwd"] = ["com.iotbull.android.superapp:id/editText_hiflying_smartlinker_password", "id", u"WiFi密码"]
+        # 下一步
+        d["prepare_next"] = ["com.iotbull.android.superapp:id/button_hiflying_smartlinker_start", "id", u"下一步"]
+        # 更换WiFi
+        d["prepare_next"] = ["com.iotbull.android.superapp:id/da_set_network_btn_change_wifi", "id", u"更换WiFi"]
+        return d
+
+    # 配置网络→添加设备
+    def scan_with_subscribe(self):
+        d = {}
+        # 标题
+        d["title"] = [u"添加设备", "name", u"配置网络→添加设备"]
+        # 页面activity
+        d["activity"] = [".activitys.device_scene.device_add.ScanWithSubscribeActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
+        return d
+
+    # 添加设备→添加失败
+    def add_device_failed(self):
+        d = {}
+        # 标题
+        d["title"] = [u"添加设备", "name", u"添加设备→添加失败"]
+        # 页面activity
+        d["activity"] = [".activitys.device_scene.device_add.AddFailedActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
+        # 重新扫描
+        d["failed_rescan"] = ["com.iotbull.android.superapp:id/failed_rescan_button", "id", u"重新扫描"]
+        # 取消
+        d["cancel"] = ["com.iotbull.android.superapp:id/failed_cancel_button", "id", u"取消"]
+        return d
+
+
+# .activitys.main_setting.AppUpgradeActivity 版本信息
+# .activitys.main_setting.AppAboutActivity 关于我们
+# 天气 .activitys.main_setting.weather.CitySelectorActivity
+# 照相机 com.google.zxing.activity.CaptureActivity
+# 消息设置.activitys.message_mall.message_setting.MessageSettingActivity
+# 选择产品类型 .activitys.device_scene.SelectProductActivity
+# 扫描二维码 com.google.zxing.activity.CaptureActivity
+# 公牛智能网关-硬件 .activitys.device_scene.device_add.PrepareSetNetworkActivity
 
 class PopupWidget(object):
+    # 设备升级确认弹窗
     def update_popup(self):
         d = {}
         # 标题
@@ -334,6 +423,7 @@ class PopupWidget(object):
         d["install_cancel"] = ["com.android.packageinstaller:id/launch_button", "id", u"打开"]
         return d
 
+    # 设备登录页面提示弹窗
     def login_popup(self):
         d = {}
         # 标题
@@ -346,10 +436,22 @@ class PopupWidget(object):
         d["cancel"] = ["android:id/button2", "id", u"取消"]
         return d
 
+    # 退出登录确认弹窗
     def logout_popup(self):
         d = {}
         # 标题
         d["title"] = [u"是否确认退出登录？", "name", u"退出确认"]
+        # 确认
+        d["confirm"] = ["android:id/button1", "id", u"确认"]
+        # 取消
+        d["cancel"] = ["android:id/button2", "id", u"取消"]
+        return d
+
+    # 终止添加设备
+    def terminate_add_device_popup(self):
+        d = {}
+        # 标题
+        d["title"] = [u"是否确认终止添加设备？", "name", u"取消确认"]
         # 确认
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消

@@ -20,6 +20,8 @@ login_pwd: '6368656e6768616f'
 old_pwd: '6368656e6768616f'
 # 新密码
 new_pwd: '6368656e6768616f31'
+# WiFi密码
+wifi_pwd: '696f74313233343536'
 # 待启动APP
 App: 
     JD: ["com.jd.smart", "com.jd.smart.activity.LoadingActivity"] # 京东微联

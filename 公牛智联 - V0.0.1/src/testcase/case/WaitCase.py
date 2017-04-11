@@ -1,12 +1,7 @@
 # coding:utf-8
 from CheckUI import *
-from INPUT_CASE.GNAppForgetPassword import *
-from INPUT_CASE.GNAppLogin import *
-from INPUT_CASE.GNAppMessageClassify import *
-from INPUT_CASE.GNAppPersonalSettings import *
-from INPUT_CASE.GNAppRegister import *
-from INPUT_CASE.GNAppDevicePage import *
 from data.Database import *
+from src.testcase.suite.ScanCaseTitle import *
 
 
 class WaitCase(object):
@@ -25,23 +20,25 @@ class WaitCase(object):
         while True:
             logger.info("run times [%s]" % database["program_loop_time"])
             # CheckUI()
-            write_report.info(self.report_data(GNAppLogin1().result()))
-            self.No += 1
-            GNAppLogin1()
-            GNAppLogin2()
-            GNAppLogin3()
-            GNAppPersonalSettings1()
-            GNAppPersonalSettings2()
-            GNAppPersonalSettings3()
-            GNAppPersonalSettings4()
-            GNAppRegister1()
-            GNAppForgetPassword1()
-            GNAppMessageClassify1()
+            self.write_report(CaseTitle[u'登录页面—新用户注册页面跳转'])
+            self.write_report(CaseTitle[u'登录页面—忘记密码页面跳转'])
+            self.write_report(CaseTitle[u'登录页面—登录功能检'])
+            self.write_report(CaseTitle[u'账户设置-修改密码页面，"返回"按钮功能检查'])
+            self.write_report(CaseTitle[u'账户设置-密码修改后页面跳转确认'])
+            self.write_report(CaseTitle[u'账户设置-退出当前账号后，取消按钮功能检查'])
+            self.write_report(CaseTitle[u'使用帮助-返回按钮功能确认'])
+            self.write_report(CaseTitle[u'注册页面-已有账户登录按钮，跳转页面检查'])
+            self.write_report(CaseTitle[u'忘记密码页面-点击"返回"按钮，页面检查'])
+            self.write_report(CaseTitle[u'消息分类页面信息检查'])
+            self.write_report(CaseTitle[u'默认页面信息检查'])
+            self.write_report(CaseTitle[u'设备配网过程中，返回按钮功能检查'])
+            self.write_report(CaseTitle[u'设备配网过程中，弹出终止配网提示框，取消按钮功能检查'])
 
             database["program_loop_time"] += 1
 
-    def report_data(self, case):
-        CASE = case
+    def write_report(self, case_title):
+        case = case_title().result()
         data = u'[RUN_TIMES=%s, No=%s, CASE_TITLE="%s", RESULT=%s, TIME=%s]' % \
-               (database["program_loop_time"], self.No, CASE[1], CASE[0], time.strftime("%Y-%m-%d %H:%M:%S"))
-        return data
+               (database["program_loop_time"], self.No, case[1], case[0], time.strftime("%Y-%m-%d %H:%M:%S"))
+        report.info(data)
+        self.No += 1

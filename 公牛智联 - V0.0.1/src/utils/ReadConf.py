@@ -1,4 +1,5 @@
 # coding:utf-8
+# 由Conf.py生成
 import sys
 
 import yaml
@@ -29,5 +30,7 @@ conf_login_pwd = conf["login_pwd"]
 conf_old_pwd = conf["old_pwd"]
 # 新密码
 conf_new_pwd = conf["new_pwd"]
+# WiFi密码
+conf_wifi_pwd = conf["wifi_pwd"]
 # 待启动APP
 conf_App = conf["App"]

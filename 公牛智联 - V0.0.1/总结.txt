@@ -1,4 +1,4 @@
-1、先安装mysql数据库。
+﻿1、先安装mysql数据库。
 1.1、登录到MySQL
 
 当 MySQL 服务已经运行时, 我们可以通过MySQL自带的客户端工具登录到MySQL数据库中, 首先打开命令提示符, 输入以下格式的命名:
@@ -33,3 +33,4 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
 5、360奇酷手机设置成自动亮度，启动APP后屏幕只会慢慢亮起造成首次控件点击失败。后期手机屏幕亮度全部取消自动亮度。
 6、http://blog.csdn.net/jethai/article/details/52345081
         adb发送短信
+7、生成两个log文件时在a = logging.getLogger("2")内要写“2”，不然a就是rootlogger，加了2就是logger可以多个了，不然所有logger内容都是一样的，跟随rootlogger。

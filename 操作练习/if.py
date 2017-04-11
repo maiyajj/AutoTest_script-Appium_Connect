@@ -1,5 +1,9 @@
 # encoding:utf-8
 
+print "iot123456".encode('hex')
+import time
+
+print type(time.strftime("%H"))
 
 class a(object):
     def __init__(self):
@@ -21,12 +25,3 @@ def write_report(case):
              (CASE[1], CASE[0])
     return report
 
-
-report = open(r"Report.log", "w")
-report.write("sdafdf")
-report.write("sdafdf")
-report.close()
-
-# with open(r"Report.log", "a") as report:
-#     report.write(write_report(a().c()))
-# a().c()

@@ -24,9 +24,11 @@ class WidgetCheckUnit(Exception):
         self.driver = driver
         database["driver"] = driver
 
-    def wait_widget(self, locate=None, widget=None, timeout=1, interval=1):
-        if locate == None or locate not in ["id", "name", "class", "xpath", "activity"]:
-            raise KeyError('[list][1] must be "id" or "name" or "class" or "xpath"')
+    def wait_widget(self, main_widget=None, timeout=1, interval=1):
+        locate = main_widget[1]
+        widget = main_widget[0]
+        if main_widget == None or locate not in ["id", "name", "class", "xpath", "activity"]:
+            raise KeyError('[%s][1] must be "id" or "name" or "class" or "xpath"' % main_widget)
         end_time = time.time() + timeout
         element = None
         while True:
@@ -86,17 +88,17 @@ class WidgetCheckUnit(Exception):
         while True:
             try:
                 flag = 0
-                self.wait_widget(check_page[1], check_page[0], wait_time1, interval)
+                self.wait_widget(check_page, wait_time1, interval)
                 # logger.info('[APP_CLICK] check_page ["%s"] success' % check_page[2])
                 time.sleep(0.1)
                 flag = 1
-                widget = self.wait_widget(operate_widget[1], operate_widget[0], wait_time2, interval)
+                widget = self.wait_widget(operate_widget, wait_time2, interval)
                 widget.click()
                 if log != 0:
                     logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
                 time.sleep(0.1)
                 flag = 2
-                self.wait_widget(wait_page[1], wait_page[0], wait_time3, interval)
+                self.wait_widget(wait_page, wait_time3, interval)
                 # logger.info('[APP_CLICK] wait_page ["%s"] success' % wait_page[2])
                 return widget
             except TimeoutException:

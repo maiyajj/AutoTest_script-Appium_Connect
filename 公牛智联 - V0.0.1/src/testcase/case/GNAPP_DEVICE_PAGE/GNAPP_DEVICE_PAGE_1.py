@@ -5,7 +5,7 @@ from src.testcase.common.WidgetCheckUnit import *
 
 class GNAppDevicePage1(object):
     def __init__(self):
-        self.case_title = u'消息分类页面信息检查'
+        self.case_title = u'默认页面信息检查'
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_TITLE="%s"]'
                     % (os.path.basename(__file__).split(".")[0], self.case_title))
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
@@ -14,104 +14,27 @@ class GNAppDevicePage1(object):
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
         ToDevicePage()
+        self.success = 0
         self.case()
 
     # 用例动作
     def case(self):
         try:
-            self.widget_click(device_page["title"],
-                              device_page["message_table"],
-                              home_message_page["title"],
-                              1, 1, 1, 10, 0.5)
+            self.wait_widget(device_page["user_image"], 3, 1)
 
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
-                              1, 1, 1, 10, 0.5)
+            now_time = self.wait_widget(device_page["welcome"], 3, 1).get_attribute("name")
+            if 0 < int(time.strftime("%H")) < 12:
+                if now_time != u"上午好":
+                    raise TimeoutException()
+            else:
+                if now_time != u"下午好":
+                    raise TimeoutException()
 
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["all_device"],
-                              home_message_page["title"],
-                              1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
-                              1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["all_device"][1],
-                                      message_classify_page["all_device"][0],
-                                      3, 1).get_attribute("checked")
-            if result != "true":
+            if self.wait_widget(device_page["welcome"], 3, 1).get_attribute("name") != u"上海市":
                 raise TimeoutException()
 
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["experience_data"],
-                              home_message_page["title"],
-                              1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
-                              1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["experience_data"][1],
-                                      message_classify_page["experience_data"][0],
-                                      3, 1).get_attribute("checked")
-            if result != "true":
-                raise TimeoutException()
+            self.wait_widget(device_page["weather"], 3, 1)
 
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["A2"],
-                              home_message_page["title"],
-                              1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
-                              1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["A2"][1],
-                                      message_classify_page["A2"][0],
-                                      3, 1).get_attribute("checked")
-            if result != "true":
-                raise TimeoutException()
-
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["A3"],
-                              home_message_page["title"],
-                              1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
-                              1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["A3"][1],
-                                      message_classify_page["A3"][0],
-                                      3, 1).get_attribute("checked")
-            if result != "true":
-                raise TimeoutException()
-
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["A4"],
-                              home_message_page["title"],
-                              1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
-                              1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["A4"][1],
-                                      message_classify_page["A4"][0],
-                                      3, 1).get_attribute("checked")
-            if result != "true":
-                raise TimeoutException()
-
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["A5"],
-                              home_message_page["title"],
-                              1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
-                              1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["A5"][1],
-                                      message_classify_page["A5"][0],
-                                      3, 1).get_attribute("checked")
-            if result != "true":
-                raise TimeoutException()
             self.case_over(1)
         except TimeoutException:
             self.case_over(0)

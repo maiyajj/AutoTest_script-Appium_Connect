@@ -13,6 +13,7 @@ class GNAppLogin1(object):
         widget_check_unit = WidgetCheckUnit(self.driver)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
+        self.success = 0
         ToLoginPage()
         self.case()
 
@@ -22,7 +23,7 @@ class GNAppLogin1(object):
             self.widget_click(login_page["title"],
                               login_page["to_register"],
                               register_page["title"],
-                              10, 10, 1, 60, 0.5)
+                              1, 1, 1, 10, 0.5)
 
             self.case_over(1)
         except TimeoutException:

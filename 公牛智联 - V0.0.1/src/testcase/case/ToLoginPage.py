@@ -36,7 +36,7 @@ class ToLoginPage(object):
         while True:
             if self.driver.current_activity == login_popup["activity"][0]:
                 try:
-                    self.wait_widget(update_popup["title"][1], update_popup["title"][0], 3, 1)
+                    self.wait_widget(update_popup["title"], 3, 1)
                     logger.info(u"[APP_INF] APP有最新版本，可以更新")
                     self.widget_click(update_popup["title"],
                                       update_popup["cancel"],
@@ -46,7 +46,7 @@ class ToLoginPage(object):
                 except TimeoutException:
                     pass
                 try:
-                    self.wait_widget(login_popup["title"][1], login_popup["title"][0], 3, 1)
+                    self.wait_widget(login_popup["title"], 3, 1)
                     logger.info(u"[APP_INF] APP需要重新登陆，等待重新登录")
                     self.widget_click(login_popup["title"],
                                       login_popup["confirm"],

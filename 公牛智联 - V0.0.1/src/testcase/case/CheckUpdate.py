@@ -14,7 +14,7 @@ class ToDevicePage(object):
         # 用例动作
         while True:
             if self.driver.current_activity == login_popup["activity"][0]:
-                if self.wait_widget(login_popup["title"][1], login_popup["title"][0], 3, 1):
+                if self.wait_widget(login_popup["title"], 3, 1):
                     logger.info(u"[APP_INF] 设备需要重新登陆")
                     self.widget_click(login_popup["title"],
                                       login_popup["confirm"],

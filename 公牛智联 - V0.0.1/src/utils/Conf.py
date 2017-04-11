@@ -1,4 +1,5 @@
 # coding=utf-8
+import os.path
 import re
 
 head = "# coding:utf-8\n" \
@@ -50,3 +51,23 @@ with open(r"../src/utils/ReadAPPElement.py", "w") as files:
     files.write("\n")
     for i in b:
         files.write("\n%s = PopupWidget().%s()" % (i, i))
+
+rootdir = r"..\src\testcase\case"  # 指明被遍历的文件夹
+with open(r"..\src\testcase\suite\ScanCaseTitle.py", "w") as cast_title:
+    cast_title.write("# coding:utf-8\n")
+    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppDevicePage import *\n")
+    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppForgetPassword import *\n")
+    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppLogin import *\n")
+    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppMessageClassify import *\n")
+    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppPersonalSettings import *\n")
+    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppRegister import *\n\n")
+    cast_title.write("CaseTitle = {\n")
+    for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
+        for filename in filenames:
+            if "GNAPP" in filename and "pyc" not in filename:
+                with open(os.path.join(parent, filename), "r") as files:
+                    file = files.read()
+                    title = re.findall(r"self.case_title = u(.+)", file)[0][1:-1]
+                    class_name = re.findall(r"class (.+)\(", file)[0]
+                    cast_title.write("    u'%s': %s,\n" % (title, class_name))  #
+    cast_title.write("    'over': 'yes'}")

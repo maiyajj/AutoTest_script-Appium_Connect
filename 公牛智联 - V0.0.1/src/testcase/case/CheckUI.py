@@ -15,7 +15,7 @@ class CheckUI(object):
             try:
                 for k, v in login_page.items():
                     print k, v
-                    self.wait_widget(v[1], v[0], 3, 1)
+                    self.wait_widget(v, 3, 1)
                 logger.info(u'[APP_INF] ["登录页面"] load success !')
                 return True
             except TimeoutException:
