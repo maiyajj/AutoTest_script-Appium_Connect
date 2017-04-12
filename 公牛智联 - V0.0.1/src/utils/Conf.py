@@ -52,22 +52,40 @@ with open(r"../src/utils/ReadAPPElement.py", "w") as files:
     for i in b:
         files.write("\n%s = PopupWidget().%s()" % (i, i))
 
+# 写INPUT_CASE文件夹内容
 rootdir = r"..\src\testcase\case"  # 指明被遍历的文件夹
-with open(r"..\src\testcase\suite\ScanCaseTitle.py", "w") as cast_title:
-    cast_title.write("# coding:utf-8\n")
-    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppDevicePage import *\n")
-    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppForgetPassword import *\n")
-    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppLogin import *\n")
-    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppMessageClassify import *\n")
-    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppPersonalSettings import *\n")
-    cast_title.write("from src.testcase.case.INPUT_CASE.GNAppRegister import *\n\n")
-    cast_title.write("CaseTitle = {\n")
-    for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
-        for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename:
-                with open(os.path.join(parent, filename), "r") as files:
-                    file = files.read()
-                    title = re.findall(r"self.case_title = u(.+)", file)[0][1:-1]
-                    class_name = re.findall(r"class (.+)\(", file)[0]
-                    cast_title.write("    u'%s': %s,\n" % (title, class_name))  #
-    cast_title.write("    'over': 'yes'}")
+with open(r"..\src\testcase\case\INPUT_CASE\GNAppDevicePage.py", "w") as DevicePage:
+    DevicePage.write("# coding:utf-8\n")
+    with open(r"..\src\testcase\case\INPUT_CASE\GNAppForgetPassword.py", "w") as ForgetPassword:
+        ForgetPassword.write("# coding:utf-8\n")
+        with open(r"..\src\testcase\case\INPUT_CASE\GNAppLogin.py", "w") as Login:
+            Login.write("# coding:utf-8\n")
+            with open(r"..\src\testcase\case\INPUT_CASE\GNAppMessageClassify.py", "w") as MessageClassify:
+                MessageClassify.write("# coding:utf-8\n")
+                with open(r"..\src\testcase\case\INPUT_CASE\GNAppPersonalSettings.py", "w") as PersonalSettings:
+                    PersonalSettings.write("# coding:utf-8\n")
+                    with open(r"..\src\testcase\case\INPUT_CASE\GNAppRegister.py", "w") as Register:
+                        Register.write("# coding:utf-8\n")
+                        for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
+                            for filename in filenames:
+                                if "GNAPP" in filename and "pyc" not in filename:
+                                    if "GNAPP_DEVICE_PAGE" in filename:
+                                        DevicePage.write(
+                                            "from src.testcase.case.GNAPP_DEVICE_PAGE.%s import *\n" % filename[:-3])
+                                    if "GNAPP_FORGET_PASSWORD" in filename:
+                                        ForgetPassword.write(
+                                            "from src.testcase.case.GNAPP_FORGET_PASSWORD.%s import *\n" % filename[
+                                                                                                           :-3])
+                                    if "GNAPP_LOGIN" in filename:
+                                        Login.write("from src.testcase.case.GNAPP_LOGIN.%s import *\n" % filename[:-3])
+                                    if "GNAPP_MESSAGE_CLASSIFY" in filename:
+                                        MessageClassify.write(
+                                            "from src.testcase.case.GNAPP_MESSAGE_CLASSIFY.%s import *\n" % filename[
+                                                                                                            :-3])
+                                    if "GNAPP_PERSONAL_SETTINGS" in filename:
+                                        PersonalSettings.write(
+                                            "from src.testcase.case.GNAPP_PERSONAL_SETTINGS.%s import *\n" % filename[
+                                                                                                             :-3])
+                                    if "GNAPP_REGISTER" in filename:
+                                        Register.write(
+                                            "from src.testcase.case.GNAPP_REGISTER.%s import *\n" % filename[:-3])

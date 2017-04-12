@@ -64,6 +64,10 @@ class MainPageWidget(ReadInfo):
         self.add_outlet_list = u"插座"
         # 公牛Wi-Fi智能插座2代
         self.lgn_y2011 = u"公牛Wi-Fi智能插座2代"
+        # 公牛Wi-Fi智能转换器2代电量计量版
+        self.lgn_y201J = u"公牛WiFi智能电量统计版转换器2代"
+        # 公牛Wi-Fi智能插座2代加强版
+        self.lgn_y2011dl = u"公牛Wi-Fi智能插座2代加强版"
     def add_specification_page(self):
         FrameLayout = "/android.widget.FrameLayout"
         LinearLayout = "/android.widget.LinearLayout"

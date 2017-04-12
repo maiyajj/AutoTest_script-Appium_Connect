@@ -107,7 +107,7 @@ class MainPageWidget(object):
         return d
 
     # 设备控制页
-    def devices_page(self):
+    def device_control_page(self):
         d = {}
         pass
         return d
@@ -149,15 +149,20 @@ class MainPageWidget(object):
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 昵称
-        d["nickname"] = [u"昵称", "name", u"昵称"]
+        d["nickname"] = ["//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[1]"
+                         "/android.widget.LinearLayout/android.widget.TextView", "xpath", u"昵称"]
         # 性别
-        d["gender"] = [u"性别", "name", u"性别"]
+        d["gender"] = ["//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[2]"
+                       "/android.widget.LinearLayout/android.widget.TextView", "xpath", u"性别"]
         # 地址
-        d["address"] = [u"地址", "name", u"地址"]
+        d["address"] = ["//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[3]"
+                        "/android.widget.LinearLayout/android.widget.TextView", "xpath", u"地址"]
         # 生日
-        d["birthday"] = [u"生日", "name", u"生日"]
+        d["birthday"] = ["//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[4]"
+                         "/android.widget.LinearLayout/android.widget.TextView", "xpath", u"生日"]
         # 修改密码
-        d["change_pwd"] = [u"修改密码", "name", u"修改密码"]
+        d["change_pwd"] = ["//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[5]"
+                           "/android.widget.LinearLayout/android.widget.TextView", "xpath", u"修改密码"]
         # 退出登录
         d["logout"] = ["com.iotbull.android.superapp:id/user_info_btn_logout", "id", u"退出登录"]
         return d
@@ -241,6 +246,23 @@ class MainPageWidget(object):
         d["contact"] = ["com.iotbull.android.superapp:id/feedback_title_edit_text", "id", u"联系方式"]
         # 提交
         d["commit"] = ["com.iotbull.android.superapp:id/feedback_add_button", "id", u"提交"]
+        return d
+
+    # 版本信息
+    def upgrade_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"版本信息", "name", u"版本信息页"]
+        # 页面activity
+        d["activity"] = [".activitys.main_setting.AppUpgradeActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
+        # 当前版本
+        d["current_version"] = ["com.iotbull.android.superapp:id/app_upgrade_current_version_text_view", "id", u"当前版本"]
+        # 最新版本
+        d["new_version"] = ["com.iotbull.android.superapp:id/app_upgrade_new_version_text_view", "id", u"最新版本"]
+        # 立即更新
+        d["upgrade_button"] = ["com.iotbull.android.superapp:id/app_upgrade_check_upgrade_button", "id", u"立即更新"]
         return d
 
     # 设备页
@@ -336,7 +358,7 @@ class MainPageWidget(object):
         return d
 
     # 选择产品类型→配网说明
-    def prepare_set_network(self):
+    def prepare_set_network_page(self):
         d = {}
         # 标题
         d["title"] = [u"配网说明", "name", u"选择产品类型→配网说明"]
@@ -349,7 +371,7 @@ class MainPageWidget(object):
         return d
 
     # 配网说明→配置网络
-    def set_network(self):
+    def set_network_page(self):
         d = {}
         # 标题
         d["title"] = [u"配置网络", "name", u"配网说明→配置网络"]
@@ -368,7 +390,7 @@ class MainPageWidget(object):
         return d
 
     # 配置网络→添加设备
-    def scan_with_subscribe(self):
+    def scan_with_subscribe_page(self):
         d = {}
         # 标题
         d["title"] = [u"添加设备", "name", u"配置网络→添加设备"]
@@ -379,7 +401,7 @@ class MainPageWidget(object):
         return d
 
     # 添加设备→添加失败
-    def add_device_failed(self):
+    def add_device_failed_page(self):
         d = {}
         # 标题
         d["title"] = [u"添加设备", "name", u"添加设备→添加失败"]
@@ -388,13 +410,14 @@ class MainPageWidget(object):
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 重新扫描
-        d["failed_rescan"] = ["com.iotbull.android.superapp:id/failed_rescan_button", "id", u"重新扫描"]
+        d["failed_rescan"] = [u"重新扫描", "name", u"重新扫描"]
+        # soft配网
+        d["soft"] = [u"soft配网", "name", u"soft配网"]
         # 取消
         d["cancel"] = ["com.iotbull.android.superapp:id/failed_cancel_button", "id", u"取消"]
         return d
 
 
-# .activitys.main_setting.AppUpgradeActivity 版本信息
 # .activitys.main_setting.AppAboutActivity 关于我们
 # 天气 .activitys.main_setting.weather.CitySelectorActivity
 # 照相机 com.google.zxing.activity.CaptureActivity

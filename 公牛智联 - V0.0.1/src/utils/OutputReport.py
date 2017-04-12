@@ -1,19 +1,16 @@
 # coding:utf-8
-import time
+import logging
+import logging.handlers
 
-from data.Database import *
+
+def init_report_save_mode(file_name, report1):
+    logging.basicConfig(level=logging.INFO)  # 设置打印级别
+    formatter = logging.Formatter("%(message)s")  # log文件写入内容，此处为正文
+    handler = logging.FileHandler(file_name)
+    handler.setFormatter(formatter)
+    report1.addHandler(handler)  # 初始化完毕
+    return report1
 
 
-def write_report():
-    with open(r"../report/Report.log", "w") as report:
-        while True:
-            report.write("adsfasdfasdfasdfasdfasdfas")
-            print "adsfasdfasdfasdfasdfasdfas"
-            time.sleep(1)
-            if report_data != []:
-                report.write(report_data[0])
-                report_data.pop()
-                time.sleep(1)
-            else:
-                time.sleep(1)
-            break
+report = init_report_save_mode(r"../report/Report.log", logging.getLogger("2"))
+logging.shutdown()

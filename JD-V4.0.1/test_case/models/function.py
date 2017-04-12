@@ -587,7 +587,7 @@ class WidgetOperation(PageDetection, PopupsDetection):
 
     # 添加插座列表控件的操作处理函数
     def widget_add_outlet_list(self):
-        self.widget_slide(name=self.lgn_y201J, page=self.page_add_specification)
+        self.widget_slide(name=self.lgn_y2011dl, page=self.page_add_specification)
 
     # 设备添加历史按钮控件的操作处理函数
     def widget_add_history_button(self):
@@ -595,7 +595,7 @@ class WidgetOperation(PageDetection, PopupsDetection):
 
     # 设备添加历史列表控件的操作处理函数
     def widget_add_history_list(self):
-        self.widget_slide(name=self.hgn_y201J, page=self.page_add_specification)
+        self.widget_slide(name=self.hgn_y2011dl, page=self.page_add_specification)
 
     def widget_add_specification(self):
         self.widget_click(id=self.add_specification_confirm, page=self.page_input_wifi_password, delay=5)

@@ -34,7 +34,7 @@ class SmartLinkFunc(Report):
                     self.widget_add_history_list()
                     # 检测输入密码页面
                     self.widget_add_specification()
-                    self.widget_input_password_text()
+                    # self.widget_input_password_text()
                     self.widget_input_password_conform()
                     func_old_time = time.time()
                     # 检测搜索设备
@@ -44,9 +44,9 @@ class SmartLinkFunc(Report):
                         self.widget_search_device_success()
                         if self.test_tempo_flag == "BIND_DEVICE_SUCCESS":
                             # 检查设备是否离线
-                            self.check_offline()
+                            # self.check_offline()
                             # 控制电源按钮
-                            self.widget_control_power()
+                            # self.widget_control_power()
                             # 设备详情页面
                             self.widget_device_info()
                             # 检测检测设备是否删除成功
@@ -64,3 +64,5 @@ class SmartLinkFunc(Report):
                     self.report()
             except:
                 self.report()
+
+                # 变更语句：37,47,49，选择设备为2011加强版
