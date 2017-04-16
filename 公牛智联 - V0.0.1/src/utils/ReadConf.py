@@ -7,7 +7,7 @@ import yaml
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-conf = yaml.load(file(r'../config/Conf.yaml'))
+conf = yaml.load(file(r'config/Conf.yaml'))
 # 打开APP超时时间
 conf_open_app_timeout = conf["open_app_timeout"]
 # 搜索设备超时时间
@@ -30,7 +30,11 @@ conf_login_pwd = conf["login_pwd"]
 conf_old_pwd = conf["old_pwd"]
 # 新密码
 conf_new_pwd = conf["new_pwd"]
+# 错误密码
+conf_err_pwd = conf["err_pwd"]
 # WiFi密码
 conf_wifi_pwd = conf["wifi_pwd"]
 # 待启动APP
 conf_App = conf["App"]
+# 提示消息
+conf_Toast = conf["Toast"]

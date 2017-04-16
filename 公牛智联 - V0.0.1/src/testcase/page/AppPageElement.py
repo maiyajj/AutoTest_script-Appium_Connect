@@ -269,19 +269,19 @@ class MainPageWidget(object):
     def device_page(self):
         d = {}
         # 标题
-        d["title"] = ["com.iotbull.android.superapp:id/device_user_image_view", "id", u"设备页"]
+        d["title"] = ["com.iotbull.android.superapp:id/home_nav_btn_device", "id", u"设备页"]
         # 页面activity
         d["activity"] = [".activitys.main_setting.HomeActivity", "activity", u"页面activity"]
         # 用户头像
         d["user_image"] = ["com.iotbull.android.superapp:id/device_user_image_view", "id", u"主页面头像"]
         # 上午好/下午好
-        d["welcome"] = ["com.iotbull.android.superapp:id/device_tv_welcome_text", "id", u"主页面头像"]
+        d["welcome"] = ["com.iotbull.android.superapp:id/device_tv_welcome_text", "id", u"上午好/下午好"]
         # 城市信息
-        d["city"] = ["com.iotbull.android.superapp:id/device_city_name_text_view", "id", u"天气信息"]
+        d["city"] = ["com.iotbull.android.superapp:id/device_city_name_text_view", "id", u"城市信息"]
         # 天气信息
         d["weather"] = ["com.iotbull.android.superapp:id/device_tv_weather_desc", "id", u"天气信息"]
         # 天气图标
-        d["city"] = ["com.iotbull.android.superapp:id/device_iv_weather_image", "id", u"天气信息"]
+        d["city"] = ["com.iotbull.android.superapp:id/device_iv_weather_image", "id", u"天气图标"]
         # 设备table
         d["device_table"] = ["com.iotbull.android.superapp:id/home_nav_btn_device", "id", u"设备table"]
         # 消息table
@@ -479,4 +479,11 @@ class PopupWidget(object):
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消
         d["cancel"] = ["android:id/button2", "id", u"取消"]
+        return d
+
+    # 等待弹窗loading
+    def loading_popup(self):
+        d = {}
+        # 标题
+        d["title"] = ["loading...", "id", u"正在加载中loading..."]
         return d

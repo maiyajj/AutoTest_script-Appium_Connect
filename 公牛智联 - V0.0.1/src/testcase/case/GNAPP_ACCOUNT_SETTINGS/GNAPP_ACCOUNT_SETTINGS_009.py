@@ -4,11 +4,11 @@ from src.testcase.case.ToDevicePage import *
 from src.testcase.common.WidgetCheckUnit import *
 
 
-class GNAppDevicePage6(object):
+class GNAppAccountSettings9(object):
     def __init__(self):
-        self.case_module = u"设备页"
-        self.case_title = u'配网失败页面，取消按钮功能检查'
-        self.ZenTao_id = 1808
+        self.case_module = u"账户设置"
+        self.case_title = u'版本信息-当前版本为最新版本，页面信息检查'
+        self.ZenTao_id = 0000
         self.basename = os.path.basename(__file__).split(".")[0]
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                     % (self.basename, self.case_title, self.ZenTao_id, self.case_module))
@@ -19,45 +19,29 @@ class GNAppDevicePage6(object):
         self.wait_widget = widget_check_unit.wait_widget
         self.success = 0
         ToDevicePage()
-        self.success = 0
         self.case()
 
     # 用例动作
     def case(self):
         try:
             self.widget_click(device_page["title"],
-                              device_page["add_device"],
-                              device_add_scan_page["title"],
+                              device_page["user_image"],
+                              personal_settings_page["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(device_add_scan_page["title"],
-                              device_add_scan_page["gateway_hw"],
-                              prepare_set_network_page["title"],
+            self.widget_click(personal_settings_page["title"],
+                              personal_settings_page["version_info"],
+                              upgrade_page["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(prepare_set_network_page["title"],
-                              prepare_set_network_page["prepare_next"],
-                              set_network_page["title"],
-                              1, 1, 1, 10, 0.5)
+            current_version = self.wait_widget(upgrade_page["current_version"], 3, 1).get_attribute("name")[-10:]
 
-            wifi_pwd = self.wait_widget(set_network_page["wifi_pwd"], 3, 1)
+            new_version = self.wait_widget(upgrade_page["new_version"], 3, 1).get_attribute("name")[-10:]
 
-            data = conf_wifi_pwd.decode('hex')
-            wifi_pwd.send_keys(data)
-            logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
-            time.sleep(0.5)
+            btn_state = self.wait_widget(upgrade_page["upgrade_button"], 3, 1).get_attribute("enabled")
 
-            self.widget_click(set_network_page_page["title"],
-                              set_network_page_page["prepare_next"],
-                              scan_with_subscribe_page["title"],
-                              1, 1, 1, 10, 0.5)
-
-            self.wait_widget(add_device_failed_page["title"], 60, 1)
-
-            self.widget_click(add_device_failed_page["title"],
-                              add_device_failed_page["to_return"],
-                              scan_with_subscribe_page["title"],
-                              1, 1, 1, 10, 0.5)
+            if current_version == new_version and btn_state != "false":
+                raise TimeoutException()
 
             self.case_over(1)
         except TimeoutException:

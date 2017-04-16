@@ -3,6 +3,8 @@ import re
 import time
 from multiprocessing import Process
 
+from src.testcase.suite.DiffImg import *
+from src.testcase.suite.ScanCaseName import *
 from src.utils.LaunchAppiumServices import *
 from src.utils.OutputReport import *
 from src.utils.ReadConf import *
@@ -30,12 +32,12 @@ def follow(thefile):
 
 
 def log():
-    with open('../log/myapp.log', 'r') as logfile:
+    with open('./log/myapp.log', 'r') as logfile:
         loglines = follow(logfile)
         for line in loglines:
             tmp = re.findall(r".+localhost", line)
             if tmp == []:
-                with open('../log/report.log', 'a') as files:
+                with open('./log/report.log', 'a') as files:
                     files.write(loglines)
             else:
                 pass
@@ -43,5 +45,16 @@ def log():
 
 def app_init_launch_appium():
     Appium = Process(target=LaunchAppiumServices().main)
+    create_input_case = Process(target=create_INPUT_CASE)
+    scan_case = Process(target=scan_case_name)
+    # diff_img = Process(target=DiffImg)
+
     Appium.start()
+    create_input_case.start()
+    scan_case.start()
+    # diff_img.start()
+
+    scan_case.join()
+    create_input_case.join()
+
     time.sleep(10)

@@ -1,9 +1,15 @@
 # coding:utf-8
 import logging
 import logging.handlers
+import os
 
 from data.Database import *
 
+try:
+    with open(r"./log/" + database["log_name"], "w") as logger_file:
+        pass
+except IOError:
+    os.makedirs(r"./log/")
 
 def init_log_save_mode(file_name, log):
     logging.basicConfig(level=logging.INFO)  # 设置打印级别
@@ -13,5 +19,6 @@ def init_log_save_mode(file_name, log):
     log.addHandler(handler)  # 初始化完毕
     return log
 
-logger = init_log_save_mode(r"../log/" + database["log_name"], logging.getLogger("1"))
+
+logger = init_log_save_mode(r"./log/" + database["log_name"], logging.getLogger("1"))
 logging.shutdown()

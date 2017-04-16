@@ -26,6 +26,7 @@ set_network_page = MainPageWidget().set_network_page()
 upgrade_page = MainPageWidget().upgrade_page()
 view_pager_page = MainPageWidget().view_pager_page()
 
+loading_popup = PopupWidget().loading_popup()
 login_popup = PopupWidget().login_popup()
 logout_popup = PopupWidget().logout_popup()
 terminate_add_device_popup = PopupWidget().terminate_add_device_popup()

@@ -5,6 +5,10 @@ database = {
     "log_name": "myapp.log",
     # 程序运行循环次数
     "program_loop_time": 1,
+    # 用例执行个数
+    "case_location": 1,
+    # 截图名称
+    "screen_name": "",
     # 打开APP失败次数统计
     "err_open_app_fail_count": 0,
     # 搜索设备超时次数统计

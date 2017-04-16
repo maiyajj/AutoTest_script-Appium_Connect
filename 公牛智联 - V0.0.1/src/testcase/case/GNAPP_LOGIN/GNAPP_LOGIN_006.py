@@ -4,11 +4,11 @@ from src.testcase.case.ToLoginPage import *
 from src.testcase.common.WidgetCheckUnit import *
 
 
-class GNAppLogin3(object):
+class GNAppLogin6(object):
     def __init__(self):
         self.case_module = u"登录"
-        self.case_title = u'登录页面—登录功能检查'
-        self.ZenTao_id = 1891
+        self.case_title = u'登录页面—错误密码输入次数超过5次后，账号锁定1分钟验证'
+        self.ZenTao_id = 1899
         self.basename = os.path.basename(__file__).split(".")[0]
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                     % (self.basename, self.case_title, self.ZenTao_id, self.case_module))
@@ -24,20 +24,32 @@ class GNAppLogin3(object):
     # 用例动作
     def case(self):
         try:
-            user_name = self.widget_click(login_page["title"],
-                                          login_page["username"],
-                                          login_page["title"],
-                                          1, 1, 1, 10, 0.5)
+            count = 5
+            while count > 0:
+                login_pwd = self.widget_click(login_page["title"],
+                                              login_page["password"],
+                                              login_page["title"],
+                                              1, 1, 1, 10, 0.5)
 
-            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
-            self.driver.press_keycode(29, 28672)
-            # KEYCODE_FORWARD_DEL 删除键 112
-            self.driver.press_keycode(112)
-            # 发送数据
-            data = conf_user_name.decode('hex')
-            user_name.send_keys(data)
-            logger.info(u'[APP_INPUT] ["用户名"] input success')
-            time.sleep(0.5)
+                self.driver.press_keycode(29, 28672)
+                self.driver.press_keycode(112)
+                data = conf_err_pwd.decode('hex')
+                login_pwd.send_keys(data)
+                logger.info(u'[APP_INPUT] ["错误密码"] input success')
+                time.sleep(0.5)
+
+                self.widget_click(login_page["title"],
+                                  login_page["login_button"],
+                                  god_page["title"],
+                                  1, 1, 1, 10, 0.5)
+
+                while True:
+                    try:
+                        self.wait_widget(loading_popup["title"], 1, 0.5)
+                    except TimeoutException:
+                        break
+
+                count -= 1
 
             login_pwd = self.widget_click(login_page["title"],
                                           login_page["password"],
@@ -48,7 +60,36 @@ class GNAppLogin3(object):
             self.driver.press_keycode(112)
             data = conf_login_pwd.decode('hex')
             login_pwd.send_keys(data)
-            logger.info(u'[APP_INPUT] ["密码"] input success')
+            logger.info(u'[APP_INPUT] ["正确密码"] input success')
+            time.sleep(0.5)
+
+            self.widget_click(login_page["title"],
+                              login_page["login_button"],
+                              god_page["title"],
+                              1, 1, 1, 10, 0.5)
+            # 截屏
+            screen_shot_name = r"./screenshots/%s - %s - %s - [%s]-[%s].png" \
+                               % (database["program_loop_time"], database["case_location"],
+                                  self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
+            database["screen_name"] = screen_shot_name
+
+            self.driver.save_screenshot(screen_shot_name)
+            logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot success')
+
+            time.sleep(1 * 30)
+            self.wait_widget(login_page["title"], 3, 1)
+            time.sleep(1 * 30)
+
+            login_pwd = self.widget_click(login_page["title"],
+                                          login_page["password"],
+                                          login_page["title"],
+                                          1, 1, 1, 10, 0.5)
+
+            self.driver.press_keycode(29, 28672)
+            self.driver.press_keycode(112)
+            data = conf_login_pwd.decode('hex')
+            login_pwd.send_keys(data)
+            logger.info(u'[APP_INPUT] ["正确密码"] input success')
             time.sleep(0.5)
 
             self.widget_click(login_page["title"],

@@ -57,27 +57,31 @@ class ToLoginPage(object):
 
             if self.driver.current_activity == device_page["activity"][0]:
                 logger.info(u"[APP_INF] APP当前页面为主页面,等待退出")
-                self.widget_click(device_page["title"],
-                                  device_page["user_image"],
-                                  personal_settings_page["title"],
-                                  1, 1, 1, 10, 0.5, 0)
+                try:
+                    self.widget_click(device_page["title"],
+                                      device_page["user_image"],
+                                      personal_settings_page["title"],
+                                      1, 1, 1, 10, 0.5, 0)
 
-                self.widget_click(personal_settings_page["title"],
-                                  personal_settings_page["account_setting"],
-                                  account_setting_page["title"],
-                                  1, 1, 1, 10, 0.5, 0)
+                    self.widget_click(personal_settings_page["title"],
+                                      personal_settings_page["account_setting"],
+                                      account_setting_page["title"],
+                                      1, 1, 1, 10, 0.5, 0)
 
-                self.widget_click(account_setting_page["title"],
-                                  account_setting_page["logout"],
-                                  logout_popup["title"],
-                                  1, 1, 1, 10, 0.5, 0)
+                    self.widget_click(account_setting_page["title"],
+                                      account_setting_page["logout"],
+                                      logout_popup["title"],
+                                      1, 1, 1, 10, 0.5, 0)
 
-                self.widget_click(logout_popup["title"],
-                                  logout_popup["confirm"],
-                                  login_page["activity"],
-                                  1, 1, 1, 10, 0.5, 0)
+                    self.widget_click(logout_popup["title"],
+                                      logout_popup["confirm"],
+                                      login_page["activity"],
+                                      1, 1, 1, 10, 0.5, 0)
+
+                except TimeoutException():
+                    logger.info(u"[APP_INF] APP进入设备主页失败，正在重新启动")
+                    self.driver.quit()
 
             if self.driver.current_activity == login_page["activity"][0]:
                 logger.info(u"[APP_INF] APP当前页面为登录页面")
                 break
-        return True

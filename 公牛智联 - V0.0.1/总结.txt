@@ -34,3 +34,4 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
 6、http://blog.csdn.net/jethai/article/details/52345081
         adb发送短信
 7、生成两个log文件时在a = logging.getLogger("2")内要写“2”，不然a就是rootlogger，加了2就是logger可以多个了，不然所有logger内容都是一样的，跟随rootlogger。
+8、判断文件夹是否存在使用os.path.exists('d:/assist')返回值TRUE或者FALSE

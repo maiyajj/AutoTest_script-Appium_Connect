@@ -1,18 +1,23 @@
 # coding:utf-8
+from appium import webdriver
 from src.testcase.case.ToDevicePage import *
 from src.testcase.common.WidgetCheckUnit import *
 
 
-class GNAppPersonalSettings8(object):
+class GNAppAccountSettings6(object):
     def __init__(self):
-        self.case_title = u'账户设置-昵称修改成功，页面信息检查'
-        logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_TITLE="%s"]'
-                    % (os.path.basename(__file__).split(".")[0], self.case_title))
+        self.case_module = u"账户设置"
+        self.case_title = u'点击昵称"按钮，功能检查"'
+        self.ZenTao_id = 1946
+        self.basename = os.path.basename(__file__).split(".")[0]
+        logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
+                    % (self.basename, self.case_title, self.ZenTao_id, self.case_module))
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
         logger.info('app start [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
         widget_check_unit = WidgetCheckUnit(self.driver)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
+        self.success = 0
         ToDevicePage()
         self.case()
 
@@ -34,32 +39,14 @@ class GNAppPersonalSettings8(object):
                               change_nickname_page["title"],
                               1, 1, 1, 10, 0.5)
 
-            nickname = self.widget_click(change_nickname_page["title"],
-                                         change_nickname_page["nickname"],
-                                         change_nickname_page["title"],
-                                         1, 1, 1, 10, 0.5)
+            self.wait_widget(change_nickname_page["nickname"], 3, 1)
 
-            # 全选
-            self.driver.press_keycode(29, 28672)
-            # KEYCODE_FORWARD_DEL 删除键 112
-            self.driver.press_keycode(112)
-            nickname.send_keys(u"被修改的昵称")
-            logger.info(u'[APP_INPUT] ["昵称"] input success')
-            time.sleep(0.5)
+            self.wait_widget(change_nickname_page["commit"], 3, 1)
 
             self.widget_click(change_nickname_page["title"],
-                              change_nickname_page["commit"],
+                              change_nickname_page["to_return"],
                               account_setting_page["title"],
                               1, 1, 1, 10, 0.5)
-
-            self.widget_click(account_setting_page["title"],
-                              account_setting_page["to_return"],
-                              personal_settings_page["title"],
-                              1, 1, 1, 10, 0.5)
-
-            modified_nickname = self.wait_widget(personal_settings_page["nickname"], 3, 1)
-            if modified_nickname != u"被修改的昵称":
-                raise TimeoutException()
 
             self.case_over(1)
         except TimeoutException:

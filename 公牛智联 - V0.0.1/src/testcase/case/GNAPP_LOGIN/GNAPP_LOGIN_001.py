@@ -1,13 +1,17 @@
 # coding:utf-8
+from appium import webdriver
 from src.testcase.case.ToLoginPage import *
 from src.testcase.common.WidgetCheckUnit import *
 
 
 class GNAppLogin1(object):
     def __init__(self):
-        self.case_title = u"登录页面—新用户注册页面跳转"
-        logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_TITLE="%s"]'
-                    % (os.path.basename(__file__).split(".")[0], self.case_title))
+        self.case_module = u"登录"
+        self.case_title = u'登录页面—新用户注册页面跳转'
+        self.ZenTao_id = 1889
+        self.basename = os.path.basename(__file__).split(".")[0]
+        logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
+                    % (self.basename, self.case_title, self.ZenTao_id, self.case_module))
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
         logger.info('app start [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
         widget_check_unit = WidgetCheckUnit(self.driver)

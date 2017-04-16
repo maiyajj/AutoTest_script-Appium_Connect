@@ -1,6 +1,16 @@
 # coding:utf-8
 import logging
 import logging.handlers
+import os
+
+try:
+    with open(r"./report/Report.log", "w") as report_file:
+        pass
+except IOError:
+    os.makedirs(r"./report/")
+
+if os.path.exists(r"./screenshots/") is False:
+    os.makedirs(r"./screenshots/")
 
 
 def init_report_save_mode(file_name, report1):
@@ -12,5 +22,5 @@ def init_report_save_mode(file_name, report1):
     return report1
 
 
-report = init_report_save_mode(r"../report/Report.log", logging.getLogger("2"))
+report = init_report_save_mode(r"./report/Report.log", logging.getLogger("2"))
 logging.shutdown()

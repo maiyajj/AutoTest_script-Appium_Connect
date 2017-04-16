@@ -1,18 +1,23 @@
 # coding:utf-8
+from appium import webdriver
 from src.testcase.case.ToLoginPage import *
 from src.testcase.common.WidgetCheckUnit import *
 
 
 class GNAppForgetPassword1(object):
     def __init__(self):
+        self.case_module = u"忘记密码"
         self.case_title = u'忘记密码页面-点击"返回"按钮，页面检查'
-        logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_TITLE="%s"]'
-                    % (os.path.basename(__file__).split(".")[0], self.case_title))
+        self.ZenTao_id = 1904
+        self.basename = os.path.basename(__file__).split(".")[0]
+        logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
+                    % (self.basename, self.case_title, self.ZenTao_id, self.case_module))
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
         logger.info('app start [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
         widget_check_unit = WidgetCheckUnit(self.driver)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
+        self.success = 0
         ToLoginPage()
         self.case()
 
