@@ -1,4 +1,4 @@
-# coding:utf-8
+# coding=utf-8
 import os
 import re
 
@@ -8,7 +8,7 @@ def scan_case_name():
     case_attr = []
     rootdir = r"./src/testcase/case"  # 指明被遍历的文件夹
     with open(u"./report/自动化测试用例对照表.log", "w") as cast_title:
-        cast_title.write(u"自动化测试用例对照表:\n")
+        cast_title.write(u"自动化测试用例对照表:\n".encode("utf-8"))
         for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
             for filename in filenames:
                 if "GNAPP" in filename and "pyc" not in filename:
@@ -30,60 +30,3 @@ def scan_case_name():
             case_zen = max_case_len - len(i[2])
             cast_title.write("[CASE_MODULE='%s',%s  ZenTao_ID=%s,  CASE_ID=%s,%s  CASE_NAME='%s']\n"
                              % (i[0], " " * module_zen, i[1], i[2], " " * case_zen, i[3]))
-
-
-def create_INPUT_CASE():
-    # 写INPUT_CASE文件夹内容
-    rootdir = r"./src/testcase/case"  # 指明被遍历的文件夹
-
-    DevicePage = open(r"./src/testcase/case/INPUT_CASE/GNAppDevicePage.py", "w")
-    ForgetPassword = open(r"./src/testcase/case/INPUT_CASE/GNAppForgetPassword.py", "w")
-    Login = open(r"./src/testcase/case/INPUT_CASE/GNAppLogin.py", "w")
-    MessageClassify = open(r"./src/testcase/case/INPUT_CASE/GNAppMessageClassify.py", "w")
-    AccountSettings = open(r"./src/testcase/case/INPUT_CASE/GNAppAccountSettings.py", "w")
-    Register = open(r"./src/testcase/case/INPUT_CASE/GNAppRegister.py", "w")
-    FeedBack = open(r"./src/testcase/case/INPUT_CASE/GNAppFeedBack.py", "w")
-    UsingHelp = open(r"./src/testcase/case/INPUT_CASE/GNAppUsingHelp.py", "w")
-    Version = open(r"./src/testcase/case/INPUT_CASE/GNAppVersion.py", "w")
-
-    DevicePage.write("# coding:utf-8\n")
-    ForgetPassword.write("# coding:utf-8\n")
-    Login.write("# coding:utf-8\n")
-    MessageClassify.write("# coding:utf-8\n")
-    AccountSettings.write("# coding:utf-8\n")
-    Register.write("# coding:utf-8\n")
-    FeedBack.write("# coding:utf-8\n")
-    UsingHelp.write("# coding:utf-8\n")
-    Version.write("# coding:utf-8\n")
-
-    for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
-        for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename:
-                filename = filename[:-3]
-                if "GNAPP_DEVICE_PAGE" in filename:
-                    DevicePage.write("from src.testcase.case.GNAPP_DEVICE_PAGE.%s import *\n" % filename)
-                if "GNAPP_FORGET_PASSWORD" in filename:
-                    ForgetPassword.write("from src.testcase.case.GNAPP_FORGET_PASSWORD.%s import *\n" % filename)
-                if "GNAPP_LOGIN" in filename:
-                    Login.write("from src.testcase.case.GNAPP_LOGIN.%s import *\n" % filename)
-                if "GNAPP_MESSAGE_CLASSIFY" in filename:
-                    MessageClassify.write("from src.testcase.case.GNAPP_MESSAGE_CLASSIFY.%s import *\n" % filename)
-                if "GNAPP_ACCOUNT_SETTINGS" in filename:
-                    AccountSettings.write("from src.testcase.case.GNAPP_ACCOUNT_SETTINGS.%s import *\n" % filename)
-                if "GNAPP_REGISTER" in filename:
-                    Register.write("from src.testcase.case.GNAPP_REGISTER.%s import *\n" % filename)
-                if "GNAPP_FEED_BACK" in filename:
-                    FeedBack.write("from src.testcase.case.GNAPP_FEED_BACK.%s import *\n" % filename)
-                if "GNAPP_USING_HELP" in filename:
-                    UsingHelp.write("from src.testcase.case.GNAPP_USING_HELP.%s import *\n" % filename)
-                if "GNAPP_VERSION" in filename:
-                    Version.write("from src.testcase.case.GNAPP_VERSION.%s import *\n" % filename)
-    DevicePage.close()
-    ForgetPassword.close()
-    Login.close()
-    MessageClassify.close()
-    AccountSettings.close()
-    Register.close()
-    FeedBack.close()
-    UsingHelp.close()
-    Version.close()

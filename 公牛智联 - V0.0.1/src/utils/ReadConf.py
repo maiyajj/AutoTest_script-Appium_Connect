@@ -1,4 +1,4 @@
-# coding:utf-8
+# coding=utf-8
 # 由Conf.py生成
 import sys
 

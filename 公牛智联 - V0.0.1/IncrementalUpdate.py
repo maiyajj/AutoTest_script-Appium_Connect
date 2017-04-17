@@ -7,7 +7,7 @@ from src.testcase.page.AppPageElement import *
 
 
 def create_ReadConf():
-    head = "# coding:utf-8\n" \
+    head = "# coding=utf-8\n" \
            "# 由Conf.py生成\n" \
            "import sys\n\n" \
            "import yaml\n\n" \
@@ -46,7 +46,7 @@ def create_ReadAPPElement():
         if tmp == []:
             b.append(i)
     with open(r"./src/utils/ReadAPPElement.py", "w") as files:
-        files.write("# coding:utf-8\n")
+        files.write("# coding=utf-8\n")
         files.write("# 由Conf.py生成\n")
         files.write("from src.testcase.page.AppPageElement import *\n\n")
         for i in a:
@@ -70,15 +70,15 @@ def create_INPUT_CASE():
     UsingHelp = open(r"./src/testcase/case/INPUT_CASE/GNAppUsingHelp.py", "w")
     Version = open(r"./src/testcase/case/INPUT_CASE/GNAppVersion.py", "w")
 
-    DevicePage.write("# coding:utf-8\n")
-    ForgetPassword.write("# coding:utf-8\n")
-    Login.write("# coding:utf-8\n")
-    MessageClassify.write("# coding:utf-8\n")
-    AccountSettings.write("# coding:utf-8\n")
-    Register.write("# coding:utf-8\n")
-    FeedBack.write("# coding:utf-8\n")
-    UsingHelp.write("# coding:utf-8\n")
-    Version.write("# coding:utf-8\n")
+    DevicePage.write("# coding=utf-8\n")
+    ForgetPassword.write("# coding=utf-8\n")
+    Login.write("# coding=utf-8\n")
+    MessageClassify.write("# coding=utf-8\n")
+    AccountSettings.write("# coding=utf-8\n")
+    Register.write("# coding=utf-8\n")
+    FeedBack.write("# coding=utf-8\n")
+    UsingHelp.write("# coding=utf-8\n")
+    Version.write("# coding=utf-8\n")
 
     for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
         for filename in filenames:
@@ -122,9 +122,11 @@ def create_WaitCase():
                 with open(os.path.join(parent, filename), "r") as files:
                     file = files.read()
                     class_name = re.findall(r"class (.+)\(", file)[0]
-                    CaseList.append(class_name)
+                    case_name = re.findall(r"self.case_title = u(.+)", file)[0][1:-1]
+                    ZenTao_id = re.findall(r"self.ZenTao_id = (.+)", file)[0]
+                    CaseList.append([class_name, case_name, ZenTao_id])
     with open(r"./src/testcase/case/WaitCase.py", "w") as WaitCase:
-        WaitCase.write('''# coding:utf-8\n''')
+        WaitCase.write('''# coding=utf-8\n''')
         WaitCase.write('''from data.Database import *\n''')
         WaitCase.write('''from src.testcase.case.INPUT_CASE.GNAppAccountSettings import *\n''')
         WaitCase.write('''from src.testcase.case.INPUT_CASE.GNAppDevicePage import *\n''')
@@ -156,32 +158,32 @@ def create_WaitCase():
         WaitCase.write('''            logger.info("run times [%s]" % database["program_loop_time"])\n''')
         WaitCase.write('''            # CheckUI()\n''')
         for i in CaseList:
-            if "Login" in i:
-                WaitCase.write('''            self.write_report(%s)\n''' % i)
+            if "Login" in i[0]:
+                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
-            if "AccountSettings" in i:
-                WaitCase.write('''            self.write_report(%s)\n''' % i)
+            if "AccountSettings" in i[0]:
+                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
-            if "Register" in i:
-                WaitCase.write('''            self.write_report(%s)\n''' % i)
+            if "Register" in i[0]:
+                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
-            if "ForgetPassword" in i:
-                WaitCase.write('''            self.write_report(%s)\n''' % i)
+            if "ForgetPassword" in i[0]:
+                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
-            if "MessageClassify" in i:
-                WaitCase.write('''            self.write_report(%s)\n''' % i)
+            if "MessageClassify" in i[0]:
+                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
-            if "DevicePage" in i:
-                WaitCase.write('''            self.write_report(%s)\n''' % i)
+            if "DevicePage" in i[0]:
+                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
-            if "FeedBack" in i:
-                WaitCase.write('''            self.write_report(%s)\n''' % i)
+            if "FeedBack" in i[0]:
+                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
-            if "UsingHelp" in i:
-                WaitCase.write('''            self.write_report(%s)\n''' % i)
+            if "UsingHelp" in i[0]:
+                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
-            if "Version" in i:
-                WaitCase.write('''            self.write_report(%s)\n''' % i)
+            if "Version" in i[0]:
+                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         WaitCase.write('''\n            database["program_loop_time"] += 1\n\n''')
 
         WaitCase.write('''    def write_report(self, case_name):\n''')
@@ -315,14 +317,34 @@ def add_basename():
                         else:
                             files.write(linecache.getline(filepath, i))
 
-create_ReadConf()
-# create_ReadAPPElement()
-# create_INPUT_CASE()
-# create_WaitCase()
-# file_renames()
-# insert_code()
-# scan_path()
-# del_pyc()
-# scan_backslash()
-# add_ZenTao_id()
-# add_basename()
+
+# 修改文件编码方式
+def modified_utf():
+    rootdir = r"./"
+    for parent, dirnames, filenames in os.walk(rootdir):
+        for filename in filenames:
+            if "py" in filename and "pyc" not in filename and "init" not in filename and "IncrementalUpdate" not in filename:
+                filepath = os.path.join(parent, filename)
+                lines = len(linecache.getlines(filepath))
+                print filename
+                with open(filepath, "w") as files:
+                    for i in range(1, lines + 1):
+                        if "# coding:utf-8" in linecache.getline(filepath, i):
+                            print linecache.getline(filepath, i)
+                            files.write(linecache.getline(filepath, i).replace("# coding:utf-8", "# coding=utf-8"))
+                        else:
+                            files.write(linecache.getline(filepath, i))
+
+
+create_ReadConf()  # 创建ReadConf.py 必须
+create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
+create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
+create_WaitCase()  # 创建WaitCase.py 必须
+# file_renames() # 将文件名后缀从1变成001 可选
+# insert_code() # 将每个用例中插入from appium import webdriver 可选
+# scan_path() # 扫描with open（）中路径是不是../开头要变成./开头 可选
+# del_pyc()# 删除所有pyc文件 可选
+# scan_backslash() # 扫描with open（）中路径是/分隔符还是\分隔符 可选
+# add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
+# add_basename() # 在每个用例中插入self.success = 0可选
+# modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选

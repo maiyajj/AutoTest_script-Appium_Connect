@@ -1,4 +1,4 @@
-# coding:utf-8
+# coding=utf-8
 from appium import webdriver
 from src.testcase.case.ToLoginPage import *
 from src.testcase.common.WidgetCheckUnit import *

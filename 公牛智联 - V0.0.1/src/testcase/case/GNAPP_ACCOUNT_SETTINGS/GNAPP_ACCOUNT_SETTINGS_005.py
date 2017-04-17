@@ -1,4 +1,4 @@
-# coding:utf-8
+# coding=utf-8
 from appium import webdriver
 from src.testcase.case.ToDevicePage import *
 from src.testcase.common.WidgetCheckUnit import *
@@ -7,8 +7,8 @@ from src.testcase.common.WidgetCheckUnit import *
 class GNAppAccountSettings5(object):
     def __init__(self):
         self.case_module = u"账户设置"
-        self.case_title = u'用户昵称与账户-昵称修改'
-        self.ZenTao_id = 0000
+        self.case_title = u'密码修改页面，旧密码输入错误，提示信息检查'
+        self.ZenTao_id = 1970
         self.basename = os.path.basename(__file__).split(".")[0]
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                     % (self.basename, self.case_title, self.ZenTao_id, self.case_module))
@@ -29,17 +29,78 @@ class GNAppAccountSettings5(object):
                               personal_settings_page["title"],
                               1, 1, 1, 10, 0.5)
 
-            nickname = self.wait_widget(personal_settings_page["nickname"], 3, 1).get_attribute("name")
-
             self.widget_click(personal_settings_page["title"],
                               personal_settings_page["account_setting"],
                               account_setting_page["title"],
                               1, 1, 1, 10, 0.5)
 
-            check_nickname = self.wait_widget(account_setting_page["nickname"], 3, 1).get_attribute("name")
+            self.widget_click(account_setting_page["title"],
+                              account_setting_page["change_pwd"],
+                              change_pwd_page["title"],
+                              1, 1, 1, 10, 0.5)
 
-            if check_nickname != nickname:
-                raise TimeoutException()
+            old_pwd = self.widget_click(change_pwd_page["title"],
+                                        change_pwd_page["old_pwd"],
+                                        change_pwd_page["title"],
+                                        1, 1, 1, 10, 0.5)
+
+            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
+            self.driver.press_keycode(29, 28672)
+            # KEYCODE_FORWARD_DEL 删除键 112
+            self.driver.press_keycode(112)
+            # 发送数据
+            data = "1234567890"
+            old_pwd.send_keys(data)
+            logger.info(u'[APP_INPUT] ["错误旧密码"] input success')
+            time.sleep(0.5)
+
+            new_pwd = self.widget_click(change_pwd_page["title"],
+                                        change_pwd_page["new_pwd"],
+                                        change_pwd_page["title"],
+                                        1, 1, 1, 10, 0.5)
+
+            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
+            self.driver.press_keycode(29, 28672)
+            # KEYCODE_FORWARD_DEL 删除键 112
+            self.driver.press_keycode(112)
+            # 发送数据
+            data = conf_login_pwd.decode('hex')
+            new_pwd.send_keys(data)
+            logger.info(u'[APP_INPUT] ["新密码"] input success')
+            time.sleep(0.5)
+
+            conform_new_pwd = self.widget_click(change_pwd_page["title"],
+                                                change_pwd_page["conform_pwd"],
+                                                change_pwd_page["title"],
+                                                1, 1, 1, 10, 0.5)
+
+            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
+            self.driver.press_keycode(29, 28672)
+            # KEYCODE_FORWARD_DEL 删除键 112
+            self.driver.press_keycode(112)
+            # 发送数据
+            data = conf_login_pwd.decode('hex')
+            conform_new_pwd.send_keys(data)
+            logger.info(u'[APP_INPUT] ["新密码"] input success')
+            time.sleep(0.5)
+
+            # 截屏
+            screen_shot_name = r"./screenshots/%s - %s - %s - [%s]-[%s].png" \
+                               % (database["program_loop_time"], database["case_location"],
+                                  self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
+            database["screen_name"] = screen_shot_name
+
+            width = self.driver.get_window_size()['width']
+            height = self.driver.get_window_size()['height']
+            self.width = int(width * 0.5)
+            self.height = int(height * 0.7)
+
+            self.driver.tap([(self.width, self.height)], )
+            self.driver.tap([(self.width, self.height)], )
+            self.driver.tap([(self.width, self.height)], )
+
+            self.driver.save_screenshot(screen_shot_name)
+            logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot success')
 
             self.case_over(1)
         except TimeoutException:

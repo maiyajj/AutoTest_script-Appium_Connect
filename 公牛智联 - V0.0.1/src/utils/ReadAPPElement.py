@@ -1,4 +1,4 @@
-# coding:utf-8
+# coding=utf-8
 # 由Conf.py生成
 from src.testcase.page.AppPageElement import *
 
@@ -16,6 +16,7 @@ gender_page = MainPageWidget().gender_page()
 home_message_page = MainPageWidget().home_message_page()
 login_page = MainPageWidget().login_page()
 message_classify_page = MainPageWidget().message_classify_page()
+message_setting_page = MainPageWidget().message_setting_page()
 new_password_page = MainPageWidget().new_password_page()
 personal_settings_page = MainPageWidget().personal_settings_page()
 prepare_set_network_page = MainPageWidget().prepare_set_network_page()
@@ -26,6 +27,8 @@ set_network_page = MainPageWidget().set_network_page()
 upgrade_page = MainPageWidget().upgrade_page()
 view_pager_page = MainPageWidget().view_pager_page()
 
+clear_activity_popup = PopupWidget().clear_activity_popup()
+clear_device_popup = PopupWidget().clear_device_popup()
 loading_popup = PopupWidget().loading_popup()
 login_popup = PopupWidget().login_popup()
 logout_popup = PopupWidget().logout_popup()

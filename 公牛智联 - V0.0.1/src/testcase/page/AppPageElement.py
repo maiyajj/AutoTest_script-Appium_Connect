@@ -311,6 +311,23 @@ class MainPageWidget(object):
         d["classify"] = ["android.widget.ImageButton", "class", u"消息分类"]
         # 设置
         d["setting"] = ["//android.support.v7.widget.LinearLayoutCompat/android.widget.TextView", "xpath", u"设置"]
+        # 没有消息
+        d["no_message"] = [u"暂时还没有内容哦", "name", u"当前页面无消息"]
+        return d
+
+    # 设备页→消息设置
+    def message_setting_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"消息设置", "name", u"设备页→消息设置"]
+        # 页面activity
+        d["activity"] = [".activitys.main_setting.HomeActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
+        # 清空活动历史消息
+        d["clear_activity"] = [u"清空活动历史消息", "name", u"清空活动历史消息"]
+        # 清空设备历史消息
+        d["clear_device"] = [u"清空设备历史消息", "name", u"清空设备历史消息"]
         return d
 
     # 消息→消息分类
@@ -486,4 +503,27 @@ class PopupWidget(object):
         d = {}
         # 标题
         d["title"] = ["loading...", "id", u"正在加载中loading..."]
+        return d
+
+    # 清空活动历史消息
+    def clear_activity_popup(self):
+        d = {}
+        # 标题
+        d["title"] = [u"是否清除活动消息？", "name", u"清除确认"]
+        # 确认
+        d["confirm"] = ["android:id/button1", "id", u"确认"]
+        # 取消
+        d["cancel"] = ["android:id/button2", "id", u"取消"]
+        return d
+
+        # 清空活动历史消息
+
+    def clear_device_popup(self):
+        d = {}
+        # 标题
+        d["title"] = [u"是否清除设备消息？", "name", u"清除确认"]
+        # 确认
+        d["confirm"] = ["android:id/button1", "id", u"确认"]
+        # 取消
+        d["cancel"] = ["android:id/button2", "id", u"取消"]
         return d

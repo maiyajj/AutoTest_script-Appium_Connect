@@ -1,4 +1,4 @@
-# coding:utf-8
+# coding=utf-8
 from appium import webdriver
 from src.testcase.case.ToDevicePage import *
 from src.testcase.common.WidgetCheckUnit import *
@@ -55,7 +55,7 @@ class GNAppDevicePage6(object):
             self.wait_widget(add_device_failed_page["title"], 60, 1)
 
             self.widget_click(add_device_failed_page["title"],
-                              add_device_failed_page["to_return"],
+                              add_device_failed_page["cancel"],
                               scan_with_subscribe_page["title"],
                               1, 1, 1, 10, 0.5)
 

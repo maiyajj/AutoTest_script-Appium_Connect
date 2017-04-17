@@ -1,4 +1,4 @@
-# coding:utf-8
+# coding=utf-8
 from src.testcase.case.WaitCase import *
 
 if __name__ == '__main__':

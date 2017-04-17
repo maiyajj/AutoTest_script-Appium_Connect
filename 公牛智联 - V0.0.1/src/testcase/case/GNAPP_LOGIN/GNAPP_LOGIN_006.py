@@ -1,4 +1,4 @@
-# coding:utf-8
+# coding=utf-8
 from appium import webdriver
 from src.testcase.case.ToLoginPage import *
 from src.testcase.common.WidgetCheckUnit import *
@@ -24,6 +24,21 @@ class GNAppLogin6(object):
     # 用例动作
     def case(self):
         try:
+            user_name = self.widget_click(login_page["title"],
+                                          login_page["username"],
+                                          login_page["title"],
+                                          1, 1, 1, 10, 0.5)
+
+            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
+            self.driver.press_keycode(29, 28672)
+            # KEYCODE_FORWARD_DEL 删除键 112
+            self.driver.press_keycode(112)
+            # 发送数据
+            data = conf_user_name.decode('hex')
+            user_name.send_keys(data)
+            logger.info(u'[APP_INPUT] ["用户名"] input success')
+            time.sleep(0.5)
+
             count = 5
             while count > 0:
                 login_pwd = self.widget_click(login_page["title"],

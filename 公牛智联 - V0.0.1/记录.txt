@@ -30,3 +30,10 @@
 15、INPUT_CASE→GNAppLogin 需要测试的模块
 16、case→ToDevicePage 使APP处于设备主页面
 17、case→ToLoginPage 使APP处于设备登录页面
+
+
+
+
+
+
+使用'Selendroid'模式启动appium服务。报重签名的错误

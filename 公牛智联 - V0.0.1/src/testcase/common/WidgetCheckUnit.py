@@ -1,4 +1,4 @@
-# coding:utf-8
+# coding=utf-8
 
 from data.Database import *
 from appium import webdriver

@@ -1,4 +1,4 @@
-# coding:utf-8
+# coding=utf-8
 import re
 import time
 from multiprocessing import Process
@@ -45,16 +45,16 @@ def log():
 
 def app_init_launch_appium():
     Appium = Process(target=LaunchAppiumServices().main)
-    create_input_case = Process(target=create_INPUT_CASE)
+    # create_input_case = Process(target=create_INPUT_CASE)
     scan_case = Process(target=scan_case_name)
     # diff_img = Process(target=DiffImg)
 
     Appium.start()
-    create_input_case.start()
+    # create_input_case.start()
     scan_case.start()
     # diff_img.start()
 
     scan_case.join()
-    create_input_case.join()
+    # create_input_case.join()
 
     time.sleep(10)
