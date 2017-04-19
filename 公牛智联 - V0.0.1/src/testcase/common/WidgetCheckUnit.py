@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from data.Database import *
-from appium import webdriver
 from selenium.common.exceptions import *
 from src.utils.CollectLog import *
 from src.utils.OutputReport import *

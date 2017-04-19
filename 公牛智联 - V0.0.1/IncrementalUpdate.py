@@ -122,8 +122,8 @@ def create_WaitCase():
                 with open(os.path.join(parent, filename), "r") as files:
                     file = files.read()
                     class_name = re.findall(r"class (.+)\(", file)[0]
-                    case_name = re.findall(r"self.case_title = u(.+)", file)[0][1:-1]
-                    ZenTao_id = re.findall(r"self.ZenTao_id = (.+)", file)[0]
+                    case_name = re.findall(r"self.case_title = u(.+) +\#", file)[0][1:-2]
+                    ZenTao_id = re.findall(r"self.ZenTao_id = (.+) +\#", file)[0][:-1]
                     CaseList.append([class_name, case_name, ZenTao_id])
     with open(r"./src/testcase/case/WaitCase.py", "w") as WaitCase:
         WaitCase.write('''# coding=utf-8\n''')
@@ -188,9 +188,10 @@ def create_WaitCase():
 
         WaitCase.write('''    def write_report(self, case_name):\n''')
         WaitCase.write('''        case = case_name().result()\n''')
-        WaitCase.write('''        data = u'[RUN_TIMES=%s, CASE_ID=%s, CASE_NAME="%s", RESULT=%s, TIME=%s]' % \\\n''')
         WaitCase.write(
-            '''               (database["program_loop_time"], self.No, case[1], case[0], time.strftime("%Y-%m-%d %H:%M:%S"))\n''')
+            '''        data = u'[RUN_TIMES=%s, CASE_ID=%s, CASE_NAME="%s", RESULT=%s, START=%s, CLOSE=%s]' % \\\n''')
+        WaitCase.write(
+            '''               (database["program_loop_time"], self.No, case[1], case[0], case[2], time.strftime("%Y-%m-%d %H:%M:%S"))\n''')
         WaitCase.write('''        report.info(data)\n''')
         WaitCase.write('''        self.No += 1\n''')
         WaitCase.write('''        database["case_location"] = self.No\n''')
@@ -336,9 +337,109 @@ def modified_utf():
                             files.write(linecache.getline(filepath, i))
 
 
-create_ReadConf()  # 创建ReadConf.py 必须
-create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
-create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
+# def print_element(element ,values):
+#     if element == "account_setting_page":
+#         MainPageWidget().account_setting_page()
+#     if element == "add_device_failed_page":
+#         MainPageWidget().add_device_failed_page()
+#     if element == "app_help_page":
+#         MainPageWidget().app_help_page()
+#         if element == "change_nickname_page":
+#          = MainPageWidget().change_nickname_page()
+#         if element == "app_help_page":
+#          = MainPageWidget().change_pwd_page()
+#         if element == "app_help_page":
+#         device_add_scan_page = MainPageWidget().device_add_scan_page()
+#         if element == "app_help_page":
+#         device_control_page = MainPageWidget().device_control_page()
+#         if element == "app_help_page":
+#         device_page = MainPageWidget().device_page()
+#         if element == "app_help_page":
+#         feedback_page = MainPageWidget().feedback_page()
+#         if element == "app_help_page":
+#         find_password_page = MainPageWidget().find_password_page()
+#         if element == "app_help_page":
+#         gender_page = MainPageWidget().gender_page()
+#         if element == "app_help_page":
+#         home_message_page = MainPageWidget().home_message_page()
+#         if element == "app_help_page":
+#         login_page = MainPageWidget().login_page()
+#         if element == "app_help_page":
+#         message_classify_page = MainPageWidget().message_classify_page()
+#         if element == "app_help_page":
+#         message_setting_page = MainPageWidget().message_setting_page()
+#         if element == "app_help_page":
+#         new_password_page = MainPageWidget().new_password_page()
+#         if element == "app_help_page":
+#         personal_settings_page = MainPageWidget().personal_settings_page()
+#         if element == "app_help_page":
+#         prepare_set_network_page = MainPageWidget().prepare_set_network_page()
+#         if element == "app_help_page":
+#         protocol_page = MainPageWidget().protocol_page()
+#         if element == "app_help_page":
+#         register_page = MainPageWidget().register_page()
+#         if element == "app_help_page":
+#         scan_with_subscribe_page = MainPageWidget().scan_with_subscribe_page()
+#         if element == "app_help_page":
+#         set_network_page = MainPageWidget().set_network_page()
+#         if element == "app_help_page":
+#         upgrade_page = MainPageWidget().upgrade_page()
+#         if element == "app_help_page":
+#         view_pager_page = MainPageWidget().view_pager_page()
+#
+#         if element == "app_help_page":
+#         clear_activity_popup = PopupWidget().clear_activity_popup()
+#         if element == "app_help_page":
+#         clear_device_popup = PopupWidget().clear_device_popup()
+#         if element == "app_help_page":
+#
+#         loading_popup = PopupWidget().loading_popup()
+#         if element == "app_help_page":
+#         login_popup = PopupWidget().login_popup()
+#
+#         if element == "app_help_page":
+#         logout_popup = PopupWidget().logout_popup()
+#         if element == "app_help_page":
+#         terminate_add_device_popup = PopupWidget().terminate_add_device_popup()
+#         if element == "app_help_page":
+#         update_popup = PopupWidget().update_popup()
+#
+#     try:
+#         print MainPageWidget().element()[values]
+#     except NameError:
+#         print PopupWidget().element()[values]
+
+def add_notes():
+    rootdir = r"./src/testcase/case"
+    for parent, dirnames, filenames in os.walk(rootdir):
+        for filename in filenames:
+            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_004" not in filename:
+                filepath = os.path.join(parent, filename)
+                lines = len(linecache.getlines(filepath))
+                # print filename[:-3]
+                with open(filepath, "r") as files:
+                    for i in range(1, lines + 1):
+                        if '''self.driver = launch_app()''' in linecache.getline(filepath, i):
+                            print filename, linecache.getline(filepath, i)
+                            # print '''%s%s\n'''%(linecache.getline(filepath, i)[:-1],", self.start_time")
+                            # print linecache.getline(filepath, i+1)[:-1]
+                            # element = re.findall(r" +(.+?)\[.+\]", linecache.getline(filepath, i+1)[:-1])[0]
+                            # valuess = re.findall(r".+\[(.+)\]", linecache.getline(filepath, i+1)[:-1])[0][1:-1]
+                            # print element,valuess
+                            # print_element(device_page, valuess)
+                            # print linecache.getline(filepath, i+2)[:-1]
+                            # print linecache.getline(filepath, i+3)[:-1]
+                            # print "%s%s" % (linecache.getline(filepath, i)[:-1], "  # 元素初始化\n")
+                            # files.write('''        self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")\n''')
+                            # files.write(linecache.getline(filepath, i))
+                            # files.write('''        except WebDriverException:\n''')
+                            # else:
+                            #     files.write(linecache.getline(filepath, i))
+
+
+# create_ReadConf()  # 创建ReadConf.py 必须
+# create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
+# create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
 create_WaitCase()  # 创建WaitCase.py 必须
 # file_renames() # 将文件名后缀从1变成001 可选
 # insert_code() # 将每个用例中插入from appium import webdriver 可选
@@ -348,3 +449,4 @@ create_WaitCase()  # 创建WaitCase.py 必须
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
+# add_notes()

@@ -34,9 +34,9 @@ class WaitCase(object):
             self.write_report(GNAppLogin3)  # 1891, 登录页面—登录功能检查
             self.write_report(GNAppLogin4)  # 1903, 登录页面—成功登录后杀掉APP，再次开启APP的状态查看
             self.write_report(GNAppLogin5)  # 1900, 登录页面—成功登录后注销账号，再次进入登录页面查看
-            # self.write_report(GNAppLogin6)  # 1899, 登录页面—错误密码输入次数超过5次后，账号锁定1分钟验证
-            # self.write_report(GNAppLogin7)  # 1897, 登录页面—错误密码，登录提示信息检查
-            # self.write_report(GNAppLogin8)  # 1898, 登录页面—密码输入超过5次后，信息检查
+            self.write_report(GNAppLogin6)  # 1899, 登录页面—错误密码输入次数超过5次后，账号锁定1分钟验证
+            self.write_report(GNAppLogin7)  # 1897, 登录页面—错误密码，登录提示信息检查
+            self.write_report(GNAppLogin8)  # 1898, 登录页面—密码输入超过5次后，信息检查
             self.write_report(GNAppLogin9)  # 1896, 登录页面—密码为空，登录提示信息检查
             self.write_report(GNAppLogin10)  # 1895, 登录页面—位数错误的数字账号，登录提示信息检查
             self.write_report(GNAppLogin11)  # 1894, 登录页面—未注册的手机号码，登录提示信息检查
@@ -56,7 +56,7 @@ class WaitCase(object):
             self.write_report(GNAppAccountSettings12)  # 1966, 密码修改页面，旧密码为空，提示信息检查
             self.write_report(GNAppRegister1)  # 1888, 注册页面-已有账户登录按钮，跳转页面检查
             self.write_report(GNAppRegister2)  # 1885, 注册页面-正确的用户名和密码，空的验证码，注册验证
-            self.write_report(GNAppRegister2)  # 1884, 注册页面-正确的用户名和密码，验证码大于6位，注册验证
+            self.write_report(GNAppRegister3)  # 1884, 注册页面-正确的用户名和密码，验证码大于6位，注册验证
             self.write_report(GNAppRegister4)  # 1883, 注册页面-正确的用户名和密码，错误的6位数字验证码，注册验证
             self.write_report(GNAppRegister5)  # 1882, 注册页面-正确的用户名和密码，小于6位数字验证码，注册验证
             self.write_report(GNAppRegister6)  # 1881, 注册页面-验证码为特殊字符时，提示信息检查
@@ -76,7 +76,7 @@ class WaitCase(object):
             self.write_report(GNAppForgetPassword2)  # 1909, 忘记密码页面-未注册账户检测
             self.write_report(GNAppForgetPassword3)  # 1907, 忘记密码页面-点击返回登入界面"按钮，页面检查"
             self.write_report(GNAppMessageClassify1)  # 1922, 消息分类页面信息检查
-            self.write_report(GNAppMessageClassify3)  # 1926, 消息设置页面，清空活动历时消息功能检查
+            self.write_report(GNAppMessageClassify2)  # 1926, 消息设置页面，清空活动历时消息功能检查
             self.write_report(GNAppMessageClassify3)  # 1927, 消息设置页面，清空设备历时消息功能检查
             self.write_report(GNAppMessageClassify4)  # 1925, 消息设置页面信息检查
             self.write_report(GNAppMessageClassify5)  # 1924, 消息分类页面，选择多个设备后的消息内容检查
@@ -94,8 +94,8 @@ class WaitCase(object):
 
     def write_report(self, case_name):
         case = case_name().result()
-        data = u'[RUN_TIMES=%s, CASE_ID=%s, CASE_NAME="%s", RESULT=%s, TIME=%s]' % \
-               (database["program_loop_time"], self.No, case[1], case[0], time.strftime("%Y-%m-%d %H:%M:%S"))
+        data = u'[RUN_TIMES=%s, CASE_ID=%s, CASE_NAME="%s", RESULT=%s, START=%s, CLOSE=%s]' % \
+               (database["program_loop_time"], self.No, case[1], case[0], case[2], time.strftime("%Y-%m-%d %H:%M:%S"))
         report.info(data)
         self.No += 1
         database["case_location"] = self.No
