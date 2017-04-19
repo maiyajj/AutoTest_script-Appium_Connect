@@ -419,7 +419,7 @@ def add_notes():
                 # print filename[:-3]
                 with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''self.driver = launch_app()''' in linecache.getline(filepath, i):
+                        if '''set_network_page_page''' in linecache.getline(filepath, i):
                             print filename, linecache.getline(filepath, i)
                             # print '''%s%s\n'''%(linecache.getline(filepath, i)[:-1],", self.start_time")
                             # print linecache.getline(filepath, i+1)[:-1]
@@ -440,7 +440,7 @@ def add_notes():
 # create_ReadConf()  # 创建ReadConf.py 必须
 # create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
 # create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
-create_WaitCase()  # 创建WaitCase.py 必须
+# create_WaitCase()  # 创建WaitCase.py 必须
 # file_renames() # 将文件名后缀从1变成001 可选
 # insert_code() # 将每个用例中插入from appium import webdriver 可选
 # scan_path() # 扫描with open（）中路径是不是../开头要变成./开头 可选
@@ -449,4 +449,4 @@ create_WaitCase()  # 创建WaitCase.py 必须
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
-# add_notes()
+add_notes()

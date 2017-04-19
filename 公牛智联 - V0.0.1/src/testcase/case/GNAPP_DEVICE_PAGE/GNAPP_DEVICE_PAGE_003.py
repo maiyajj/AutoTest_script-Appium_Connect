@@ -50,8 +50,8 @@ class GNAppDevicePage3(object):
             logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
             time.sleep(0.5)
 
-            self.widget_click(set_network_page_page["title"],
-                              set_network_page_page["prepare_next"],
+            self.widget_click(set_network_page["title"],
+                              set_network_page["prepare_next"],
                               scan_with_subscribe_page["title"],
                               1, 1, 1, 10, 0.5)
 

@@ -28,7 +28,12 @@ class GNAppMessageClassify4(object):
     def case(self):
         try:
             self.widget_click(device_page["title"],
-                              device_page["setting"],
+                              device_page["message_table"],
+                              home_message_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(home_message_page["title"],
+                              home_message_page["setting"],
                               message_setting_page["title"],
                               1, 1, 1, 10, 0.5)
 

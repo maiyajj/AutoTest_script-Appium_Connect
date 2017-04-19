@@ -44,7 +44,7 @@ class ToDevicePage(object):
                                       login_page["login_button"],
                                       device_page["title"],
                                       1, 1, 1, 10, 0.5, 0)
-                except TimeoutException():
+                except TimeoutException:
                     logger.info(u"[APP_INF] APP进入设备主页失败，退出")
                     self.driver.quit()
 
