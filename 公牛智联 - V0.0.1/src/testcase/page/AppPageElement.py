@@ -208,11 +208,12 @@ class MainPageWidget(object):
         # 新密码
         d["new_pwd"] = ["com.iotbull.android.superapp:id/user_password_update_new_password_edit_text", "id", u"新密码"]
         # 确认新密码
-        d["conform_pwd"] = [
-            "com.iotbull.android.superapp:id/user_password_update_new_password_commit_password_edit_text",
-            "id", u"确认新密码"]
+        d["conform_pwd"] = ["com.iotbull.android.superapp:id/"
+                            "user_password_update_new_password_commit_password_edit_text", "id", u"确认新密码"]
         # 确定
         d["commit"] = ["com.iotbull.android.superapp:id/user_password_update_commit_button", "id", u"确定"]
+        # 确定按钮位置
+        d["commit_address"] = [0.5, 0.7]
         return d
 
     # 使用帮助页
@@ -246,6 +247,29 @@ class MainPageWidget(object):
         d["contact"] = ["com.iotbull.android.superapp:id/feedback_title_edit_text", "id", u"联系方式"]
         # 提交
         d["commit"] = ["com.iotbull.android.superapp:id/feedback_add_button", "id", u"提交"]
+        return d
+
+    # 主题风格页
+    def theme_style_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"主题风格", "name", u"主题风格页"]
+        # 页面activity
+        d["activity"] = [".activitys.main_setting.AppThemeActivity", "activity", u"页面activity"]
+        # 返回
+        d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
+        # 锦绣绿
+        d["green"] = ["//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[1]"
+                      "//android.widget.RadioButton", "xpath", u"锦绣绿色"]
+        # 激情红
+        d["red"] = ["//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[2]"
+                    "//android.widget.RadioButton", "xpath", u"激情红色"]
+        # 稻香橙
+        d["orange"] = ["//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[3]"
+                       "//android.widget.RadioButton", "xpath", u"稻香橙色"]
+        # 山水青
+        d["cyan"] = ["//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[4]"
+                     "//android.widget.RadioButton", "xpath", u"山水青色"]
         return d
 
     # 版本信息

@@ -3,12 +3,12 @@ from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToDevicePage import *
 
 
-class GNAppDevicePage5(object):
+class GNAppAccountSettings13(object):
     def __init__(self):
-        self.case_module = u"设备页"  # 用例所属模块
-        self.case_title = u'配网失败页面信息检查'  # 用例名称
-        self.ZenTao_id = 1807  # 禅道ID
-        self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_DEVICE_PAGE_005
+        self.case_module = u"账户设置"  # 用例所属模块
+        self.case_title = u'昵称长度16位验证，功能检查'  # 用例名称
+        self.ZenTao_id = 1947  # 禅道ID
+        self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_ACCOUNT_SETTINGS_012
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                     % (self.basename, self.case_title, self.ZenTao_id, self.case_module))  # 记录log
         try:
@@ -28,37 +28,39 @@ class GNAppDevicePage5(object):
     def case(self):
         try:
             self.widget_click(device_page["title"],
-                              device_page["add_device"],
-                              device_add_scan_page["title"],
+                              device_page["user_image"],
+                              personal_settings_page["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(device_add_scan_page["title"],
-                              device_add_scan_page["gateway_hw"],
-                              prepare_set_network_page["title"],
+            self.widget_click(personal_settings_page["title"],
+                              personal_settings_page["account_setting"],
+                              account_setting_page["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(prepare_set_network_page["title"],
-                              prepare_set_network_page["prepare_next"],
-                              set_network_page["title"],
+            self.widget_click(account_setting_page["title"],
+                              account_setting_page["nickname"],
+                              change_nickname_page["title"],
                               1, 1, 1, 10, 0.5)
 
-            wifi_pwd = self.wait_widget(set_network_page["wifi_pwd"], 3, 1)
+            nickname = self.widget_click(change_nickname_page["title"],
+                                         change_nickname_page["nickname"],
+                                         change_pwd_page["title"],
+                                         1, 1, 1, 10, 0.5)
 
-            data = conf_wifi_pwd.decode('hex')
-            wifi_pwd.send_keys(data)
-            logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
+            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
+            self.driver.press_keycode(29, 28672)
+            # KEYCODE_FORWARD_DEL 删除键 112
+            self.driver.press_keycode(112)
+            # 发送数据
+            data = "12345678901234567"
+            nickname.send_keys(data)
+            logger.info(u'[APP_INPUT] ["17位用户名"] input success')
             time.sleep(0.5)
 
-            self.widget_click(set_network_page["title"],
-                              set_network_page["prepare_next"],
-                              scan_with_subscribe_page["title"],
-                              1, 1, 1, 10, 0.5)
-
-            self.wait_widget(add_device_failed_page["title"], 60, 1)
-
-            self.wait_widget(add_device_failed_page["failed_rescan"], 60, 1)
-
-            self.wait_widget(add_device_failed_page["cancel"], 60, 1)
+            nick_name = self.wait_widget(change_nickname_page["nickname"], 1, 0.5).get_attribute("name")
+            len_nick_name = len(nick_name)
+            if len_nick_name != 16:
+                raise TimeoutException()
 
             self.case_over(True)
         except TimeoutException:

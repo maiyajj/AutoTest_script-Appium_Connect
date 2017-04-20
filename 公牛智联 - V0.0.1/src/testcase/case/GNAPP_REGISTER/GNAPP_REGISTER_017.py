@@ -16,13 +16,13 @@ class GNAppRegister17(object):
             widget_check_unit = WidgetCheckUnit(self.driver)  # 元素初始化
             self.widget_click = widget_check_unit.widget_click  # 初始化self.widget_click
             self.wait_widget = widget_check_unit.wait_widget  # 初始化self.wait_widget
+            self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
+            logger.info('app start [time=%s]' % self.start_time)  # 记录log，APP打开时间
+            self.success = 0
+            ToLoginPage()  # 使APP跳转到登录页面等待
+            self.case()
         except WebDriverException:
             self.case_over("unknown")
-        self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
-        logger.info('app start [time=%s]' % self.start_time)  # 记录log，APP打开时间
-        self.success = 0
-        ToLoginPage()  # 使APP跳转到登录页面等待
-        self.case()
 
     # 用例动作
     def case(self):

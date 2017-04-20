@@ -8,7 +8,7 @@ from src.testcase.page.AppPageElement import *
 
 def create_ReadConf():
     head = "# coding=utf-8\n" \
-           "# 由Conf.py生成\n" \
+           "# 由IncrementalUpdate.py生成\n" \
            "import sys\n\n" \
            "import yaml\n\n" \
            "reload(sys)\n" \
@@ -47,7 +47,7 @@ def create_ReadAPPElement():
             b.append(i)
     with open(r"./src/utils/ReadAPPElement.py", "w") as files:
         files.write("# coding=utf-8\n")
-        files.write("# 由Conf.py生成\n")
+        files.write("# 由IncrementalUpdate.py生成\n")
         files.write("from src.testcase.page.AppPageElement import *\n\n")
         for i in a:
             files.write("%s = MainPageWidget().%s()\n" % (i, i))
@@ -156,7 +156,6 @@ def create_WaitCase():
         WaitCase.write('''        database["case_location"] = self.No\n''')
         WaitCase.write('''        while True:\n''')
         WaitCase.write('''            logger.info("run times [%s]" % database["program_loop_time"])\n''')
-        WaitCase.write('''            # CheckUI()\n''')
         for i in CaseList:
             if "Login" in i[0]:
                 WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
@@ -413,14 +412,38 @@ def add_notes():
     rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_004" not in filename:
+            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_004" not in filename and "GNAPP_LOGIN_005" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "r") as files:
+                with open(filepath, "w") as files:
                     for i in range(1, lines + 1):
-                        if '''set_network_page_page''' in linecache.getline(filepath, i):
+                        if '''except WebDriverException:''' in linecache.getline(filepath, i):
                             print filename, linecache.getline(filepath, i)
+                        elif '''self.case_over("unknown")''' in linecache.getline(filepath, i):
+                            print filename, linecache.getline(filepath, i)
+                        elif '''self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")''' in linecache.getline(filepath,
+                                                                                                             i):
+                            print filename, linecache.getline(filepath, i)
+                            files.write("    " + linecache.getline(filepath, i))
+                        elif '''logger.info('app start [time=%s]' % self.start_time)''' in linecache.getline(filepath,
+                                                                                                             i):
+                            print filename, linecache.getline(filepath, i)
+                            files.write("    " + linecache.getline(filepath, i))
+                        elif '''self.success = 0''' in linecache.getline(filepath, i):
+                            print filename, linecache.getline(filepath, i)
+                            files.write("    " + linecache.getline(filepath, i))
+                        elif '''ToDevicePage()''' in linecache.getline(filepath, i):
+                            print filename, linecache.getline(filepath, i)
+                            files.write("    " + linecache.getline(filepath, i))
+                        elif '''ToLoginPage()''' in linecache.getline(filepath, i):
+                            print filename, linecache.getline(filepath, i)
+                            files.write("    " + linecache.getline(filepath, i))
+                        elif '''self.case()''' in linecache.getline(filepath, i):
+                            print filename, linecache.getline(filepath, i)
+                            files.write("    " + linecache.getline(filepath, i))
+                            files.write("        except WebDriverException:\n")
+                            files.write('''            self.case_over("unknown")\n''')
                             # print '''%s%s\n'''%(linecache.getline(filepath, i)[:-1],", self.start_time")
                             # print linecache.getline(filepath, i+1)[:-1]
                             # element = re.findall(r" +(.+?)\[.+\]", linecache.getline(filepath, i+1)[:-1])[0]
@@ -433,12 +456,12 @@ def add_notes():
                             # files.write('''        self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")\n''')
                             # files.write(linecache.getline(filepath, i))
                             # files.write('''        except WebDriverException:\n''')
-                            # else:
-                            #     files.write(linecache.getline(filepath, i))
+                        else:
+                            files.write(linecache.getline(filepath, i))
 
 
 # create_ReadConf()  # 创建ReadConf.py 必须
-# create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
+create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
 # create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
 # create_WaitCase()  # 创建WaitCase.py 必须
 # file_renames() # 将文件名后缀从1变成001 可选
@@ -449,4 +472,4 @@ def add_notes():
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
-add_notes()
+# add_notes()

@@ -1,5 +1,5 @@
 # coding=utf-8
-# 由Conf.py生成
+# 由IncrementalUpdate.py生成
 from src.testcase.page.AppPageElement import *
 
 account_setting_page = MainPageWidget().account_setting_page()
@@ -24,6 +24,7 @@ protocol_page = MainPageWidget().protocol_page()
 register_page = MainPageWidget().register_page()
 scan_with_subscribe_page = MainPageWidget().scan_with_subscribe_page()
 set_network_page = MainPageWidget().set_network_page()
+theme_style_page = MainPageWidget().theme_style_page()
 upgrade_page = MainPageWidget().upgrade_page()
 view_pager_page = MainPageWidget().view_pager_page()
 

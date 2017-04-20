@@ -16,13 +16,13 @@ class GNAppRegister18(object):
             widget_check_unit = WidgetCheckUnit(self.driver)  # 元素初始化
             self.widget_click = widget_check_unit.widget_click  # 初始化self.widget_click
             self.wait_widget = widget_check_unit.wait_widget  # 初始化self.wait_widget
+            self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
+            logger.info('app start [time=%s]' % self.start_time)  # 记录log，APP打开时间
+            self.success = 0
+            ToLoginPage()  # 使APP跳转到登录页面等待
+            self.case()
         except WebDriverException:
             self.case_over("unknown")
-        self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
-        logger.info('app start [time=%s]' % self.start_time)  # 记录log，APP打开时间
-        self.success = 0
-        ToLoginPage()  # 使APP跳转到登录页面等待
-        self.case()
 
     # 用例动作
     def case(self):
@@ -82,14 +82,12 @@ class GNAppRegister18(object):
                                   self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
             database["screen_name"] = screen_shot_name
 
-            width = self.driver.get_window_size()['width']
-            height = self.driver.get_window_size()['height']
-            self.width = int(width * 0.5)
-            self.height = int(height * 0.75)
+            width = int(device.values["dpi"][0] * 0.5)
+            height = int(device['8681_M02']["dpi"][1] * 0.75)
 
-            self.driver.tap([(self.width, self.height)], )
-            self.driver.tap([(self.width, self.height)], )
-            self.driver.tap([(self.width, self.height)], )
+            self.driver.tap([(width, height)], )
+            self.driver.tap([(width, height)], )
+            self.driver.tap([(width, height)], )
 
             self.driver.save_screenshot(screen_shot_name)
             logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot success')

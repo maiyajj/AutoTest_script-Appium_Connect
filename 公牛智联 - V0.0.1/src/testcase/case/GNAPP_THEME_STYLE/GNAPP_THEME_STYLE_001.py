@@ -1,14 +1,14 @@
 # coding=utf-8
 from src.testcase.case.LaunchApp import *
-from src.testcase.case.ToLoginPage import *
+from src.testcase.case.ToDevicePage import *
 
 
-class GNAppLogin1(object):
+class GNAppThemeStyle1(object):
     def __init__(self):
-        self.case_module = u"登录"  # 用例所属模块
-        self.case_title = u'登录页面—新用户注册页面跳转'  # 用例名称
-        self.ZenTao_id = 1889  # 禅道ID
-        self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_LOGIN_001
+        self.case_module = u"主题风格"  # 用例所属模块
+        self.case_title = u'返回按钮功能检查'  # 用例名称
+        self.ZenTao_id = 1986  # 禅道ID
+        self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_REGISTER_001
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                     % (self.basename, self.case_title, self.ZenTao_id, self.case_module))  # 记录log
         try:
@@ -19,7 +19,7 @@ class GNAppLogin1(object):
             self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
             logger.info('app start [time=%s]' % self.start_time)  # 记录log，APP打开时间
             self.success = 0
-            ToLoginPage()  # 使APP跳转到登录页面等待
+            ToDevicePage()  # 使APP跳转到设备主页面等待
             self.case()
         except WebDriverException:
             self.case_over("unknown")
@@ -27,9 +27,19 @@ class GNAppLogin1(object):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(login_page["title"],
-                              login_page["to_register"],
-                              register_page["title"],
+            self.widget_click(device_page["title"],
+                              device_page["user_image"],
+                              personal_settings_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(personal_settings_page["title"],
+                              personal_settings_page["theme_style"],
+                              theme_style_page["title"],
+                              1, 1, 1, 10, 0.5)
+
+            self.widget_click(theme_style_page["title"],
+                              theme_style_page["to_return"],
+                              personal_settings_page["title"],
                               1, 1, 1, 10, 0.5)
 
             self.case_over(True)
