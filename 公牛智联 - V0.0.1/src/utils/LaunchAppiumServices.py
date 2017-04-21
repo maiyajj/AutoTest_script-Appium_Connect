@@ -3,14 +3,7 @@ from GetPhoneInfo import *
 
 
 class LaunchAppiumServices(object):
-    def kill_adb(self):
-        command = "taskkill /f /t /im adb.exe"
+    def __init__(self, devices):
+        command = "appium -a 127.0.0.1 -p %s -bp %s -U  %s  --no-reset" % (
+            device[devices]["port"], device[devices]["bp_port"], device[devices]["udid"])
         os.system(command)
-
-    def sim_cmd(self):
-        command = "appium -a 127.0.0.1 -p 4723  -U  %s  --no-reset" % device.values()[0]["udid"]
-        os.system(command)
-
-    def main(self):
-        self.kill_adb()
-        self.sim_cmd()

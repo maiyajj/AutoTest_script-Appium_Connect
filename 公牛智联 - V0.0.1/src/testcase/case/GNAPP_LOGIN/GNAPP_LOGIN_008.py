@@ -4,7 +4,7 @@ from src.testcase.case.ToLoginPage import *
 
 
 class GNAppLogin8(object):
-    def __init__(self):
+    def __init__(self, devices):
         self.case_module = u"登录"  # 用例所属模块
         self.case_title = u'登录页面—密码输入超过5次后，信息检查'  # 用例名称
         self.ZenTao_id = 1898  # 禅道ID
@@ -12,7 +12,7 @@ class GNAppLogin8(object):
         logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                     % (self.basename, self.case_title, self.ZenTao_id, self.case_module))  # 记录log
         try:
-            self.driver = launch_app()  # 启动APP
+            self.driver = launch_app(devices)  # 启动APP
             widget_check_unit = WidgetCheckUnit(self.driver)  # 元素初始化
             self.widget_click = widget_check_unit.widget_click  # 初始化self.widget_click
             self.wait_widget = widget_check_unit.wait_widget  # 初始化self.wait_widget

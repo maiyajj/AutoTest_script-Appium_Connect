@@ -15,7 +15,7 @@ for i in device_list:
     i1 = i[1].split()
     device[i1[0]] = {"udid": i0[0]}
 
-selected_port = 4723
+selected_port = 4725
 for k, v in device.items():
     command = "adb -s %s shell getprop ro.build.version.release" % v["udid"]
     platformVersion = os.popen(command).read().split()[0]
@@ -41,7 +41,9 @@ for k, v in device.items():
         command = 'netstat -aon|findstr %s' % i
         used_port = re.findall(r".+LISTENING.+", os.popen(command).read())
         if used_port == []:
-            selected_port += 1
             device[k]["port"] = i
+            selected_port += 1
+            device[k]["bp_port"] = i + 1
+            selected_port += 1
             break
-print device
+    device[k]["log_name"] = v["deviceName"]

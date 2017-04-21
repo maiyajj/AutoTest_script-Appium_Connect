@@ -1,11 +1,13 @@
 # coding=utf-8
 import logging
 import logging.handlers
-import os
+
+from GetPhoneInfo import *
 
 try:
-    with open(r"./report/Report.log", "w") as report_file:
-        pass
+    for v in device.values():
+        with open(r"./report/Report_%s - [%s].log" % (v["log_name"], v["udid"]), "w") as report_file:
+            pass
 except IOError:
     os.makedirs(r"./report/")
 
@@ -22,5 +24,7 @@ def init_report_save_mode(file_name, report1):
     return report1
 
 
-report = init_report_save_mode(r"./report/Report.log", logging.getLogger("2"))
+for k, v in device.items():
+    device[k]["report"] = init_report_save_mode(r"./report/Report_%s - [%s].log" % (v["log_name"], v["udid"]),
+                                                logging.getLogger("%s2" % v['deviceName']))
 logging.shutdown()

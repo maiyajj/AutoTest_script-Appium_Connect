@@ -7,8 +7,6 @@ from src.utils.OutputReport import *
 from src.utils.ReadAPPElement import *
 from src.utils.ReadConf import *
 
-from AppInit import *
-
 
 class TimeoutError(Exception):
     def __init__(self, value):
@@ -19,9 +17,9 @@ class TimeoutError(Exception):
 
 
 class WidgetCheckUnit(Exception):
-    def __init__(self, driver):
+    def __init__(self, driver, devices):
         self.driver = driver
-        database["driver"] = driver
+        self.devices = devices
 
     def widget_edit_input(self, data):
         if data is not None:
@@ -32,10 +30,10 @@ class WidgetCheckUnit(Exception):
                 self.driver.press_keycode(112)
                 # 发送数据
                 self.widget.send_keys(data)
-                logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
+                device[self.devices]["logger"].info(u'[APP_INPUT] ["WiFi密码"] input success')
                 time.sleep(0.5)
             except NoSuchAttributeException:
-                logger.info(u'[APP_INPUT] ["WiFi密码"] input failed')
+                device[self.devices]["logger"].info(u'[APP_INPUT] ["WiFi密码"] input failed')
                 # self.err_screen_shot()
 
     def wait_widget(self, main_widget=None, timeout=1, interval=1):
@@ -107,33 +105,34 @@ class WidgetCheckUnit(Exception):
             try:
                 flag = 0
                 self.wait_widget(check_page, wait_time1, interval)
-                # logger.info('[APP_CLICK] check_page ["%s"] success' % check_page[2])
+                # device[self.devices]["logger"].info('[APP_CLICK] check_page ["%s"] success' % check_page[2])
                 time.sleep(0.1)
                 flag = 1
                 widget = self.wait_widget(operate_widget, wait_time2, interval)
                 widget.click()
                 self.widget_edit_input(data)
                 if log_record != 0:
-                    logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
+                    device[self.devices]["logger"].info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
                 time.sleep(0.1)
                 flag = 2
                 self.wait_widget(wait_page, wait_time3, interval)
-                # logger.info('[APP_CLICK] wait_page ["%s"] success' % wait_page[2])
+                # device[self.devices]["logger"].info('[APP_CLICK] wait_page ["%s"] success' % wait_page[2])
                 return widget
             except TimeoutException:
                 time.sleep(interval)
                 if time.time() > end_time:
                     if flag == 0 and log_record != 0:
-                        logger.info('[APP_CLICK] check_page ["%s"] error' % check_page[2])
+                        device[self.devices]["logger"].info('[APP_CLICK] check_page ["%s"] error' % check_page[2])
                     elif flag == 1 and log_record != 0:
-                        logger.info('[APP_CLICK] operate_widget ["%s"] error' % operate_widget[2])
+                        device[self.devices]["logger"].info(
+                            '[APP_CLICK] operate_widget ["%s"] error' % operate_widget[2])
                     elif flag == 2 and log_record != 0:
-                        logger.info('[APP_CLICK] wait_page ["%s"] error' % wait_page[2])
+                        device[self.devices]["logger"].info('[APP_CLICK] wait_page ["%s"] error' % wait_page[2])
                     database["err_request_timeout_count"] += 1
                     if log_record != 0:
-                        logger.error("[ERROR]Failed to operate element.UiSelector"
-                                     "[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
-                                     % (operate_widget[0], timeout))
+                        device[self.devices]["logger"].error("[ERROR]Failed to operate element.UiSelector"
+                                                             "[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
+                                                             % (operate_widget[0], timeout))
                     raise TimeoutException("[ERROR]Failed to operate element.UiSelector"
                                            "[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
                                            % (operate_widget[0], timeout))

@@ -1,15 +1,16 @@
 # coding=utf-8
 import logging
 import logging.handlers
-import os
 
-from data.Database import *
+from GetPhoneInfo import *
 
 try:
-    with open(r"./log/" + database["log_name"], "w") as logger_file:
-        pass
+    for v in device.values():
+        with open(r"./log/%s - [%s].log" % (v["log_name"], v["udid"]), "w") as logger_file:
+            pass
 except IOError:
     os.makedirs(r"./log/")
+
 
 def init_log_save_mode(file_name, log):
     logging.basicConfig(level=logging.INFO)  # 设置打印级别
@@ -20,5 +21,7 @@ def init_log_save_mode(file_name, log):
     return log
 
 
-logger = init_log_save_mode(r"./log/" + database["log_name"], logging.getLogger("1"))
+for k, v in device.items():
+    device[k]["logger"] = init_log_save_mode(r"./log/%s - [%s].log" % (v["log_name"], v["udid"]),
+                                             logging.getLogger("%s1" % v['deviceName']))
 logging.shutdown()

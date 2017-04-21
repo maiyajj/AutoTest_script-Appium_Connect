@@ -13,29 +13,31 @@ from src.testcase.suite.ScanCaseName import *
 
 
 class WaitCase(object):
-    def __init__(self):
-        os.remove(r"./log/" + database["log_name"])
-        os.remove(r"./report/Report.log")
-        logger.info("*" * 30)
-        logger.info(u"[APP_INF]deviceName：.....%s" % device.values()[0]["deviceName"])
-        logger.info(u"[APP_INF]UDID：...........%s" % device.values()[0]["udid"])
-        logger.info(u"[APP_INF]platformName：...%s" % device.values()[0]["platformName"])
-        logger.info(u"[APP_INF]platformVersion：%s" % device.values()[0]["platformVersion"])
-        logger.info(u"[APP_INF]appPackage：.....%s" % conf_App["GN"][0])
-        logger.info(u"[APP_INF]appActivity：....%s" % conf_App["GN"][1])
-        logger.info("*" * 30)
+    def __init__(self, devices):
+        self.devices = devices
+        print self.devices
+        # os.remove(r"./log/" + database["log_name"])
+        # os.remove(r"./report/Report.log")
+        device[devices]["logger"].info("*" * 30)
+        device[devices]["logger"].info(u"[APP_INF]deviceName：.....%s" % device[devices]["deviceName"])
+        device[devices]["logger"].info(u"[APP_INF]UDID：...........%s" % device[devices]["udid"])
+        device[devices]["logger"].info(u"[APP_INF]platformName：...%s" % device[devices]["platformName"])
+        device[devices]["logger"].info(u"[APP_INF]platformVersion：%s" % device[devices]["platformVersion"])
+        device[devices]["logger"].info(u"[APP_INF]appPackage：.....%s" % conf_App["GN"][0])
+        device[devices]["logger"].info(u"[APP_INF]appActivity：....%s" % conf_App["GN"][1])
+        device[devices]["logger"].info("*" * 30)
         self.No = 1
         database["case_location"] = self.No
         while True:
-            logger.info("run times [%s]" % database["program_loop_time"])
-            # self.write_report(GNAppLogin1)  # 1889, 登录页面—新用户注册页面跳转
+            device[devices]["logger"].info("run times [%s]" % database["program_loop_time"])
+            self.write_report(GNAppLogin1)  # 1889, 登录页面—新用户注册页面跳转
             # self.write_report(GNAppLogin2)  # 1890, 登录页面—忘记密码页面跳转
             # self.write_report(GNAppLogin3)  # 1891, 登录页面—登录功能检查
             # self.write_report(GNAppLogin4)  # 1903, 登录页面—成功登录后杀掉APP，再次开启APP的状态查看
             # self.write_report(GNAppLogin5)  # 1900, 登录页面—成功登录后注销账号，再次进入登录页面查看
             # self.write_report(GNAppLogin6)  # 1899, 登录页面—错误密码输入次数超过5次后，账号锁定1分钟验证
             # self.write_report(GNAppLogin7)  # 1897, 登录页面—错误密码，登录提示信息检查
-            self.write_report(GNAppLogin8)  # 1898, 登录页面—密码输入超过5次后，信息检查
+            # self.write_report(GNAppLogin8)  # 1898, 登录页面—密码输入超过5次后，信息检查
             # self.write_report(GNAppLogin9)  # 1896, 登录页面—密码为空，登录提示信息检查
             # self.write_report(GNAppLogin10)  # 1895, 登录页面—位数错误的数字账号，登录提示信息检查
             # self.write_report(GNAppLogin11)  # 1894, 登录页面—未注册的手机号码，登录提示信息检查
@@ -92,9 +94,10 @@ class WaitCase(object):
             database["program_loop_time"] += 1
 
     def write_report(self, case_name):
-        case = case_name().result()
+        case = case_name(self.devices).result()
         data = u'[RUN_TIMES=%s, CASE_ID=%s, CASE_NAME="%s", RESULT=%s, START=%s, CLOSE=%s]' % \
                (database["program_loop_time"], self.No, case[1], case[0], case[2], time.strftime("%Y-%m-%d %H:%M:%S"))
-        report.info(data)
+        print data
+        device[self.devices]["report"].info(data)
         self.No += 1
         database["case_location"] = self.No
