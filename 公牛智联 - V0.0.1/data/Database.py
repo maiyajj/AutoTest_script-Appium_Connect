@@ -26,4 +26,4 @@ database = {
     # 设备绑定失败次数统计
     "bind_device_fail_count": 0}
 
-report_data = []
+# device = {}

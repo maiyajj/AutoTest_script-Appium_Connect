@@ -35,3 +35,8 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
         adb发送短信
 7、生成两个log文件时在a = logging.getLogger("2")内要写“2”，不然a就是rootlogger，加了2就是logger可以多个了，不然所有logger内容都是一样的，跟随rootlogger。
 8、判断文件夹是否存在使用os.path.exists('d:/assist')返回值TRUE或者FALSE
+9、多进程要共享内存有3中方法，queue，Manager，（Value，array）
+    但在使用过程中可以使用直接传入静态变量，但只能是静态不变化的，含有内存地址类是不能当做参数传入多进程的。（目前是log文件的内存地址，更详细有待后续再试）
+    纯字符字典，列表等是可以当作参数传入使用的。
+10、在写调用库的时候最好不要使用全局变量。用函数然后return的方式在其他调用会更节省资源，在form import调用时就不会运行两次。
+11、

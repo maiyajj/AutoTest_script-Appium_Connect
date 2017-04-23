@@ -1,36 +1,29 @@
 # coding=utf-8
-import os
-import time
 from multiprocessing import Process
 
 from src.testcase.case.WaitCase import *
+from src.testcase.common.AppInit import *
+from src.testcase.suite.ScanCaseName import *
+from src.utils.LaunchAppiumServices import *
 
 _main_version = ""
 _build_version = ""
 
 
-def devices(device_name):
-    # app_init(device)
-    appium = Process(target=LaunchAppiumServices, args=(device_name,))
+def run(device_list, device_name):
+    appium = Process(target=LaunchAppiumServices, args=(device_list, device_name))
     appium.start()
     time.sleep(10)
-    WaitCase(device_name)
+    WaitCase(device_list, device_name)
 
 
 if __name__ == '__main__':
-    command = "taskkill /f /t /im adb.exe"
-    os.system(command)
-    print device
+    device_list = app_init()
+
     scan_case = Process(target=scan_case_name)
     scan_case.start()
     scan_case.join()
-    process = []
-    for key in device.keys():
-        process.append(Process(target=devices, args=(key,)))
 
+    process = [Process(target=run, args=(device_list, device_name)) for device_name in device_list.keys()]
     for i in process:
         i.start()
-        # devices("MX5")
-        # first.start()
-        # app_init_launch_appium()
-        # WaitCase()

@@ -127,6 +127,8 @@ def create_WaitCase():
                     CaseList.append([class_name, case_name, ZenTao_id])
     with open(r"./src/testcase/case/WaitCase.py", "w") as WaitCase:
         WaitCase.write('''# coding=utf-8\n''')
+        WaitCase.write('''import time\n''')
+        WaitCase.write('''\n''')
         WaitCase.write('''from data.Database import *\n''')
         WaitCase.write('''from src.testcase.case.INPUT_CASE.GNAppAccountSettings import *\n''')
         WaitCase.write('''from src.testcase.case.INPUT_CASE.GNAppDevicePage import *\n''')
@@ -137,25 +139,45 @@ def create_WaitCase():
         WaitCase.write('''from src.testcase.case.INPUT_CASE.GNAppRegister import *\n''')
         WaitCase.write('''from src.testcase.case.INPUT_CASE.GNAppUsingHelp import *\n''')
         WaitCase.write('''from src.testcase.case.INPUT_CASE.GNAppVersion import *\n''')
-        WaitCase.write('''from src.testcase.suite.ScanCaseName import *\n\n\n''')
+        WaitCase.write('''from src.utils.CollectLog import *\n''')
+        WaitCase.write('''from src.utils.OutputReport import *\n\n\n''')
 
         WaitCase.write('''class WaitCase(object):\n''')
-        WaitCase.write('''    def __init__(self):\n''')
-        WaitCase.write('''        os.remove(r"./log/" + database["log_name"])\n''')
-        WaitCase.write('''        os.remove(r"./report/Report.log")\n''')
-        WaitCase.write('''        logger.info("*" * 30)\n''')
-        WaitCase.write('''        logger.info(u"[APP_INF]deviceName：.....%s" % device.values()[0]["deviceName"])\n''')
-        WaitCase.write('''        logger.info(u"[APP_INF]UDID：...........%s" % device.values()[0]["udid"])\n''')
-        WaitCase.write('''        logger.info(u"[APP_INF]platformName：...%s" % device.values()[0]["platformName"])\n''')
-        WaitCase.write(
-            '''        logger.info(u"[APP_INF]platformVersion：%s" % device.values()[0]["platformVersion"])\n''')
-        WaitCase.write('''        logger.info(u"[APP_INF]appPackage：.....%s" % conf_App["GN"][0])\n''')
-        WaitCase.write('''        logger.info(u"[APP_INF]appActivity：....%s" % conf_App["GN"][1])\n''')
-        WaitCase.write('''        logger.info("*" * 30)\n''')
+        WaitCase.write('''    def __init__(self, device_list, device_name):\n''')
+        WaitCase.write('''        self.device_list = device_list\n''')
+        WaitCase.write('''        self.device_name = device_name\n''')
+        WaitCase.write('''        self.device_info = device_list[device_name]\n''')
+        WaitCase.write('''        self.report = None\n''')
+        WaitCase.write('''        self.logger = None\n''')
         WaitCase.write('''        self.No = 1\n''')
+        WaitCase.write('''\n''')
+        WaitCase.write('''        self.create_log()\n''')
+        WaitCase.write('''        self.create_report()\n''')
+        WaitCase.write('''        self.run()\n''')
+        WaitCase.write('''\n''')
+        WaitCase.write('''    def create_report(self):\n''')
+        WaitCase.write('''        check_report(self.device_list, self.device_name)\n''')
+        WaitCase.write('''        self.report = self.device_info["report"]\n''')
+        WaitCase.write('''\n''')
+        WaitCase.write('''    def create_log(self):\n''')
+        WaitCase.write('''        check_log(self.device_list, self.device_name)\n''')
+        WaitCase.write('''        self.logger = self.device_info["logger"]\n''')
+        WaitCase.write('''\n''')
+        WaitCase.write('''    def run(self):\n''')
+        WaitCase.write('''        self.logger.info("*" * 30)\n''')
+        WaitCase.write(
+            '''        self.logger.info(u"[APP_INF]deviceName：.....%s" % self.device_info["deviceName"])\n''')
+        WaitCase.write('''        self.logger.info(u"[APP_INF]UDID：...........%s" % self.device_info["udid"])\n''')
+        WaitCase.write(
+            '''        self.logger.info(u"[APP_INF]platformName：...%s" % self.device_info["platformName"])\n''')
+        WaitCase.write(
+            '''        self.logger.info(u"[APP_INF]platformVersion：%s" % self.device_info["platformVersion"])\n''')
+        WaitCase.write('''        self.logger.info(u"[APP_INF]appPackage：.....%s" % conf_App["GN"][0])\n''')
+        WaitCase.write('''        self.logger.info(u"[APP_INF]appActivity：....%s" % conf_App["GN"][1])\n''')
+        WaitCase.write('''        self.logger.info("*" * 30)\n''')
         WaitCase.write('''        database["case_location"] = self.No\n''')
         WaitCase.write('''        while True:\n''')
-        WaitCase.write('''            logger.info("run times [%s]" % database["program_loop_time"])\n''')
+        WaitCase.write('''            self.logger.info("run times [%s]" % database["program_loop_time"])\n''')
         for i in CaseList:
             if "Login" in i[0]:
                 WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
@@ -186,12 +208,12 @@ def create_WaitCase():
         WaitCase.write('''\n            database["program_loop_time"] += 1\n\n''')
 
         WaitCase.write('''    def write_report(self, case_name):\n''')
-        WaitCase.write('''        case = case_name().result()\n''')
+        WaitCase.write('''        case = case_name(self.device_list, self.device_name, self.logger).result()\n''')
         WaitCase.write(
             '''        data = u'[RUN_TIMES=%s, CASE_ID=%s, CASE_NAME="%s", RESULT=%s, START=%s, CLOSE=%s]' % \\\n''')
         WaitCase.write(
             '''               (database["program_loop_time"], self.No, case[1], case[0], case[2], time.strftime("%Y-%m-%d %H:%M:%S"))\n''')
-        WaitCase.write('''        report.info(data)\n''')
+        WaitCase.write('''        self.report.info(data)\n''')
         WaitCase.write('''        self.No += 1\n''')
         WaitCase.write('''        database["case_location"] = self.No\n''')
 
@@ -293,7 +315,7 @@ def add_ZenTao_id():
                         elif '[CASE_ID="%s", CASE_TITLE="%s"]' in linecache.getline(filepath, i):
                             print i, linecache.getline(filepath, i),
                             files.write(
-                                '''        logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s"]'\n''')
+                                '''        self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s"]'\n''')
                         elif "os.path.basename" in linecache.getline(filepath, i):
                             print i, linecache.getline(filepath, i),
                             files.write(
@@ -412,38 +434,45 @@ def add_notes():
     rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_004" not in filename and "GNAPP_LOGIN_005" not in filename:
+            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_001" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
                 with open(filepath, "w") as files:
                     for i in range(1, lines + 1):
-                        if '''except WebDriverException:''' in linecache.getline(filepath, i):
-                            print filename, linecache.getline(filepath, i)
-                        elif '''self.case_over("unknown")''' in linecache.getline(filepath, i):
-                            print filename, linecache.getline(filepath, i)
-                        elif '''self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")''' in linecache.getline(filepath,
-                                                                                                             i):
-                            print filename, linecache.getline(filepath, i)
-                            files.write("    " + linecache.getline(filepath, i))
-                        elif '''logger.info('app start [time=%s]' % self.start_time)''' in linecache.getline(filepath,
-                                                                                                             i):
-                            print filename, linecache.getline(filepath, i)
-                            files.write("    " + linecache.getline(filepath, i))
-                        elif '''self.success = 0''' in linecache.getline(filepath, i):
-                            print filename, linecache.getline(filepath, i)
-                            files.write("    " + linecache.getline(filepath, i))
-                        elif '''ToDevicePage()''' in linecache.getline(filepath, i):
-                            print filename, linecache.getline(filepath, i)
-                            files.write("    " + linecache.getline(filepath, i))
-                        elif '''ToLoginPage()''' in linecache.getline(filepath, i):
-                            print filename, linecache.getline(filepath, i)
-                            files.write("    " + linecache.getline(filepath, i))
-                        elif '''self.case()''' in linecache.getline(filepath, i):
-                            print filename, linecache.getline(filepath, i)
-                            files.write("    " + linecache.getline(filepath, i))
-                            files.write("        except WebDriverException:\n")
-                            files.write('''            self.case_over("unknown")\n''')
+                        if '''    def run(self):''' in linecache.getline(filepath, i):
+                            files.write("\n")
+                            # files.write("            self.case()\n")
+                            # files.write("    def run(self):\n")
+                            # files.write("\n")
+                            # files.write(linecache.getline(filepath, i))
+                            # files.write(linecache.getline(filepath, i))
+                        else:
+                            files.write(linecache.getline(filepath, i))
+                            # elif '''self.case_over("unknown")''' in linecache.getline(filepath, i):
+                            #     print filename, linecache.getline(filepath, i)
+                            # elif '''self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")''' in linecache.getline(filepath,
+                            #                                                                                      i):
+                            #     print filename, linecache.getline(filepath, i)
+                            #     files.write("    " + linecache.getline(filepath, i))
+                            # elif '''logger.info('app start [time=%s]' % self.start_time)''' in linecache.getline(filepath,
+                            #                                                                                      i):
+                            #     print filename, linecache.getline(filepath, i)
+                            #     files.write("    " + linecache.getline(filepath, i))
+                            # elif '''self.success = 0''' in linecache.getline(filepath, i):
+                            #     print filename, linecache.getline(filepath, i)
+                            #     files.write("    " + linecache.getline(filepath, i))
+                            # elif '''ToDevicePage()''' in linecache.getline(filepath, i):
+                            #     print filename, linecache.getline(filepath, i)
+                            #     files.write("    " + linecache.getline(filepath, i))
+                            # elif '''ToLoginPage()''' in linecache.getline(filepath, i):
+                            #     print filename, linecache.getline(filepath, i)
+                            #     files.write("    " + linecache.getline(filepath, i))
+                            # elif '''self.case()''' in linecache.getline(filepath, i):
+                            #     print filename, linecache.getline(filepath, i)
+                            #     files.write("    " + linecache.getline(filepath, i))
+                            #     files.write("        except WebDriverException:\n")
+                            #     files.write('''            self.case_over("unknown")\n''')
                             # print '''%s%s\n'''%(linecache.getline(filepath, i)[:-1],", self.start_time")
                             # print linecache.getline(filepath, i+1)[:-1]
                             # element = re.findall(r" +(.+?)\[.+\]", linecache.getline(filepath, i+1)[:-1])[0]
@@ -456,14 +485,13 @@ def add_notes():
                             # files.write('''        self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")\n''')
                             # files.write(linecache.getline(filepath, i))
                             # files.write('''        except WebDriverException:\n''')
-                        else:
-                            files.write(linecache.getline(filepath, i))
+
 
 
 # create_ReadConf()  # 创建ReadConf.py 必须
-create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
+# create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
 # create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
-# create_WaitCase()  # 创建WaitCase.py 必须
+create_WaitCase()  # 创建WaitCase.py 必须
 # file_renames() # 将文件名后缀从1变成001 可选
 # insert_code() # 将每个用例中插入from appium import webdriver 可选
 # scan_path() # 扫描with open（）中路径是不是../开头要变成./开头 可选

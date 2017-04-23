@@ -1,4 +1,6 @@
 # coding=utf-8
+import time
+
 from data.Database import *
 from src.testcase.case.INPUT_CASE.GNAppAccountSettings import *
 from src.testcase.case.INPUT_CASE.GNAppDevicePage import *
@@ -9,29 +11,45 @@ from src.testcase.case.INPUT_CASE.GNAppMessageClassify import *
 from src.testcase.case.INPUT_CASE.GNAppRegister import *
 from src.testcase.case.INPUT_CASE.GNAppUsingHelp import *
 from src.testcase.case.INPUT_CASE.GNAppVersion import *
-from src.testcase.suite.ScanCaseName import *
+from src.utils.CollectLog import *
+from src.utils.OutputReport import *
 
 
 class WaitCase(object):
-    def __init__(self, devices):
-        self.devices = devices
-        print self.devices
-        # os.remove(r"./log/" + database["log_name"])
-        # os.remove(r"./report/Report.log")
-        device[devices]["logger"].info("*" * 30)
-        device[devices]["logger"].info(u"[APP_INF]deviceName：.....%s" % device[devices]["deviceName"])
-        device[devices]["logger"].info(u"[APP_INF]UDID：...........%s" % device[devices]["udid"])
-        device[devices]["logger"].info(u"[APP_INF]platformName：...%s" % device[devices]["platformName"])
-        device[devices]["logger"].info(u"[APP_INF]platformVersion：%s" % device[devices]["platformVersion"])
-        device[devices]["logger"].info(u"[APP_INF]appPackage：.....%s" % conf_App["GN"][0])
-        device[devices]["logger"].info(u"[APP_INF]appActivity：....%s" % conf_App["GN"][1])
-        device[devices]["logger"].info("*" * 30)
+    def __init__(self, device_list, device_name):
+        self.device_list = device_list
+        self.device_name = device_name
+        self.device_info = device_list[device_name]
+        self.report = None
+        self.logger = None
         self.No = 1
+
+        self.create_log()
+        self.create_report()
+        self.run()
+
+    def create_report(self):
+        check_report(self.device_list, self.device_name)
+        self.report = self.device_info["report"]
+
+    def create_log(self):
+        check_log(self.device_list, self.device_name)
+        self.logger = self.device_info["logger"]
+
+    def run(self):
+        self.logger.info("*" * 30)
+        self.logger.info(u"[APP_INF]deviceName：.....%s" % self.device_info["deviceName"])
+        self.logger.info(u"[APP_INF]UDID：...........%s" % self.device_info["udid"])
+        self.logger.info(u"[APP_INF]platformName：...%s" % self.device_info["platformName"])
+        self.logger.info(u"[APP_INF]platformVersion：%s" % self.device_info["platformVersion"])
+        self.logger.info(u"[APP_INF]appPackage：.....%s" % conf_App["GN"][0])
+        self.logger.info(u"[APP_INF]appActivity：....%s" % conf_App["GN"][1])
+        self.logger.info("*" * 30)
         database["case_location"] = self.No
         while True:
-            device[devices]["logger"].info("run times [%s]" % database["program_loop_time"])
-            self.write_report(GNAppLogin1)  # 1889, 登录页面—新用户注册页面跳转
-            # self.write_report(GNAppLogin2)  # 1890, 登录页面—忘记密码页面跳转
+            self.logger.info("run times [%s]" % database["program_loop_time"])
+            # self.write_report(GNAppLogin1)  # 1889, 登录页面—新用户注册页面跳转
+            self.write_report(GNAppLogin2)  # 1890, 登录页面—忘记密码页面跳转
             # self.write_report(GNAppLogin3)  # 1891, 登录页面—登录功能检查
             # self.write_report(GNAppLogin4)  # 1903, 登录页面—成功登录后杀掉APP，再次开启APP的状态查看
             # self.write_report(GNAppLogin5)  # 1900, 登录页面—成功登录后注销账号，再次进入登录页面查看
@@ -94,10 +112,9 @@ class WaitCase(object):
             database["program_loop_time"] += 1
 
     def write_report(self, case_name):
-        case = case_name(self.devices).result()
+        case = case_name(self.device_list, self.device_name, self.logger).result()
         data = u'[RUN_TIMES=%s, CASE_ID=%s, CASE_NAME="%s", RESULT=%s, START=%s, CLOSE=%s]' % \
                (database["program_loop_time"], self.No, case[1], case[0], case[2], time.strftime("%Y-%m-%d %H:%M:%S"))
-        print data
-        device[self.devices]["report"].info(data)
+        self.report.info(data)
         self.No += 1
         database["case_location"] = self.No
