@@ -18,7 +18,6 @@ class ToLoginPage(object):
     def case(self):
         # 用例动作
         while True:
-            print login_popup["activity"]
             if self.driver.current_activity == login_popup["activity"][0]:
                 try:
                     self.wait_widget(update_popup["title"], 3, 1)

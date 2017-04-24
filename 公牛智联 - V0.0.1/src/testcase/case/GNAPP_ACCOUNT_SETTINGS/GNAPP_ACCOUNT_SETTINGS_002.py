@@ -56,6 +56,7 @@ class GNAppAccountSettings2(object):
                                         change_pwd_page["title"],
                                         1, 1, 1, 10, 0.5)
             data = conf_old_pwd.decode('hex')
+            print data
             old_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["旧密码"] input success')
             time.sleep(0.5)
@@ -77,6 +78,14 @@ class GNAppAccountSettings2(object):
             conform_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["确认新密码"] input success')
             time.sleep(0.5)
+
+            conf_login_pwd, conf_new_pwd = conf_new_pwd, conf_login_pwd
+            conf_old_pwd = conf_login_pwd
+            modified_param = {'login_pwd': conf_login_pwd,
+                              'old_pwd': conf_old_pwd,
+                              'new_pwd': conf_new_pwd}
+
+            modified_conf(modified_param)
 
             self.widget_click(change_pwd_page["title"],
                               change_pwd_page["commit"],

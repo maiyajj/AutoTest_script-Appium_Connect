@@ -7,7 +7,7 @@ import yaml
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-conf = yaml.load(file(r'config/Conf.yaml'))
+conf = yaml.load(file(r"config/Conf.yaml"))
 # 打开APP超时时间
 conf_open_app_timeout = conf["open_app_timeout"]
 # 搜索设备超时时间
@@ -38,3 +38,9 @@ conf_wifi_pwd = conf["wifi_pwd"]
 conf_App = conf["App"]
 # 提示消息
 conf_Toast = conf["Toast"]
+
+
+def modified_conf(modified_param):
+    for k, v in modified_param.items():
+        conf[k] = v
+    yaml.dump(conf, open(r"config/Conf.yaml", "w"))
