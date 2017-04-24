@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToLoginPage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppRegister9(object):
@@ -51,7 +52,7 @@ class GNAppRegister9(object):
             # KEYCODE_FORWARD_DEL 删除键 112
             self.driver.press_keycode(112)
             # 发送数据
-            data = conf_user_name.decode('hex')
+            data = conf["user_name"].decode('hex')
             user_name.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)

@@ -434,64 +434,29 @@ def add_notes():
     rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_001" not in filename:
+            if "GNAPP" in filename and "pyc" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "w") as files:
+                with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''    def run(self):''' in linecache.getline(filepath, i):
-                            files.write("\n")
-                            # files.write("            self.case()\n")
-                            # files.write("    def run(self):\n")
+                        if '''from src.testcase.case.ToDevicePage import *''' in linecache.getline(filepath, i):
                             # files.write("\n")
-                            # files.write(linecache.getline(filepath, i))
-                            # files.write(linecache.getline(filepath, i))
-                        else:
+                            print filename, linecache.getline(filepath, i)
                             files.write(linecache.getline(filepath, i))
-                            # elif '''self.case_over("unknown")''' in linecache.getline(filepath, i):
+                            files.write("from src.utils.ScreenShot import *\n")
+                            # elif '''from src.testcase.case.ToLoginPage import *''' in linecache.getline(filepath, i):
+                            #     # files.write("\n")
                             #     print filename, linecache.getline(filepath, i)
-                            # elif '''self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")''' in linecache.getline(filepath,
-                            #                                                                                      i):
-                            #     print filename, linecache.getline(filepath, i)
-                            #     files.write("    " + linecache.getline(filepath, i))
-                            # elif '''logger.info('app start [time=%s]' % self.start_time)''' in linecache.getline(filepath,
-                            #                                                                                      i):
-                            #     print filename, linecache.getline(filepath, i)
-                            #     files.write("    " + linecache.getline(filepath, i))
-                            # elif '''self.success = 0''' in linecache.getline(filepath, i):
-                            #     print filename, linecache.getline(filepath, i)
-                            #     files.write("    " + linecache.getline(filepath, i))
-                            # elif '''ToDevicePage()''' in linecache.getline(filepath, i):
-                            #     print filename, linecache.getline(filepath, i)
-                            #     files.write("    " + linecache.getline(filepath, i))
-                            # elif '''ToLoginPage()''' in linecache.getline(filepath, i):
-                            #     print filename, linecache.getline(filepath, i)
-                            #     files.write("    " + linecache.getline(filepath, i))
-                            # elif '''self.case()''' in linecache.getline(filepath, i):
-                            #     print filename, linecache.getline(filepath, i)
-                            #     files.write("    " + linecache.getline(filepath, i))
-                            #     files.write("        except WebDriverException:\n")
-                            #     files.write('''            self.case_over("unknown")\n''')
-                            # print '''%s%s\n'''%(linecache.getline(filepath, i)[:-1],", self.start_time")
-                            # print linecache.getline(filepath, i+1)[:-1]
-                            # element = re.findall(r" +(.+?)\[.+\]", linecache.getline(filepath, i+1)[:-1])[0]
-                            # valuess = re.findall(r".+\[(.+)\]", linecache.getline(filepath, i+1)[:-1])[0][1:-1]
-                            # print element,valuess
-                            # print_element(device_page, valuess)
-                            # print linecache.getline(filepath, i+2)[:-1]
-                            # print linecache.getline(filepath, i+3)[:-1]
-                            # print "%s%s" % (linecache.getline(filepath, i)[:-1], "  # 元素初始化\n")
-                            # files.write('''        self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")\n''')
-                            # files.write(linecache.getline(filepath, i))
-                            # files.write('''        except WebDriverException:\n''')
-
-
+                            #     files.write(linecache.getline(filepath, i))
+                            #     files.write("from src.utils.ScreenShot import *\n")
+                            # else:
+                            #     files.write(linecache.getline(filepath, i))
 
 # create_ReadConf()  # 创建ReadConf.py 必须
 # create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
 # create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
-create_WaitCase()  # 创建WaitCase.py 必须
+# create_WaitCase()  # 创建WaitCase.py 必须
 # file_renames() # 将文件名后缀从1变成001 可选
 # insert_code() # 将每个用例中插入from appium import webdriver 可选
 # scan_path() # 扫描with open（）中路径是不是../开头要变成./开头 可选
@@ -500,4 +465,4 @@ create_WaitCase()  # 创建WaitCase.py 必须
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
-# add_notes()
+add_notes()

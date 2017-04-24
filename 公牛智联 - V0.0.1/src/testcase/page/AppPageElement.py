@@ -211,7 +211,7 @@ class MainPageWidget(object):
         d["conform_pwd"] = ["com.iotbull.android.superapp:id/"
                             "user_password_update_new_password_commit_password_edit_text", "id", u"确认新密码"]
         # 确定
-        d["commit"] = ["com.iotbull.android.superapp:id/user_password_update_commit_button", "id", u"确定"]
+        d["commit"] = ["com.iotbull.android.superapp:id/user_password_update_commit_button", "id", u"确定", [0.5, 0.7]]
         # 确定按钮位置
         d["commit_address"] = [0.5, 0.7]
         return d
@@ -526,7 +526,7 @@ class PopupWidget(object):
     def loading_popup(self):
         d = {}
         # 标题
-        d["title"] = ["loading...", "id", u"正在加载中loading..."]
+        d["title"] = ["loading...", "name", u"正在加载中loading..."]
         return d
 
     # 清空活动历史消息

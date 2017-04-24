@@ -9,6 +9,7 @@ class LaunchAppiumServices(object):
         self.udid = device_list[device_name]["udid"]
 
         self.kill_adb()
+        self.create_adb_folder(device_list, device_name)
         self.launch_appium()
 
     def kill_adb(self):
@@ -18,3 +19,10 @@ class LaunchAppiumServices(object):
     def launch_appium(self):
         command = "appium -a 127.0.0.1 -p %s -bp %s -U  %s  --no-reset" % (self.port, self.bp_port, self.udid)
         os.system(command)
+
+    def create_adb_folder(self, device_list, device_name):
+        command = "adb shell mkdir /sdcard/Appium"
+        os.popen(command)
+
+        command = "adb shell mkdir /sdcard/Appium/%s" % device_list[device_name]["udid"]
+        os.popen(command)

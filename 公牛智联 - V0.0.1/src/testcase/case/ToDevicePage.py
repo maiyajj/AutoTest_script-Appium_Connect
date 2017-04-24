@@ -1,4 +1,6 @@
 # coding=utf-8
+import time
+
 from selenium.common.exceptions import *
 from src.testcase.common.WidgetCheckUnit import *
 
@@ -46,8 +48,41 @@ class ToDevicePage(object):
                                       device_page["title"],
                                       1, 1, 1, 10, 0.5, 0)
                 except TimeoutException:
-                    self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
-                    self.driver.quit()
+                    try:
+                        user_name = self.widget_click(login_page["title"],
+                                                      login_page["username"],
+                                                      login_page["title"],
+                                                      1, 1, 1, 10, 0.5)
+
+                        # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
+                        self.driver.press_keycode(29, 28672)
+                        # KEYCODE_FORWARD_DEL 删除键 112
+                        self.driver.press_keycode(112)
+                        # 发送数据
+                        data = conf["user_name"].decode('hex')
+                        user_name.send_keys(data)
+                        self.logger.info(u'[APP_INPUT] ["重新登陆用户名"] input success')
+                        time.sleep(0.5)
+
+                        login_pwd = self.widget_click(login_page["title"],
+                                                      login_page["password"],
+                                                      login_page["title"],
+                                                      1, 1, 1, 10, 0.5)
+
+                        self.driver.press_keycode(29, 28672)
+                        self.driver.press_keycode(112)
+                        data = conf["login_pwd"].decode('hex')
+                        login_pwd.send_keys(data)
+                        self.logger.info(u'[APP_INPUT] ["重新输入登录密码"] input success')
+
+                        self.widget_click(login_page["title"],
+                                          login_page["login_button"],
+                                          device_page["title"],
+                                          1, 1, 1, 10, 0.5, 0)
+
+                    except TimeoutException:
+                        self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
+                        self.driver.quit()
 
             if self.driver.current_activity == device_page["activity"][0]:
                 self.logger.info(u"[APP_INF] APP当前页面为主页面")

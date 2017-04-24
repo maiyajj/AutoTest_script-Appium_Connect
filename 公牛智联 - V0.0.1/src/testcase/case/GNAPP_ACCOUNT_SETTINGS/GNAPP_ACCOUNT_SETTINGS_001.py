@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToDevicePage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppAccountSettings1(object):
@@ -55,7 +56,7 @@ class GNAppAccountSettings1(object):
                                         change_pwd_page["old_pwd"],
                                         change_pwd_page["title"],
                                         1, 1, 1, 10, 0.5)
-            data = conf_old_pwd.decode('hex')
+            data = conf["old_pwd"].decode('hex')
             old_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["旧密码"] input success')
             time.sleep(0.5)
@@ -64,7 +65,7 @@ class GNAppAccountSettings1(object):
                                         change_pwd_page["new_pwd"],
                                         change_pwd_page["title"],
                                         1, 1, 1, 10, 0.5)
-            data = conf_new_pwd.decode('hex')
+            data = conf["new_pwd"].decode('hex')
             new_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
@@ -73,7 +74,7 @@ class GNAppAccountSettings1(object):
                                             change_pwd_page["conform_pwd"],
                                             change_pwd_page["title"],
                                             1, 1, 1, 10, 0.5)
-            data = conf_new_pwd.decode('hex')
+            data = conf["new_pwd"].decode('hex')
             conform_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["确认新密码"] input success')
             time.sleep(0.5)

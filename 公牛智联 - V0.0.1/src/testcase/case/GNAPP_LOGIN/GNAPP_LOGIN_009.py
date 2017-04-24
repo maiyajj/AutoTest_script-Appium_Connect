@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToLoginPage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppLogin9(object):
@@ -46,7 +47,7 @@ class GNAppLogin9(object):
             # KEYCODE_FORWARD_DEL 删除键 112
             self.driver.press_keycode(112)
             # 发送数据
-            data = conf_user_name.decode('hex')
+            data = conf["user_name"].decode('hex')
             user_name.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)
@@ -78,7 +79,6 @@ class GNAppLogin9(object):
             screen_shot_name = r"./screenshots/%s - %s - %s - [%s]-[%s].png" \
                                % (database["program_loop_time"], database["case_location"],
                                   self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
-            database["screen_name"] = screen_shot_name
 
             width = self.driver.get_window_size()['width']
             height = self.driver.get_window_size()['height']

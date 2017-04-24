@@ -1,33 +1,18 @@
-﻿# 打开APP超时时间
-open_app_timeout: 60
-# 搜索设备超时时间
-search_device_timeout: 60
-# 操作响应超时时间
-request_timeout: 30
-# 离线恢复超时时间
-offline_recovery_timeout: 10
-# 程序操作等待时间
-operate_wait_time: 0.5
-# 待添加的设备Mac
-MAC: 'C4-11-E0-00-46-26;C4-11-E0-00-46-26;3C-2C-94-0F-36-DA;3C-2C-94-0F-36-DA;C4-11-E0-00-00-2C'
-# Mac地址列表选取标志位
-mac_choose_flag: 1
-# 用户名
-user_name: '3138303432303738393237'
-# 登录密码
-login_pwd: '6368656e6768616f'
-# 旧密码
-old_pwd: '6368656e6768616f'
-# 新密码
-new_pwd: '6368656e6768616f31'
-# 错误密码
-err_pwd: '31323334353637383930'
-# WiFi密码
-wifi_pwd: '696f74313233343536'
-# 待启动APP
-App: 
-    JD: ["com.jd.smart", "com.jd.smart.activity.LoadingActivity"] # 京东微联
-    GN: ["com.iotbull.android.superapp", "com.iotbull.android.superapp.activitys.regist_login.SplashActivity"] # 公牛智联
-# 提示消息
+App:
+  GN: [com.iotbull.android.superapp, com.iotbull.android.superapp.activitys.regist_login.SplashActivity]
+  JD: [com.jd.smart, com.jd.smart.activity.LoadingActivity]
+MAC: C4-11-E0-00-46-26;C4-11-E0-00-46-26;3C-2C-94-0F-36-DA;3C-2C-94-0F-36-DA;C4-11-E0-00-00-2C
 Toast:
-    login_password_mistake: [40,1570,1040,1750]
+  login_password_mistake: [40, 1570, 1040, 1750]
+err_pwd: '31323334353637383930'
+login_pwd: 6368656e6768616f31
+mac_choose_flag: 1
+new_pwd: 6368656e6768616f
+offline_recovery_timeout: 10
+old_pwd: 6368656e6768616f31
+open_app_timeout: 60
+operate_wait_time: 0.5
+request_timeout: 30
+search_device_timeout: 60
+user_name: '3138303432303738393237'
+wifi_pwd: 696f74313233343536

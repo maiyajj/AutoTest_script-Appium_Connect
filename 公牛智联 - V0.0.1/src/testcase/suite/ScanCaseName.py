@@ -16,9 +16,9 @@ def scan_case_name():
                 if "GNAPP" in filename and "pyc" not in filename:
                     with open(os.path.join(parent, filename), "r") as files:
                         file = files.read()
-                        case_module = re.findall(r"self.case_module = u(.+) +\#", file)[0][1:-2]
-                        case_name = re.findall(r"self.case_title = u(.+) +\#", file)[0][1:-2]
-                        ZenTao_id = re.findall(r"self.ZenTao_id = (.+) +\#", file)[0][:-1]
+                        case_module = re.findall(r'self.case_module = u"(.+)"', file)[0]
+                        case_name = re.findall(r"self.case_title = u'(.+)'", file)[0]
+                        ZenTao_id = re.findall(r'self.ZenTao_id = (\d+)', file)[0]
                         case_id = re.findall(r"class (.+)\(", file)[0]
                         list_case_id[filename] = case_id
                         case_attr.append([case_module, ZenTao_id, case_id, case_name])

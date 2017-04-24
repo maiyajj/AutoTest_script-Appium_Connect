@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToLoginPage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppForgetPassword2(object):
@@ -72,7 +73,6 @@ class GNAppForgetPassword2(object):
             screen_shot_name = r"./screenshots/%s - %s - %s - [%s]-[%s].png" \
                                % (database["program_loop_time"], database["case_location"],
                                   self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
-            database["screen_name"] = screen_shot_name
 
             width = self.driver.get_window_size()['width']
             height = self.driver.get_window_size()['height']

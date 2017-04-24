@@ -40,7 +40,5 @@ conf_App = conf["App"]
 conf_Toast = conf["Toast"]
 
 
-def modified_conf(modified_param):
-    for k, v in modified_param.items():
-        conf[k] = v
+def modified_conf(conf):
     yaml.dump(conf, open(r"config/Conf.yaml", "w"))

@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToDevicePage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppAccountSettings5(object):
@@ -76,7 +77,7 @@ class GNAppAccountSettings5(object):
             # KEYCODE_FORWARD_DEL 删除键 112
             self.driver.press_keycode(112)
             # 发送数据
-            data = conf_login_pwd.decode('hex')
+            data = conf["login_pwd"].decode('hex')
             new_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
@@ -91,28 +92,36 @@ class GNAppAccountSettings5(object):
             # KEYCODE_FORWARD_DEL 删除键 112
             self.driver.press_keycode(112)
             # 发送数据
-            data = conf_login_pwd.decode('hex')
+            data = conf["login_pwd"].decode('hex')
             conform_new_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
 
             # 截屏
-            screen_shot_name = r"./screenshots/%s - %s - %s - [%s]-[%s].png" \
-                               % (database["program_loop_time"], database["case_location"],
-                                  self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
-            database["screen_name"] = screen_shot_name
+            try:
+                screen_shot = r"%s - %s - %s - [%s]-[%s].png" \
+                              % (database["program_loop_time"], database["case_location"],
+                                 self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
+                adb_screen = "%s.png" % self.ZenTao_id
 
-            width = self.driver.get_window_size()['width']
-            height = self.driver.get_window_size()['height']
-            self.width = int(width * 0.5)
-            self.height = int(height * 0.7)
+                width = int(int(self.device_info["dpi"]["width"]) * change_pwd_page["commit"][3][0])
+                height = int(int(self.device_info["dpi"]['height']) * change_pwd_page["commit"][3][1])
 
-            self.driver.tap([(self.width, self.height)], )
-            self.driver.tap([(self.width, self.height)], )
-            self.driver.tap([(self.width, self.height)], )
+                self.driver.tap([(width, height)], )
+                while True:
+                    try:
+                        self.wait_widget(loading_popup["title"], 0.5, 0.1)
+                    except TimeoutException:
+                        break
 
-            self.driver.save_screenshot(screen_shot_name)
-            self.logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot success')
+                command = "adb shell /system/bin/screencap -p /sdcard/Appium/%s/%s" \
+                          % (self.device_info["udid"], adb_screen)
+                os.popen(command)
+
+                ScreenShot(self.device_info["udid"], adb_screen, screen_shot)
+                self.logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot success')
+            except WindowsError:
+                self.logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot failed')
 
             self.case_over(True)
         except TimeoutException:

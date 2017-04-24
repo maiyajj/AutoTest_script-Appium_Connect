@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToDevicePage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppDevicePage6(object):
@@ -53,7 +54,7 @@ class GNAppDevicePage6(object):
 
             wifi_pwd = self.wait_widget(set_network_page["wifi_pwd"], 3, 1)
 
-            data = conf_wifi_pwd.decode('hex')
+            data = conf["wifi_pwd"].decode('hex')
             wifi_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
             time.sleep(0.5)

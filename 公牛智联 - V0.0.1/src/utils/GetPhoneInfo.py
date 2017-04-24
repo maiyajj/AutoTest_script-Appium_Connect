@@ -34,9 +34,11 @@ def get_phone_info():
 
         command = "adb -s %s shell dumpsys window displays" % v["udid"]
         try:
+            device[k]["dpi"] = {}
             DPI = os.popen(command).read()
             tmp = re.findall("init=(.+?) ", DPI)[0].split("x")
-            device[k]["dpi"] = tmp
+            device[k]["dpi"]['width'] = tmp[0]
+            device[k]["dpi"]['height'] = tmp[1]
         except WindowsError:
             pass
         for i in xrange(selected_port, 4750):

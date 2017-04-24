@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToLoginPage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppRegister15(object):

@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToLoginPage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppLogin11(object):
@@ -58,7 +59,7 @@ class GNAppLogin11(object):
 
             self.driver.press_keycode(29, 28672)
             self.driver.press_keycode(112)
-            data = conf_login_pwd.decode('hex')
+            data = conf["login_pwd"].decode('hex')
             login_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["登录密码"] input success')
             time.sleep(0.5)
@@ -78,7 +79,6 @@ class GNAppLogin11(object):
             screen_shot_name = r"./screenshots/%s - %s - %s - [%s]-[%s].png" \
                                % (database["program_loop_time"], database["case_location"],
                                   self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
-            database["screen_name"] = screen_shot_name
 
             width = self.driver.get_window_size()['width']
             height = self.driver.get_window_size()['height']

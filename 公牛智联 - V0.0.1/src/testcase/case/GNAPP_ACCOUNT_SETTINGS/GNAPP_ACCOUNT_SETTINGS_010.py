@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToDevicePage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppAccountSettings10(object):
@@ -76,7 +77,7 @@ class GNAppAccountSettings10(object):
             # KEYCODE_FORWARD_DEL 删除键 112
             self.driver.press_keycode(112)
             # 发送数据
-            data = conf_login_pwd.decode('hex')
+            data = conf["login_pwd"].decode('hex')
             new_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
@@ -100,7 +101,6 @@ class GNAppAccountSettings10(object):
             screen_shot_name = r"./screenshots/%s - %s - %s - [%s]-[%s].png" \
                                % (database["program_loop_time"], database["case_location"],
                                   self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
-            database["screen_name"] = screen_shot_name
 
             width = self.driver.get_window_size()['width']
             height = self.driver.get_window_size()['height']

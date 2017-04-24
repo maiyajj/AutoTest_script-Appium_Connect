@@ -1,6 +1,7 @@
 # coding=utf-8
 import time
 
+from selenium.common.exceptions import *
 from src.testcase.common.WidgetCheckUnit import *
 
 

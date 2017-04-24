@@ -19,7 +19,7 @@ def run(device_list, device_name):
 
 if __name__ == '__main__':
     device_list = app_init()
-
+    print device_list
     scan_case = Process(target=scan_case_name)
     scan_case.start()
     scan_case.join()

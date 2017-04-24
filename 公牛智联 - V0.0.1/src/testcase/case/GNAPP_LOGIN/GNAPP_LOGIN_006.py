@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToLoginPage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppLogin6(object):
@@ -46,7 +47,7 @@ class GNAppLogin6(object):
             # KEYCODE_FORWARD_DEL 删除键 112
             self.driver.press_keycode(112)
             # 发送数据
-            data = conf_user_name.decode('hex')
+            data = conf["user_name"].decode('hex')
             user_name.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)
@@ -60,7 +61,7 @@ class GNAppLogin6(object):
 
                 self.driver.press_keycode(29, 28672)
                 self.driver.press_keycode(112)
-                data = conf_err_pwd.decode('hex')
+                data = conf["err_pwd"].decode('hex')
                 login_pwd.send_keys(data)
                 self.logger.info(u'[APP_INPUT] ["错误密码"] input success')
                 time.sleep(0.5)
@@ -85,7 +86,7 @@ class GNAppLogin6(object):
 
             self.driver.press_keycode(29, 28672)
             self.driver.press_keycode(112)
-            data = conf_login_pwd.decode('hex')
+            data = conf["login_pwd"].decode('hex')
             login_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["正确密码"] input success')
             time.sleep(0.5)
@@ -98,7 +99,6 @@ class GNAppLogin6(object):
             screen_shot_name = r"./screenshots/%s - %s - %s - [%s]-[%s].png" \
                                % (database["program_loop_time"], database["case_location"],
                                   self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
-            database["screen_name"] = screen_shot_name
 
             self.driver.save_screenshot(screen_shot_name)
             self.logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot success')
@@ -114,7 +114,7 @@ class GNAppLogin6(object):
 
             self.driver.press_keycode(29, 28672)
             self.driver.press_keycode(112)
-            data = conf_login_pwd.decode('hex')
+            data = conf["login_pwd"].decode('hex')
             login_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["正确密码"] input success')
             time.sleep(0.5)

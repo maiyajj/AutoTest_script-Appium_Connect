@@ -3,6 +3,7 @@ import os
 
 from src.testcase.case.LaunchApp import *
 from src.testcase.case.ToDevicePage import *
+from src.utils.ScreenShot import *
 
 
 class GNAppAccountSettings4(object):

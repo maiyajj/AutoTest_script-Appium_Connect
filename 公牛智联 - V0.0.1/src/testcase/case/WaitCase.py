@@ -42,8 +42,8 @@ class WaitCase(object):
         self.logger.info(u"[APP_INF]UDID：...........%s" % self.device_info["udid"])
         self.logger.info(u"[APP_INF]platformName：...%s" % self.device_info["platformName"])
         self.logger.info(u"[APP_INF]platformVersion：%s" % self.device_info["platformVersion"])
-        self.logger.info(u"[APP_INF]appPackage：.....%s" % conf_App["GN"][0])
-        self.logger.info(u"[APP_INF]appActivity：....%s" % conf_App["GN"][1])
+        self.logger.info(u"[APP_INF]appPackage：.....%s" % conf["App"]["GN"][0])
+        self.logger.info(u"[APP_INF]appActivity：....%s" % conf["App"]["GN"][1])
         self.logger.info("*" * 30)
         database["case_location"] = self.No
         while True:
@@ -62,9 +62,9 @@ class WaitCase(object):
             # self.write_report(GNAppLogin12)  # 1893, 登录页面—账号为空，登录提示信息检查
             # self.write_report(GNAppLogin13)  # 1892, 登录页面—无效账号，登录提示信息检查
             # self.write_report(GNAppAccountSettings1)  # 1965, 修改密码页面，返回"按钮功能检查"
-            self.write_report(GNAppAccountSettings2)  # 1972, 密码修改后页面跳转确认
-            self.write_report(GNAppAccountSettings3)  # 1973, 退出当前账号后，取消按钮功能检查
-            self.write_report(GNAppAccountSettings4)  # 1975, 返回按钮功能确认
+            # self.write_report(GNAppAccountSettings2)  # 1972, 密码修改后页面跳转确认
+            # self.write_report(GNAppAccountSettings3)  # 1973, 退出当前账号后，取消按钮功能检查
+            # self.write_report(GNAppAccountSettings4)  # 1975, 返回按钮功能确认
             self.write_report(GNAppAccountSettings5)  # 1970, 密码修改页面，旧密码输入错误，提示信息检查
             self.write_report(GNAppAccountSettings6)  # 1946, 点击昵称"按钮，功能检查"
             self.write_report(GNAppAccountSettings7)  # 1948, 昵称为空时，功能检查
