@@ -13,7 +13,6 @@ _build_version = ""
 def run(device_list, device_name):
     appium = Process(target=LaunchAppiumServices, args=(device_list, device_name))
     appium.start()
-    time.sleep(10)
     WaitCase(device_list, device_name)
 
 

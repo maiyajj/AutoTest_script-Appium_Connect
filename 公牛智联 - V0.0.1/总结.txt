@@ -42,4 +42,4 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
 11、程序运行返回值要做判断，控制命令行的执行结果
 12、文件夹的命名方式要考虑同一类型的两部手机会不会重复，可以使用手机名称+udid的方式。
 13、appium并发测试的启动方式：加上——bp参数（与安卓通讯的端口），对appium的功能还不是很熟悉。边用边学
-14、appium的toast消息机制
+14、Android的toast消息机制uiautomatorviewer获取不到，appium无法识别，暂时使用截屏方式解决

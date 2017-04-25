@@ -1,4 +1,6 @@
 # coding=utf-8
+import os
+import re
 import time
 
 from data.Database import *
@@ -26,6 +28,7 @@ class WaitCase(object):
 
         self.create_log()
         self.create_report()
+        self.check_appium()
         self.run()
 
     def create_report(self):
@@ -35,6 +38,16 @@ class WaitCase(object):
     def create_log(self):
         check_log(self.device_list, self.device_name)
         self.logger = self.device_info["logger"]
+
+    def check_appium(self):
+        while True:
+            command = "netstat -aon|findstr %s" % self.device_info["port"]
+            server = re.findall(r".+LISTENING.+", os.popen(command).read())
+            if server == []:
+                time.sleep(1)
+            else:
+                self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
+                break
 
     def run(self):
         self.logger.info("*" * 30)

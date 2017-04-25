@@ -37,6 +37,7 @@ class GNAppAccountSettings5(object):
     # 用例动作
     def case(self):
         try:
+            ScreenShot(self.device_info, self.ZenTao_id, self.basename, self.logger)
             self.widget_click(device_page["title"],
                               device_page["user_image"],
                               personal_settings_page["title"],
@@ -98,30 +99,18 @@ class GNAppAccountSettings5(object):
             time.sleep(0.5)
 
             # 截屏获取设备toast消息
-            try:
-                screen_shot = r"%s - %s - %s - [%s]-[%s].png" \
-                              % (database["program_loop_time"], database["case_location"],
-                                 self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
-                adb_screen = "%s.png" % self.ZenTao_id
+            width = int(int(self.device_info["dpi"]["width"]) * change_pwd_page["commit"][3][0])
+            height = int(int(self.device_info["dpi"]['height']) * change_pwd_page["commit"][3][1])
+            self.driver.tap([(width, height)], )
 
-                width = int(int(self.device_info["dpi"]["width"]) * change_pwd_page["commit"][3][0])
-                height = int(int(self.device_info["dpi"]['height']) * change_pwd_page["commit"][3][1])
+            while True:
+                try:
+                    self.wait_widget(loading_popup["title"], 0.5, 0.1)
+                except TimeoutException:
+                    break
 
-                self.driver.tap([(width, height)], )
-                while True:
-                    try:
-                        self.wait_widget(loading_popup["title"], 0.5, 0.1)
-                    except TimeoutException:
-                        break
-
-                command = "adb shell /system/bin/screencap -p /sdcard/Appium/%s/%s" \
-                          % (self.device_info["udid"], adb_screen)
-                os.popen(command)
-
-                ScreenShot(self.device_info["udid"], adb_screen, screen_shot)
-                self.logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot success')
-            except WindowsError:
-                self.logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot failed')
+            # 截屏获取设备toast消息
+            ScreenShot(self.device_info, self.ZenTao_id, self.basename, self.logger)
 
             self.case_over(True)
         except TimeoutException:
