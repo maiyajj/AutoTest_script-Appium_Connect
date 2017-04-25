@@ -13,4 +13,4 @@ class ScreenShot(object):
         command = "adb pull /sdcard/Appium/%s/%s ./screenshots/" % (folder, adb_screen)
         os.popen(command)
 
-        os.renames("./screenshots/%s" % adb_screen, "./screenshots/%s" % screen_shot)
+        os.renames("./screenshots/%s" % adb_screen, "./screenshots/%s/%s" % (folder, screen_shot))

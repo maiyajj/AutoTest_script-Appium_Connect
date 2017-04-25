@@ -440,11 +440,11 @@ def add_notes():
                 # print filename[:-3]
                 with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''from src.testcase.case.ToDevicePage import *''' in linecache.getline(filepath, i):
+                        if '''# 截屏''' in linecache.getline(filepath, i):
                             # files.write("\n")
                             print filename, linecache.getline(filepath, i)
-                            files.write(linecache.getline(filepath, i))
-                            files.write("from src.utils.ScreenShot import *\n")
+                            # files.write(linecache.getline(filepath, i))
+                            # files.write("from src.utils.ScreenShot import *\n")
                             # elif '''from src.testcase.case.ToLoginPage import *''' in linecache.getline(filepath, i):
                             #     # files.write("\n")
                             #     print filename, linecache.getline(filepath, i)

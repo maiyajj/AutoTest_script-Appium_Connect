@@ -97,7 +97,7 @@ class GNAppAccountSettings5(object):
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
 
-            # 截屏
+            # 截屏获取设备toast消息
             try:
                 screen_shot = r"%s - %s - %s - [%s]-[%s].png" \
                               % (database["program_loop_time"], database["case_location"],

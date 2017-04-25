@@ -16,8 +16,7 @@ def get_phone_info():
     for i in device_list:
         i0 = i[0].split()
         i1 = i[1].split()
-        device[i1[0]] = {"udid": i0[0]}
-
+        device[i0[0]] = {"udid": i0[0], "model": i1[0]}
     selected_port = 4725
     for k, v in device.items():
         command = "adb -s %s shell getprop ro.build.version.release" % v["udid"]
