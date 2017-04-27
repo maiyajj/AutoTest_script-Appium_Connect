@@ -12,6 +12,7 @@ class GNAppMessageClassify3(object):
         self.device_name = device_name
         self.device_info = device_list[device_name]
         self.logger = logger
+        self.test_count = 0
 
         self.case_module = u"消息"  # 用例所属模块
         self.case_title = u'消息设置页面，清空设备历时消息功能检查'  # 用例名称
@@ -84,14 +85,15 @@ class GNAppMessageClassify3(object):
         except WebDriverException:
             pass
         self.logger.info('app closed [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
+        self.test_count += 1
 
     def result(self):
         if self.success is True:
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] success!' % self.case_title)  # 记录运行结果
-            return "success", self.case_title, self.start_time
+            return "success", self.ZenTao_id, self.case_title, self.start_time
         elif self.success is False:
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] failed!' % self.case_title)
-            return "failed", self.case_title, self.start_time
+            return "failed", self.ZenTao_id, self.case_title, self.start_time
         elif self.success == "unknown":
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] unknown!' % self.case_title)
-            return "unknown", self.case_title, self.start_time
+            return "unknown", self.ZenTao_id, self.case_title, self.start_time

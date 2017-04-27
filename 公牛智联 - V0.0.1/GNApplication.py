@@ -23,6 +23,6 @@ if __name__ == '__main__':
     scan_case.start()
     scan_case.join()
 
-    process = [Process(target=run, args=(device_list, device_name)) for device_name in device_list.keys()]
+    process = [Process(target=run, args=(device_list, device_name,)) for device_name in device_list.keys()]
     for i in process:
         i.start()

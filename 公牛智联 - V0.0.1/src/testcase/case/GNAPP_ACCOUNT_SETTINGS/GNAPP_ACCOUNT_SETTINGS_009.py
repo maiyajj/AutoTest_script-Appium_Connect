@@ -12,6 +12,7 @@ class GNAppAccountSettings9(object):
         self.device_name = device_name
         self.device_info = device_list[device_name]
         self.logger = logger
+        self.test_count = 0
 
         self.case_module = u"账户设置"  # 用例所属模块
         self.case_title = u'密码修改页面，新密码与确认密码不一致，提示信息检查'  # 用例名称
@@ -97,31 +98,20 @@ class GNAppAccountSettings9(object):
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
 
-            # 截屏获取设备toast消息
-            try:
-                screen_shot = r"%s - %s - %s - [%s]-[%s].png" \
-                              % (database["program_loop_time"], database["case_location"],
-                                 self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
-                adb_screen = "%s.png" % self.ZenTao_id
+            widget_px = change_pwd_page["commit"]
+            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["width"])
+            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["height"])
+            self.driver.tap([(width, height)], )
+            self.logger.info(u'[APP_CLICK] operate_widget ["%s"] success' % widget_px[2])
 
-                width = int(int(self.device_info["dpi"]["width"]) * change_pwd_page["commit"][3][0])
-                height = int(int(self.device_info["dpi"]['height']) * change_pwd_page["commit"][3][1])
+            while True:
+                try:
+                    self.wait_widget(loading_popup["title"], 0.5, 0.1)
+                except TimeoutException:
+                    break
 
-                self.driver.tap([(width, height)], )
-                while True:
-                    try:
-                        self.wait_widget(loading_popup["title"], 0.5, 0.1)
-                    except TimeoutException:
-                        break
-
-                command = "adb shell /system/bin/screencap -p /sdcard/Appium/%s/%s" \
-                          % (self.device_info["udid"], adb_screen)
-                os.popen(command)
-
-                ScreenShot(self.device_info["udid"], adb_screen, screen_shot)
-                self.logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot success')
-            except WindowsError:
-                self.logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot failed')
+                    # 截屏获取设备toast消息
+                ScreenShot(self.device_info, self.ZenTao_id, self.basename, self.logger)
 
             self.case_over(True)
         except TimeoutException:
@@ -136,14 +126,15 @@ class GNAppAccountSettings9(object):
         except WebDriverException:
             pass
         self.logger.info('app closed [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
+        self.test_count += 1
 
     def result(self):
         if self.success is True:
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] success!' % self.case_title)  # 记录运行结果
-            return "success", self.case_title, self.start_time
+            return "success", self.ZenTao_id, self.case_title, self.start_time
         elif self.success is False:
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] failed!' % self.case_title)
-            return "failed", self.case_title, self.start_time
+            return "failed", self.ZenTao_id, self.case_title, self.start_time
         elif self.success == "unknown":
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] unknown!' % self.case_title)
-            return "unknown", self.case_title, self.start_time
+            return "unknown", self.ZenTao_id, self.case_title, self.start_time

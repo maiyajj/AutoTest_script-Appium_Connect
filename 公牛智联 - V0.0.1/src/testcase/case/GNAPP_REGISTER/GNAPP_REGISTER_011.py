@@ -12,6 +12,7 @@ class GNAppRegister11(object):
         self.device_name = device_name
         self.device_info = device_list[device_name]
         self.logger = logger
+        self.test_count = 0
 
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-用户名长度小于11位，提示信息检查'  # 用例名称
@@ -81,22 +82,20 @@ class GNAppRegister11(object):
             self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
             time.sleep(0.5)
 
-            # 截屏
-            screen_shot_name = r"./screenshots/%s - %s - %s - [%s]-[%s].png" \
-                               % (database["program_loop_time"], database["case_location"],
-                                  self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
+            widget_px = register_page["register_button"]
+            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["width"])
+            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["height"])
+            self.driver.tap([(width, height)], )
+            self.logger.info(u'[APP_CLICK] operate_widget ["%s"] success' % widget_px[2])
 
-            width = self.driver.get_window_size()['width']
-            height = self.driver.get_window_size()['height']
-            self.width = int(width * 0.5)
-            self.height = int(height * 0.75)
+            while True:
+                try:
+                    self.wait_widget(loading_popup["title"], 0.5, 0.1)
+                except TimeoutException:
+                    break
 
-            self.driver.tap([(self.width, self.height)], )
-            self.driver.tap([(self.width, self.height)], )
-            self.driver.tap([(self.width, self.height)], )
-
-            self.driver.save_screenshot(screen_shot_name)
-            self.logger.info(u'[APP_OPERATE] ["屏幕截图"] screen shot success')
+                    # 截屏获取设备toast消息
+                ScreenShot(self.device_info, self.ZenTao_id, self.basename, self.logger)
 
             self.case_over(True)
         except TimeoutException:
@@ -111,14 +110,15 @@ class GNAppRegister11(object):
         except WebDriverException:
             pass
         self.logger.info('app closed [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
+        self.test_count += 1
 
     def result(self):
         if self.success is True:
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] success!' % self.case_title)  # 记录运行结果
-            return "success", self.case_title, self.start_time
+            return "success", self.ZenTao_id, self.case_title, self.start_time
         elif self.success is False:
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] failed!' % self.case_title)
-            return "failed", self.case_title, self.start_time
+            return "failed", self.ZenTao_id, self.case_title, self.start_time
         elif self.success == "unknown":
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] unknown!' % self.case_title)
-            return "unknown", self.case_title, self.start_time
+            return "unknown", self.ZenTao_id, self.case_title, self.start_time

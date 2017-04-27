@@ -10,7 +10,7 @@ class LaunchAppiumServices(object):
         self.bp_port = self.device_info["bp_port"]
         self.udid = self.device_info["udid"]
 
-        self.folder = "%s[%s]" % (self.device_info["model"], self.device_info["udid"])
+        self.folder = "%s{%s}" % (self.device_info["model"], self.device_info["udid"])
 
         self.kill_adb()
         self.create_adb_folder()
@@ -21,7 +21,8 @@ class LaunchAppiumServices(object):
         os.system(command)
 
     def launch_appium(self):
-        command = "appium -a 127.0.0.1 -p %s -bp %s -U  %s  --no-reset" % (self.port, self.bp_port, self.udid)
+        log = "1.log"
+        command = "appium -a 127.0.0.1 -p %s -bp %s -U  %s -g %s --no-reset" % (self.port, self.bp_port, self.udid, log)
         os.system(command)
 
     def create_adb_folder(self):
@@ -35,4 +36,5 @@ class LaunchAppiumServices(object):
             os.makedirs("./screenshots/%s" % self.folder)
         except WindowsError:
             shutil.rmtree("./screenshots/%s" % self.folder, True)
-            os.makedirs("./screenshots/%s" % self.folder)
+            if os.path.isdir("./screenshots/%s" % self.folder) is False:
+                os.makedirs("./screenshots/%s" % self.folder)

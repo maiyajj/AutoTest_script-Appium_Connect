@@ -1,5 +1,4 @@
 # coding=utf-8
-import inspect
 import os
 import re
 import sys
@@ -52,5 +51,4 @@ def get_phone_info():
             else:
                 selected_port += 1
         device[k]["log_name"] = v["deviceName"]
-    print inspect.stack()
     return device

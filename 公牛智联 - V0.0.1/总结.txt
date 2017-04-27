@@ -43,3 +43,5 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
 12、文件夹的命名方式要考虑同一类型的两部手机会不会重复，可以使用手机名称+udid的方式。
 13、appium并发测试的启动方式：加上——bp参数（与安卓通讯的端口），对appium的功能还不是很熟悉。边用边学
 14、Android的toast消息机制uiautomatorviewer获取不到，appium无法识别，暂时使用截屏方式解决
+15、WPS的excel中sheet名称不能包含[]，能包含(){}，但是在adb中名称不能包含()，所以最终的命名取为{}
+16、os.getenv('Temp')可以获得path中变量的值，此值为C:\Users\Maiyajj\AppData\Local\Temp

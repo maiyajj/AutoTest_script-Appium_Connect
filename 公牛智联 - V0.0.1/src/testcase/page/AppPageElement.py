@@ -27,7 +27,8 @@ class MainPageWidget(object):
         # 忘记密码
         d["to_find_password"] = ["com.iotbull.android.superapp:id/login_tv_go_find_password", "id", u"忘记密码"]
         # 登录按钮
-        d["login_button"] = ["com.iotbull.android.superapp:id/login_btn_commit", "id", u"登录按钮"]
+        d["login_button"] = ["com.iotbull.android.superapp:id/login_btn_commit", "id", u"登录按钮",
+                             {"width": 0.5, "height": 0.65}]
         # 新账号注册
         d["to_register"] = ["com.iotbull.android.superapp:id/login_tv_go_regist", "id", u"新账号注册"]
         return d
@@ -49,7 +50,8 @@ class MainPageWidget(object):
         d["get_check_code"] = ["com.iotbull.android.superapp:id/forget_password_get_check_code_text_view", "id",
                                u"获取验证码"]
         # 下一步
-        d["to_next"] = ["com.iotbull.android.superapp:id/forget_password_commit_button", "id", u"下一步"]
+        d["to_next"] = ["com.iotbull.android.superapp:id/forget_password_commit_button", "id", u"下一步",
+                        {"width": 0.5, "height": 0.45}]
         return d
 
     # 忘记密码→重置密码页
@@ -86,7 +88,8 @@ class MainPageWidget(object):
         # 获取验证码
         d["get_check_code"] = ["com.iotbull.android.superapp:id/regist_tv_get_check_code", "id", u"获取验证码"]
         # 立即注册按钮
-        d["register_button"] = ["com.iotbull.android.superapp:id/regist_commit_button", "id", u"立即注册按钮"]
+        d["register_button"] = ["com.iotbull.android.superapp:id/regist_commit_button", "id", u"立即注册按钮",
+                                {"width": 0.5, "height": 0.75}]
         # 公牛服务协议
         d["to_protocol"] = ["com.iotbull.android.superapp:id/regist_tv_go_regist_protocol", "id", u"公牛服务协议"]
         # 已有账户登录
@@ -211,9 +214,8 @@ class MainPageWidget(object):
         d["conform_pwd"] = ["com.iotbull.android.superapp:id/"
                             "user_password_update_new_password_commit_password_edit_text", "id", u"确认新密码"]
         # 确定
-        d["commit"] = ["com.iotbull.android.superapp:id/user_password_update_commit_button", "id", u"确定", [0.5, 0.7]]
-        # 确定按钮位置
-        d["commit_address"] = [0.5, 0.7]
+        d["commit"] = ["com.iotbull.android.superapp:id/user_password_update_commit_button", "id", u"确定",
+                       {"width": 0.5, "height": 0.7}]
         return d
 
     # 使用帮助页
@@ -427,7 +429,7 @@ class MainPageWidget(object):
         # 下一步
         d["prepare_next"] = ["com.iotbull.android.superapp:id/button_hiflying_smartlinker_start", "id", u"下一步"]
         # 更换WiFi
-        d["prepare_next"] = ["com.iotbull.android.superapp:id/da_set_network_btn_change_wifi", "id", u"更换WiFi"]
+        d["change_wifi"] = ["com.iotbull.android.superapp:id/da_set_network_btn_change_wifi", "id", u"更换WiFi"]
         return d
 
     # 配置网络→添加设备

@@ -12,6 +12,7 @@ class GNAppAccountSettings5(object):
         self.device_name = device_name
         self.device_info = device_list[device_name]
         self.logger = logger
+        self.test_count = 0
 
         self.case_module = u"账户设置"  # 用例所属模块
         self.case_title = u'密码修改页面，旧密码输入错误，提示信息检查'  # 用例名称
@@ -37,7 +38,6 @@ class GNAppAccountSettings5(object):
     # 用例动作
     def case(self):
         try:
-            ScreenShot(self.device_info, self.ZenTao_id, self.basename, self.logger)
             self.widget_click(device_page["title"],
                               device_page["user_image"],
                               personal_settings_page["title"],
@@ -98,10 +98,11 @@ class GNAppAccountSettings5(object):
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
 
-            # 截屏获取设备toast消息
-            width = int(int(self.device_info["dpi"]["width"]) * change_pwd_page["commit"][3][0])
-            height = int(int(self.device_info["dpi"]['height']) * change_pwd_page["commit"][3][1])
+            widget_px = change_pwd_page["commit"]
+            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["width"])
+            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["height"])
             self.driver.tap([(width, height)], )
+            self.logger.info(u'[APP_CLICK] operate_widget ["%s"] success' % widget_px[2])
 
             while True:
                 try:
@@ -110,7 +111,7 @@ class GNAppAccountSettings5(object):
                     break
 
             # 截屏获取设备toast消息
-            ScreenShot(self.device_info, self.ZenTao_id, self.basename, self.logger)
+                ScreenShot(self.device_info, self.ZenTao_id, self.basename, self.logger)
 
             self.case_over(True)
         except TimeoutException:
@@ -125,14 +126,15 @@ class GNAppAccountSettings5(object):
         except WebDriverException:
             pass
         self.logger.info('app closed [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
+        self.test_count += 1
 
     def result(self):
         if self.success is True:
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] success!' % self.case_title)  # 记录运行结果
-            return "success", self.case_title, self.start_time
+            return "success", self.ZenTao_id, self.case_title, self.start_time
         elif self.success is False:
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] failed!' % self.case_title)
-            return "failed", self.case_title, self.start_time
+            return "failed", self.ZenTao_id, self.case_title, self.start_time
         elif self.success == "unknown":
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] unknown!' % self.case_title)
-            return "unknown", self.case_title, self.start_time
+            return "unknown", self.ZenTao_id, self.case_title, self.start_time

@@ -173,6 +173,8 @@ def create_WaitCase():
         WaitCase.write('''            if server == []:\n''')
         WaitCase.write('''                time.sleep(1)\n''')
         WaitCase.write('''            else:\n''')
+        WaitCase.write(
+            '''                self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))\n''')
         WaitCase.write('''                break\n''')
         WaitCase.write('''\n''')
         WaitCase.write('''    def run(self):\n''')
@@ -184,12 +186,15 @@ def create_WaitCase():
             '''        self.logger.info(u"[APP_INF]platformName：...%s" % self.device_info["platformName"])\n''')
         WaitCase.write(
             '''        self.logger.info(u"[APP_INF]platformVersion：%s" % self.device_info["platformVersion"])\n''')
-        WaitCase.write('''        self.logger.info(u"[APP_INF]appPackage：.....%s" % conf_App["GN"][0])\n''')
-        WaitCase.write('''        self.logger.info(u"[APP_INF]appActivity：....%s" % conf_App["GN"][1])\n''')
+        WaitCase.write('''        self.logger.info(u"[APP_INF]appPackage：.....%s" % conf["App"]["GN"][0])\n''')
+        WaitCase.write('''        self.logger.info(u"[APP_INF]appActivity：....%s" % conf["App"]["GN"][1])\n''')
         WaitCase.write('''        self.logger.info("*" * 30)\n''')
         WaitCase.write('''        database["case_location"] = self.No\n''')
         WaitCase.write('''        while True:\n''')
         WaitCase.write('''            self.logger.info("run times [%s]" % database["program_loop_time"])\n''')
+        for i in CaseList:
+            if "Version" in i[0]:
+                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
             if "Login" in i[0]:
                 WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
@@ -210,13 +215,14 @@ def create_WaitCase():
                 WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
             if "FeedBack" in i[0]:
-                WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
+                WaitCase.write('''            # self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
             if "UsingHelp" in i[0]:
                 WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
         for i in CaseList:
-            if "Version" in i[0]:
+            if "ThemeStyle" in i[0]:
                 WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
+
         WaitCase.write('''\n            database["program_loop_time"] += 1\n\n''')
 
         WaitCase.write('''    def write_report(self, case_name):\n''')
@@ -370,6 +376,17 @@ def modified_utf():
                             files.write(linecache.getline(filepath, i))
 
 
+def check_AppPageElement():
+    import sys
+    file = r"./src/testcase/page/AppPageElement.py"
+    MainPage = [i for i in dir(MainPageWidget()) if "__" not in i]
+    Popup = [i for i in dir(PopupWidget()) if "__" not in i]
+    with open(file, "r") as app:
+        app = app.read()
+        for i in MainPage:
+            print re.findall(r".+def %s.+" % i, app)
+            print sys._getframe().f_lineno
+
 # def print_element(element ,values):
 #     if element == "account_setting_page":
 #         MainPageWidget().account_setting_page()
@@ -446,24 +463,19 @@ def add_notes():
     rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename:
+            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_001" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "r") as files:
+                with open(filepath, "w") as files:
                     for i in range(1, lines + 1):
-                        if '''# 截屏''' in linecache.getline(filepath, i):
+                        if ''', self.ZenTao_id, self.case_title, self.start_time''' in linecache.getline(filepath, i):
                             # files.write("\n")
-                            print filename, linecache.getline(filepath, i)
-                            # files.write(linecache.getline(filepath, i))
-                            # files.write("from src.utils.ScreenShot import *\n")
-                            # elif '''from src.testcase.case.ToLoginPage import *''' in linecache.getline(filepath, i):
-                            #     # files.write("\n")
-                            #     print filename, linecache.getline(filepath, i)
-                            #     files.write(linecache.getline(filepath, i))
-                            #     files.write("from src.utils.ScreenShot import *\n")
-                            # else:
-                            #     files.write(linecache.getline(filepath, i))
+                            print filename, linecache.getline(filepath, i).replace(", self.test_count", "")
+                            files.write(linecache.getline(filepath, i).replace(", self.test_count", ""))
+                        # files.write('''        self.test_count += 1\n''')
+                        else:
+                            files.write(linecache.getline(filepath, i))
 
 # create_ReadConf()  # 创建ReadConf.py 必须
 # create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
@@ -478,3 +490,4 @@ def add_notes():
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
 add_notes()
+# check_AppPageElement()

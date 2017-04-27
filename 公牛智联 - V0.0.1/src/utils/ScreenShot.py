@@ -15,28 +15,28 @@ class ScreenShot(object):
         self.run()
 
     def run(self):
-        folder = "%s[%s]" % (self.device_info["model"], self.device_info["udid"])
+        folder = "%s{%s}" % (self.device_info["model"], self.device_info["udid"])
         screen_shot = r"%s/%s - %s - %s - [%s]-[%s].png" \
                       % (folder, database["program_loop_time"], database["case_location"],
                          self.ZenTao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
-        adb_screen = "%s/%s[%s].png" % (folder, self.ZenTao_id, time.strftime("%Y-%m-%d.%H_%M_%S"))
-
+        adb_screen = "%s/%s{%s}.png" % (folder, self.ZenTao_id, time.strftime("%Y-%m-%d.%H_%M_%S"))
+        print screen_shot, adb_screen
         command = "adb -s %s shell /system/bin/screencap -p /sdcard/Appium/%s" % (self.device_info["udid"], adb_screen)
         os.popen(command)
         command1 = "adb -s %s shell du /sdcard/Appium/%s" % (self.device_info["udid"], adb_screen)
 
         screen_count = 3
-        end_time = time.time() + 5
+        end_time = time.time() + 10
         while screen_count:
             try:
-                time.sleep(0.5)
+                time.sleep(1)
                 len_adb_screen_file = int(re.findall(r"(.+?)/sdcard", os.popen(command1).read())[0].split()[0])
                 print len_adb_screen_file
                 if len_adb_screen_file != 0:
                     self.logger.info('[ADB]adb screen shot success!')
                     break
-                else:
-                    if time.time() > end_time:
+                elif time.time() > end_time:
+                    self.logger.info('[ADB]adb screen shot failed!')
                         break
             except ValueError:
                 screen_count -= 1

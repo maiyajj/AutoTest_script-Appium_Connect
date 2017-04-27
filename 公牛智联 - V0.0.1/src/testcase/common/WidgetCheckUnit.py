@@ -35,7 +35,7 @@ class WidgetCheckUnit(Exception):
                 self.logger.info(u'[APP_INPUT] ["WiFi密码"] input failed')
                 # self.err_screen_shot()
 
-    def wait_widget(self, main_widget=None, timeout=1, interval=1):
+    def wait_widget(self, main_widget=None, timeout=1.0, interval=1.0):
         locate = main_widget[1]
         widget = main_widget[0]
         if main_widget is None or locate not in ["id", "name", "class", "xpath", "activity"]:
@@ -109,6 +109,11 @@ class WidgetCheckUnit(Exception):
                 flag = 1
                 widget = self.wait_widget(operate_widget, wait_time2, interval)
                 widget.click()
+                while True:
+                    try:
+                        self.wait_widget(loading_popup["title"], 0.2, 0.1)
+                    except TimeoutException:
+                        break
                 self.widget_edit_input(data)
                 if log_record != 0:
                     self.logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
