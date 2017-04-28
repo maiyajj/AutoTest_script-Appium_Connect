@@ -70,7 +70,9 @@ class WriteXls(object):
             alignment.horz = Alignment.HORZ_CENTER
         elif ALIGN == "HLEFT":
             alignment.horz = Alignment.HORZ_LEFT
-        elif ALIGN == "HGENERAL":
+        elif ALIGN == "HRIGHT":
+            alignment.horz = Alignment.HORZ_RIGHT
+        elif ALIGN == "HCENERAL":
             alignment.horz = Alignment.HORZ_GENERAL
         elif ALIGN == "VCENTER":
             alignment.vert = Alignment.VERT_CENTER
@@ -102,25 +104,62 @@ class WriteXls(object):
         self.style_blod = self.style(Ft_b=True)
 
         self.sheet = self.book.add_sheet(self.sheet_name)
-
+        self.write_title()
         self.book.save(self.folder)
         return self.book
 
-    def write_data(self, Count=0, Pass=0, Fail=0, Error=0, Wait=0):
+    def write_title(self):
         self.sheet.col(0).width = 256 * 14
-        self.sheet.col(1).width = 256 * 49
-        self.sheet.col(2).width = 256 * 9
-        self.sheet.col(3).width = 256 * 9
-        self.sheet.write_merge(11, 11, 0, 1, u"1、密码修改页面，旧密码输入错误，提示信息检查", self.style(ALIGN="HLEFT", Pat=22))
-        self.sheet.write_merge(12, 12, 0, 1, u"    禅道ID:1970", self.style_hleft)
-        self.sheet.write(11, 2, Count, self.style(Pat=22))
-        self.sheet.write(11, 3, Pass, self.style(Pat=22))
-        self.sheet.write(11, 4, Fail, self.style(Pat=22))
-        self.sheet.write(11, 5, Error, self.style(Pat=22))
-        self.sheet.write(11, 6, Wait, self.style(Pat=22))
+        self.sheet.col(1).width = 256 * 56
+        for i in xrange(2, 7):
+            self.sheet.col(i).width = 256 * 9
 
-        if Fail <= 1:
-            self.sheet.write_merge(12, 12, 2, 6, u"Pass", self.style_allctr)
-        else:
-            self.sheet.write_merge(12, 12, 2, 6, u"Fail", self.style_allctr)
+        # self.sheet.write_merge(0, 1, 0, 7, u"测试报告", self.style(ALIGN="HLEFT", Pat=22))
+        # self.sheet.write_merge(0, 1, 0, 7, u"1、密码修改页面，旧密码输入错误，提示信息检查", self.style(ALIGN="HLEFT", Pat=22))
+        # self.sheet.write_merge(0, 1, 0, 7, u"1、密码修改页面，旧密码输入错误，提示信息检查", self.style(ALIGN="HLEFT", Pat=22))
+        print help(easyxf)
+        self.sheet.write_merge(6, 6, 0, 2, "Status", easyxf(
+            'font: height 240, name Arial, colour_index black, bold on, italic off; align: wrap on, vert centre, horiz left;'
+            'borders: top double, bottom double, left dashed, right double;'
+            'pattern: pattern solid, fore_colour 23'))
+        self.sheet.write(12, 0, "ZenTao_ID", self.style(ALIGN="HLEFT", Pat=23))
+        self.sheet.write(12, 1, "Test Group/Test Case", self.style(ALIGN="HLEFT", Pat=23))
+        self.sheet.write(12, 2, "Count", self.style(ALIGN="HLEFT", Pat=23))
+        self.sheet.write(12, 3, "Pass", self.style(ALIGN="HLEFT", Pat=23))
+        self.sheet.write(12, 4, "Fail", self.style(ALIGN="HLEFT", Pat=23))
+        self.sheet.write(12, 5, "Error", self.style(ALIGN="HLEFT", Pat=23))
+        self.sheet.write(12, 6, "Wait", self.style(ALIGN="HLEFT", Pat=23))
+        self.sheet.write(12, 7, "Result", self.style(ALIGN="HLEFT", Pat=23))
+
+    def write_data(self, Zentao, Count=0, Pass=0, Fail=0, Error=0, Wait=0):
+        self.row = 13
+
+        self.sheet.write(self.row, 0, Zentao, self.style(ALIGN="HLEFT", Pat=22))
+        self.sheet.write(self.row, 1, u"密码修改页面，旧密码输入错误，提示信息检查", self.style(ALIGN="HLEFT", Pat=22))
+        self.sheet.write(self.row, 2, Count, self.style(ALIGN="HRIGHT", Pat=22))
+        self.sheet.write(self.row, 3, Pass, self.style(ALIGN="HRIGHT", Pat=22))
+        self.sheet.write(self.row, 4, Fail, self.style(ALIGN="HRIGHT", Pat=22))
+        self.sheet.write(self.row, 5, Error, self.style(ALIGN="HRIGHT", Pat=22))
+        self.sheet.write(self.row, 6, Wait, self.style(ALIGN="HRIGHT", Pat=22))
+
+        data = 'IF({1}{0}>0,"Pass",IF({2}{0}>0,"Fail",IF({3}{0}>0,"Error",IF({4}{0}>0,"Wait",""))))'. \
+            format(self.row + 1, chr(68), chr(69), chr(70), chr(71))
+        self.sheet.write(self.row, 7, Formula(data), self.style(ALIGN="AllCenter", Pat=22))
+
         self.book.save(self.folder)
+
+
+device_list = {'8681-M02-0xa0a151df': {'deviceName': '8681-M02', 'log_name': '8681-M02', 'bp_port': 4726,
+                                       'udid': '8681-M02-0xa0a151df',
+                                       'desired_caps': {'unicodeKeyboard': 'True', 'deviceName': '8681-M02',
+                                                        'driver': '8681-M02-0xa0a151df', 'browserName': '',
+                                                        'resetKeyboard': 'True', 'platformVersion': '5.1',
+                                                        'appPackage': 'com.iotbull.android.superapp',
+                                                        'platformName': 'Android',
+                                                        'appActivity': 'com.iotbull.android.superapp.activitys.regist_login.SplashActivity'},
+                                       'platformVersion': '5.1', 'model': '8681_M02', 'platformName': 'Android',
+                                       'port': 4725, 'dpi': {'width': '1080', 'height': '1920'}}}
+device_name = '8681-M02-0xa0a151df'
+
+xls = WriteXls(device_list, device_name)
+xls.write_data(1970, 1, 1, 0, 0, 0)

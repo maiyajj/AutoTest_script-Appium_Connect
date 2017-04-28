@@ -37,7 +37,7 @@ class ScreenShot(object):
                     break
                 elif time.time() > end_time:
                     self.logger.info('[ADB]adb screen shot failed!')
-                        break
+                    break
             except ValueError:
                 screen_count -= 1
                 self.logger.info('[ADB]adb find screen file failed still %s times!' % (screen_count + 1))

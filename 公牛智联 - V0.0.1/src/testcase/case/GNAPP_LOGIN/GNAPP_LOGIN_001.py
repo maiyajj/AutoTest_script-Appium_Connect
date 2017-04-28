@@ -25,6 +25,8 @@ class GNAppLogin1(object):
         database[self.ZenTao_id]["test_fail"] = 0
         database[self.ZenTao_id]["test_error"] = 0
         database[self.ZenTao_id]["test_wait"] = 0
+        database[self.ZenTao_id]["ZenTao"] = self.ZenTao_id
+        database[self.ZenTao_id]["case_title"] = self.case_title
 
         try:
             self.driver = launch_app(self.device_info)  # 启动APP

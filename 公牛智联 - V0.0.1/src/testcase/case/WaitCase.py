@@ -144,7 +144,12 @@ class WaitCase(object):
                 self.No, case[3], time.strftime("%Y-%m-%d %H:%M:%S"))
         self.report.info(data)
 
-        self.xls.write_data(case[4]["test_count"],
+        case[4]["index"] = self.No
+        yaml.dump(case[4], open(r"./%s.yaml" % self.device_name, "w"))
+
+        print case[4]
+        self.xls.write_data(case[1],
+                            case[4]["test_count"],
                             case[4]["test_pass"],
                             case[4]["test_fail"],
                             case[4]["test_error"],
