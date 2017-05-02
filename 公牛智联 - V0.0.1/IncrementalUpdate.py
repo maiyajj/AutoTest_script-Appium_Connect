@@ -463,17 +463,18 @@ def add_notes():
     rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_001" not in filename:
+            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_001" not in filename and "GNAPP_LOGIN_002" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
                 with open(filepath, "w") as files:
                     for i in range(1, lines + 1):
-                        if ''', self.ZenTao_id, self.case_title, self.start_time''' in linecache.getline(filepath, i):
-                            # files.write("\n")
-                            print filename, linecache.getline(filepath, i).replace(", self.test_count", "")
-                            files.write(linecache.getline(filepath, i).replace(", self.test_count", ""))
-                        # files.write('''        self.test_count += 1\n''')
+                        if '''self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] unknown!' % self.case_title)''' in linecache.getline(
+                                filepath, i):
+                            print filename, linecache.getline(filepath, i)
+                            files.write(linecache.getline(filepath, i))
+                            files.write(
+                                '''            database[self.device_name][self.ZenTao_id]["test_error"] += 1\n''')
                         else:
                             files.write(linecache.getline(filepath, i))
 

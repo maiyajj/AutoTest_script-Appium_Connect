@@ -12,7 +12,6 @@ class GNAppAccountSettings9(object):
         self.device_name = device_name
         self.device_info = device_list[device_name]
         self.logger = logger
-        self.test_count = 0
 
         self.case_module = u"账户设置"  # 用例所属模块
         self.case_title = u'密码修改页面，新密码与确认密码不一致，提示信息检查'  # 用例名称
@@ -20,6 +19,18 @@ class GNAppAccountSettings9(object):
         self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_ACCOUNT_SETTINGS_009
         self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                          % (self.basename, self.case_title, self.ZenTao_id, self.case_module))  # 记录log
+
+        if self.ZenTao_id in database[device_name].keys():
+            pass
+        else:
+            database[device_name][self.ZenTao_id] = {}
+            database[device_name][self.ZenTao_id]["test_count"] = 0
+            database[device_name][self.ZenTao_id]["test_pass"] = 0
+            database[device_name][self.ZenTao_id]["test_fail"] = 0
+            database[device_name][self.ZenTao_id]["test_error"] = 0
+            database[device_name][self.ZenTao_id]["test_wait"] = 0
+            database[device_name][self.ZenTao_id]["ZenTao"] = self.ZenTao_id
+            database[device_name][self.ZenTao_id]["case_title"] = self.case_title
 
         try:
             self.driver = launch_app(self.device_info)  # 启动APP
@@ -126,15 +137,18 @@ class GNAppAccountSettings9(object):
         except WebDriverException:
             pass
         self.logger.info('app closed [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
-        self.test_count += 1
+        database[self.device_name][self.ZenTao_id]["test_count"] += 1
 
     def result(self):
         if self.success is True:
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] success!' % self.case_title)  # 记录运行结果
+            database[self.device_name][self.ZenTao_id]["test_pass"] += 1
             return "success", self.ZenTao_id, self.case_title, self.start_time
         elif self.success is False:
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] failed!' % self.case_title)
+            database[self.device_name][self.ZenTao_id]["test_fail"] += 1
             return "failed", self.ZenTao_id, self.case_title, self.start_time
         elif self.success == "unknown":
             self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] unknown!' % self.case_title)
+            database[self.device_name][self.ZenTao_id]["test_error"] += 1
             return "unknown", self.ZenTao_id, self.case_title, self.start_time
