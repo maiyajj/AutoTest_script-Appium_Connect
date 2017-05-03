@@ -52,8 +52,9 @@ class WaitCase(object):
     def check_appium(self):
         while True:
             command = "netstat -aon|findstr %s" % self.device_info["port"]
-            server = re.findall(r".+LISTENING.+", os.popen(command).read())
-            if server is []:
+            try:
+                re.findall(r".+LISTENING.+", os.popen(command).read())[0]
+            except IndexError:
                 time.sleep(1)
             else:
                 self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))

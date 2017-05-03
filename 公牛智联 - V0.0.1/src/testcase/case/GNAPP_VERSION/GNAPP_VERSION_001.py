@@ -12,7 +12,7 @@ class GNAppVersion1(LaunchApp):
         self.ZenTao_id = 1992  # 禅道ID
         self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_VERSION_001
 
-        elf.launch_app(Login_page=False)  # 启动APP
+        self.launch_app(Login_page=False)  # 启动APP
         self.case()
 
     # 用例动作

@@ -468,17 +468,14 @@ def add_notes():
     rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_002" in filename:
+            if "GNAPP" in filename and "pyc" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
                 with open(filepath, "r") as files:
-                    a = "def case_over(self, success):"
-                    print re.findall(".+%s.+" % a, files.read())
-
-                    # for i in range(1, lines + 1):
-                    #     if '''        if self.ZenTao_id in database[device_name].keys():''' in linecache.getline(filepath, i):
-                    #         print linecache.getline(filepath, i), filename
+                    for i in range(1, lines + 1):
+                        if '''elf.launch_app(Login_page=''' in linecache.getline(filepath, i):
+                            print linecache.getline(filepath, i), filename
                     # files.write(linecache.getline(filepath, i).replace("object", "LaunchApp"))
                     # files.write('''    def run(self):\n''')
                     # files.write('''                raise WebDriverException()\n''')
