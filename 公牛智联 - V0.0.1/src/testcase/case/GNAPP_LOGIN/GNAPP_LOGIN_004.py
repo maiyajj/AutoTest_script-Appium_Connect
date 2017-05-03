@@ -27,19 +27,7 @@ class GNAppLogin4(LaunchApp):
             self.logger.info(u"[APP_INF] APP退出")
             time.sleep(1)
 
-            try:
-                self.driver = self.launch_app()  # 启动APP
-                if self.driver == "WebDriverException":
-                    raise WebDriverException()
-
-                self.init_operate(self.driver)
-
-                ToLoginPage(self.driver, self.logger)  # 使APP跳转到登录页面等待
-
-                self.case()
-            except WebDriverException:
-                self.case_over("unknown")
-
+            self.launch_app(Login_page=True)
             self.logger.info(u"[APP_INF] APP重新启动")
             while True:
                 if self.driver.current_activity == login_popup["activity"][0]:

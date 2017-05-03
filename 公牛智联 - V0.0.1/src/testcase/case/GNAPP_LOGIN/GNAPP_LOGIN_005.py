@@ -74,16 +74,7 @@ class GNAppLogin5(LaunchApp):
             self.logger.info(u"[APP_INF] APP退出")
             time.sleep(1)
 
-            try:
-                self.driver = launch_app(self.device_info)  # 启动APP
-                if self.driver == "WebDriverException":
-                    raise WebDriverException()
-                widget_check_unit = WidgetCheckUnit(self.driver, self.logger)  # 元素初始化
-                self.widget_click = widget_check_unit.widget_click  # 初始化self.widget_click
-                self.wait_widget = widget_check_unit.wait_widget  # 初始化self.wait_widget
-            except WebDriverException:
-                self.case_over("unknown")
-
+            self.launch_app(Login_page=True)
             self.logger.info(u"[APP_INF] APP重新启动")
             while True:
                 if self.driver.current_activity == login_popup["activity"][0]:
