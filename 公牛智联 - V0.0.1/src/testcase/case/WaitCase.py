@@ -27,6 +27,7 @@ class WaitCase(object):
 
         self.report = None
         self.logger = None
+        self.xls = None
         self.No = 1
         self.row = 12
         database[device_name] = {}
@@ -52,7 +53,7 @@ class WaitCase(object):
         while True:
             command = "netstat -aon|findstr %s" % self.device_info["port"]
             server = re.findall(r".+LISTENING.+", os.popen(command).read())
-            if server == []:
+            if server is []:
                 time.sleep(1)
             else:
                 self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
@@ -144,27 +145,27 @@ class WaitCase(object):
     def write_report(self, case_name):
         case = case_name(self.device_list, self.device_name, self.logger).output()
         end_time = time.strftime("%Y-%m-%d %H:%M:%S")
-        ZenTao_id = case[1]
+        zentao_id = case[1]
         data = u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % \
-               (ZenTao_id, case[0], " " * (7 - len(case[0])), case[2], database["program_loop_time"],
+               (zentao_id, case[0], " " * (7 - len(case[0])), case[2], database["program_loop_time"],
                 self.No, case[3], end_time)
         self.report.info(data)
         xls_data = database[self.device_name]
-        xls_data[ZenTao_id]["end_time"] = end_time
-        if "row" in xls_data[ZenTao_id].keys():
+        xls_data[zentao_id]["end_time"] = end_time
+        if "row" in xls_data[zentao_id].keys():
             pass
         else:
-            xls_data[ZenTao_id]["row"] = self.row
+            xls_data[zentao_id]["row"] = self.row
             self.row += 1
-        self.xls.write_data(xls_data[ZenTao_id]["row"],
-                            xls_data[ZenTao_id]["ZenTao"],
-                            xls_data[ZenTao_id]["case_title"],
-                            xls_data[ZenTao_id]["end_time"],
-                            xls_data[ZenTao_id]["test_count"],
-                            xls_data[ZenTao_id]["test_pass"],
-                            xls_data[ZenTao_id]["test_fail"],
-                            xls_data[ZenTao_id]["test_error"],
-                            xls_data[ZenTao_id]["test_wait"])
+        self.xls.write_data(xls_data[zentao_id]["row"],
+                            xls_data[zentao_id]["ZenTao"],
+                            xls_data[zentao_id]["case_title"],
+                            xls_data[zentao_id]["end_time"],
+                            xls_data[zentao_id]["test_count"],
+                            xls_data[zentao_id]["test_pass"],
+                            xls_data[zentao_id]["test_fail"],
+                            xls_data[zentao_id]["test_error"],
+                            xls_data[zentao_id]["test_wait"])
 
         self.No += 1
         database["case_location"] = self.No
