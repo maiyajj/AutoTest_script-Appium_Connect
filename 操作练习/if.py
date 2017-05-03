@@ -1,24 +1,17 @@
-from multiprocessing import Process, Value, Array
+# coding=utf-8
+import os
 
-a = {1: 4, 2: 5}
+from xlwt import *
 
+xfstyle = XFStyle()
 
-def f(n):
-    print n.get_obj()
+align = Alignment()
+align.dire = align.DIRECTION_LR
 
+xfstyle.alignment = align
 
-if __name__ == '__main__':
-    num = Value('d')
-    arr = Array('i', a)
-    p = Process(target=f, args=(arr,))
-    p.start()
-    p.join()
-    a = []
-    # for i in xrange(1,122):
-    #     try:
-    #         num = arr(chr(i))
-    #         a.append(chr(i))
-    #     except TypeError:
-    #         pass
-    # print a
-    # print
+wb = Workbook()
+ws = wb.add_sheet('sheet1')
+ws.write(3, 3, "Header", xfstyle)
+wb.save('width.xls')
+os.popen("start width.xls")

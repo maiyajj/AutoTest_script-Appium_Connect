@@ -1,3 +1,4 @@
+# coding=utf-8
 import xlrd
 import xlwt
 # import xlutils
@@ -29,3 +30,7 @@ newWs.write(0, 2, "value3")
 print"write new values ok"
 newWb.save('width.xls')
 print"save with same name ok"
+
+
+# 不用此方法，xlwt支持改写，加内部参数即可cell_overwrite_ok=True
+# self.sheet = self.book.add_sheet(self.sheet_name, cell_overwrite_ok=True)

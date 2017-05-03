@@ -9,6 +9,8 @@ def scan_case_name():
     case_attr = []
     list_case_id = {}
     rootdir = r"./src/testcase/case"  # 指明被遍历的文件夹
+    if os.path.exists(r"./report/") is False:
+        os.makedirs(r"./report/")
     with open(u"./report/自动化测试用例对照表.log", "w") as cast_title:
         cast_title.write(u"自动化测试用例对照表:\n".encode("utf-8"))
         for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字

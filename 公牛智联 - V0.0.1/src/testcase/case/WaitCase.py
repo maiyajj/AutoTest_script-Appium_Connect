@@ -11,6 +11,7 @@ from src.testcase.case.INPUT_CASE.GNAppForgetPassword import *
 from src.testcase.case.INPUT_CASE.GNAppLogin import *
 from src.testcase.case.INPUT_CASE.GNAppMessageClassify import *
 from src.testcase.case.INPUT_CASE.GNAppRegister import *
+from src.testcase.case.INPUT_CASE.GNAppThemeStyle import *
 from src.testcase.case.INPUT_CASE.GNAppUsingHelp import *
 from src.testcase.case.INPUT_CASE.GNAppVersion import *
 from src.utils.CollectLog import *
@@ -27,7 +28,7 @@ class WaitCase(object):
         self.report = None
         self.logger = None
         self.No = 1
-        self.row = 11
+        self.row = 12
         database[device_name] = {}
 
         self.create_log()
@@ -141,7 +142,7 @@ class WaitCase(object):
             database["program_loop_time"] += 1
 
     def write_report(self, case_name):
-        case = case_name(self.device_list, self.device_name, self.logger).result()
+        case = case_name(self.device_list, self.device_name, self.logger).output()
         end_time = time.strftime("%Y-%m-%d %H:%M:%S")
         ZenTao_id = case[1]
         data = u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % \
@@ -150,7 +151,6 @@ class WaitCase(object):
         self.report.info(data)
         xls_data = database[self.device_name]
         xls_data[ZenTao_id]["end_time"] = end_time
-        print xls_data
         if "row" in xls_data[ZenTao_id].keys():
             pass
         else:

@@ -45,3 +45,91 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
 14、Android的toast消息机制uiautomatorviewer获取不到，appium无法识别，暂时使用截屏方式解决
 15、WPS的excel中sheet名称不能包含[]，能包含(){}，但是在adb中名称不能包含()，所以最终的命名取为{}
 16、os.getenv('Temp')可以获得path中变量的值，此值为C:\Users\Maiyajj\AppData\Local\Temp
+17、time.strftime("%Y-%m-%d %H:%M:%S") → '2017-05-03 15:18:28'
+    a = time.strptime('2017-05-03 15:18:28', "%Y-%m-%d %H:%M:%S") ↓
+                time.struct_time(tm_year=2017, tm_mon=5, tm_mday=3, tm_hour=15, tm_min=18, tm_sec=28, tm_wday=2, tm_yday=123, tm_isdst=-1)
+    a[0],a[1]...
+18、list中的set是无序的，不能保证顺序a = [5,4,3,2,1]经过set后set(a)输出的值为set类型值“set([1,2,3,4,5])”，是没有取值属性的：例如set([**])[0]是非法的。
+19、xlwt三方库中的单元格格式有两种方法：1、easyxf；2、XFStyle()
+    1、easyxf()参数：参考文件C:/Python/Python27/Lib/site-packages/xlwt/Formatting.py
+        self.font            = Formatting.Font()
+        self.alignment       = Formatting.Alignment()
+        self.borders         = Formatting.Borders()
+        self.pattern         = Formatting.Pattern()
+        self.protection      = Formatting.Protection()
+        编写格式：easyxf('font: height 240, name Arial, colour_index black, bold on, italic on;'
+                        'align: wrap on, vert centre, horiz left;'
+                        'borders: top NO_LINE, bottom THIN, left dashed, right double;'
+                        'pattern: pattern solid, fore_colour 23')
+    2、XFStyle()参数
+        self.xfstyle = XFStyle()
+
+        font = Font()
+        font.height = 11 * 20
+        font.name = u"宋体"
+
+        borders = Borders()
+        borders.top = Borders.THIN
+        borders.bottom = Borders.THIN
+        borders.left = Borders.THIN
+        borders.right = Borders.THIN
+
+        align = Alignment()
+        align.horz = Alignment.HORZ_CENTER
+
+        self.xfstyle.font = font
+        self.xfstyle.borders = borders
+        self.xfstyle.alignment = align
+
+        使用格式为self.xfstyle：
+        self.sheet.write(total_row, 7, Formula(formula), self.xfstyle)
+    font参数有(
+        self.height = 0x00C8 # 200: this is font with height 10 points,  # 高度
+        self.italic = False  # 倾斜
+        self.struck_out = False  # 删除线
+        self.outline = False  # 轮廓
+        self.shadow = False  # 阴影
+        self.colour_index = 0x7FFF  # 文字颜色
+        self.bold = False  # 粗体
+        self._weight = 0x0190 # 0x02BC gives bold font  # 宽度
+        self.escapement = self.ESCAPEMENT_NONE  # 上标下标
+        self.underline = self.UNDERLINE_NONE  # 下划线
+        self.family = self.FAMILY_NONE  # 不知道啥，用不到吧
+        self.charset = self.CHARSET_SYS_DEFAULT  # 字符集
+        self.name = 'Arial'  # 字体)
+    alignment参数有(
+        self.horz = self.HORZ_GENERAL  # 左右对齐
+        self.vert = self.VERT_BOTTOM  # 上下对齐
+        self.dire = self.DIRECTION_GENERAL  #
+        self.orie = self.ORIENTATION_NOT_ROTATED
+        self.rota = self.ROTATION_0_ANGLE
+        self.wrap = self.NOT_WRAP_AT_RIGHT  # 自动换行
+        self.shri = self.NOT_SHRINK_TO_FIT  # 自动收缩
+        self.inde = 0
+        self.merg = 0)
+    borders参数有(
+        self.left   = self.NO_LINE  # 边框线条
+        self.right  = self.NO_LINE
+        self.top    = self.NO_LINE
+        self.bottom = self.NO_LINE
+        self.diag   = self.NO_LINE
+
+        self.left_colour   = 0x40  # 边框颜色
+        self.right_colour  = 0x40
+        self.top_colour    = 0x40
+        self.bottom_colour = 0x40
+        self.diag_colour   = 0x40
+
+        self.need_diag1 = self.NO_NEED_DIAG1
+        self.need_diag2 = self.NO_NEED_DIAG2)
+    pattern参数有(
+        self.pattern = self.NO_PATTERN  # SOLID_PATTERN  # 是否颜色填充
+        self.pattern_fore_colour = 0x40
+        self.pattern_back_colour = 0x41)
+    Protection参数有(
+        self.cell_locked = 1
+        self.formula_hidden = 0)
+
+20、xlwt支持改写，加内部参数即可cell_overwrite_ok=True
+# self.sheet = self.book.add_sheet(self.sheet_name, cell_overwrite_ok=True)
+21、

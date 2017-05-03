@@ -54,14 +54,21 @@ class WriteXls(object):
         self.xfstyle.borders = borders
         self.xfstyle.alignment = align
 
-    def run(self):
-        self.case_count = []
-        self.style()
+    def check_path(self):
+        current_time = time.strftime("%Y-%m-%d_%H.%M")
+        parent_path = r"./report/xls_report/%s" % current_time
+        if os.path.exists(parent_path) is False:
+            os.makedirs(parent_path)
+
         self.sheet_name = "%s{%s}" % (self.device_info["model"], self.device_info["udid"])
-        os.getenv('Temp')
-        self.xls_file = "%s{%s}.xls" % (self.device_info["model"], self.device_info["udid"])
-        with open(self.xls_file, "w") as files:
-            del files
+        self.xls_file = r"%s/%s.xls" % (parent_path, self.sheet_name)
+
+    def run(self):
+        self.style()
+        self.check_path()
+
+        self.case_count = []
+        self.total_row = []
         self.book = Workbook(encoding='utf-8')
         self.sheet = self.book.add_sheet(self.sheet_name, cell_overwrite_ok=True)
         self.write_title()
@@ -70,46 +77,50 @@ class WriteXls(object):
 
     def write_title(self):
         self.sheet.col(0).width = 256 * 15
-        self.sheet.col(1).width = 256 * 56
-        for i in xrange(2, 7):
-            self.sheet.col(i).width = 256 * 9
+        self.sheet.col(1).width = 256 * 70
+        for i in xrange(2, 8):
+            self.sheet.col(i).width = 256 * 11
 
         self.sheet.write_merge(0, 1, 0, 7, u"测试报告", easyxf(
             u'font: height 320, name 宋体, colour_index 70, bold on; align: wrap on, vert top, horiz left; borders: top thin, left thin, right thin;'))
         self.sheet.write_merge(2, 2, 0, 7, "", easyxf(
             u'font: height 220, name 宋体; align: wrap on; borders: left thin, right thin;'))
 
-        self.sheet.write(3, 0, "Start Time:", easyxf(
-            u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: left thin;'))
-
         self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
+        self.sheet.write(3, 0, u"开始时间：", easyxf(
+            u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: left thin;'))
         self.sheet.write_merge(3, 3, 1, 7, self.start_time, easyxf(
             u'font: height 220, name 宋体; align: wrap on, horiz left; borders: right thin;'))
 
-        self.sheet.write(4, 0, "Duration:", easyxf(
+        self.sheet.write(4, 0, u"结束时间：", easyxf(
             u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: left thin;'))
-        self.sheet.write_merge(4, 4, 1, 7, "0:00:00", easyxf(
+        self.sheet.write_merge(4, 4, 1, 7, self.start_time, easyxf(
             u'font: height 220, name 宋体; align: wrap on, horiz left; borders: right thin;'))
 
-        self.sheet.write(5, 0, "Status:", easyxf(
+        self.sheet.write(5, 0, u"持续时间：", easyxf(
             u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: left thin;'))
-        self.sheet.write_merge(5, 5, 1, 7, "Pass 0", easyxf(
+        self.sheet.write_merge(5, 5, 1, 7, "0:00:00", easyxf(
             u'font: height 220, name 宋体; align: wrap on, horiz left; borders: right thin;'))
 
-        self.sheet.write(6, 0, "Total Case:", easyxf(
+        self.sheet.write(6, 0, u"执行结果：", easyxf(
             u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: left thin;'))
-        self.sheet.write_merge(6, 6, 1, 7, 0, easyxf(
+        self.sheet.write_merge(6, 6, 1, 7, u"通过 0； 失败 0； 执行错误 0； 人工检查 0；", easyxf(
             u'font: height 220, name 宋体; align: wrap on, horiz left; borders: right thin;'))
 
-        self.sheet.write_merge(7, 7, 0, 7, "", easyxf(
+        self.sheet.write(7, 0, u"执行用例数：", easyxf(
+            u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: left thin;'))
+        self.sheet.write_merge(7, 7, 1, 7, 0, easyxf(
+            u'font: height 220, name 宋体; align: wrap on, horiz left; borders: right thin;'))
+
+        self.sheet.write_merge(8, 8, 0, 7, "", easyxf(
             u'font: height 220, name 宋体; align: wrap on, horiz left; borders: left thin, right thin;'))
-        self.sheet.write_merge(8, 8, 0, 7, u"用例执行情况：", easyxf(
+        self.sheet.write_merge(9, 9, 0, 7, u"用例执行情况：", easyxf(
             u'font: height 220, name 宋体; align: wrap on, horiz left; borders: left thin, right thin;'))
-        self.sheet.write_merge(9, 9, 0, 7, "", easyxf(
+        self.sheet.write_merge(10, 10, 0, 7, "", easyxf(
             u'font: height 220, name 宋体; align: wrap on, horiz left; borders: left thin, right thin;'))
 
-        row = 10
-        write_list = ["ZenTao_ID", "Test Group/Test Case", "Count", "Pass", "Fail", "Error", "Wait", "Result"]
+        row = 11
+        write_list = [u"禅道ID", u"用例名称", u"执行次数", u"通过", u"失败", u"未知错误", u"人工检查", u"最终结果"]
         for i in write_list:
             self.sheet.write(row, write_list.index(i), i, easyxf(
                 u'font: height 220, name 宋体, colour_index white, bold on; align: wrap on, horiz left; borders: left thin, right thin; pattern: pattern solid, fore_colour 23'))
@@ -155,22 +166,24 @@ class WriteXls(object):
         self.write_total(row + 1, end_time)
 
     def write_total(self, row, end_times):
-        self.sheet.write(row, 0, "Total", easyxf(
+        self.total_row.append(row)
+        self.total_row = list(set(self.total_row))
+        total_row = max(self.total_row)
+        total_row_min = min(self.total_row)
+        self.sheet.write(total_row, 0, "Total", easyxf(
             u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: top thin, bottom thin, left thin;'))
-        self.sheet.write(row, 1, "", easyxf(
+        self.sheet.write(total_row, 1, "", easyxf(
             u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: top thin, bottom thin, right thin;'))
         for i in xrange(2, 7):
-            formula = 'SUM({0}12:{0}{1})'.format(chr(i + 65), row)
-            self.sheet.write(row, i, Formula(formula), easyxf(
+            formula = 'SUM({0}{2}:{0}{1})'.format(chr(i + 65), total_row, total_row_min)
+            self.sheet.write(total_row, i, Formula(formula), easyxf(
                 u'font: height 220, name 宋体; align: wrap on; borders: top thin, bottom thin, left thin, right thin;'))
 
-        formula = 'COUNTIF(H12:H{0},"Pass")/COUNTA(H12:H{0})'.format(row)
-
+        formula = 'COUNTIF(H{1}:H{0},"Pass")/COUNTA(H{1}:H{0})'.format(total_row, total_row_min)
         self.xfstyle.num_format_str = "0%"
-        self.sheet.write(row, 7, Formula(formula), self.xfstyle)
+        self.sheet.write(total_row, 7, Formula(formula), self.xfstyle)
 
-        formula = '"Pass "&COUNTIF(H12:H{0},"Pass")'.format(row)
-        self.sheet.write_merge(5, 5, 1, 7, Formula(formula), easyxf(
+        self.sheet.write_merge(4, 4, 1, 7, end_times, easyxf(
             u'font: height 220, name 宋体; align: wrap on, horiz left; borders: right thin;'))
 
         start_time = time.strptime(self.start_time, "%Y-%m-%d %H:%M:%S")
@@ -179,27 +192,16 @@ class WriteXls(object):
                                        start_time[3], start_time[4], start_time[5])
         end_time = datetime.datetime(end_time[0], end_time[1], end_time[2],
                                      end_time[3], end_time[4], end_time[5])
-        self.time = end_time - start_time
-        self.sheet.write_merge(4, 4, 1, 7, str(self.time), easyxf(
+        continue_time = end_time - start_time
+        self.sheet.write_merge(5, 5, 1, 7, str(continue_time), easyxf(
             u'font: height 220, name 宋体; align: wrap on, horiz left; borders: right thin;'))
 
-        self.sheet.write_merge(6, 6, 1, 7, len(set(self.case_count)), easyxf(
+        formula = u'"通过 "&COUNTIF(H13:H{0},"Pass")&"； 失败 "&COUNTIF(H13:H{0},"Fail")&"； 执行错误 "&' \
+                  u'COUNTIF(H13:H{0},"Error")&"； 人工检查 "&COUNTIF(H13:H{0},"Wait")&"；"'.format(total_row)
+        self.sheet.write_merge(6, 6, 1, 7, Formula(formula), easyxf(
+            u'font: height 220, name 宋体; align: wrap on, horiz left; borders: right thin;'))
+
+        self.sheet.write_merge(7, 7, 1, 7, len(set(self.case_count)), easyxf(
             u'font: height 220, name 宋体; align: wrap on, horiz left; borders: right thin;'))
 
         self.book.save(self.xls_file)
-
-# device_list = {'8681-M02-0xa0a151df': {'deviceName': '8681-M02', 'log_name': '8681-M02', 'bp_port': 4726,
-#                                        'udid': '8681-M02-0xa0a151df',
-#                                        'desired_caps': {'unicodeKeyboard': 'True', 'deviceName': '8681-M02',
-#                                                         'driver': '8681-M02-0xa0a151df', 'browserName': '',
-#                                                         'resetKeyboard': 'True', 'platformVersion': '5.1',
-#                                                         'appPackage': 'com.iotbull.android.superapp',
-#                                                         'platformName': 'Android',
-#                                                         'appActivity': 'com.iotbull.android.superapp.activitys.regist_login.SplashActivity'},
-#                                        'platformVersion': '5.1', 'model': '8681_M02', 'platformName': 'Android',
-#                                        'port': 4725, 'dpi': {'width': '1080', 'height': '1920'}}}
-# device_name = '8681-M02-0xa0a151df'
-#
-# xls = WriteXls(device_list, device_name)
-# xls.write_data(12, 1970, u"密码修改页面，旧密码输入错误，提示信息检查", 1, 1, 0, 0, 0)
-# xls.write_data(13, 1970, u"密码修改页面，旧密码输入错误，提示信息检查", 1, 1, 0, 0, 0)

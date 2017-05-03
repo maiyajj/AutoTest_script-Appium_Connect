@@ -2,6 +2,7 @@
 import logging
 import logging.handlers
 import os
+import time
 
 
 def init_log(file_name, log):
@@ -16,14 +17,12 @@ def init_log(file_name, log):
 def check_log(device_list, device_name):
     log_name = device_list[device_name]["log_name"]
     udid = device_list[device_name]["udid"]
-    try:
-        with open(r"./log/%s - [%s].log" % (log_name, udid), "w") as logger_file:
-            del logger_file
-            pass
-    except IOError:
-        os.makedirs(r"./log/")
+    current_time = time.strftime("%Y-%m-%d_%H.%M")
 
-    device_list[device_name]["logger"] = init_log(r"./log/%s - [%s].log" %
-                                                  (log_name, udid), logging.getLogger("Log_%s" % udid))
+    if os.path.exists(r"./log/%s" % current_time) is False:
+        os.makedirs(r"./log/%s" % current_time)
+
+    logger_name = r"./log/%s/%s - [%s].log" % (current_time, log_name, udid)
+    device_list[device_name]["logger"] = init_log(logger_name, logging.getLogger("Log_%s" % udid))
 
     logging.shutdown()

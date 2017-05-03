@@ -2,6 +2,7 @@
 import logging
 import logging.handlers
 import os
+import time
 
 
 def init_report(file_name, report1):
@@ -16,18 +17,16 @@ def init_report(file_name, report1):
 def check_report(device_list, device_name):
     log_name = device_list[device_name]["log_name"]
     udid = device_list[device_name]["udid"]
+    current_time = time.strftime("%Y-%m-%d_%H.%M")
 
-    try:
-        with open(r"./report/Report_%s - [%s].log" % (log_name, udid), "w") as report_file:
-            del report_file
-            pass
-    except IOError:
-        os.makedirs(r"./report/")
+    log_report = r"./report/log_report/%s" % current_time
+    if os.path.exists(log_report) is False:
+        os.makedirs(log_report)
 
     if os.path.exists(r"./screenshots/") is False:
         os.makedirs(r"./screenshots/")
 
-    device_list[device_name]["report"] = init_report(r"./report/Report_%s - [%s].log" %
-                                                     (log_name, udid), logging.getLogger("Report_%s" % udid))
+    logger_name = r"%s/Report_%s - [%s].log" % (log_report, log_name, udid)
+    device_list[device_name]["report"] = init_report(logger_name, logging.getLogger("Report_%s" % udid))
 
     logging.shutdown()

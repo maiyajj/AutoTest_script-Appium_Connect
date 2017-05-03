@@ -69,6 +69,7 @@ def create_INPUT_CASE():
     FeedBack = open(r"./src/testcase/case/INPUT_CASE/GNAppFeedBack.py", "w")
     UsingHelp = open(r"./src/testcase/case/INPUT_CASE/GNAppUsingHelp.py", "w")
     Version = open(r"./src/testcase/case/INPUT_CASE/GNAppVersion.py", "w")
+    ThemeStyle = open(r"./src/testcase/case/INPUT_CASE/GNAppThemeStyle.py", "w")
 
     DevicePage.write("# coding=utf-8\n")
     ForgetPassword.write("# coding=utf-8\n")
@@ -79,6 +80,7 @@ def create_INPUT_CASE():
     FeedBack.write("# coding=utf-8\n")
     UsingHelp.write("# coding=utf-8\n")
     Version.write("# coding=utf-8\n")
+    ThemeStyle.write("# coding=utf-8\n")
 
     for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
         for filename in filenames:
@@ -102,6 +104,8 @@ def create_INPUT_CASE():
                     UsingHelp.write("from src.testcase.case.GNAPP_USING_HELP.%s import *\n" % filename)
                 if "GNAPP_VERSION" in filename:
                     Version.write("from src.testcase.case.GNAPP_VERSION.%s import *\n" % filename)
+                if "GNAPP_THEME_STYLE" in filename:
+                    ThemeStyle.write("from src.testcase.case.GNAPP_THEME_STYLE.%s import *\n" % filename)
     DevicePage.close()
     ForgetPassword.close()
     Login.close()
@@ -111,6 +115,7 @@ def create_INPUT_CASE():
     FeedBack.close()
     UsingHelp.close()
     Version.close()
+    ThemeStyle.close()
 
 
 def create_WaitCase():
@@ -463,20 +468,22 @@ def add_notes():
     rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_001" not in filename and "GNAPP_LOGIN_002" not in filename:
+            if "GNAPP" in filename and "pyc" not in filename and "GNAPP_LOGIN_002" in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "w") as files:
-                    for i in range(1, lines + 1):
-                        if '''self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] unknown!' % self.case_title)''' in linecache.getline(
-                                filepath, i):
-                            print filename, linecache.getline(filepath, i)
-                            files.write(linecache.getline(filepath, i))
-                            files.write(
-                                '''            database[self.device_name][self.ZenTao_id]["test_error"] += 1\n''')
-                        else:
-                            files.write(linecache.getline(filepath, i))
+                with open(filepath, "r") as files:
+                    a = "def case_over(self, success):"
+                    print re.findall(".+%s.+" % a, files.read())
+
+                    # for i in range(1, lines + 1):
+                    #     if '''        if self.ZenTao_id in database[device_name].keys():''' in linecache.getline(filepath, i):
+                    #         print linecache.getline(filepath, i), filename
+                    # files.write(linecache.getline(filepath, i).replace("object", "LaunchApp"))
+                    # files.write('''    def run(self):\n''')
+                    # files.write('''                raise WebDriverException()\n''')
+                    # else:
+                    #     files.write(linecache.getline(filepath, i))
 
 # create_ReadConf()  # 创建ReadConf.py 必须
 # create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
