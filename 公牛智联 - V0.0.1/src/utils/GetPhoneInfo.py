@@ -8,47 +8,66 @@ sys.setdefaultencoding('utf-8')
 
 
 def get_phone_info():
+    """
+    获取手机信息：
+    udid,
+    系统版本号
+    设备名称
+    设备型号
+    设备分辨率
+    Appium可使用的端口
+    :return: dict: device{}
+    """
+
+    device = {}  # 初始化字典，包含所需设备信息
+
+    # 获取多个设备的udid #
     command = "adb devices -l"
     devices = os.popen(command).read()
     device_list = re.findall("(.+?)device product.+?model:(.+?) ", devices)
-    device = {}
     for i in device_list:
         i0 = i[0].split()
         i1 = i[1].split()
-        device[i0[0]] = {"udid": i0[0], "model": i1[0]}
-    selected_port = 4725
+        device[i0[0]] = {"udid": i0[0], "model": i1[0]}  # {udid:{"udid": udid, "model": model}}
+
+    # 获取多个设备的信息
+    selected_port = 4725  # Appium服务初始选择端口
     for k, v in device.items():
+
+        # 系统版本号 #
         command = "adb -s %s shell getprop ro.build.version.release" % v["udid"]
-        platformVersion = os.popen(command).read().split()[0]
-        device[k]["platformVersion"] = platformVersion
+        device[k]["platformVersion"] = os.popen(command).read().split()[0]
 
+        # 设备名称 #
         command = "adb -s %s shell getprop ro.product.model" % v["udid"]
-        deviceName = os.popen(command).read().split()[0]
-        device[k]["deviceName"] = deviceName
+        device[k]["deviceName"] = os.popen(command).read().split()[0]
 
+        # 设备型号 #
         command = "adb -s %s shell getprop net.bt.name" % v["udid"]
-        platformName = os.popen(command).read().split()[0]
-        device[k]["platformName"] = platformName
+        device[k]["platformName"] = os.popen(command).read().split()[0]
 
+        # 设备分辨率 #
+        device[k]["dpi"] = {}
         command = "adb -s %s shell dumpsys window displays" % v["udid"]
-        try:
-            device[k]["dpi"] = {}
-            DPI = os.popen(command).read()
-            tmp = re.findall("init=(.+?) ", DPI)[0].split("x")
-            device[k]["dpi"]['width'] = tmp[0]
-            device[k]["dpi"]['height'] = tmp[1]
-        except WindowsError:
-            pass
-        for i in xrange(selected_port, 4750):
-            command = 'netstat -aon|findstr %s' % i
-            used_port = re.findall(r".+LISTENING.+", os.popen(command).read())
-            if used_port == []:
-                device[k]["port"] = i
+        dpi = re.findall("init=(.+?) ", os.popen(command).read())[0].split("x")
+        device[k]["dpi"]['width'] = dpi[0]
+        device[k]["dpi"]['height'] = dpi[1]
+
+        # Appium可使用的端口 #
+        for i in xrange(selected_port, 4750):  # 可选端口：4725-4750，共25个端口可用
+            try:
+                command = 'netstat -aon|findstr %s' % i  # 判断当前端口是否被占用
+                used_port = re.findall(r".+LISTENING.+", os.popen(command).read())[0]
+                selected_port += 1  # 端口已被占用，端口号+1
+                del used_port
+            except IndexError:
+                device[k]["port"] = i  # appium与设备通讯端口
                 selected_port += 1
-                device[k]["bp_port"] = i + 1
+                device[k]["bp_port"] = i + 1  # appium的bp端口
                 selected_port += 1
                 break
-            else:
-                selected_port += 1
+
+        # 设备运行log文件名称 #
         device[k]["log_name"] = v["deviceName"]
-    return device
+
+    return device  # 返回device值
