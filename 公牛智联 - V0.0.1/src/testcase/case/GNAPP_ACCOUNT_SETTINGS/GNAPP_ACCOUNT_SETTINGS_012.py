@@ -17,6 +17,8 @@ class GNAppAccountSettings12(LaunchApp):
             self.case()
         except WebDriverException:
             pass  # Message: ***
+        except BaseException, e:
+            self.debug.error("%s:%s" % (self.basename, e))
 
     # 用例动作
     def case(self):
@@ -61,7 +63,7 @@ class GNAppAccountSettings12(LaunchApp):
             # KEYCODE_FORWARD_DEL 删除键 112
             self.driver.press_keycode(112)
             # 发送数据
-            data = conf["login_pwd"].decode('hex')
+            data = conf["user_and_pwd"][self.user][1].decode('hex')
             new_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
@@ -76,7 +78,7 @@ class GNAppAccountSettings12(LaunchApp):
             # KEYCODE_FORWARD_DEL 删除键 112
             self.driver.press_keycode(112)
             # 发送数据
-            data = conf["login_pwd"].decode('hex')
+            data = conf["user_and_pwd"][self.user][1].decode('hex')
             conform_new_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)

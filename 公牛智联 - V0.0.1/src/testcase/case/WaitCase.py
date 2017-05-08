@@ -30,27 +30,39 @@ class WaitCase(object):
         self.row = 12
         database[device_name] = {}
 
+        self.create_debug()
         self.create_log()
         self.create_report()
-        self.create_debug()
-        self.write_xls()
-        self.check_appium()
-        self.run()
+        # self.write_xls()
+        # self.check_appium()
+        # self.run()
 
     def create_log(self):
-        check_log(self.device_list, self.device_name)
-        self.logger = self.device_info["logger"]
+        try:
+            check_log(self.device_list, self.device_name)
+            self.logger = self.device_info["logger"]
+        except BaseException, e:
+            self.debug.error(e)
 
     def create_report(self):
-        check_report(self.device_list, self.device_name)
-        self.report = self.device_info["report"]
+        try:
+            check_report(self.device_list, self.device_name)
+            self.report = self.device_info["report"]
+        except BaseException, e:
+            self.debug.error(e)
 
     def create_debug(self):
-        check_debug(self.device_list, self.device_name)
-        self.debug = self.device_info["debug"]
+        try:
+            check_debug(self.device_list, self.device_name)
+            self.debug = self.device_info["debug"]
+        except BaseException, e:
+            self.debug.error(e)
 
     def write_xls(self):
-        self.xls = WriteXls(self.device_list, self.device_name)
+        try:
+            self.xls = WriteXls(self.device_list, self.device_name)
+        except BaseException, e:
+            self.debug.error(e)
 
     def check_appium(self):
         while True:
@@ -146,7 +158,11 @@ class WaitCase(object):
             database["program_loop_time"] += 1
 
     def write_report(self, case_name):
-        case = case_name(self.device_list, self.device_name, self.logger).output()
+        case = ()
+        try:
+            case = case_name(self.device_list, self.device_name, self.logger).output()
+        except BaseException, e:
+            self.debug.error(e)
         end_time = time.strftime("%Y-%m-%d %H:%M:%S")
         zentao_id = case[1]
         data = u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % \

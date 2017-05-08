@@ -17,6 +17,8 @@ class GNAppAccountSettings11(LaunchApp):
             self.case()
         except WebDriverException:
             pass  # Message: ***
+        except BaseException, e:
+            self.debug.error("%s:%s" % (self.basename, e))
 
     # 用例动作
     def case(self):

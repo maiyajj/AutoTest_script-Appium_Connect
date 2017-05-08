@@ -103,6 +103,7 @@ class WriteXls(object):
 
     def run(self):
         self.style()
+        self.easy_xf()
         self.check_path()
 
         self.case_count = []

@@ -17,6 +17,8 @@ class GNAppLogin11(LaunchApp):
             self.case()
         except WebDriverException:
             pass  # Message: ***
+        except BaseException, e:
+            self.debug.error("%s:%s" % (self.basename, e))
 
     # 用例动作
     def case(self):
@@ -43,7 +45,7 @@ class GNAppLogin11(LaunchApp):
 
             self.driver.press_keycode(29, 28672)
             self.driver.press_keycode(112)
-            data = conf["login_pwd"].decode('hex')
+            data = conf["user_and_pwd"][self.user][1].decode('hex')
             login_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["登录密码"] input success')
             time.sleep(0.5)

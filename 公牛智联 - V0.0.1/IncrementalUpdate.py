@@ -537,20 +537,22 @@ def check_AppPageElement():
 #         print PopupWidget().element()[values]
 
 def add_notes():
-    rootdir = r"./src/testcase/case"
+    rootdir = r"./src/"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename:
+            if "pyc" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
                 with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''len(''' in linecache.getline(filepath, i):
+                        if '''pass  # Message: ***''' in linecache.getline(filepath, i):
                             print linecache.getline(filepath, i), filename
-                            #     files.write("    "+linecache.getline(filepath, i))
-                            # else:
-                            #     files.write(linecache.getline(filepath, i))
+                            files.write(linecache.getline(filepath, i))
+                            files.write("        except BaseException, e:\n")
+                            files.write('            self.debug.error("%s:%s" % (self.basename, e))\n')
+                        else:
+                            files.write(linecache.getline(filepath, i))
                             # # for i in a:
                             #     filepath = os.path.join(parent,filename)
                             #     with open(filepath, "w") as files:
@@ -565,7 +567,7 @@ def add_notes():
 
 # create_ReadConf()  # 创建ReadConf.py 必须
 # create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
-create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
+# create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
 # create_WaitCase()  # 创建WaitCase.py 必须
 # file_renames() # 将文件名后缀从1变成001 可选
 # insert_code() # 将每个用例中插入from appium import webdriver 可选
@@ -575,5 +577,5 @@ create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
-# add_notes()
+add_notes()
 # check_AppPageElement()

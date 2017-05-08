@@ -15,6 +15,7 @@ class LaunchApp(object):
         self.device_info = device_list[device_name]
         self.logger = logger
         self.debug = self.device_info["debug"]
+        self.user = self.device_info["user_and_pwd"]
         self.case_module = ""  # 用例所属模块
         self.case_title = ""  # 用例名称
         self.zentao_id = 0000  # 禅道ID
@@ -77,9 +78,9 @@ class LaunchApp(object):
             self.init_operate(self.driver)
 
             if page_login is True and first_time is True:
-                ToLoginPage(self.driver, self.logger)  # 使APP跳转到登录页面等待
+                ToLoginPage(self.driver, self.logger, self.device_info)  # 使APP跳转到登录页面等待
             elif page_login is False and first_time is True:
-                ToDevicePage(self.driver, self.logger)  # 使APP跳转到设备主页面等待
+                ToDevicePage(self.driver, self.logger, self.device_info)  # 使APP跳转到设备主页面等待
         except WebDriverException:
             self.case_over("unknown")
             self.debug.error("case_over:Case launch unknown")

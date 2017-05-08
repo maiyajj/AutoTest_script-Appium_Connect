@@ -3,9 +3,10 @@ from src.testcase.common.WidgetCheckUnit import *
 
 
 class ToLoginPage(object):
-    def __init__(self, driver, logger):
+    def __init__(self, driver, logger, device_info):
         self.driver = driver
         self.logger = logger
+        self.device_info = device_info
         widget_check_unit = WidgetCheckUnit(self.driver, self.logger)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget

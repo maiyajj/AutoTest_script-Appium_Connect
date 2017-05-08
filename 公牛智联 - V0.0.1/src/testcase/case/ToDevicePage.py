@@ -4,9 +4,10 @@ from src.utils.ReadConf import *
 
 
 class ToDevicePage(object):
-    def __init__(self, driver, logger):
+    def __init__(self, driver, logger, device_info):
         self.driver = driver
         self.logger = logger
+        self.device_info = device_info
         widget_check_unit = WidgetCheckUnit(self.driver, self.logger)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
@@ -57,7 +58,7 @@ class ToDevicePage(object):
                         # KEYCODE_FORWARD_DEL 删除键 112
                         self.driver.press_keycode(112)
                         # 发送数据
-                        data = conf["user_name"].decode('hex')
+                        data = conf["user_and_pwd"][self.device_info["user_and_pwd"]][0].decode('hex')
                         user_name.send_keys(data)
                         self.logger.info(u'[APP_INPUT] ["重新登陆用户名"] input success')
                         time.sleep(0.5)
@@ -69,7 +70,7 @@ class ToDevicePage(object):
 
                         self.driver.press_keycode(29, 28672)
                         self.driver.press_keycode(112)
-                        data = conf["login_pwd"].decode('hex')
+                        data = conf["user_and_pwd"][self.device_info["user_and_pwd"]][1].decode('hex')
                         login_pwd.send_keys(data)
                         self.logger.info(u'[APP_INPUT] ["重新输入登录密码"] input success')
 

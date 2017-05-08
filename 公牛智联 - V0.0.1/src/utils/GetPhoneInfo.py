@@ -54,7 +54,7 @@ def get_phone_info():
         device[k]["dpi"]['height'] = dpi[1]
 
         # Appium可使用的端口 #
-        for i in xrange(selected_port, 4750):  # 可选端口：4725-4750，共25个端口可用
+        for i in xrange(selected_port, selected_port + 25):  # 提供25个可选端口
             try:
                 command = 'netstat -aon|findstr %s' % i  # 判断当前端口是否被占用
                 used_port = re.findall(r".+LISTENING.+", os.popen(command).read())[0]
