@@ -33,9 +33,9 @@ class WaitCase(object):
         self.create_debug()
         self.create_log()
         self.create_report()
-        # self.write_xls()
-        # self.check_appium()
-        # self.run()
+        self.write_xls()
+        self.check_appium()
+        self.run()
 
     def create_log(self):
         try:
