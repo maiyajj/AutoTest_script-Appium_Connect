@@ -1,6 +1,4 @@
 # coding=utf-8
-import os
-
 from src.testcase.case.LaunchApp import *
 from src.utils.ScreenShot import *
 
@@ -9,11 +7,16 @@ class GNAppLogin1(LaunchApp):
     def run(self):
         self.case_module = u"登录"  # 用例所属模块
         self.case_title = u'登录页面—新用户注册页面跳转'  # 用例名称
-        self.ZenTao_id = 1889  # 禅道ID
+        self.zentao_id = 1889  # 禅道ID
         self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_LOGIN_001
+        self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
+                         % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
 
-        self.launch_app(Login_page=True)  # 启动APP
-        self.case()
+        try:
+            self.launch_app(True)  # 启动APP
+            self.case()
+        except WebDriverException:
+            pass  # Message: ***
 
     def case(self):
         try:

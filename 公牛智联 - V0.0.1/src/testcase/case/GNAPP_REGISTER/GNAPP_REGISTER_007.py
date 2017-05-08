@@ -1,6 +1,4 @@
 # coding=utf-8
-import os
-
 from src.testcase.case.LaunchApp import *
 from src.utils.ScreenShot import *
 
@@ -9,11 +7,16 @@ class GNAppRegister7(LaunchApp):
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-验证码为中文字符时，提示信息检查'  # 用例名称
-        self.ZenTao_id = 1880  # 禅道ID
+        self.zentao_id = 1880  # 禅道ID
         self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_REGISTER_007
+        self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
+                         % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
 
-        self.launch_app(Login_page=True)  # 启动APP
-        self.case()
+        try:
+            self.launch_app(True)  # 启动APP
+            self.case()
+        except WebDriverException:
+            pass  # Message: ***
 
     # 用例动作
     def case(self):
@@ -36,8 +39,7 @@ class GNAppRegister7(LaunchApp):
             time.sleep(0.5)
 
             check_code = self.wait_widget(register_page["check_code"], 1, 0.5).get_attribute("name")
-            len_check_code = len(check_code)
-            if len_check_code != 0:
+            if len(check_code) != 0:
                 raise TimeoutException()
 
             self.case_over(True)

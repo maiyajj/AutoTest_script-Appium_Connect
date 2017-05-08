@@ -1,7 +1,4 @@
 # coding=utf-8
-import time
-
-from selenium.common.exceptions import *
 from src.testcase.common.WidgetCheckUnit import *
 
 
@@ -64,8 +61,9 @@ class ToLoginPage(object):
                                       1, 1, 1, 10, 0.5, 0)
 
                 except TimeoutException:
-                    self.logger.info(u"[APP_INF] APP进入设备主页失败，正在重新启动")
+                    self.logger.info(u"[APP_INF] APP进入登录页面失败，正在重新启动")
                     self.driver.quit()
+                    raise WebDriverException()
 
             if self.driver.current_activity == login_page["activity"][0]:
                 self.logger.info(u"[APP_INF] APP当前页面为登录页面")

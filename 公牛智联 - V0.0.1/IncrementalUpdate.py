@@ -82,30 +82,102 @@ def create_INPUT_CASE():
     Version.write("# coding=utf-8\n")
     ThemeStyle.write("# coding=utf-8\n")
 
+    tmpDevicePage = []
+    tmpForgetPassword = []
+    tmpLogin = []
+    tmpMessageClassify = []
+    tmpAccountSettings = []
+    tmpRegister = []
+    tmpFeedBack = []
+    tmpUsingHelp = []
+    tmpVersion = []
+    tmpThemeStyle = []
+
     for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
         for filename in filenames:
             if "GNAPP" in filename and "pyc" not in filename:
                 filename = filename[:-3]
                 if "GNAPP_DEVICE_PAGE" in filename:
                     DevicePage.write("from src.testcase.case.GNAPP_DEVICE_PAGE.%s import *\n" % filename)
+                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
+                        tmpDevicePage.append(re.findall(r"class (.+)\(", files.read())[0])
                 if "GNAPP_FORGET_PASSWORD" in filename:
                     ForgetPassword.write("from src.testcase.case.GNAPP_FORGET_PASSWORD.%s import *\n" % filename)
+                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
+                        tmpForgetPassword.append(re.findall(r"class (.+)\(", files.read())[0])
                 if "GNAPP_LOGIN" in filename:
                     Login.write("from src.testcase.case.GNAPP_LOGIN.%s import *\n" % filename)
+                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
+                        tmpLogin.append(re.findall(r"class (.+)\(", files.read())[0])
                 if "GNAPP_MESSAGE_CLASSIFY" in filename:
                     MessageClassify.write("from src.testcase.case.GNAPP_MESSAGE_CLASSIFY.%s import *\n" % filename)
+                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
+                        tmpMessageClassify.append(re.findall(r"class (.+)\(", files.read())[0])
                 if "GNAPP_ACCOUNT_SETTINGS" in filename:
                     AccountSettings.write("from src.testcase.case.GNAPP_ACCOUNT_SETTINGS.%s import *\n" % filename)
+                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
+                        tmpAccountSettings.append(re.findall(r"class (.+)\(", files.read())[0])
                 if "GNAPP_REGISTER" in filename:
                     Register.write("from src.testcase.case.GNAPP_REGISTER.%s import *\n" % filename)
+                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
+                        tmpRegister.append(re.findall(r"class (.+)\(", files.read())[0])
                 if "GNAPP_FEED_BACK" in filename:
                     FeedBack.write("from src.testcase.case.GNAPP_FEED_BACK.%s import *\n" % filename)
+                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
+                        tmpFeedBack.append(re.findall(r"class (.+)\(", files.read())[0])
                 if "GNAPP_USING_HELP" in filename:
                     UsingHelp.write("from src.testcase.case.GNAPP_USING_HELP.%s import *\n" % filename)
+                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
+                        tmpUsingHelp.append(re.findall(r"class (.+)\(", files.read())[0])
                 if "GNAPP_VERSION" in filename:
                     Version.write("from src.testcase.case.GNAPP_VERSION.%s import *\n" % filename)
+                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
+                        tmpVersion.append(re.findall(r"class (.+)\(", files.read())[0])
                 if "GNAPP_THEME_STYLE" in filename:
                     ThemeStyle.write("from src.testcase.case.GNAPP_THEME_STYLE.%s import *\n" % filename)
+                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
+                        tmpThemeStyle.append(re.findall(r"class (.+)\(", files.read())[0])
+    DevicePage.write("\n")
+    for i in tmpDevicePage:
+        DevicePage.write(i + " = " + i + "\n")
+
+    ForgetPassword.write("\n")
+    for i in tmpForgetPassword:
+        ForgetPassword.write(i + " = " + i + "\n")
+
+    Login.write("\n")
+    for i in tmpLogin:
+        Login.write(i + " = " + i + "\n")
+
+    MessageClassify.write("\n")
+    for i in tmpMessageClassify:
+        MessageClassify.write(i + " = " + i + "\n")
+
+    AccountSettings.write("\n")
+    for i in tmpAccountSettings:
+        AccountSettings.write(i + " = " + i + "\n")
+
+    Register.write("\n")
+    for i in tmpRegister:
+        Register.write(i + " = " + i + "\n")
+
+    FeedBack.write("\n")
+    for i in tmpFeedBack:
+        FeedBack.write(i + " = " + i + "\n")
+
+    UsingHelp.write("\n")
+    for i in tmpUsingHelp:
+        UsingHelp.write(i + " = " + i + "\n")
+
+    Version.write("\n")
+    for i in tmpVersion:
+        Version.write(i + " = " + i + "\n")
+
+    ThemeStyle.write("\n")
+    for i in tmpThemeStyle:
+        ThemeStyle.write(i + " = " + i + "\n")
+
+
     DevicePage.close()
     ForgetPassword.close()
     Login.close()
@@ -474,17 +546,26 @@ def add_notes():
                 # print filename[:-3]
                 with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''elf.launch_app(Login_page=''' in linecache.getline(filepath, i):
+                        if '''len(''' in linecache.getline(filepath, i):
                             print linecache.getline(filepath, i), filename
-                    # files.write(linecache.getline(filepath, i).replace("object", "LaunchApp"))
-                    # files.write('''    def run(self):\n''')
-                    # files.write('''                raise WebDriverException()\n''')
-                    # else:
-                    #     files.write(linecache.getline(filepath, i))
+                            #     files.write("    "+linecache.getline(filepath, i))
+                            # else:
+                            #     files.write(linecache.getline(filepath, i))
+                            # # for i in a:
+                            #     filepath = os.path.join(parent,filename)
+                            #     with open(filepath, "w") as files:
+                            #         for i in range(1, lines + 1):
+                            #             if '''self.case_over(True)''' in linecache.getline(filepath, i):
+                            #                 print linecache.getline(filepath, i).replace("self.case_over(True)", 'self.case_over("screen")'), filename
+                            #                 files.write(linecache.getline(filepath, i).replace("self.case_over(True)", 'self.case_over("screen")'))
+                            #             # files.write('''                # 截屏获取设备toast消息\n''')
+                            #             # files.write('''                raise WebDriverException()\n''')
+                            #             else:
+                            #                 files.write(linecache.getline(filepath, i))
 
 # create_ReadConf()  # 创建ReadConf.py 必须
 # create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
-# create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
+create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
 # create_WaitCase()  # 创建WaitCase.py 必须
 # file_renames() # 将文件名后缀从1变成001 可选
 # insert_code() # 将每个用例中插入from appium import webdriver 可选
@@ -494,5 +575,5 @@ def add_notes():
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
-add_notes()
+# add_notes()
 # check_AppPageElement()

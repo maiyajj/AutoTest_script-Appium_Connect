@@ -16,7 +16,7 @@ def app_init():
         device[k]["desired_caps"]["resetKeyboard"] = "True"
         device[k]["desired_caps"]['platformVersion'] = '%s' % device[k]["platformVersion"]
         device[k]["desired_caps"]['deviceName'] = '%s' % device[k]["deviceName"]
-        device[k]["desired_caps"]['appPackage'] = '%s' % conf_App["GN"][0]
-        device[k]["desired_caps"]['appActivity'] = '%s' % conf_App["GN"][1]
+        device[k]["desired_caps"]['appPackage'] = '%s' % conf["App"]["GN"][0]
+        device[k]["desired_caps"]['appActivity'] = '%s' % conf["App"]["GN"][1]
 
     return device

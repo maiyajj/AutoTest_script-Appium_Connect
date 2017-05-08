@@ -12,7 +12,7 @@ def get_phone_info():
     获取手机信息：
     udid,
     系统版本号
-    设备名称
+    系统名称 IOS/ANDROID
     设备型号
     设备分辨率
     Appium可使用的端口
@@ -38,11 +38,11 @@ def get_phone_info():
         command = "adb -s %s shell getprop ro.build.version.release" % v["udid"]
         device[k]["platformVersion"] = os.popen(command).read().split()[0]
 
-        # 设备名称 #
+        # 设备型号 #
         command = "adb -s %s shell getprop ro.product.model" % v["udid"]
         device[k]["deviceName"] = os.popen(command).read().split()[0]
 
-        # 设备型号 #
+        # 系统名称 IOS/ANDROID #
         command = "adb -s %s shell getprop net.bt.name" % v["udid"]
         device[k]["platformName"] = os.popen(command).read().split()[0]
 
@@ -70,4 +70,15 @@ def get_phone_info():
         # 设备运行log文件名称 #
         device[k]["log_name"] = v["deviceName"]
 
-    return device  # 返回device值
+    '''
+    device: {udid:{'deviceName': '8681-M02', 
+                   'log_name': '8681-M02', 
+                   'bp_port': 4726, 
+                   'udid': '8681-M02-0xa0a151df',
+                   'platformVersion': '5.1', 
+                   'model': '8681_M02', 
+                   'platformName': 'Android', 
+                   'port': 4725, 
+                   'dpi': {'width': '1080', 'height': '1920'}}}
+    '''
+    return device

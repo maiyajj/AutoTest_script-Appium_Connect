@@ -1,9 +1,4 @@
 # coding=utf-8
-import os
-import re
-import time
-
-from data.Database import *
 from src.testcase.case.INPUT_CASE.GNAppAccountSettings import *
 from src.testcase.case.INPUT_CASE.GNAppDevicePage import *
 from src.testcase.case.INPUT_CASE.GNAppFeedBack import *
@@ -15,7 +10,9 @@ from src.testcase.case.INPUT_CASE.GNAppThemeStyle import *
 from src.testcase.case.INPUT_CASE.GNAppUsingHelp import *
 from src.testcase.case.INPUT_CASE.GNAppVersion import *
 from src.utils.CollectLog import *
+from src.utils.Debug import *
 from src.utils.OutputReport import *
+from src.utils.ReadConf import *
 from src.utils.WriteXls import *
 
 
@@ -28,23 +25,29 @@ class WaitCase(object):
         self.report = None
         self.logger = None
         self.xls = None
+        self.debug = None
         self.No = 1
         self.row = 12
         database[device_name] = {}
 
         self.create_log()
         self.create_report()
+        self.create_debug()
         self.write_xls()
         self.check_appium()
         self.run()
+
+    def create_log(self):
+        check_log(self.device_list, self.device_name)
+        self.logger = self.device_info["logger"]
 
     def create_report(self):
         check_report(self.device_list, self.device_name)
         self.report = self.device_info["report"]
 
-    def create_log(self):
-        check_log(self.device_list, self.device_name)
-        self.logger = self.device_info["logger"]
+    def create_debug(self):
+        check_debug(self.device_list, self.device_name)
+        self.debug = self.device_info["debug"]
 
     def write_xls(self):
         self.xls = WriteXls(self.device_list, self.device_name)
@@ -72,7 +75,6 @@ class WaitCase(object):
         database["case_location"] = self.No
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])
-            time.sleep(1)
             self.write_report(GNAppVersion1)  # 1992, 当前版本为最新版本，页面信息检查
             self.write_report(GNAppLogin1)  # 1889, 登录页面—新用户注册页面跳转
             self.write_report(GNAppLogin2)  # 1890, 登录页面—忘记密码页面跳转
@@ -139,7 +141,7 @@ class WaitCase(object):
             self.write_report(GNAppThemeStyle3)  # 1989, 切换为橙色后，查看风格
             self.write_report(GNAppThemeStyle4)  # 1988, 切换为红色后，查看风格
             self.write_report(GNAppThemeStyle5)  # 1987, 切换为绿色后，查看风格
-            self.write_report(GNAppThemeStyle5)  # 1985, 页面检查
+            self.write_report(GNAppThemeStyle6)  # 1985, 页面检查
 
             database["program_loop_time"] += 1
 
@@ -158,6 +160,7 @@ class WaitCase(object):
         else:
             xls_data[zentao_id]["row"] = self.row
             self.row += 1
+        self.debug.info("row:%s" % self.row)
         self.xls.write_data(xls_data[zentao_id]["row"],
                             xls_data[zentao_id]["ZenTao"],
                             xls_data[zentao_id]["case_title"],
@@ -168,5 +171,6 @@ class WaitCase(object):
                             xls_data[zentao_id]["test_error"],
                             xls_data[zentao_id]["test_wait"])
 
+        self.debug.info("write_data:success")
         self.No += 1
         database["case_location"] = self.No

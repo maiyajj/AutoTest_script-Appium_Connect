@@ -22,7 +22,7 @@ def check_log(device_list, device_name):
     if os.path.exists(r"./log/%s" % current_time) is False:
         os.makedirs(r"./log/%s" % current_time)
 
-    logger_name = r"./log/%s/%s - [%s].log" % (current_time, log_name, udid)
+    logger_name = r"./log/%s/Log_%s - [%s].log" % (current_time, log_name, udid)
     device_list[device_name]["logger"] = init_log(logger_name, logging.getLogger("Log_%s" % udid))
 
     logging.shutdown()

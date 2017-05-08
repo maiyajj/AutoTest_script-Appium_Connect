@@ -4,7 +4,6 @@ import time
 from data.Database import *
 from selenium.common.exceptions import *
 from src.utils.ReadAPPElement import *
-from src.utils.ReadConf import *
 
 
 class TimeoutError(Exception):
@@ -20,7 +19,7 @@ class WidgetCheckUnit(Exception):
         self.driver = driver
         self.logger = logger
 
-    def widget_edit_input(self, data):
+    def widget_edit_input(self, widget, data):
         if data is not None:
             try:
                 # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
@@ -28,7 +27,7 @@ class WidgetCheckUnit(Exception):
                 # KEYCODE_FORWARD_DEL 删除键 112
                 self.driver.press_keycode(112)
                 # 发送数据
-                self.widget.send_keys(data)
+                widget.send_keys(data)
                 self.logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
                 time.sleep(0.5)
             except NoSuchAttributeException:
@@ -114,7 +113,7 @@ class WidgetCheckUnit(Exception):
                         self.wait_widget(loading_popup["title"], 0.2, 0.1)
                     except TimeoutException:
                         break
-                self.widget_edit_input(data)
+                self.widget_edit_input(widget, data)
                 if log_record != 0:
                     self.logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
                 time.sleep(0.1)
@@ -141,5 +140,3 @@ class WidgetCheckUnit(Exception):
                                            % (operate_widget[0], timeout))
             except TypeError:
                 return False
-                # except AttributeError:
-                #     raise TimeoutException()

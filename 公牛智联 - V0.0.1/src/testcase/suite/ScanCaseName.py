@@ -20,10 +20,10 @@ def scan_case_name():
                         file = files.read()
                         case_module = re.findall(r'self.case_module = u"(.+)"', file)[0]
                         case_name = re.findall(r"self.case_title = u'(.+)'", file)[0]
-                        ZenTao_id = re.findall(r'self.ZenTao_id = (\d+)', file)[0]
+                        zentao_id = re.findall(r'self.zentao_id = (\d+)', file)[0]
                         case_id = re.findall(r"class (.+)\(", file)[0]
                         list_case_id[filename] = case_id
-                        case_attr.append([case_module, ZenTao_id, case_id, case_name])
+                        case_attr.append([case_module, zentao_id, case_id, case_name])
                         len_case[0].append(len(case_module))
                         len_case[1].append(len(case_id))
         len_case_module = tuple(len_case[0])

@@ -1,6 +1,4 @@
 # coding=utf-8
-import os
-
 from src.testcase.case.LaunchApp import *
 from src.utils.ScreenShot import *
 
@@ -9,11 +7,16 @@ class GNAppRegister4(LaunchApp):
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-正确的用户名和密码，错误的6位数字验证码，注册验证'  # 用例名称
-        self.ZenTao_id = 1883  # 禅道ID
+        self.zentao_id = 1883  # 禅道ID
         self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_REGISTER_004
+        self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
+                         % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
 
-        self.launch_app(Login_page=True)  # 启动APP
-        self.case()
+        try:
+            self.launch_app(True)  # 启动APP
+            self.case()
+        except WebDriverException:
+            pass  # Message: ***
 
     # 用例动作
     def case(self):
@@ -79,10 +82,10 @@ class GNAppRegister4(LaunchApp):
                 except TimeoutException:
                     break
 
-                    # 截屏获取设备toast消息
-                ScreenShot(self.device_info, self.ZenTao_id, self.basename, self.logger)
+                # 截屏获取设备toast消息
+                ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
 
-            self.case_over(True)
+            self.case_over("screen")
         except TimeoutException:
             self.case_over(False)
 

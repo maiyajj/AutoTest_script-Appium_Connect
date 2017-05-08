@@ -17,3 +17,22 @@ from src.testcase.case.GNAPP_REGISTER.GNAPP_REGISTER_015 import *
 from src.testcase.case.GNAPP_REGISTER.GNAPP_REGISTER_016 import *
 from src.testcase.case.GNAPP_REGISTER.GNAPP_REGISTER_017 import *
 from src.testcase.case.GNAPP_REGISTER.GNAPP_REGISTER_018 import *
+
+GNAppRegister1 = GNAppRegister1
+GNAppRegister2 = GNAppRegister2
+GNAppRegister3 = GNAppRegister3
+GNAppRegister4 = GNAppRegister4
+GNAppRegister5 = GNAppRegister5
+GNAppRegister6 = GNAppRegister6
+GNAppRegister7 = GNAppRegister7
+GNAppRegister8 = GNAppRegister8
+GNAppRegister9 = GNAppRegister9
+GNAppRegister10 = GNAppRegister10
+GNAppRegister11 = GNAppRegister11
+GNAppRegister12 = GNAppRegister12
+GNAppRegister13 = GNAppRegister13
+GNAppRegister14 = GNAppRegister14
+GNAppRegister15 = GNAppRegister15
+GNAppRegister16 = GNAppRegister16
+GNAppRegister17 = GNAppRegister17
+GNAppRegister18 = GNAppRegister18

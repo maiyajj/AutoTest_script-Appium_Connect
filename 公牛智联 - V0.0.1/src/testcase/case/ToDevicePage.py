@@ -1,8 +1,6 @@
 # coding=utf-8
-import time
-
-from selenium.common.exceptions import *
 from src.testcase.common.WidgetCheckUnit import *
+from src.utils.ReadConf import *
 
 
 class ToDevicePage(object):
@@ -83,6 +81,7 @@ class ToDevicePage(object):
                     except TimeoutException:
                         self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
                         self.driver.quit()
+                        raise WebDriverException()
 
             if self.driver.current_activity == device_page["activity"][0]:
                 self.logger.info(u"[APP_INF] APP当前页面为主页面")

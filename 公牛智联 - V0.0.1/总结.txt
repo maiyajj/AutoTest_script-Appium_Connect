@@ -132,4 +132,7 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
 
 20、xlwt支持改写，加内部参数即可cell_overwrite_ok=True
 # self.sheet = self.book.add_sheet(self.sheet_name, cell_overwrite_ok=True)
-21、
+21、涉及到多目录调用时，编写脚本文件时会显示调用错误，虽然运行没有问题，但是非常难看。为解决此问题需要将工程目录文件写入PYTHONPATH目录中，
+    详细设置的网址如下；http://blog.csdn.net/wh357589873/article/details/53204024
+22、xlwt在单元格的格式循环调用的情况下会抛出Python xlwt : More than 4094 XFs (styles) 的错误，解决办法就是将格式保存为变量来调用
+    网址：http://www.cnblogs.com/jaw-crusher/p/3741224.html
