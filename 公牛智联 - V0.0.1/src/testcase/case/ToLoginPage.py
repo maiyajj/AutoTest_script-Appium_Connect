@@ -1,4 +1,6 @@
 # coding=utf-8
+import os
+
 from src.testcase.common.WidgetCheckUnit import *
 
 
@@ -7,6 +9,8 @@ class ToLoginPage(object):
         self.driver = driver
         self.logger = logger
         self.device_info = device_info
+        self.debug = self.device_info["debug"]
+        self.basename = os.path.basename(__file__).split(".")[0]
         widget_check_unit = WidgetCheckUnit(self.driver, self.logger)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
@@ -64,6 +68,7 @@ class ToLoginPage(object):
                 except TimeoutException:
                     self.logger.info(u"[APP_INF] APP进入登录页面失败，正在重新启动")
                     self.driver.quit()
+                    self.debug.warn("(%s)self.driver.quit() App quit" % self.basename)
                     raise WebDriverException()
 
             if self.driver.current_activity == login_page["activity"][0]:

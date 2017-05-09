@@ -136,3 +136,6 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
     详细设置的网址如下；http://blog.csdn.net/wh357589873/article/details/53204024
 22、xlwt在单元格的格式循环调用的情况下会抛出Python xlwt : More than 4094 XFs (styles) 的错误，解决办法就是将格式保存为变量来调用
     网址：http://www.cnblogs.com/jaw-crusher/p/3741224.html
+23、直接记录错误信息的三方库为traceback，import traceback;输出错误信息语句为traceback.format_exc()
+24、多文件调用抛出的异常也是可以捕捉在函数调用的地方捕捉到的，跟踪异常信息获取异常控制台信息http://www.quke.org/post/python-exception-info.html
+25、获取异常的名称e.__class__.__name__

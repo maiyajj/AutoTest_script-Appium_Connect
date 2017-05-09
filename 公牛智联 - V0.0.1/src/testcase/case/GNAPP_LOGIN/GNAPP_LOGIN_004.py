@@ -17,8 +17,6 @@ class GNAppLogin4(LaunchApp):
             self.case()
         except WebDriverException:
             pass  # Message: ***
-        except BaseException, e:
-            self.debug.error("%s:%s" % (self.basename, e))
 
     # 用例动作
     def case(self):
@@ -28,7 +26,10 @@ class GNAppLogin4(LaunchApp):
                               device_page["title"],
                               1, 1, 1, 10, 0.5)
 
+            self.driver.close_app()  # 关闭App
+            self.debug.warn("(%s)self.driver.close_app() App close" % self.basename)
             self.driver.quit()  # 退出appium服务
+            self.debug.warn("(%s)self.driver.quit() App quit" % self.basename)
             self.logger.info(u"[APP_INF] APP退出")
             time.sleep(1)
 

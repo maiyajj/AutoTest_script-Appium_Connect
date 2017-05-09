@@ -1,4 +1,6 @@
 # coding=utf-8
+import os
+
 from src.testcase.common.WidgetCheckUnit import *
 from src.utils.ReadConf import *
 
@@ -8,6 +10,8 @@ class ToDevicePage(object):
         self.driver = driver
         self.logger = logger
         self.device_info = device_info
+        self.debug = self.device_info["debug"]
+        self.basename = os.path.basename(__file__).split(".")[0]
         widget_check_unit = WidgetCheckUnit(self.driver, self.logger)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
@@ -82,6 +86,7 @@ class ToDevicePage(object):
                     except TimeoutException:
                         self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
                         self.driver.quit()
+                        self.debug.warn("(%s)self.driver.quit() App quit" % self.basename)
                         raise WebDriverException()
 
             if self.driver.current_activity == device_page["activity"][0]:

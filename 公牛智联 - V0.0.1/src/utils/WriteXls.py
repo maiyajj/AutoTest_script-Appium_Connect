@@ -165,58 +165,51 @@ class WriteXls(object):
         :param Wait: 
         :return: 
         '''
-        try:
-            self.case_count.append(Zentao)
-            self.sheet.write(row, 0, Zentao, self.easyxf4)
-            self.sheet.write(row, 1, Name, self.easyxf4)
-            self.sheet.write(row, 2, Count, self.easyxf10)
-            self.sheet.write(row, 3, Pass, self.easyxf10)
-            self.sheet.write(row, 4, Fail, self.easyxf10)
-            self.sheet.write(row, 5, Error, self.easyxf10)
-            self.sheet.write(row, 6, Wait, self.easyxf10)
-            formula = 'IF({3}{0}>0,"Error",IF({2}{0}>0,"Fail",IF({4}{0}>0,"Wait",IF({1}{0}>0,"Pass",""))))'. \
-                format(row + 1, chr(68), chr(69), chr(70), chr(71))
-            self.sheet.write(row, 7, Formula(formula), self.easyxf6)
+        self.case_count.append(Zentao)
+        self.sheet.write(row, 0, Zentao, self.easyxf4)
+        self.sheet.write(row, 1, Name, self.easyxf4)
+        self.sheet.write(row, 2, Count, self.easyxf10)
+        self.sheet.write(row, 3, Pass, self.easyxf10)
+        self.sheet.write(row, 4, Fail, self.easyxf10)
+        self.sheet.write(row, 5, Error, self.easyxf10)
+        self.sheet.write(row, 6, Wait, self.easyxf10)
+        formula = 'IF({3}{0}>0,"Error",IF({2}{0}>0,"Fail",IF({4}{0}>0,"Wait",IF({1}{0}>0,"Pass",""))))'. \
+            format(row + 1, chr(68), chr(69), chr(70), chr(71))
+        self.sheet.write(row, 7, Formula(formula), self.easyxf6)
 
-            self.book.save(self.xls_file)
-            self.write_total(row + 1, end_time)
-        except BaseException, e:
-            self.debug.error("write_data:%s" % e)
+        self.book.save(self.xls_file)
+        self.write_total(row + 1, end_time)
 
     def write_total(self, row, end_times):
-        try:
-            self.total_row.append(row)
-            self.total_row = list(set(self.total_row))
-            self.debug.info("total_row:%s" % self.total_row)
-            total_row = max(self.total_row)
-            total_row_min = min(self.total_row)
-            self.sheet.write(total_row, 0, "Total", self.easyxf11)
-            self.sheet.write(total_row, 1, "", self.easyxf12)
-            for i in xrange(2, 7):
-                formula = 'SUM({0}{2}:{0}{1})'.format(chr(i + 65), total_row, total_row_min)
-                self.sheet.write(total_row, i, Formula(formula), self.easyxf8)
+        self.total_row.append(row)
+        self.total_row = list(set(self.total_row))
+        total_row = max(self.total_row)
+        total_row_min = min(self.total_row)
+        self.sheet.write(total_row, 0, "Total", self.easyxf11)
+        self.sheet.write(total_row, 1, "", self.easyxf12)
+        for i in xrange(2, 7):
+            formula = 'SUM({0}{2}:{0}{1})'.format(chr(i + 65), total_row, total_row_min)
+            self.sheet.write(total_row, i, Formula(formula), self.easyxf8)
 
-            formula = 'COUNTIF(H{1}:H{0},"Pass")/COUNTA(H{1}:H{0})'.format(total_row, total_row_min)
-            self.xfstyle.num_format_str = "0%"
-            self.sheet.write(total_row, 7, Formula(formula), self.xfstyle)
+        formula = 'COUNTIF(H{1}:H{0},"Pass")/COUNTA(H{1}:H{0})'.format(total_row, total_row_min)
+        self.xfstyle.num_format_str = "0%"
+        self.sheet.write(total_row, 7, Formula(formula), self.xfstyle)
 
-            self.sheet.write_merge(4, 4, 1, 7, end_times, self.easyxf2)
+        self.sheet.write_merge(4, 4, 1, 7, end_times, self.easyxf2)
 
-            start_time = time.strptime(self.start_time, "%Y-%m-%d %H:%M:%S")
-            end_time = time.strptime(end_times, "%Y-%m-%d %H:%M:%S")
-            start_time = datetime.datetime(start_time[0], start_time[1], start_time[2],
-                                           start_time[3], start_time[4], start_time[5])
-            end_time = datetime.datetime(end_time[0], end_time[1], end_time[2],
-                                         end_time[3], end_time[4], end_time[5])
-            continue_time = end_time - start_time
-            self.sheet.write_merge(5, 5, 1, 7, str(continue_time), self.easyxf2)
+        start_time = time.strptime(self.start_time, "%Y-%m-%d %H:%M:%S")
+        end_time = time.strptime(end_times, "%Y-%m-%d %H:%M:%S")
+        start_time = datetime.datetime(start_time[0], start_time[1], start_time[2],
+                                       start_time[3], start_time[4], start_time[5])
+        end_time = datetime.datetime(end_time[0], end_time[1], end_time[2],
+                                     end_time[3], end_time[4], end_time[5])
+        continue_time = end_time - start_time
+        self.sheet.write_merge(5, 5, 1, 7, str(continue_time), self.easyxf2)
 
-            formula = u'"通过 "&COUNTIF(H13:H{0},"Pass")&"； 失败 "&COUNTIF(H13:H{0},"Fail")&"； 执行错误 "&' \
-                      u'COUNTIF(H13:H{0},"Error")&"； 人工检查 "&COUNTIF(H13:H{0},"Wait")&"；"'.format(total_row)
-            self.sheet.write_merge(6, 6, 1, 7, Formula(formula), self.easyxf2)
+        formula = u'"通过 "&COUNTIF(H13:H{0},"Pass")&"； 失败 "&COUNTIF(H13:H{0},"Fail")&"； 执行错误 "&' \
+                  u'COUNTIF(H13:H{0},"Error")&"； 人工检查 "&COUNTIF(H13:H{0},"Wait")&"；"'.format(total_row)
+        self.sheet.write_merge(6, 6, 1, 7, Formula(formula), self.easyxf2)
 
-            self.sheet.write_merge(7, 7, 1, 7, len(set(self.case_count)), self.easyxf2)
+        self.sheet.write_merge(7, 7, 1, 7, len(set(self.case_count)), self.easyxf2)
 
-            self.book.save(self.xls_file)
-        except BaseException, e:
-            self.debug.error("write_total:%s" % e)
+        self.book.save(self.xls_file)

@@ -57,8 +57,8 @@ class LaunchApp(object):
         self.data_statistics(self.zentao_id)
         self.start_fail = False
         try:
-            i = 3
-            while i > 0:
+            i = 1
+            while i <= 3:
                 try:
                     self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
                                                    self.device_info["desired_caps"])  # 启动APP
@@ -67,14 +67,15 @@ class LaunchApp(object):
                     break
                 except WebDriverException:
                     self.start_fail = True
-                    self.debug.error("driver(WebDriverException):%s" % self.start_fail)
+                    self.debug.error("driver(WebDriverException):%s,%s" % (self.start_fail, i))
                 finally:
-                    i -= 1
+                    i += 1
             self.debug.info("driver(over):%s" % self.driver)
             if self.start_fail is True:
                 self.debug.error("driver(over):App start failed")
                 raise WebDriverException("App start failed")
 
+            self.debug.warn("self.start_fail:%s" % self.start_fail)
             self.init_operate(self.driver)
 
             if page_login is True and first_time is True:
@@ -93,7 +94,9 @@ class LaunchApp(object):
             if self.start_fail is True:
                 raise WebDriverException("App start failed")
             self.driver.close_app()  # 关闭APP
+            self.debug.warn("(%s)self.driver.close_app() App close" % self.basename)
             self.driver.quit()  # 退出appium服务
+            self.debug.warn("(%s)self.driver.quit() App quit" % self.basename)
         except WebDriverException:
             self.debug.error("case_over(success):Case launch unknown")
             pass

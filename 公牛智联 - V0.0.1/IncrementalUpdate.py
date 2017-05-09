@@ -537,20 +537,18 @@ def check_AppPageElement():
 #         print PopupWidget().element()[values]
 
 def add_notes():
-    rootdir = r"./src/"
+    rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "pyc" not in filename:
+            if "GNAPP" in filename and "pyc" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "r") as files:
+                with open(filepath, "w") as files:
                     for i in range(1, lines + 1):
-                        if '''pass  # Message: ***''' in linecache.getline(filepath, i):
+                        if '''self.debug.error("%s[%s:%s]" % (self.basename''' in linecache.getline(filepath, i):
                             print linecache.getline(filepath, i), filename
-                            files.write(linecache.getline(filepath, i))
-                            files.write("        except BaseException, e:\n")
-                            files.write('            self.debug.error("%s:%s" % (self.basename, e))\n')
+                            # files.write(linecache.getline(filepath, i))
                         else:
                             files.write(linecache.getline(filepath, i))
                             # # for i in a:

@@ -1,4 +1,6 @@
 # coding=utf-8
+import traceback
+
 from src.testcase.case.INPUT_CASE.GNAppAccountSettings import *
 from src.testcase.case.INPUT_CASE.GNAppDevicePage import *
 from src.testcase.case.INPUT_CASE.GNAppFeedBack import *
@@ -16,6 +18,14 @@ from src.utils.ReadConf import *
 from src.utils.WriteXls import *
 
 
+class ScriptInitError(Exception):
+    def __init__(self, value=None):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+
+
 class WaitCase(object):
     def __init__(self, device_list, device_name):
         self.device_list = device_list
@@ -26,43 +36,40 @@ class WaitCase(object):
         self.logger = None
         self.xls = None
         self.debug = None
+        self.script_init_success = False
         self.No = 1
         self.row = 12
         database[device_name] = {}
 
-        self.create_debug()
-        self.create_log()
-        self.create_report()
-        self.write_xls()
-        self.check_appium()
-        self.run()
+        try:
+            self.create_debug()
+            self.create_log()
+            self.create_report()
+            self.write_xls()
+            self.check_appium()
+            self.script_init_success = True
+        except BaseException:
+            self.debug.error(traceback.format_exc())
+        if self.script_init_success is True:
+            self.run()
+        else:
+            raise ScriptInitError("Script Init Error!!! "
+                                  "contain [create_debug(), create_log(), create_report(), write_xls(), check_appium()]")
 
     def create_log(self):
-        try:
-            check_log(self.device_list, self.device_name)
-            self.logger = self.device_info["logger"]
-        except BaseException, e:
-            self.debug.error(e)
+        check_log(self.device_list, self.device_name)
+        self.logger = self.device_info["logger"]
 
     def create_report(self):
-        try:
-            check_report(self.device_list, self.device_name)
-            self.report = self.device_info["report"]
-        except BaseException, e:
-            self.debug.error(e)
+        check_report(self.device_list, self.device_name)
+        self.report = self.device_info["report"]
 
     def create_debug(self):
-        try:
-            check_debug(self.device_list, self.device_name)
-            self.debug = self.device_info["debug"]
-        except BaseException, e:
-            self.debug.error(e)
+        check_debug(self.device_list, self.device_name)
+        self.debug = self.device_info["debug"]
 
     def write_xls(self):
-        try:
-            self.xls = WriteXls(self.device_list, self.device_name)
-        except BaseException, e:
-            self.debug.error(e)
+        self.xls = WriteXls(self.device_list, self.device_name)
 
     def check_appium(self):
         while True:
@@ -158,35 +165,34 @@ class WaitCase(object):
             database["program_loop_time"] += 1
 
     def write_report(self, case_name):
-        case = ()
         try:
             case = case_name(self.device_list, self.device_name, self.logger).output()
-        except BaseException, e:
-            self.debug.error(e)
-        end_time = time.strftime("%Y-%m-%d %H:%M:%S")
-        zentao_id = case[1]
-        data = u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % \
-               (zentao_id, case[0], " " * (7 - len(case[0])), case[2], database["program_loop_time"],
-                self.No, case[3], end_time)
-        self.report.info(data)
-        xls_data = database[self.device_name]
-        xls_data[zentao_id]["end_time"] = end_time
-        if "row" in xls_data[zentao_id].keys():
-            pass
-        else:
-            xls_data[zentao_id]["row"] = self.row
-            self.row += 1
-        self.debug.info("row:%s" % self.row)
-        self.xls.write_data(xls_data[zentao_id]["row"],
-                            xls_data[zentao_id]["ZenTao"],
-                            xls_data[zentao_id]["case_title"],
-                            xls_data[zentao_id]["end_time"],
-                            xls_data[zentao_id]["test_count"],
-                            xls_data[zentao_id]["test_pass"],
-                            xls_data[zentao_id]["test_fail"],
-                            xls_data[zentao_id]["test_error"],
-                            xls_data[zentao_id]["test_wait"])
+            end_time = time.strftime("%Y-%m-%d %H:%M:%S")
+            zentao_id = case[1]
+            data = u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % \
+                   (zentao_id, case[0], " " * (7 - len(case[0])), case[2], database["program_loop_time"],
+                    self.No, case[3], end_time)
+            self.report.info(data)
+            xls_data = database[self.device_name]
+            xls_data[zentao_id]["end_time"] = end_time
+            if "row" in xls_data[zentao_id].keys():
+                pass
+            else:
+                xls_data[zentao_id]["row"] = self.row
+                self.row += 1
+            self.debug.info("row:%s" % self.row)
+            self.xls.write_data(xls_data[zentao_id]["row"],
+                                xls_data[zentao_id]["ZenTao"],
+                                xls_data[zentao_id]["case_title"],
+                                xls_data[zentao_id]["end_time"],
+                                xls_data[zentao_id]["test_count"],
+                                xls_data[zentao_id]["test_pass"],
+                                xls_data[zentao_id]["test_fail"],
+                                xls_data[zentao_id]["test_error"],
+                                xls_data[zentao_id]["test_wait"])
 
-        self.debug.info("write_data:success")
-        self.No += 1
-        database["case_location"] = self.No
+            self.debug.info("write_data:success")
+            self.No += 1
+            database["case_location"] = self.No
+        except BaseException:
+            self.debug.error(traceback.format_exc())
