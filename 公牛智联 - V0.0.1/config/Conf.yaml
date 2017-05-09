@@ -22,7 +22,7 @@ App:
   JD: [com.jd.smart, com.jd.smart.activity.LoadingActivity]
 # Toast消息
 Toast:
-  login_password_mistake: [40, 1570, 1040, 1750
+  login_password_mistake: [40, 1570, 1040, 1750]
 user_and_pwd:  # 用户名，（登录密码/旧密码）， 新密码
   name01: [31373020303030302030303031, 3837363534333231, 3132333435363738]
   name02: [31373020303030302030303032, 3837363534333231, 3132333435363738]
