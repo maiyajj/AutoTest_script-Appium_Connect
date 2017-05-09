@@ -544,11 +544,11 @@ def add_notes():
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "w") as files:
+                with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''self.debug.error("%s[%s:%s]" % (self.basename''' in linecache.getline(filepath, i):
-                            print linecache.getline(filepath, i), filename
-                            # files.write(linecache.getline(filepath, i))
+                        if '''.decode('hex')''' in linecache.getline(filepath, i):
+                            print linecache.getline(filepath, i).replace("data = conf", "data = str(conf"), filename
+                            files.write(linecache.getline(filepath, i).replace("data = conf", "data = str(conf"))
                         else:
                             files.write(linecache.getline(filepath, i))
                             # # for i in a:

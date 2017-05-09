@@ -16,7 +16,7 @@ class GNAppAccountSettings1(LaunchApp):
             self.launch_app(False)  # 启动APP
             self.case()
         except WebDriverException:
-            pass  # Message: ***
+            self.debug.error(traceback.format_exc())  # Message: ***
 
     # 用例动作
     def case(self):
@@ -40,7 +40,7 @@ class GNAppAccountSettings1(LaunchApp):
                                         change_pwd_page["old_pwd"],
                                         change_pwd_page["title"],
                                         1, 1, 1, 10, 0.5)
-            data = conf["user_and_pwd"][self.user][1].decode('hex')
+            data = str(conf["user_and_pwd"][self.user][1]).decode('hex')
             old_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["旧密码"] input success')
             time.sleep(0.5)
@@ -49,7 +49,7 @@ class GNAppAccountSettings1(LaunchApp):
                                         change_pwd_page["new_pwd"],
                                         change_pwd_page["title"],
                                         1, 1, 1, 10, 0.5)
-            data = conf["user_and_pwd"][self.user][2].decode('hex')
+            data = str(conf["user_and_pwd"][self.user][2]).decode('hex')
             new_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
@@ -58,7 +58,7 @@ class GNAppAccountSettings1(LaunchApp):
                                             change_pwd_page["conform_pwd"],
                                             change_pwd_page["title"],
                                             1, 1, 1, 10, 0.5)
-            data = conf["user_and_pwd"][self.user][2].decode('hex')
+            data = str(conf["user_and_pwd"][self.user][2]).decode('hex')
             conform_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["确认新密码"] input success')
             time.sleep(0.5)

@@ -16,7 +16,7 @@ class GNAppAccountSettings4(LaunchApp):
             self.launch_app(False)  # 启动APP
             self.case()
         except WebDriverException:
-            pass  # Message: ***
+            self.debug.error(traceback.format_exc())  # Message: ***
 
     # 用例动作
     def case(self):

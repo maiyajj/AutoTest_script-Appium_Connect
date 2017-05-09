@@ -21,8 +21,12 @@ class LaunchAppiumServices(object):
         os.system(command)
 
     def launch_appium(self):
-        log = "1.log"
-        command = "appium -a 127.0.0.1 -p %s -bp %s -U  %s -g %s --no-reset" % (self.port, self.bp_port, self.udid, log)
+        log = os.path.join(os.getenv('Temp'), "AutoTestGNApp")
+        if os.path.exists(log) is False:
+            os.makedirs(log)
+        log = os.path.join(log, "%s.log" % self.udid)
+        command = "appium -a 127.0.0.1 -p %s -bp %s -U %s -g %s --command-timeout 86400 --no-reset" % (
+        self.port, self.bp_port, self.udid, log)
         os.system(command)
 
     def create_adb_folder(self):

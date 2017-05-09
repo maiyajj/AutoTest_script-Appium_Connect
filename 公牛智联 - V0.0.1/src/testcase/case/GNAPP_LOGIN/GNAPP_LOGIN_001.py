@@ -16,7 +16,7 @@ class GNAppLogin1(LaunchApp):
             self.launch_app(True)  # 启动APP
             self.case()
         except WebDriverException:
-            pass  # Message: ***
+            self.debug.error(traceback.format_exc())  # Message: ***
 
     def case(self):
         try:

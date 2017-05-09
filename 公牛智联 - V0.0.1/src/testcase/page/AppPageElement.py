@@ -493,7 +493,7 @@ class PopupWidget(object):
     def login_popup(self):
         d = {}
         # 标题
-        d["title"] = [u"操作失败，账号超时未操作或异地登录，请重新登录。", "name", u"提示 - 重新登录"]
+        d["title"] = [u"操作失败，账号在其他手机登录，请确认是否本人使用。", "name", u"提示 - 重新登录"]
         # 页面activity
         d["activity"] = [".activitys.regist_login.SplashActivity", "activity", u"页面activity"]
         # 登录

@@ -16,7 +16,7 @@ class GNAppDevicePage5(LaunchApp):
             self.launch_app(False)  # 启动APP
             self.case()
         except WebDriverException:
-            pass  # Message: ***
+            self.debug.error(traceback.format_exc())  # Message: ***
 
     # 用例动作
     def case(self):
@@ -38,7 +38,7 @@ class GNAppDevicePage5(LaunchApp):
 
             wifi_pwd = self.wait_widget(set_network_page["wifi_pwd"], 3, 1)
 
-            data = conf["wifi_pwd"].decode('hex')
+            data = str(conf["wifi_pwd"]).decode('hex')
             wifi_pwd.send_keys(data)
             self.logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
             time.sleep(0.5)

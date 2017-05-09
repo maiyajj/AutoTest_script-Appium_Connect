@@ -16,7 +16,7 @@ class GNAppRegister3(LaunchApp):
             self.launch_app(True)  # 启动APP
             self.case()
         except WebDriverException:
-            pass  # Message: ***
+            self.debug.error(traceback.format_exc())  # Message: ***
 
     # 用例动作
     def case(self):
@@ -36,7 +36,7 @@ class GNAppRegister3(LaunchApp):
             # KEYCODE_FORWARD_DEL 删除键 112
             self.driver.press_keycode(112)
             # 发送数据
-            data = conf["user_and_pwd"][self.user][0].decode('hex')
+            data = str(conf["user_and_pwd"][self.user][0]).decode('hex')
             user_name.send_keys(data)  # 输入用户名
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)

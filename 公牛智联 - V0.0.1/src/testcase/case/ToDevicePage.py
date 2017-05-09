@@ -62,7 +62,7 @@ class ToDevicePage(object):
                         # KEYCODE_FORWARD_DEL 删除键 112
                         self.driver.press_keycode(112)
                         # 发送数据
-                        data = conf["user_and_pwd"][self.device_info["user_and_pwd"]][0].decode('hex')
+                        data = str(conf["user_and_pwd"][self.device_info["user_and_pwd"]][0]).decode('hex')
                         user_name.send_keys(data)
                         self.logger.info(u'[APP_INPUT] ["重新登陆用户名"] input success')
                         time.sleep(0.5)
@@ -74,7 +74,7 @@ class ToDevicePage(object):
 
                         self.driver.press_keycode(29, 28672)
                         self.driver.press_keycode(112)
-                        data = conf["user_and_pwd"][self.device_info["user_and_pwd"]][1].decode('hex')
+                        data = str(conf["user_and_pwd"][self.device_info["user_and_pwd"]][1]).decode('hex')
                         login_pwd.send_keys(data)
                         self.logger.info(u'[APP_INPUT] ["重新输入登录密码"] input success')
 
