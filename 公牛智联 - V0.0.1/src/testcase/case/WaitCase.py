@@ -1,6 +1,4 @@
 # coding=utf-8
-import traceback
-
 from src.testcase.case.INPUT_CASE.GNAppAccountSettings import *
 from src.testcase.case.INPUT_CASE.GNAppDevicePage import *
 from src.testcase.case.INPUT_CASE.GNAppFeedBack import *
@@ -27,10 +25,11 @@ class ScriptInitError(Exception):
 
 
 class WaitCase(object):
-    def __init__(self, device_list, device_name):
+    def __init__(self, device_list, device_name, restart):
         self.device_list = device_list
         self.device_name = device_name
         self.device_info = device_list[device_name]
+        self.device_info["restart"] = restart
 
         self.report = None
         self.logger = None

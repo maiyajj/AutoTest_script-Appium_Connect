@@ -1,5 +1,6 @@
 # coding=utf-8
 import traceback
+from urllib2 import *
 
 from appium import webdriver
 from src.testcase.case.ToDevicePage import *
@@ -59,6 +60,7 @@ class LaunchApp(object):
         self.data_statistics(self.zentao_id)
         try:
             i = 1
+            ii = 1
             while True:
                 try:
                     try:
@@ -74,6 +76,19 @@ class LaunchApp(object):
                     except WebDriverException:
                         self.debug.error("driver(WebDriverException):%s times" % i)
                         i += 1
+                    except URLError:
+                        self.device_info["restart"].put(True)
+                        self.debug.error("driver(Appium Abnormal exit):%s times" % ii)
+                        ii += 1
+                        while True:
+                            command = "netstat -aon|findstr %s" % self.device_info["port"]
+                            try:
+                                re.findall(r".+LISTENING.+", os.popen(command).read())[0]
+                            except IndexError:
+                                time.sleep(1)
+                            else:
+                                self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
+                                break
 
             self.debug.info("driver(over):%s" % self.driver)
             self.init_operate(self.driver)

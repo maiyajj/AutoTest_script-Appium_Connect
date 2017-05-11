@@ -63,9 +63,15 @@ def get_phone_info():
             except IndexError:
                 device[k]["port"] = i  # appium与设备通讯端口
                 selected_port += 1
-                device[k]["bp_port"] = i + 1  # appium的bp端口
-                selected_port += 1
-                break
+                try:
+                    command = 'netstat -aon|findstr %s' % (i + 1)  # 判断当前端口是否被占用
+                    used_port = re.findall(r".+LISTENING.+", os.popen(command).read())[0]
+                    selected_port += 1  # 端口已被占用，端口号+1
+                    del used_port
+                except IndexError:
+                    device[k]["bp_port"] = i + 1  # appium的bp端口
+                    selected_port += 1
+                    break
 
         # 设备运行log文件名称 #
         device[k]["log_name"] = v["deviceName"]
