@@ -35,26 +35,6 @@ class WriteXls(object):
         self.debug = self.device_info["debug"]
         self.run()
 
-    def style(self):
-        self.xfstyle = XFStyle()
-
-        font = Font()
-        font.height = 11 * 20
-        font.name = u"宋体"
-
-        borders = Borders()
-        borders.top = Borders.THIN
-        borders.bottom = Borders.THIN
-        borders.left = Borders.THIN
-        borders.right = Borders.THIN
-
-        align = Alignment()
-        align.horz = Alignment.HORZ_CENTER
-
-        self.xfstyle.font = font
-        self.xfstyle.borders = borders
-        self.xfstyle.alignment = align
-
     def easy_xf(self):
         self.easyxf1 = easyxf(
             u'font: height 320, name 宋体, colour_index 70, bold on; align: wrap on, vert top, horiz left; borders: top thin, left thin, right thin;')
@@ -92,6 +72,10 @@ class WriteXls(object):
         self.easyxf12 = easyxf(
             u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: top thin, bottom thin, right thin;')
 
+        self.easyxf13 = easyxf(
+            u'font: height 220, name 宋体; align: wrap on, horiz centre; borders: top thin, bottom thin, left thin, right thin;',
+            num_format_str="0%")
+
     def check_path(self):
         current_time = time.strftime("%Y-%m-%d_%H.%M")
         parent_path = r"./report/xls_report/%s" % current_time
@@ -102,7 +86,6 @@ class WriteXls(object):
         self.xls_file = r"%s/%s.xls" % (parent_path, self.sheet_name)
 
     def run(self):
-        self.style()
         self.easy_xf()
         self.check_path()
 
@@ -133,11 +116,15 @@ class WriteXls(object):
         self.sheet.write(5, 0, u"持续时间：", self.easyxf9)
         self.sheet.write_merge(5, 5, 1, 7, "0:00:00", self.easyxf2)
 
-        self.sheet.write(6, 0, u"执行结果：", self.easyxf9)
-        self.sheet.write_merge(6, 6, 1, 7, u"通过 0； 失败 0； 执行错误 0； 人工检查 0；", self.easyxf2)
+        self.run_case_count = 6
+        self.sheet.write(self.run_case_count, 0, u"执行用例数：", self.easyxf9)
+        self.sheet.write_merge(self.run_case_count, self.run_case_count, 1, 7, 0, self.easyxf2)
 
-        self.sheet.write(7, 0, u"执行用例数：", self.easyxf9)
-        self.sheet.write_merge(7, 7, 1, 7, 0, self.easyxf2)
+        self.result = 7
+        self.sheet.write(self.result, 0, u"执行结果：", self.easyxf9)
+        self.sheet.write_merge(self.result, self.result, 1, 7, u"通过 0； 失败 0； 执行错误 0； 人工检查 0；", self.easyxf2)
+
+
 
         self.sheet.write_merge(8, 8, 0, 7, "", self.easyxf7)
         self.sheet.write_merge(9, 9, 0, 7, u"用例执行情况：", self.easyxf7)
@@ -192,8 +179,7 @@ class WriteXls(object):
             self.sheet.write(total_row, i, Formula(formula), self.easyxf8)
 
         formula = 'COUNTIF(H{1}:H{0},"Pass")/COUNTA(H{1}:H{0})'.format(total_row, total_row_min)
-        self.xfstyle.num_format_str = "0%"
-        self.sheet.write(total_row, 7, Formula(formula), self.xfstyle)
+        self.sheet.write(total_row, 7, Formula(formula), self.easyxf13)
 
         self.sheet.write_merge(4, 4, 1, 7, end_times, self.easyxf2)
 

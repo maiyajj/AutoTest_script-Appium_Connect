@@ -52,6 +52,7 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
 18、list中的set是无序的，不能保证顺序a = [5,4,3,2,1]经过set后set(a)输出的值为set类型值“set([1,2,3,4,5])”，是没有取值属性的：例如set([**])[0]是非法的。
 19、xlwt三方库中的单元格格式有两种方法：1、easyxf；2、XFStyle()
     1、easyxf()参数：参考文件C:/Python/Python27/Lib/site-packages/xlwt/Formatting.py
+        self.num_format_str  = 'General'
         self.font            = Formatting.Font()
         self.alignment       = Formatting.Alignment()
         self.borders         = Formatting.Borders()
@@ -139,3 +140,4 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
 23、直接记录错误信息的三方库为traceback，import traceback;输出错误信息语句为traceback.format_exc()
 24、多文件调用抛出的异常也是可以捕捉在函数调用的地方捕捉到的，跟踪异常信息获取异常控制台信息http://www.quke.org/post/python-exception-info.html
 25、获取异常的名称e.__class__.__name__
+26、Excel单元格格式化文本的操作为sheet.write(0, 2, "0", xlwt.easyxf("****", num_format_str="dd / mm / yyyy"))

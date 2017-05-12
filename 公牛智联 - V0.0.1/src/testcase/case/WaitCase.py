@@ -46,6 +46,7 @@ class WaitCase(object):
             self.create_report()
             self.write_xls()
             self.check_appium()
+            self.init_app()
             self.script_init_success = True
         except BaseException:
             self.debug.error(traceback.format_exc())
@@ -69,6 +70,9 @@ class WaitCase(object):
 
     def write_xls(self):
         self.xls = WriteXls(self.device_list, self.device_name)
+
+    def init_app(self):
+        LaunchApp(self.device_list, self.device_name, self.logger).init_app()
 
     def check_appium(self):
         while True:

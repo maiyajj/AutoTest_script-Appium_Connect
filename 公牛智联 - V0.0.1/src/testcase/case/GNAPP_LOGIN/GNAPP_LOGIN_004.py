@@ -26,14 +26,13 @@ class GNAppLogin4(LaunchApp):
                               device_page["title"],
                               1, 1, 1, 10, 0.5)
 
+            self.driver = LaunchApp(self.device_list, self.device_name, self.logger).close_app()
             self.driver.close_app()  # 关闭App
             self.debug.warn("(%s)self.driver.close_app() App close" % self.basename)
-            self.driver.quit()  # 退出appium服务
-            self.debug.warn("(%s)self.driver.quit() App quit" % self.basename)
             self.logger.info(u"[APP_INF] APP退出")
             time.sleep(1)
 
-            self.launch_app(True, False)
+            self.launch_app(True)
             self.logger.info(u"[APP_INF] APP重新启动")
             while True:
                 if self.driver.current_activity == login_popup["activity"][0]:

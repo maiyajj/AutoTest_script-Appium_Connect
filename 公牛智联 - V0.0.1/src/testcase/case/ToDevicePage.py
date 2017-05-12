@@ -85,8 +85,8 @@ class ToDevicePage(object):
 
                     except TimeoutException:
                         self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
-                        self.driver.quit()
-                        self.debug.warn("(%s)self.driver.quit() App quit" % self.basename)
+                        self.driver.close_app()
+                        self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
                         raise WebDriverException()
 
             if self.driver.current_activity == device_page["activity"][0]:

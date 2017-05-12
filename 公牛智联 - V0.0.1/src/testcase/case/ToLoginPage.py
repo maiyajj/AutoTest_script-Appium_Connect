@@ -67,8 +67,8 @@ class ToLoginPage(object):
 
                 except TimeoutException:
                     self.logger.info(u"[APP_INF] APP进入登录页面失败，正在重新启动")
-                    self.driver.quit()
-                    self.debug.warn("(%s)self.driver.quit() App quit" % self.basename)
+                    self.driver.close_app()
+                    self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
                     raise WebDriverException()
 
             if self.driver.current_activity == login_page["activity"][0]:

@@ -73,10 +73,8 @@ class GNAppLogin5(LaunchApp):
                               login_page["activity"],
                               1, 1, 1, 10, 0.5, 0)
 
-            self.driver.close_app()  # 关闭App
-            self.debug.warn("(%s)self.driver.close_app() App close" % self.basename)
-            self.driver.quit()  # 退出appium服务
-            self.debug.warn("(%s)self.driver.quit() App quit" % self.basename)
+            self.driver = LaunchApp(self.device_list, self.device_name, self.logger).close_app()
+            self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
             self.logger.info(u"[APP_INF] APP退出")
             time.sleep(1)
 
