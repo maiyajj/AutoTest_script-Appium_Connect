@@ -37,17 +37,19 @@ class LaunchApp(object):
             ii = 1
             while True:
                 try:
-                    self.debug.warn("driver(ready launch)")
+                    self.debug.warn("init_app driver(ready launch)")
                     driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
                                               self.device_info["desired_caps"])  # 启动APP
-                    self.debug.info("driver(launch success):%s" % driver)
+                    self.debug.info("init_app driver(launch success):%s" % driver)
                     driver.close_app()
+                    self.debug.info("init_app driver(close_app success):%s" % driver)
                     break
                 except WebDriverException:
-                    self.debug.error("driver(WebDriverException):%s times" % i)
+                    self.debug.error("init_app driver(WebDriverException):%s times" % i)
                     i += 1
+                    time.sleep(1)
                 except URLError:
-                    self.debug.error("driver(URLError):%s times" % ii)
+                    self.debug.error("init_app driver(URLError):%s times" % ii)
                     ii += 1
                     while True:
                         command = "netstat -aon|findstr %s" % self.device_info["port"]
@@ -56,7 +58,8 @@ class LaunchApp(object):
                         except IndexError:
                             time.sleep(1)
                         else:
-                            self.debug.error("Appium Sever Restart Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
+                            self.debug.error(
+                                "init_app Appium Sever Restart Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
                             break
 
         except BaseException:
@@ -84,19 +87,47 @@ class LaunchApp(object):
         self.debug.info("%s:%s" % (zentao_id, database[self.device_name][zentao_id]))
 
     def launch_app(self, page_login):
+        global driver
         self.debug.info("basename:%s" % self.basename)
         self.data_statistics(self.zentao_id)
         try:
-            i = 0
+            i = 1
+            ii = 1
+            iii = 1
             while True:
                 try:
+                    self.debug.warn("launch_app driver(ready launch)")
                     driver.close_app()
+                    self.debug.info("launch_app driver(close_app success):%s" % driver)
                     driver.launch_app()
+                    self.debug.info("launch_app driver(launch_app success):%s" % driver)
                     break
                 except WebDriverException:
-                    self.debug.error("driver(WebDriverException):%s times" % i)
+                    self.debug.error("launch_app driver(WebDriverException):%s times" % i)
                     i += 1
-
+                    time.sleep(1)
+                except URLError:
+                    self.debug.error("launch_app driver(URLError):%s times" % ii)
+                    ii += 1
+                    while True:
+                        command = "netstat -aon|findstr %s" % self.device_info["port"]
+                        try:
+                            re.findall(r".+LISTENING.+", os.popen(command).read())[0]
+                        except IndexError:
+                            time.sleep(1)
+                        else:
+                            self.debug.error(
+                                "launch_app Appium Sever Restart Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
+                            while True:
+                                try:
+                                    driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
+                                                              self.device_info["desired_caps"])  # 启动APP
+                                    break
+                                except WebDriverException:
+                                    self.debug.error("URLError driver(WebDriverException):%s times" % iii)
+                                    iii += 1
+                            break
+                        break
 
             self.init_operate()
             self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")

@@ -22,14 +22,15 @@ class LaunchAppiumServices(object):
         os.system(command)
 
     def launch_appium(self):
-        log = os.path.join(os.getenv('Temp'), "AutoTestGNApp")
-        if os.path.exists(log) is False:
-            os.makedirs(log)
+        log_tmp = os.path.join(os.getenv('Temp'), "AutoTestGNApp")
+        if os.path.exists(log_tmp) is False:
+            os.makedirs(log_tmp)
         i = 0
         while True:
-            log = os.path.join(log, "%s_%s.log" % (self.udid, i))
+            log = os.path.join(log_tmp, "Restart_%s_%s.log" % (self.udid, i))
             command = "appium -a 127.0.0.1 -p %s -bp %s -U %s -g %s --command-timeout 86400 --no-reset" % (
                 self.port, self.bp_port, self.udid, log)
+            print command
             os.system(command)
             i += 1
             try:

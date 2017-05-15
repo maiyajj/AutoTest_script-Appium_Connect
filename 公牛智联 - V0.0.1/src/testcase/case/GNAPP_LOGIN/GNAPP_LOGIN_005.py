@@ -22,7 +22,6 @@ class GNAppLogin5(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.driver = LaunchApp(self.device_list, self.device_name, self.logger).return_driver()
             user_name = self.widget_click(login_page["title"],
                                           login_page["username"],
                                           login_page["title"],
