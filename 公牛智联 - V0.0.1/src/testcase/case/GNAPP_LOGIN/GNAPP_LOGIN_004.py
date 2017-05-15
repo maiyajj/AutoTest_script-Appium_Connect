@@ -9,6 +9,7 @@ class GNAppLogin4(LaunchApp):
         self.case_title = u'登录页面—成功登录后杀掉APP，再次开启APP的状态查看'  # 用例名称
         self.zentao_id = 1903  # 禅道ID
         self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_LOGIN_004
+        self.driver = self.return_driver()
         self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                          % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
 
@@ -26,7 +27,6 @@ class GNAppLogin4(LaunchApp):
                               device_page["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.driver = LaunchApp(self.device_list, self.device_name, self.logger).close_app()
             self.driver.close_app()  # 关闭App
             self.debug.warn("(%s)self.driver.close_app() App close" % self.basename)
             self.logger.info(u"[APP_INF] APP退出")

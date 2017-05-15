@@ -141,3 +141,6 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
 24、多文件调用抛出的异常也是可以捕捉在函数调用的地方捕捉到的，跟踪异常信息获取异常控制台信息http://www.quke.org/post/python-exception-info.html
 25、获取异常的名称e.__class__.__name__
 26、Excel单元格格式化文本的操作为sheet.write(0, 2, "0", xlwt.easyxf("****", num_format_str="dd / mm / yyyy"))
+27、A文件中的变量driver在B文件内初始化，然后这个driver变量竟然在A文件中无法使用
+28、adb崩掉了
+29、脚本在分配用户名的时候是动态分配的，但是多台电脑运行脚本的情况下就不知道用户名是否冲突了

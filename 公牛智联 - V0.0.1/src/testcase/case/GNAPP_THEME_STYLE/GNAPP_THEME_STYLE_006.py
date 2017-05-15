@@ -9,6 +9,7 @@ class GNAppThemeStyle6(LaunchApp):
         self.case_title = u'页面检查'  # 用例名称
         self.zentao_id = 1985  # 禅道ID
         self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_THEME_STYLE_006
+        self.driver = self.return_driver()
         self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                          % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
 

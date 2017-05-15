@@ -9,6 +9,7 @@ class GNAppMessageClassify2(LaunchApp):
         self.case_title = u'消息设置页面，清空活动历时消息功能检查'  # 用例名称
         self.zentao_id = 1926  # 禅道ID
         self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_MESSAGE_CLASSIFY_002
+        self.driver = self.return_driver()
         self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                          % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
 

@@ -21,6 +21,10 @@ def get_phone_info():
 
     device = {}  # 初始化字典，包含所需设备信息
 
+    # 杀死adb进程
+    command = "taskkill /f /t /im adb.exe"
+    os.system(command)
+
     # 获取多个设备的udid #
     command = "adb devices -l"
     devices = os.popen(command).read()

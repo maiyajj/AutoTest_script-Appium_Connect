@@ -15,7 +15,7 @@ class Main:
         # 小米4
         # command = "appium -a 127.0.0.1 -p 4723  -U  f2209864  --no-reset"
         # 360奇酷手机
-        command = "appium -a 127.0.0.1 -p 4723 -g 1.log -U  8681-M02-0xa0a151df  --no-reset"
+        command = "appium -a 127.0.0.1 -p 4725 -bp 4726 -U 85GABMN9UDD2 --no-reset"
         # ViVo
         # command = "appium -a 127.0.0.1 -p 4723  -U  54a9608b  --no-reset"
         # 华为荣耀

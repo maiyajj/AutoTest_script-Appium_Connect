@@ -9,6 +9,7 @@ class GNAppLogin6(LaunchApp):
         self.case_title = u'登录页面—错误密码输入次数超过5次后，账号锁定1分钟验证'  # 用例名称
         self.zentao_id = 1899  # 禅道ID
         self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_LOGIN_006
+        self.driver = self.return_driver()
         self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                          % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
 

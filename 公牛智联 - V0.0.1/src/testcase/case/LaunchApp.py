@@ -1,5 +1,7 @@
 # coding=utf-8
+import re
 import traceback
+from urllib2 import URLError
 
 from appium import webdriver
 from src.testcase.case.ToDevicePage import *
@@ -17,7 +19,7 @@ class LaunchApp(object):
         self.device_info = device_list[device_name]
         self.logger = logger
         self.debug = self.device_info["debug"]
-        self.user = self.device_info["user_and_pwd"]
+        self.user = self.device_name
         self.case_module = ""  # 用例所属模块
         self.case_title = ""  # 用例名称
         self.zentao_id = 0000  # 禅道ID
@@ -32,6 +34,7 @@ class LaunchApp(object):
         global driver
         try:
             i = 1
+            ii = 1
             while True:
                 try:
                     self.debug.warn("driver(ready launch)")
@@ -43,6 +46,18 @@ class LaunchApp(object):
                 except WebDriverException:
                     self.debug.error("driver(WebDriverException):%s times" % i)
                     i += 1
+                except URLError:
+                    self.debug.error("driver(URLError):%s times" % ii)
+                    ii += 1
+                    while True:
+                        command = "netstat -aon|findstr %s" % self.device_info["port"]
+                        try:
+                            re.findall(r".+LISTENING.+", os.popen(command).read())[0]
+                        except IndexError:
+                            time.sleep(1)
+                        else:
+                            self.debug.error("Appium Sever Restart Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
+                            break
 
         except BaseException:
             self.debug.error(traceback.format_exc())
@@ -81,6 +96,7 @@ class LaunchApp(object):
                 except WebDriverException:
                     self.debug.error("driver(WebDriverException):%s times" % i)
                     i += 1
+
 
             self.init_operate()
             self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -138,9 +154,9 @@ class LaunchApp(object):
     #         self.case_over("unknown")
     #         self.debug.error("case_over:Case launch unknown")
     #         raise WebDriverException("Case launch unknown")
-    def close_app(self):
-        driver_close = driver.close_app()
-        return driver_close
+    def return_driver(self):
+        return driver
+
     def case_over(self, success):
         self.success = success
         time.sleep(1)
