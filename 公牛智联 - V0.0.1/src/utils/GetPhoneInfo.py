@@ -21,9 +21,11 @@ def get_phone_info():
     try:
         command = 'netstat -aon|findstr 5037'  # 判断5037端口是否被占用
         port = re.findall(r".+LISTENING.+?(\d+)", os.popen(command).read())[0]
+        command = 'tasklist|findstr %s' % port
+        proc = re.findall(r"(.+?) .+?\d+", os.popen(command).read())[0]
         command = 'taskkill /f /t /pid %s' % port
         os.popen(command)
-        print u"关闭%s" % port
+        print u"关闭%s" % proc
     except IndexError:
         print u"5037端口未占用"
 
