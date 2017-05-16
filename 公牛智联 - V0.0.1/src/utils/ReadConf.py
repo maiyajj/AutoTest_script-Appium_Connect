@@ -41,4 +41,4 @@ def modified_conf(config):
         conf_yaml.write("  login_password_mistake: [40, 1570, 1040, 1750]\n")
         conf_yaml.write("user_and_pwd:  # 用户名，（登录密码/旧密码）， 新密码\n")
         for k, v in config["user_and_pwd"].items():
-            conf_yaml.write("  %s: %s\n" % (k, v))
+            conf_yaml.write("  '%s': %s\n" % (k, v))

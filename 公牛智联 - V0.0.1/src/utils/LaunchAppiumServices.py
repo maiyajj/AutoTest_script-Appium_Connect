@@ -27,7 +27,7 @@ class LaunchAppiumServices(object):
             os.makedirs(log_tmp)
         i = 0
         while True:
-            log = os.path.join(log_tmp, "Restart_%s_%s.log" % (self.udid, i))
+            log = os.path.join(log_tmp, "%s_%s.log" % (self.udid, i))
             command = "appium -a 127.0.0.1 -p %s -bp %s -U %s -g %s --command-timeout 86400 --no-reset" % (
                 self.port, self.bp_port, self.udid, log)
             print command

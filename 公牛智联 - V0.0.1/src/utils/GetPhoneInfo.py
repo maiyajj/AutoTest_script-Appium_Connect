@@ -1,10 +1,6 @@
 # coding=utf-8
 import os
 import re
-import sys
-
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 
 def get_phone_info():
@@ -20,6 +16,15 @@ def get_phone_info():
     """
 
     device = {}  # 初始化字典，包含所需设备信息
+
+    # 判断adb端口是否被占用
+    try:
+        command = 'netstat -aon|findstr 5037'  # 判断5037端口是否被占用
+        port = re.findall(r".+LISTENING.+?(\d+)", os.popen(command).read())[0]
+        command = 'taskkill /f /t /pid %s' % port
+        os.popen(command)
+    except IndexError:
+        print u"5037端口未占用"
 
     # 杀死adb进程
     command = "taskkill /f /t /im adb.exe"
