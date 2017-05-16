@@ -23,5 +23,3 @@ def check_debug(device_list, device_name):
 
     logger_name = r"./debug/%s/Debug_%s - [%s].log" % (current_time, log_name, udid)
     device_list[device_name]["debug"] = init_debug(logger_name, logging.getLogger("Debug_%s" % udid))
-
-    logging.shutdown()

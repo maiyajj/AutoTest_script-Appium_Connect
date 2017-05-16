@@ -144,3 +144,101 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
 27、A文件中的变量driver在B文件内初始化，然后这个driver变量竟然在A文件中无法使用
 28、adb崩掉了
 29、脚本在分配用户名的时候是动态分配的，但是多台电脑运行脚本的情况下就不知道用户名是否冲突了
+30、error: Error killing ADB server, going to see if it's online anyway在手机USB突然掉线的情况下再次恢复会报这个错
+    下一步就是判断这个错是哪里报出的，怎么处理
+    info: [debug] executing cmd: C:\Python\android-sdk-windows\platform-tools\adb.exe devices
+    info: [debug] Could not find devices, restarting adb server...
+    info: [debug] executing cmd: C:\Python\android-sdk-windows\platform-tools\adb.exe kill-server
+    error: Error killing ADB server, going to see if it's online anyway
+    info: [debug] Getting connected devices...
+    info: [debug] executing cmd: C:\Python\android-sdk-windows\platform-tools\adb.exe devices
+    info: [debug] Sent shutdown command, waiting for UiAutomator to stop...
+    warn: UiAutomator did not shut down fast enough, calling it gone
+    info: [debug] Cleaning up android objects
+    info: [debug] Cleaning up appium session
+    error: Failed to start an Appium session, err was: Error: Could not find a connected Android device.
+    info: [debug] Error: Could not find a connected Android device.
+        at [object Object].ADB.getDevicesWithRetry (C:\Python\Appium\node_modules\appium\node_modules\appium-adb\lib\adb.js:606:15)
+        at [object Object].androidCommon.prepareActiveDevice (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:400:12)
+        at [object Object].<anonymous> (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:326:26)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:607:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:246:17
+        at iterate (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:146:13)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:157:25
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:248:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:612:34
+        at [object Object].androidCommon.ensureDeviceLocale (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:371:45)
+        at [object Object].androidCommon.prepareEmulator (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:364:10)
+        at [object Object].<anonymous> (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:325:26)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:607:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:246:17
+        at iterate (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:146:13)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:157:25
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:248:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:612:34
+        at [object Object].androidCommon.checkAppPresent (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:336:5)
+        at [object Object].<anonymous> (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:324:26)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:607:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:246:17
+        at iterate (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:146:13)
+        at async.eachSeries (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:162:9)
+        at _asyncMap (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:245:13)
+        at Object.mapSeries (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:228:23)
+        at Object.async.series (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:605:19)
+        at [object Object].androidCommon.prepareDevice (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:323:9)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:607:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:246:17
+        at iterate (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:146:13)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:157:25
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:248:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:612:34
+        at [object Object].Android.initUiautomator (C:\Python\Appium\node_modules\appium\lib\devices\android\android.js:140:10)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:607:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:246:17
+        at iterate (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:146:13)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:157:25
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:248:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:612:34
+        at [object Object].androidCommon.packageAndLaunchActivityFromManifest (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:670:12)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:607:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:246:17
+        at iterate (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:146:13)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:157:25
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:248:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:612:34
+        at [object Object].<anonymous> (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:1086:7)
+        at C:\Python\Appium\node_modules\appium\node_modules\appium-adb\lib\adb.js:74:5
+        at [object Object].<anonymous> (C:\Python\Appium\node_modules\appium\node_modules\appium-adb\lib\adb.js:137:5)
+        at [object Object].ADB.checkSdkBinaryPresent (C:\Python\Appium\node_modules\appium\node_modules\appium-adb\lib\adb.js:116:5)
+        at [object Object].ADB.checkAdbPresent (C:\Python\Appium\node_modules\appium\node_modules\appium-adb\lib\adb.js:134:8)
+        at Function.ADB.createADB (C:\Python\Appium\node_modules\appium\node_modules\appium-adb\lib\adb.js:73:7)
+        at [object Object].androidCommon.initAdb (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:1083:9)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:607:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:246:17
+        at iterate (C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:146:13)
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:157:25
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:248:21
+        at C:\Python\Appium\node_modules\appium\node_modules\async\lib\async.js:612:34
+        at [object Object].<anonymous> (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:1077:12)
+        at [object Object].<anonymous> (C:\Python\Appium\node_modules\appium\lib\devices\android\android-common.js:1064:12)
+        at ChildProcess.exithandler (child_process.js:204:7)
+    info: [debug] Responding to client with error: {"status":33,"value":{"message":"A new session could not be created. (Original error: Could not find a connected Android device.)","origValue":"Could not find a connected Android device."},"sessionId":null}
+    info: <-- POST /wd/hub/session 500 31543.091 ms - 206
+
+    上述即为抓到的appium服务器端的报错信息，如下为client端的错误信息
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+      File "C:\Python\Python27\lib\site-packages\appium\webdriver\webdriver.py", line 36, in __init__
+        super(WebDriver, self).__init__(command_executor, desired_capabilities, browser_profile, proxy, keep_alive)
+      File "C:\Python\Python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 98, in __init__
+        self.start_session(desired_capabilities, browser_profile)
+      File "C:\Python\Python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 188, in start_session
+        response = self.execute(Command.NEW_SESSION, parameters)
+      File "C:\Python\Python27\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 252, in execute
+        self.error_handler.check_response(response)
+      File "C:\Python\Python27\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 194, in check_response
+        raise exception_class(message, screen, stacktrace)
+    selenium.common.exceptions.WebDriverException: Message: A new session could not be created. (Original error: Could not find a connected Android device.)
+    报的错为WebDriverException，内容为Message: A new session could not be created. (Original error: Could not find a connected Android device.)
+    所以监测WebDriverException这个错误即可，保留5037端口不被占用即可解决此问题。同时在脚本运行时手机不要安装任何手机助手类软件，特别是PP助手，
+    杀掉进程后又会出现，循环启动他的服务，直接卸载。

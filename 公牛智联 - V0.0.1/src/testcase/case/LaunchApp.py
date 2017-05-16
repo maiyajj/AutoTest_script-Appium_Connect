@@ -102,10 +102,23 @@ class LaunchApp(object):
                     driver.launch_app()
                     self.debug.info("launch_app driver(launch_app success):%s" % driver)
                     break
-                except WebDriverException:
-                    self.debug.error("launch_app driver(WebDriverException):%s times" % i)
-                    i += 1
-                    time.sleep(1)
+                except WebDriverException, e:
+                    if "A new session could not be created" not in e:
+                        self.debug.error("launch_app driver(WebDriverException):%s times" % i)
+                        i += 1
+                        time.sleep(1)
+                    else:
+                        try:
+                            command = 'netstat -aon|findstr 5037'  # 判断5037端口是否被占用
+                            port = re.findall(r".+LISTENING.+?(\d+)", os.popen(command).read())[0]
+                            command = 'tasklist|findstr %s' % port
+                            proc = re.findall(r"(.+?) .+?\d+", os.popen(command).read())[0]
+                            command = 'taskkill /f /t /pid %s' % port
+                            os.popen(command)
+                            self.debug.error(u"appium重启后关闭%s进程" % proc)
+                        except IndexError:
+                            self.debug.error(u"appium重启后没有程序占用5037端口")
+                            
                 except URLError:
                     self.debug.error("launch_app driver(URLError):%s times" % ii)
                     ii += 1
