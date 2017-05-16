@@ -23,6 +23,7 @@ def get_phone_info():
         port = re.findall(r".+LISTENING.+?(\d+)", os.popen(command).read())[0]
         command = 'taskkill /f /t /pid %s' % port
         os.popen(command)
+        print u"关闭%s" % port
     except IndexError:
         print u"5037端口未占用"
 
