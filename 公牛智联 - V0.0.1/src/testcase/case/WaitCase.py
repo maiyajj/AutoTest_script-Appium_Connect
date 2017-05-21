@@ -9,10 +9,10 @@ from src.testcase.case.INPUT_CASE.GNAppRegister import *
 from src.testcase.case.INPUT_CASE.GNAppThemeStyle import *
 from src.testcase.case.INPUT_CASE.GNAppUsingHelp import *
 from src.testcase.case.INPUT_CASE.GNAppVersion import *
+from src.testcase.common.AppInit import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
 from src.utils.OutputReport import *
-from src.utils.ReadConf import *
 from src.utils.WriteXls import *
 
 
@@ -25,11 +25,10 @@ class ScriptInitError(Exception):
 
 
 class WaitCase(object):
-    def __init__(self, device_list, device_name, restart):
+    def __init__(self, device_list, device_name):
         self.device_list = device_list
         self.device_name = device_name
         self.device_info = device_list[device_name]
-        self.device_info["restart"] = restart
 
         self.report = None
         self.logger = None
@@ -103,11 +102,11 @@ class WaitCase(object):
             self.write_report(GNAppLogin3)  # 1891, 登录页面—登录功能检查
             self.write_report(GNAppLogin4)  # 1903, 登录页面—成功登录后杀掉APP，再次开启APP的状态查看
             self.write_report(GNAppLogin5)  # 1900, 登录页面—成功登录后注销账号，再次进入登录页面查看
-            # self.write_report(GNAppLogin6)  # 1899, 登录页面—错误密码输入次数超过5次后，账号锁定1分钟验证
-            # self.write_report(GNAppLogin7)  # 1897, 登录页面—错误密码，登录提示信息检查
-            # self.write_report(GNAppLogin8)  # 1898, 登录页面—密码输入超过5次后，信息检查
-            # self.write_report(GNAppLogin9)  # 1896, 登录页面—密码为空，登录提示信息检查
-            # self.write_report(GNAppLogin10)  # 1895, 登录页面—位数错误的数字账号，登录提示信息检查
+            self.write_report(GNAppLogin6)  # 1899, 登录页面—错误密码输入次数超过5次后，账号锁定1分钟验证
+            self.write_report(GNAppLogin7)  # 1897, 登录页面—错误密码，登录提示信息检查
+            self.write_report(GNAppLogin8)  # 1898, 登录页面—密码输入超过5次后，信息检查
+            self.write_report(GNAppLogin9)  # 1896, 登录页面—密码为空，登录提示信息检查
+            self.write_report(GNAppLogin10)  # 1895, 登录页面—位数错误的数字账号，登录提示信息检查
             self.write_report(GNAppLogin11)  # 1894, 登录页面—未注册的手机号码，登录提示信息检查
             self.write_report(GNAppLogin12)  # 1893, 登录页面—账号为空，登录提示信息检查
             self.write_report(GNAppLogin13)  # 1892, 登录页面—无效账号，登录提示信息检查

@@ -49,7 +49,7 @@ class ToDevicePage(object):
                     self.widget_click(login_page["title"],
                                       login_page["login_button"],
                                       device_page["title"],
-                                      1, 1, 1, 10, 0.5, 0)
+                                      1, 1, 1, 6, 0.5, 0)
                 except TimeoutException:
                     try:
                         user_name = self.widget_click(login_page["title"],
@@ -77,12 +77,17 @@ class ToDevicePage(object):
                         data = str(conf["user_and_pwd"][self.device_info["udid"]][1]).decode('hex')
                         login_pwd.send_keys(data)
                         self.logger.info(u'[APP_INPUT] ["重新输入登录密码"] input success')
-
-                        self.widget_click(login_page["title"],
-                                          login_page["login_button"],
-                                          device_page["title"],
-                                          1, 1, 1, 10, 0.5, 0)
-
+                        try:
+                            self.widget_click(login_page["title"],
+                                              login_page["login_button"],
+                                              device_page["title"],
+                                              1, 1, 1, 10, 0.5, 0)
+                        except TimeoutException:
+                            time.sleep(330)
+                            self.widget_click(login_page["title"],
+                                              login_page["login_button"],
+                                              device_page["title"],
+                                              1, 1, 1, 10, 0.5, 0)
                     except TimeoutException:
                         self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
                         self.driver.close_app()

@@ -11,7 +11,7 @@ class Main:
 
     def sim_cmd(self):
         # 小米5
-        # command = "appium -a 127.0.0.1 -p 4723  -U  b9388cbb  --no-reset"
+        command = "appium -a 127.0.0.1 -p 4723  -U  b9388cbb  --no-reset"
         # 小米4
         # command = "appium -a 127.0.0.1 -p 4723  -U  f2209864  --no-reset"
         # 360奇酷手机
@@ -23,7 +23,7 @@ class Main:
         # 华为荣耀
         # command = "appium -a 127.0.0.1 -p 4723  -U  WPV0216928015105  --no-reset"
         # 三星galaxy s5
-        command = "appium -a 127.0.0.1 -p 4723  -U  eda69645  --no-reset"
+        # command = "appium -a 127.0.0.1 -p 4723  -U  eda69645  --no-reset"
         os.system(command)
 
 

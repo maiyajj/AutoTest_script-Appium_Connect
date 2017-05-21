@@ -64,6 +64,28 @@ class GNAppLogin7(LaunchApp):
                 # 截屏获取设备toast消息
                 ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
 
+            try:
+                login_pwd = self.widget_click(login_page["title"],
+                                              login_page["password"],
+                                              login_page["title"],
+                                              1, 1, 1, 10, 0.5)
+
+                self.driver.press_keycode(29, 28672)
+                self.driver.press_keycode(112)
+                data = str(conf["user_and_pwd"][self.user][1]).decode('hex')
+                login_pwd.send_keys(data)
+                self.logger.info(u'[APP_INPUT] ["正确密码"] input success')
+                self.widget_click(login_page["title"],
+                                  login_page["login_button"],
+                                  device_page["title"],
+                                  1, 1, 1, 10, 0.5)
+            except TimeoutException:
+                time.sleep(330)
+                self.widget_click(login_page["title"],
+                                  login_page["login_button"],
+                                  device_page["title"],
+                                  1, 1, 1, 10, 0.5)
+
             self.case_over("screen")
         except TimeoutException:
             self.case_over(False)

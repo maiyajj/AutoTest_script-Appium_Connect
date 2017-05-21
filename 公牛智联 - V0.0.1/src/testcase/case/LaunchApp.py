@@ -4,6 +4,7 @@ import traceback
 from urllib2 import URLError
 
 from appium import webdriver
+
 from src.testcase.case.ToDevicePage import *
 from src.testcase.case.ToLoginPage import *
 from src.testcase.common.WidgetCheckUnit import *
@@ -124,6 +125,7 @@ class LaunchApp(object):
                     ii += 1
                     while True:
                         command = "netstat -aon|findstr %s" % self.device_info["port"]
+                        print command
                         try:
                             re.findall(r".+LISTENING.+", os.popen(command).read())[0]
                         except IndexError:
@@ -140,7 +142,6 @@ class LaunchApp(object):
                                     self.debug.error("URLError driver(WebDriverException):%s times" % iii)
                                     iii += 1
                             break
-                        break
 
             self.init_operate()
             self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")

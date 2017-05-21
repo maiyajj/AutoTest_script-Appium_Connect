@@ -91,9 +91,7 @@ class GNAppLogin6(LaunchApp):
                 # 截屏获取设备toast消息
                 ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
 
-            time.sleep(1 * 30)
-            self.wait_widget(login_page["title"], 3, 1)
-            time.sleep(1 * 30)
+            time.sleep(330)
 
             login_pwd = self.widget_click(login_page["title"],
                                           login_page["password"],
@@ -118,6 +116,8 @@ class GNAppLogin6(LaunchApp):
 
                 # 截屏获取设备toast消息
                 ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
+
+            self.wait_widget(device_page["title"], 3, 1)
 
             self.case_over("screen")
         except TimeoutException:
