@@ -1,6 +1,5 @@
 # coding=utf-8
 from src.testcase.case.LaunchApp import *
-from src.utils.ScreenShot import *
 
 
 class GNAppLogin13(LaunchApp):
@@ -80,7 +79,11 @@ class GNAppLogin13(LaunchApp):
                                   device_page["title"],
                                   1, 1, 1, 10, 0.5)
             except TimeoutException:
-                time.sleep(330)
+                i = 1
+                while i <= 33:
+                    time.sleep(10)
+                    print "time sleep %sS" % i * 10
+                    i += 1
                 self.widget_click(login_page["title"],
                                   login_page["login_button"],
                                   device_page["title"],

@@ -1,5 +1,4 @@
 # coding=utf-8
-import re
 import traceback
 from urllib2 import URLError
 
@@ -8,7 +7,7 @@ from appium import webdriver
 from src.testcase.case.ToDevicePage import *
 from src.testcase.case.ToLoginPage import *
 from src.testcase.common.WidgetCheckUnit import *
-from src.utils.ReadConf import *
+from src.utils.ScreenShot import *
 
 
 class LaunchApp(object):

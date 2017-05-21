@@ -1,6 +1,5 @@
 # coding=utf-8
 from src.testcase.case.LaunchApp import *
-from src.utils.ScreenShot import *
 
 
 class GNAppForgetPassword2(LaunchApp):

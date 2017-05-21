@@ -1,6 +1,5 @@
 # coding=utf-8
 from src.testcase.case.LaunchApp import *
-from src.utils.ScreenShot import *
 
 
 class GNAppLogin6(LaunchApp):
@@ -91,7 +90,11 @@ class GNAppLogin6(LaunchApp):
                 # 截屏获取设备toast消息
                 ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
 
-            time.sleep(330)
+            i = 1
+            while i <= 33:
+                time.sleep(10)
+                print "time sleep %sS" % i * 10
+                i += 1
 
             login_pwd = self.widget_click(login_page["title"],
                                           login_page["password"],
