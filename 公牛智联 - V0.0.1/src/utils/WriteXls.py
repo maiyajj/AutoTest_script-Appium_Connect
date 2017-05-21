@@ -191,9 +191,7 @@ class WriteXls(object):
                                      end_time[3], end_time[4], end_time[5])
         continue_time = end_time - start_time
         self.sheet.write_merge(5, 5, 1, 7, str(continue_time), self.easyxf2)
-        with open(r"./runTime.log", "w") as run_time:
-            run_time.write(str(continue_time))
-            
+
         formula = u'"通过 "&COUNTIF(H13:H{0},"Pass")&"； 失败 "&COUNTIF(H13:H{0},"Fail")&"； 执行错误 "&' \
                   u'COUNTIF(H13:H{0},"Error")&"； 人工检查 "&COUNTIF(H13:H{0},"Wait")&"；"'.format(total_row)
         self.sheet.write_merge(6, 6, 1, 7, Formula(formula), self.easyxf2)
@@ -201,3 +199,7 @@ class WriteXls(object):
         self.sheet.write_merge(7, 7, 1, 7, len(set(self.case_count)), self.easyxf2)
 
         self.book.save(self.xls_file)
+
+        # 写入运行时长
+        with open(r"./runTime.log", "w") as run_time:
+            run_time.write(str(continue_time))
