@@ -19,7 +19,7 @@ class WidgetCheckUnit(Exception):
         self.logger = logger
         self.page = page_element
 
-    def wait_widget(self, main_widget=None, timeout=1.0, interval=1.0, text=None):
+    def wait_widget(self, main_widget=None, timeout=1.0, interval=1.0):
         locate = main_widget[1]
         widget = main_widget[0]
         end_time = time.time() + timeout
