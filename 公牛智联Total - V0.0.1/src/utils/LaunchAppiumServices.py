@@ -5,10 +5,13 @@ from LaunchAppiumServices_iOS import *
 class LaunchAppiumServices(object):
     def __init__(self, device_list, device_name):
         self.device_info = device_list[device_name]
+        self.phone_os = self.device_info["platformName"]
         self.launch_appium()
 
     def launch_appium(self):
-        if self.device_info["platformName"] == "Android":
+        if self.phone_os == "Android":
             LaunchAppiumServicesAndroid(self.device_info).launch_appium()
-        elif self.device_info["platformName"] == "iOS":
+        elif self.phone_os == "iOS":
             LaunchAppiumServicesIos(self.device_info).launch_appium()
+        else:
+            raise KeyError("The OS is wrong!")

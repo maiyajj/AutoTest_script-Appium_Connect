@@ -15,6 +15,11 @@ class ShellCommandMac(object):
     def __init__(self):
         pass
 
+    def kill_other_python(self):
+        port = re.findall(r"Python.+?(\d+) .+", os.popen("lsof -c Python").read())
+        for i in [i for i in set(port) if str(os.getpid()) != i]:
+            os.popen("kill -9 %s" % i)
+
     def find_proc_and_pid_by_port(self, port):
         '''
 

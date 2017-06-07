@@ -21,32 +21,28 @@ class GNAppAccountSettings4(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(device_page["title"],
-                              device_page["user_image"],
-                              personal_settings_page["title"],
+            self.widget_click(self.page["device_page"]["title"],
+                              self.page["device_page"]["user_image"],
+                              self.page["personal_settings_page"]["title"],
                               1, 1, 1, 10, 0.5, 0)
 
-            self.widget_click(personal_settings_page["title"],
-                              personal_settings_page["account_setting"],
-                              account_setting_page["title"],
+            self.widget_click(self.page["personal_settings_page"]["title"],
+                              self.page["personal_settings_page"]["account_setting"],
+                              self.page["account_setting_page"]["title"],
                               1, 1, 1, 10, 0.5, 0)
 
-            self.widget_click(account_setting_page["title"],
-                              account_setting_page["logout"],
-                              logout_popup["title"],
+            self.widget_click(self.page["account_setting_page"]["title"],
+                              self.page["account_setting_page"]["logout"],
+                              self.page["logout_popup"]["title"],
                               1, 1, 1, 10, 0.5, 0)
 
-            self.widget_click(logout_popup["title"],
-                              logout_popup["confirm"],
-                              login_page["activity"],
+            self.widget_click(self.page["logout_popup"]["title"],
+                              self.page["logout_popup"]["confirm"],
+                              self.page["login_page"]["title"],
                               1, 1, 1, 10, 0.5, 0)
 
-            self.widget_click(login_page["title"],
-                              login_page["check_box"],
-                              login_page["title"],
-                              1, 1, 1, 10, 0.5, 0)
-
-            pwd = self.wait_widget(login_page["password"], 1, 0.5).get_attribute("name")
+            self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
+            pwd = self.wait_widget(self.page["login_page"]["password"], 1, 0.5).get_attribute("name")
             if len(pwd) != 0:
                 raise TimeoutException()
 

@@ -21,38 +21,39 @@ class GNAppDevicePage5(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(device_page["title"],
-                              device_page["add_device"],
-                              device_add_scan_page["title"],
+            self.widget_click(self.page["device_page"]["title"],
+                              self.page["device_page"]["add_device"],
+                              self.page["device_add_scan_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(device_add_scan_page["title"],
-                              device_add_scan_page["gateway_hw"],
-                              prepare_set_network_page["title"],
+            self.widget_click(self.page["device_add_scan_page"]["title"],
+                              self.page["device_add_scan_page"]["gateway_hw"],
+                              self.page["set_network_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(prepare_set_network_page["title"],
-                              prepare_set_network_page["prepare_next"],
-                              set_network_page["title"],
+            self.widget_click(self.page["set_network_page"]["title"],
+                              self.page["set_network_page"]["prepare_next"],
+                              self.page["set_network_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            wifi_pwd = self.wait_widget(set_network_page["wifi_pwd"], 3, 1)
+            wifi_pwd = self.wait_widget(self.page["set_network_page"]["wifi_pwd"], 3, 1)
 
-            data = str(conf["wifi_pwd"]).decode('hex')
-            wifi_pwd.send_keys(data)
+            data = str(conf["wifi_pwd"]).decode('hex').replace(" ", "")
+            wifi_pwd.clear()
+            self.ac.send_keys(wifi_pwd, data)
             self.logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
             time.sleep(0.5)
 
-            self.widget_click(set_network_page["title"],
-                              set_network_page["prepare_next"],
-                              scan_with_subscribe_page["title"],
+            self.widget_click(self.page["set_network_page"]["title"],
+                              self.page["set_network_page"]["prepare_next"],
+                              self.page["scan_with_subscribe_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.wait_widget(add_device_failed_page["title"], 60, 1)
+            self.wait_widget(self.page["add_device_failed_page"]["title"], 60, 1)
 
-            self.wait_widget(add_device_failed_page["failed_rescan"], 60, 1)
+            self.wait_widget(self.page["add_device_failed_page"]["failed_rescan"], 60, 1)
 
-            self.wait_widget(add_device_failed_page["cancel"], 60, 1)
+            self.wait_widget(self.page["add_device_failed_page"]["cancel"], 60, 1)
 
             self.case_over(True)
         except TimeoutException:

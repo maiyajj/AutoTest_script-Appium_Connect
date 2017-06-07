@@ -21,14 +21,14 @@ class GNAppRegister1(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(login_page["title"],
-                              login_page["to_register"],
-                              register_page["title"],
+            self.widget_click(self.page["login_page"]["title"],
+                              self.page["login_page"]["to_register"],
+                              self.page["register_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(register_page["title"],
-                              register_page["to_login"],
-                              login_page["title"],
+            self.widget_click(self.page["register_page"]["title"],
+                              self.page["register_page"]["to_login"],
+                              self.page["login_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
             self.case_over(True)

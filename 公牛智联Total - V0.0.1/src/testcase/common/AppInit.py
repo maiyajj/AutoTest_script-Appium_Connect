@@ -16,5 +16,7 @@ class AppInit(object):
                 AppInitAndroid().app_init_android(device, k)
             elif v["platformName"] == "iOS":
                 AppInitIos().app_init_ios(device, k)
+            else:
+                raise KeyError("The phone os is wrong")
 
         return device

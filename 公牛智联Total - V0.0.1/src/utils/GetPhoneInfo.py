@@ -33,6 +33,8 @@ class GetPhoneInfo(ShellCommand):
         """
         self.title()
         # 获取所有手机型号等信息 #
+        self.kill_other_python()
+
         android_phone = GetPhoneInfoAndroid().get_phone_info()
         ios_phone = GetPhoneInfoIos().get_phone_info()
         device = dict(android_phone, **ios_phone)
@@ -41,7 +43,7 @@ class GetPhoneInfo(ShellCommand):
         selected_port = 4725  # Appium服务初始选择端口
         for k, v in device.items():
             if v["platformName"] == "Android":
-                need_port = ["port", "bp_port"]
+                need_port = ["port", "bp_port", "wda_port"]
                 for ports in need_port:
                     device[k][ports] = self.selecte_port(selected_port)
                     selected_port += 1

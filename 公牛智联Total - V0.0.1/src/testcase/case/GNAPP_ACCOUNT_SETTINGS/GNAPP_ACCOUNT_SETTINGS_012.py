@@ -21,67 +21,58 @@ class GNAppAccountSettings12(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(device_page["title"],
-                              device_page["user_image"],
-                              personal_settings_page["title"],
+            self.widget_click(self.page["device_page"]["title"],
+                              self.page["device_page"]["user_image"],
+                              self.page["personal_settings_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(personal_settings_page["title"],
-                              personal_settings_page["account_setting"],
-                              account_setting_page["title"],
+            self.widget_click(self.page["personal_settings_page"]["title"],
+                              self.page["personal_settings_page"]["account_setting"],
+                              self.page["account_setting_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(account_setting_page["title"],
-                              account_setting_page["change_pwd"],
-                              change_pwd_page["title"],
+            self.widget_click(self.page["account_setting_page"]["title"],
+                              self.page["account_setting_page"]["change_pwd"],
+                              self.page["change_pwd_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            old_pwd = self.widget_click(change_pwd_page["title"],
-                                        change_pwd_page["old_pwd"],
-                                        change_pwd_page["title"],
+            old_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
+                                        self.page["change_pwd_page"]["old_pwd"],
+                                        self.page["change_pwd_page"]["title"],
                                         1, 1, 1, 10, 0.5)
 
-            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
-            self.driver.press_keycode(29, 28672)
-            # KEYCODE_FORWARD_DEL 删除键 112
-            self.driver.press_keycode(112)
             # 发送数据
             data = ""
-            old_pwd.send_keys(data)
+            old_pwd.clear()
+            self.ac.send_keys(old_pwd, data)
             self.logger.info(u'[APP_INPUT] ["旧密码"] input success')
             time.sleep(0.5)
 
-            new_pwd = self.widget_click(change_pwd_page["title"],
-                                        change_pwd_page["new_pwd"],
-                                        change_pwd_page["title"],
+            new_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
+                                        self.page["change_pwd_page"]["new_pwd"],
+                                        self.page["change_pwd_page"]["title"],
                                         1, 1, 1, 10, 0.5)
 
-            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
-            self.driver.press_keycode(29, 28672)
-            # KEYCODE_FORWARD_DEL 删除键 112
-            self.driver.press_keycode(112)
             # 发送数据
-            data = str(conf["user_and_pwd"][self.user][1]).decode('hex')
-            new_pwd.send_keys(data)
+            data = str(conf["user_and_pwd"][self.user][1]).decode('hex').replace(" ", "")
+            new_pwd.clear()
+            self.ac.send_keys(new_pwd, data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
 
-            conform_new_pwd = self.widget_click(change_pwd_page["title"],
-                                                change_pwd_page["conform_pwd"],
-                                                change_pwd_page["title"],
+            conform_new_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
+                                                self.page["change_pwd_page"]["conform_pwd"],
+                                                self.page["change_pwd_page"]["title"],
                                                 1, 1, 1, 10, 0.5)
 
-            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
-            self.driver.press_keycode(29, 28672)
-            # KEYCODE_FORWARD_DEL 删除键 112
-            self.driver.press_keycode(112)
             # 发送数据
-            data = str(conf["user_and_pwd"][self.user][1]).decode('hex')
-            conform_new_pwd.send_keys(data)
+            data = str(conf["user_and_pwd"][self.user][1]).decode('hex').replace(" ", "")
+            conform_new_pwd.clear()
+            self.ac.send_keys(conform_new_pwd, data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
 
-            widget_px = change_pwd_page["commit"]
+            widget_px = self.page["change_pwd_page"]["commit"]
             width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["width"])
             height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["height"])
             self.driver.tap([(width, height)], )
@@ -89,7 +80,7 @@ class GNAppAccountSettings12(LaunchApp):
 
             while True:
                 try:
-                    self.wait_widget(loading_popup["title"], 0.5, 0.1)
+                    self.wait_widget(self.page["loading_popup"]["title"], 0.5, 0.1)
                 except TimeoutException:
                     break
 

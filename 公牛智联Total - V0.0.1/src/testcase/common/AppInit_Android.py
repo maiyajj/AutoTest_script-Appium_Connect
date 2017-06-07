@@ -10,6 +10,7 @@ class AppInitAndroid(object):
 
     def app_init_android(self, device, k):
         device[k]["desired_caps"] = {}
+        device[k]["desired_caps"]['automationName'] = "Appium"
         device[k]["desired_caps"]['driver'] = '%s' % k
         device[k]["desired_caps"]['platformName'] = '%s' % device[k]["platformName"]
         device[k]["desired_caps"]['browserName'] = ''
@@ -18,6 +19,7 @@ class AppInitAndroid(object):
         device[k]["desired_caps"]['newCommandTimeout'] = '999999'
         device[k]["desired_caps"]["unicodeKeyboard"] = "True"
         device[k]["desired_caps"]["resetKeyboard"] = "True"
+        device[k]["desired_caps"]['wdaLocalPort'] = '%s' % device[k]["wda_port"]
         device[k]["desired_caps"]['appPackage'] = '%s' % conf["App"]["GN_Android"]["appPackage"]
         device[k]["desired_caps"]['appActivity'] = '%s' % conf["App"]["GN_Android"]["appActivity"]
         device[k]["desired_caps"]['waitActivity'] = '%s' % conf["App"]["GN_Android"]["waitActivity"]

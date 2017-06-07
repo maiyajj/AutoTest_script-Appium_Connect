@@ -21,21 +21,22 @@ class GNAppVersion1(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(device_page["title"],
-                              device_page["user_image"],
-                              personal_settings_page["title"],
+            self.widget_click(self.page["device_page"]["title"],
+                              self.page["device_page"]["user_image"],
+                              self.page["personal_settings_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(personal_settings_page["title"],
-                              personal_settings_page["version_info"],
-                              upgrade_page["title"],
+            self.widget_click(self.page["personal_settings_page"]["title"],
+                              self.page["personal_settings_page"]["version_info"],
+                              self.page["upgrade_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            current_version = self.wait_widget(upgrade_page["current_version"], 3, 1).get_attribute("name")[-10:]
+            current_version = self.wait_widget(self.page["upgrade_page"]["current_version"], 3, 1).get_attribute(
+                "name")[-10:]
 
-            new_version = self.wait_widget(upgrade_page["new_version"], 3, 1).get_attribute("name")[-10:]
+            new_version = self.wait_widget(self.page["upgrade_page"]["new_version"], 3, 1).get_attribute("name")[-10:]
 
-            btn_state = self.wait_widget(upgrade_page["upgrade_button"], 3, 1).get_attribute("enabled")
+            btn_state = self.wait_widget(self.page["upgrade_page"]["upgrade_button"], 3, 1).get_attribute("enabled")
 
             if current_version == new_version and btn_state != "false":
                 raise TimeoutException()

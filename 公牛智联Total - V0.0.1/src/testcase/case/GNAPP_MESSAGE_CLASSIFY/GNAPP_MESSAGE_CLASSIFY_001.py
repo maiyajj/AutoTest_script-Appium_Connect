@@ -21,90 +21,90 @@ class GNAppMessageClassify1(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(device_page["title"],
-                              device_page["message_table"],
-                              home_message_page["title"],
+            self.widget_click(self.page["device_page"]["title"],
+                              self.page["device_page"]["message_table"],
+                              self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
+            self.widget_click(self.page["home_message_page"]["title"],
+                              self.page["home_message_page"]["classify"],
+                              self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["all_device"],
-                              home_message_page["title"],
+            self.widget_click(self.page["message_classify_page"]["title"],
+                              self.page["message_classify_page"]["all_device"],
+                              self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
+            self.widget_click(self.page["home_message_page"]["title"],
+                              self.page["home_message_page"]["classify"],
+                              self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["all_device"],
+            result = self.wait_widget(self.page["message_classify_page"]["all_device"],
                                       3, 1).get_attribute("checked")
             if result != "true":
                 raise TimeoutException()
 
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["experience_data"],
-                              home_message_page["title"],
+            self.widget_click(self.page["message_classify_page"]["title"],
+                              self.page["message_classify_page"]["experience_data"],
+                              self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
+            self.widget_click(self.page["home_message_page"]["title"],
+                              self.page["home_message_page"]["classify"],
+                              self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["experience_data"],
+            result = self.wait_widget(self.page["message_classify_page"]["experience_data"],
                                       3, 1).get_attribute("checked")
             if result != "true":
                 raise TimeoutException()
 
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["A2"],
-                              home_message_page["title"],
+            self.widget_click(self.page["message_classify_page"]["title"],
+                              self.page["message_classify_page"]["A2"],
+                              self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
+            self.widget_click(self.page["home_message_page"]["title"],
+                              self.page["home_message_page"]["classify"],
+                              self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["A2"],
+            result = self.wait_widget(self.page["message_classify_page"]["A2"],
                                       3, 1).get_attribute("checked")
             if result != "true":
                 raise TimeoutException()
 
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["A3"],
-                              home_message_page["title"],
+            self.widget_click(self.page["message_classify_page"]["title"],
+                              self.page["message_classify_page"]["A3"],
+                              self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
+            self.widget_click(self.page["home_message_page"]["title"],
+                              self.page["home_message_page"]["classify"],
+                              self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["A3"],
+            result = self.wait_widget(self.page["message_classify_page"]["A3"],
                                       3, 1).get_attribute("checked")
             if result != "true":
                 raise TimeoutException()
 
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["A4"],
-                              home_message_page["title"],
+            self.widget_click(self.page["message_classify_page"]["title"],
+                              self.page["message_classify_page"]["A4"],
+                              self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
+            self.widget_click(self.page["home_message_page"]["title"],
+                              self.page["home_message_page"]["classify"],
+                              self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["A4"],
+            result = self.wait_widget(self.page["message_classify_page"]["A4"],
                                       3, 1).get_attribute("checked")
             if result != "true":
                 raise TimeoutException()
 
-            self.widget_click(message_classify_page["title"],
-                              message_classify_page["A5"],
-                              home_message_page["title"],
+            self.widget_click(self.page["message_classify_page"]["title"],
+                              self.page["message_classify_page"]["A5"],
+                              self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            self.widget_click(home_message_page["title"],
-                              home_message_page["classify"],
-                              message_classify_page["title"],
+            self.widget_click(self.page["home_message_page"]["title"],
+                              self.page["home_message_page"]["classify"],
+                              self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(message_classify_page["A5"],
+            result = self.wait_widget(self.page["message_classify_page"]["A5"],
                                       3, 1).get_attribute("checked")
             if result != "true":
                 raise TimeoutException()

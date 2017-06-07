@@ -3,21 +3,23 @@ import traceback
 from urllib2 import URLError
 
 from appium import webdriver
-
 from src.testcase.case.ToDevicePage import *
 from src.testcase.case.ToLoginPage import *
 from src.testcase.common.WidgetCheckUnit import *
 from src.utils.ScreenShot import *
 
+
 class LaunchApp(object):
     conf = conf
 
-    def __init__(self, device_list, device_name, logger, sc):
-        self.device_list = device_list
-        self.device_name = device_name
-        self.device_info = device_list[device_name]
-        self.logger = logger
-        self.sc = sc
+    def __init__(self, device_info_list):
+        self.device_info = device_info_list["device_info"]
+        self.device_name = self.device_info["udid"]
+        self.page = device_info_list["page_element"]
+        self.logger = device_info_list["logger"]
+        self.sc = device_info_list["sc"]
+        self.ac = AppiumCommand(self.device_info["platformName"])
+
         self.debug = self.device_info["debug"]
         self.user = self.device_name
         self.case_module = ""  # 用例所属模块
@@ -66,7 +68,7 @@ class LaunchApp(object):
 
     def init_operate(self):
         self.debug.info("driver(init_operate):%s" % driver)
-        widget_check_unit = WidgetCheckUnit(driver, self.logger)  # 元素初始化
+        widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger)  # 元素初始化
         self.widget_click = widget_check_unit.widget_click  # 初始化self.widget_click
         self.wait_widget = widget_check_unit.wait_widget  # 初始化self.wait_widget
 
@@ -142,9 +144,9 @@ class LaunchApp(object):
             self.success = False
 
             if page_login is True:
-                ToLoginPage(driver, self.logger, self.device_info)  # 使APP跳转到登录页面等待
+                ToLoginPage(driver, self.logger, self.device_info, self.page)  # 使APP跳转到登录页面等待
             elif page_login is False:
-                ToDevicePage(driver, self.logger, self.device_info)  # 使APP跳转到设备主页面等待
+                ToDevicePage(driver, self.logger, self.device_info, self.page)  # 使APP跳转到设备主页面等待
         except BaseException:
             self.case_over("unknown")
             self.debug.error("case_over:%s" % traceback.format_exc())
@@ -195,6 +197,16 @@ class LaunchApp(object):
     def return_driver(self):
         return driver
 
+    def show_pwd(self, element):
+        try:
+            while True:
+                if self.ac.get_attribute(element, "checked") == "true":
+                    break
+                else:
+                    element.click()
+        except TimeoutException:
+            pass
+        
     def case_over(self, success):
         self.success = success
         time.sleep(1)

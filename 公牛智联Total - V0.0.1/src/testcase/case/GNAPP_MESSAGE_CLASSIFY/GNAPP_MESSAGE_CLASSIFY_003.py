@@ -21,38 +21,38 @@ class GNAppMessageClassify3(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(device_page["title"],
-                              device_page["message_table"],
-                              home_message_page["title"],
+            self.widget_click(self.page["device_page"]["title"],
+                              self.page["device_page"]["message_table"],
+                              self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(home_message_page["title"],
-                              home_message_page["setting"],
-                              message_setting_page["title"],
+            self.widget_click(self.page["home_message_page"]["title"],
+                              self.page["home_message_page"]["setting"],
+                              self.page["message_setting_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(message_setting_page["title"],
-                              message_setting_page["clear_activity"],
-                              clear_activity_popup["title"],
+            self.widget_click(self.page["message_setting_page"]["title"],
+                              self.page["message_setting_page"]["clear_activity"],
+                              self.page["clear_activity_popup"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(clear_activity_popup["title"],
-                              clear_activity_popup["confirm"],
-                              home_message_page["title"],
+            self.widget_click(self.page["clear_activity_popup"]["title"],
+                              self.page["clear_activity_popup"]["confirm"],
+                              self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(home_message_page["title"],
-                              home_message_page["message_activity"],
-                              home_message_page["title"],
+            self.widget_click(self.page["home_message_page"]["title"],
+                              self.page["home_message_page"]["message_activity"],
+                              self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            state = self.wait_widget(home_message_page["message_activity"], 3, 1).get_attribute("checked")
+            state = self.wait_widget(self.page["home_message_page"]["message_activity"], 3, 1).get_attribute("checked")
             if state is True:
-                self.wait_widget(home_message_page["no_message"], 3, 1)
+                self.wait_widget(self.page["home_message_page"]["no_message"], 3, 1)
             else:
-                self.widget_click(home_message_page["title"],
-                                  home_message_page["message_activity"],
-                                  home_message_page["title"],
+                self.widget_click(self.page["home_message_page"]["title"],
+                                  self.page["home_message_page"]["message_activity"],
+                                  self.page["home_message_page"]["title"],
                                   1, 1, 1, 10, 0.5)
 
             self.case_over(True)

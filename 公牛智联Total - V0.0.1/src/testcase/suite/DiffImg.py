@@ -3,8 +3,6 @@ import math
 import operator
 
 from PIL import Image
-from data.Database import *
-from src.utils.ReadConf import *
 
 
 class DiffImg(object):

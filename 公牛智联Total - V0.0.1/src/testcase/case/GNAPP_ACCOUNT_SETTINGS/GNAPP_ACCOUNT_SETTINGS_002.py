@@ -22,45 +22,48 @@ class GNAppAccountSettings2(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(device_page["title"],
-                              device_page["user_image"],
-                              personal_settings_page["title"],
+            self.widget_click(self.page["device_page"]["title"],
+                              self.page["device_page"]["user_image"],
+                              self.page["personal_settings_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(personal_settings_page["title"],
-                              personal_settings_page["account_setting"],
-                              account_setting_page["title"],
+            self.widget_click(self.page["personal_settings_page"]["title"],
+                              self.page["personal_settings_page"]["account_setting"],
+                              self.page["account_setting_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(account_setting_page["title"],
-                              account_setting_page["change_pwd"],
-                              change_pwd_page["title"],
+            self.widget_click(self.page["account_setting_page"]["title"],
+                              self.page["account_setting_page"]["change_pwd"],
+                              self.page["change_pwd_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            old_pwd = self.widget_click(change_pwd_page["title"],
-                                        change_pwd_page["old_pwd"],
-                                        change_pwd_page["title"],
+            old_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
+                                        self.page["change_pwd_page"]["old_pwd"],
+                                        self.page["change_pwd_page"]["title"],
                                         1, 1, 1, 10, 0.5)
-            data = str(conf["user_and_pwd"][self.user][1]).decode('hex')
-            old_pwd.send_keys(data)
+            data = str(conf["user_and_pwd"][self.user][1]).decode('hex').replace(" ", "")
+            old_pwd.clear()
+            self.ac.send_keys(old_pwd, data)
             self.logger.info(u'[APP_INPUT] ["旧密码"] input success')
             time.sleep(0.5)
 
-            new_pwd = self.widget_click(change_pwd_page["title"],
-                                        change_pwd_page["new_pwd"],
-                                        change_pwd_page["title"],
+            new_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
+                                        self.page["change_pwd_page"]["new_pwd"],
+                                        self.page["change_pwd_page"]["title"],
                                         1, 1, 1, 10, 0.5)
-            data = str(conf["user_and_pwd"][self.user][2]).decode('hex')
-            new_pwd.send_keys(data)
+            data = str(conf["user_and_pwd"][self.user][2]).decode('hex').replace(" ", "")
+            new_pwd.clear()
+            self.ac.send_keys(new_pwd, data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
 
-            conform_pwd = self.widget_click(change_pwd_page["title"],
-                                            change_pwd_page["conform_pwd"],
-                                            change_pwd_page["title"],
+            conform_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
+                                            self.page["change_pwd_page"]["conform_pwd"],
+                                            self.page["change_pwd_page"]["title"],
                                             1, 1, 1, 10, 0.5)
-            data = str(conf["user_and_pwd"][self.user][2]).decode('hex')
-            conform_pwd.send_keys(data)
+            data = str(conf["user_and_pwd"][self.user][2]).decode('hex').replace(" ", "")
+            conform_pwd.clear()
+            self.ac.send_keys(conform_pwd, data)
             self.logger.info(u'[APP_INPUT] ["确认新密码"] input success')
             time.sleep(0.5)
 
@@ -71,9 +74,9 @@ class GNAppAccountSettings2(LaunchApp):
 
             modified_conf(conf)
 
-            self.widget_click(change_pwd_page["title"],
-                              change_pwd_page["commit"],
-                              login_page["title"],
+            self.widget_click(self.page["change_pwd_page"]["title"],
+                              self.page["change_pwd_page"]["commit"],
+                              self.page["login_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
             self.case_over(True)

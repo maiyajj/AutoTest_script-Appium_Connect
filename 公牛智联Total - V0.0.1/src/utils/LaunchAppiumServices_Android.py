@@ -1,6 +1,8 @@
 # coding=utf-8
 import shutil
+
 from ShellCommand import *
+
 
 class LaunchAppiumServicesAndroid(object):
     def __init__(self, device_info):
@@ -22,7 +24,6 @@ class LaunchAppiumServicesAndroid(object):
 
     def launch_appium(self):
         log_tmp = os.path.join(self.sc.set_appium_log_addr(), "AutoTestGNApp")
-        print log_tmp
         if os.path.exists(log_tmp) is False:
             os.makedirs(log_tmp)
         i = 0

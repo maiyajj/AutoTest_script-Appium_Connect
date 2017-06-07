@@ -20,37 +20,35 @@ class GNAppLogin3(LaunchApp):
 
     # 用例动作
     def case(self):
+
         try:
-            user_name = self.widget_click(login_page["title"],
-                                          login_page["username"],
-                                          login_page["title"],
+            user_name = self.widget_click(self.page["login_page"]["title"],
+                                          self.page["login_page"]["username"],
+                                          self.page["login_page"]["title"],
                                           1, 1, 1, 10, 0.5)
 
-            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
-            self.driver.press_keycode(29, 28672)
-            # KEYCODE_FORWARD_DEL 删除键 112
-            self.driver.press_keycode(112)
             # 发送数据
-            data = str(conf["user_and_pwd"][self.user][0]).decode('hex')
-            user_name.send_keys(data)
+            data = str(conf["user_and_pwd"][self.user][0]).decode('hex').replace(" ", "")
+            user_name.clear()
+            self.ac.send_keys(user_name, data)
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)
 
-            login_pwd = self.widget_click(login_page["title"],
-                                          login_page["password"],
-                                          login_page["title"],
+            login_pwd = self.widget_click(self.page["login_page"]["title"],
+                                          self.page["login_page"]["password"],
+                                          self.page["login_page"]["title"],
                                           1, 1, 1, 10, 0.5)
 
-            self.driver.press_keycode(29, 28672)
-            self.driver.press_keycode(112)
-            data = str(conf["user_and_pwd"][self.user][1]).decode('hex')
-            login_pwd.send_keys(data)
+            data = str(conf["user_and_pwd"][self.user][1]).decode('hex').replace(" ", "")
+            self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
+            login_pwd.clear()
+            self.ac.send_keys(login_pwd, data)
             self.logger.info(u'[APP_INPUT] ["密码"] input success')
             time.sleep(0.5)
 
-            self.widget_click(login_page["title"],
-                              login_page["login_button"],
-                              device_page["title"],
+            self.widget_click(self.page["login_page"]["title"],
+                              self.page["login_page"]["login_button"],
+                              self.page["device_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
             self.case_over(True)

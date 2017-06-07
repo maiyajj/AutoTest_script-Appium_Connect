@@ -1,7 +1,7 @@
 # coding=utf-8
 import os
 import re
-
+import time
 
 class PortBindError(Exception):
     def __init__(self, value):
@@ -15,6 +15,11 @@ class ShellCommandWindows(object):
     def __init__(self):
         pass
 
+    def kill_other_python(self):
+        port = re.findall(r"python.exe.+?(\d+).+", os.popen("tasklist|findstr python").read())
+        for i in [i for i in set(port) if str(os.getpid()) != i]:
+            os.popen("taskkill /f /t /pid %s" % i)
+
     def find_proc_and_pid_by_port(self, port):
         '''
 
@@ -26,8 +31,8 @@ class ShellCommandWindows(object):
         find_pid = []
         for i in bind_pid:
             command = 'tasklist|findstr %s' % i
-            find_pid.append(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read()))
-
+            find_pid.append(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())[0])
+        
         return find_pid
 
     def find_proc_and_pid_by_pid(self, pid):
@@ -60,6 +65,7 @@ class ShellCommandWindows(object):
         else:
             command = 'taskkill /f /t /im %s.exe' % proc  # 通过进程名杀死进程
         os.popen(command)
+        time.sleep(1)
         if self.find_proc_and_pid_by_proc(proc) == []:
             print u"终止 %s 进程。" % proc
         else:
@@ -75,6 +81,7 @@ class ShellCommandWindows(object):
 
         command = 'taskkill /f /t /pid %s' % pid  # 通过pid杀死进程
         os.popen(command)
+        time.sleep(1)
         if self.find_proc_and_pid_by_pid(pid) == []:
             print u"终止 PID %s。" % pid
         else:

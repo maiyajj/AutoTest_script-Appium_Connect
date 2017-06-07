@@ -3,7 +3,6 @@ import time
 
 from data.Database import *
 from selenium.common.exceptions import *
-from src.utils.ReadAPPElement import *
 
 
 class TimeoutError(Exception):
@@ -15,32 +14,15 @@ class TimeoutError(Exception):
 
 
 class WidgetCheckUnit(Exception):
-    def __init__(self, driver, logger):
+    def __init__(self, driver, page_element, logger):
         self.driver = driver
         self.logger = logger
-
-    def widget_edit_input(self, widget, data):
-        if data is not None:
-            try:
-                # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
-                self.driver.press_keycode(29, 28672)
-                # KEYCODE_FORWARD_DEL 删除键 112
-                self.driver.press_keycode(112)
-                # 发送数据
-                widget.send_keys(data)
-                self.logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
-                time.sleep(0.5)
-            except NoSuchAttributeException:
-                self.logger.info(u'[APP_INPUT] ["WiFi密码"] input failed')
-                # self.err_screen_shot()
+        self.page = page_element
 
     def wait_widget(self, main_widget=None, timeout=1.0, interval=1.0):
         locate = main_widget[1]
         widget = main_widget[0]
-        if main_widget is None or locate not in ["id", "name", "class", "xpath", "activity"]:
-            raise KeyError('[%s][1] must be "id" or "name" or "class" or "xpath"' % main_widget)
         end_time = time.time() + timeout
-        element = None
         while True:
             try:
                 if locate == "id":
@@ -55,6 +37,9 @@ class WidgetCheckUnit(Exception):
                     element = self.driver.wait_activity(widget)
                 elif locate == "accessibility_id":
                     element = self.driver.find_element_by_accessibility_id(widget)
+                else:
+                    raise KeyError('find_element_by_%s must in'
+                                   '["id", "name", "class", "xpath", "activity", "accessibility_id"' % locate)
                 return element
             except NoSuchElementException:
                 time.sleep(interval)
@@ -63,7 +48,7 @@ class WidgetCheckUnit(Exception):
 
     def widget_click(self, check_page=None, operate_widget=None, wait_page=None,
                      wait_time1=1, wait_time2=1, wait_time3=1, timeout=1,
-                     interval=1, log_record=1, data=None):
+                     interval=1, log_record=1):
         """
             Using click operation widgets - 使用点击方式操作控件
             widget_click(self, check_page=None, operate_widget=None, wait_page=None,
@@ -88,9 +73,7 @@ class WidgetCheckUnit(Exception):
                         操作超时
             :param log_record: The flag of record the log
                         是否记录log
-            :param data: Input fields input data
-                        输入框输入数据           
-                         
+
         :return FALSE
         """
         if not isinstance(check_page, list):
@@ -112,10 +95,9 @@ class WidgetCheckUnit(Exception):
                 widget.click()
                 while True:
                     try:
-                        self.wait_widget(loading_popup["title"], 0.2, 0.1)
+                        self.wait_widget(self.page["loading_popup"]["title"], 0.2, 0.1)
                     except TimeoutException:
                         break
-                self.widget_edit_input(widget, data)
                 if log_record != 0:
                     self.logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
                 time.sleep(0.1)

@@ -1,6 +1,6 @@
 # coding=utf-8
-from ShellCommand_Windows import *
 from ShellCommand_Mac import *
+from ShellCommand_Windows import *
 
 
 class PortBindError(Exception):
@@ -23,6 +23,14 @@ class ShellCommand(object):
             return "windows"
         if system == "posix":
             return "mac"
+
+    def kill_other_python(self):
+        if self.os == "windows":
+            self.scw.kill_other_python()
+        elif self.os == "mac":
+            self.scm.kill_other_python()
+        else:
+            raise KeyError("The OS is wrong!")
 
     def get_phone_udid_for_android(self):
         '''

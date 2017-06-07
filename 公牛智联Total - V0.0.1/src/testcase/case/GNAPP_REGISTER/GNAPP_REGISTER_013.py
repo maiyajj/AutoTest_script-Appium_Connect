@@ -21,51 +21,47 @@ class GNAppRegister13(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(login_page["title"],
-                              login_page["to_register"],
-                              register_page["title"],
+            self.widget_click(self.page["login_page"]["title"],
+                              self.page["login_page"]["to_register"],
+                              self.page["register_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            user_name = self.widget_click(register_page["title"],
-                                          register_page["username"],
-                                          register_page["title"],
+            user_name = self.widget_click(self.page["register_page"]["title"],
+                                          self.page["register_page"]["username"],
+                                          self.page["register_page"]["title"],
                                           1, 1, 1, 10, 0.5)
 
-            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
-            self.driver.press_keycode(29, 28672)
-            # KEYCODE_FORWARD_DEL 删除键 112
-            self.driver.press_keycode(112)
             # 发送数据
             data = ""
-            user_name.send_keys(data)
+            user_name.clear()
+            self.ac.send_keys(user_name, data)
             self.logger.info(u'[APP_INPUT] ["空白用户名"] input success')
             time.sleep(0.5)
 
-            pwd = self.widget_click(register_page["title"],
-                                    register_page["password"],
-                                    register_page["title"],
+            pwd = self.widget_click(self.page["register_page"]["title"],
+                                    self.page["register_page"]["password"],
+                                    self.page["register_page"]["title"],
                                     1, 1, 1, 10, 0.5)
 
-            self.driver.press_keycode(29, 28672)
-            self.driver.press_keycode(112)
             data = "1234"
-            pwd.send_keys(data)
+            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
+            pwd.clear()
+            self.ac.send_keys(pwd, data)
             self.logger.info(u'[APP_INPUT] ["注册密码"] input success')
             time.sleep(0.5)
 
-            check_code = self.widget_click(register_page["title"],
-                                           register_page["check_code"],
-                                           register_page["title"],
+            check_code = self.widget_click(self.page["register_page"]["title"],
+                                           self.page["register_page"]["check_code"],
+                                           self.page["register_page"]["title"],
                                            1, 1, 1, 10, 0.5)
 
-            self.driver.press_keycode(29, 28672)
-            self.driver.press_keycode(112)
             data = "123456"
-            check_code.send_keys(data)
+            check_code.clear()
+            self.ac.send_keys(check_code, data)
             self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
             time.sleep(0.5)
 
-            widget_px = register_page["register_button"]
+            widget_px = self.page["register_page"]["register_button"]
             width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["width"])
             height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["height"])
             self.driver.tap([(width, height)], )
@@ -73,7 +69,7 @@ class GNAppRegister13(LaunchApp):
 
             while True:
                 try:
-                    self.wait_widget(loading_popup["title"], 0.5, 0.1)
+                    self.wait_widget(self.page["loading_popup"]["title"], 0.5, 0.1)
                 except TimeoutException:
                     break
 

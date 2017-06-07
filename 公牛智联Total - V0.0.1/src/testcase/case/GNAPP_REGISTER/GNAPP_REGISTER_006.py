@@ -21,24 +21,23 @@ class GNAppRegister6(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(login_page["title"],
-                              login_page["to_register"],
-                              register_page["title"],
+            self.widget_click(self.page["login_page"]["title"],
+                              self.page["login_page"]["to_register"],
+                              self.page["register_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            check_code = self.widget_click(register_page["title"],
-                                           register_page["check_code"],
-                                           register_page["title"],
+            check_code = self.widget_click(self.page["register_page"]["title"],
+                                           self.page["register_page"]["check_code"],
+                                           self.page["register_page"]["title"],
                                            1, 1, 1, 10, 0.5)
 
-            self.driver.press_keycode(29, 28672)
-            self.driver.press_keycode(112)
             data = u"△▽○◇"
-            check_code.send_keys(data)
+            check_code.clear()
+            self.ac.send_keys(check_code, data)
             self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
             time.sleep(0.5)
 
-            check_code = self.wait_widget(register_page["check_code"], 1, 0.5).get_attribute("name")
+            check_code = self.wait_widget(self.page["register_page"]["check_code"], 1, 0.5).get_attribute("name")
             if len(check_code) != 0:
                 raise TimeoutException()
 

@@ -21,14 +21,14 @@ class GNAppForgetPassword1(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(login_page["title"],
-                              login_page["to_find_password"],
-                              find_password_page["title"],
+            self.widget_click(self.page["login_page"]["title"],
+                              self.page["login_page"]["to_find_password"],
+                              self.page["find_password_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            self.widget_click(find_password_page["title"],
-                              find_password_page["to_return"],
-                              login_page["title"],
+            self.widget_click(self.page["find_password_page"]["title"],
+                              self.page["find_password_page"]["to_return"],
+                              self.page["login_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
             self.case_over(True)

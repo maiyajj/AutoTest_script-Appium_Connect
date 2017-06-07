@@ -13,6 +13,7 @@ from src.testcase.common.AppInit import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
 from src.utils.OutputReport import *
+from src.utils.ReadAPPElement import *
 from src.utils.WriteXls import *
 
 
@@ -42,6 +43,7 @@ class WaitCase(object):
         database[device_name] = {}
 
         try:
+            self.select_page_element()
             self.create_debug()
             self.create_log()
             self.create_report()
@@ -51,12 +53,17 @@ class WaitCase(object):
             self.script_init_success = True
         except BaseException:
             self.debug.error(traceback.format_exc())
+            raise
         if self.script_init_success is True:
             self.run()
         else:
             raise ScriptInitError("Script Init Error!!! "
                                   "contain [create_debug(), create_log(), "
                                   "create_report(), write_xls(), check_appium()]")
+
+    def select_page_element(self):
+        PageElement(self.device_info["platformName"], self.device_list).get_page_element()
+        self.page_element = self.device_list["page"]
 
     def create_log(self):
         check_log(self.device_list, self.device_name)
@@ -74,7 +81,11 @@ class WaitCase(object):
         self.xls = WriteXls(self.device_list, self.device_name)
 
     def init_app(self):
-        LaunchApp(self.device_list, self.device_name, self.logger, self.sc).init_app()
+        self.device_info_list = {"device_info": self.device_info,
+                                 "page_element": self.page_element,
+                                 "logger": self.logger,
+                                 "sc": self.sc}
+        LaunchApp(self.device_info_list).init_app()
 
     def check_appium(self):
         while True:
@@ -105,9 +116,9 @@ class WaitCase(object):
         database["case_location"] = self.No
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])
-            self.write_report(GNAppVersion1)  # 1992, 当前版本为最新版本，页面信息检查
-            self.write_report(GNAppLogin1)  # 1889, 登录页面—新用户注册页面跳转
-            self.write_report(GNAppLogin2)  # 1890, 登录页面—忘记密码页面跳转
+            # self.write_report(GNAppVersion1)  # 1992, 当前版本为最新版本，页面信息检查
+            # self.write_report(GNAppLogin1)  # 1889, 登录页面—新用户注册页面跳转
+            # self.write_report(GNAppLogin2)  # 1890, 登录页面—忘记密码页面跳转
             self.write_report(GNAppLogin3)  # 1891, 登录页面—登录功能检查
             self.write_report(GNAppLogin4)  # 1903, 登录页面—成功登录后杀掉APP，再次开启APP的状态查看
             self.write_report(GNAppLogin5)  # 1900, 登录页面—成功登录后注销账号，再次进入登录页面查看
@@ -177,7 +188,7 @@ class WaitCase(object):
 
     def write_report(self, case_name):
         try:
-            case = case_name(self.device_list, self.device_name, self.logger).output()
+            case = case_name(self.device_info_list).output()
             end_time = time.strftime("%Y-%m-%d %H:%M:%S")
             zentao_id = case[1]
             data = u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % \

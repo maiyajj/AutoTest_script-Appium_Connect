@@ -21,27 +21,24 @@ class GNAppRegister12(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(login_page["title"],
-                              login_page["to_register"],
-                              register_page["title"],
+            self.widget_click(self.page["login_page"]["title"],
+                              self.page["login_page"]["to_register"],
+                              self.page["register_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            user_name = self.widget_click(register_page["title"],
-                                          register_page["username"],
-                                          register_page["title"],
+            user_name = self.widget_click(self.page["register_page"]["title"],
+                                          self.page["register_page"]["username"],
+                                          self.page["register_page"]["title"],
                                           1, 1, 1, 10, 0.5)
 
-            # 29 is the keycode of 'a', 28672 is the keycode of META_CTRL_MASK
-            self.driver.press_keycode(29, 28672)
-            # KEYCODE_FORWARD_DEL 删除键 112
-            self.driver.press_keycode(112)
             # 发送数据
             data = "138123412341"
-            user_name.send_keys(data)
+            user_name.clear()
+            self.ac.send_keys(user_name, data)
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)
 
-            user_name = self.wait_widget(register_page["username"], 1, 0.5).get_attribute("name")
+            user_name = self.wait_widget(self.page["register_page"]["username"], 1, 0.5).get_attribute("name")
             if len(user_name) != 11:
                 raise TimeoutException()
 

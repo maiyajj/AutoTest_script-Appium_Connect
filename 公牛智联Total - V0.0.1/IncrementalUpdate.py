@@ -4,6 +4,7 @@ import os.path
 import re
 
 from src.testcase.page.AppPageElement import *
+from src.testcase.page.AppPageElement_Android import *
 
 
 def create_ReadConf():
@@ -37,24 +38,67 @@ def create_ReadConf():
 def create_ReadAPPElement():
     a = []
     b = []
-    for i in dir(MainPageWidget):
+    for i in dir(MainPageWidgetAndroid):
         tmp = re.findall("__.+", i)
         if tmp == []:
             a.append(i)
-    for i in dir(PopupWidget):
+    for i in dir(PopupWidgetAndroid):
         tmp = re.findall("__.+", i)
         if tmp == []:
             b.append(i)
     with open(r"./src/utils/ReadAPPElement.py", "w") as files:
         files.write("# coding=utf-8\n")
         files.write("# 由IncrementalUpdate.py生成\n")
-        files.write("from src.testcase.page.AppPageElement import *\n\n")
+        files.write("from src.testcase.page.AppPageElement import *\n")
+        files.write("class PageElement(object):\n")
+        files.write("    def __init__(self, phone_os, device):\n")
+        files.write("        self.ape = MainPageWidget(phone_os)\n")
+        files.write("        self.device = device\n\n")
+        files.write("    def get_page_element(self):\n")
+        files.write('''        self.device["page"] = {}\n''')
         for i in a:
-            files.write("%s = MainPageWidget().%s()\n" % (i, i))
-        files.write("\n")
+            files.write('''        self.device["page"]["{0}"] = self.ape.{0}()\n'''.format(i))
+        files.write('''\n''')
         for i in b:
-            files.write("%s = PopupWidget().%s()\n" % (i, i))
+            files.write('''        self.device["page"]["{0}"] = self.ape.{0}()\n'''.format(i))
 
+
+def create_AppPageElement():
+    a = []
+    b = []
+    for i in dir(MainPageWidgetAndroid):
+        tmp = re.findall("__.+", i)
+        if tmp == []:
+            a.append(i)
+    for i in dir(PopupWidgetAndroid):
+        tmp = re.findall("__.+", i)
+        if tmp == []:
+            b.append(i)
+    with open(r"./src/testcase/page/AppPageElement.py", "w") as files:
+        files.write("# coding=utf-8\n")
+        files.write("from AppPageElement_Android import *\n")
+        files.write("from AppPageElement_iOS import *\n\n")
+        files.write("class MainPageWidget(object):\n")
+        files.write("    def __init__(self, phone_os):\n")
+        files.write("        self.phone_os = phone_os\n\n")
+        for i in a:
+            files.write("    def %s(self):\n" % i)
+            files.write('''        if self.phone_os == "Android":\n''')
+            files.write('''            {0} = MainPageWidgetAndroid().{0}()\n'''.format(i))
+            files.write('''        elif self.phone_os == "iOS":\n''')
+            files.write('''            {0} = MainPageWidgetIos().{0}()\n'''.format(i))
+            files.write('''        else:\n''')
+            files.write('''            raise KeyError("The OS is wrong!")\n\n''')
+            files.write("        return %s\n\n" % i)
+        for i in b:
+            files.write("    def %s(self):\n" % i)
+            files.write('''        if self.phone_os == "Android":\n''')
+            files.write('''            {0} = PopupWidgetAndroid().{0}()\n'''.format(i))
+            files.write('''        elif self.phone_os == "iOS":\n''')
+            files.write('''            {0} = PopupWidgetIos().{0}()\n'''.format(i))
+            files.write('''        else:\n''')
+            files.write('''            raise KeyError("The OS is wrong!")\n\n''')
+            files.write("        return %s\n\n" % i)
 
 def create_INPUT_CASE():
     # 写INPUT_CASE文件夹内容
@@ -537,18 +581,18 @@ def check_AppPageElement():
 #         print PopupWidget().element()[values]
 
 def add_notes():
-    rootdir = r"./src/testcase/case"
+    rootdir = r"./src/"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "GNAPP" in filename and "pyc" not in filename:
+            if "IncrementalUpdate" not in filename and "pyc" not in filename and "AppPageElement" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
                 with open(filepath, "w") as files:
                     for i in range(1, lines + 1):
-                        if '''from src.utils.ScreenShot import *''' in linecache.getline(filepath, i):
-                            print linecache.getline(filepath, i), filename
-                        # files.write(linecache.getline(filepath, i).replace("data = conf", "data = str(conf"))
+                        if '''data = str(conf''' in linecache.getline(filepath, i):
+                            print filename, linecache.getline(filepath, i).replace('''replase''', '''replace''')
+                            files.write(linecache.getline(filepath, i).replace('''replase''', '''replace'''))
                         else:
                             files.write(linecache.getline(filepath, i))
                             # # for i in a:
@@ -565,6 +609,7 @@ def add_notes():
 
 # create_ReadConf()  # 创建ReadConf.py 必须
 # create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
+# create_AppPageElement()  # 创建ReadAPPElement.py 必须
 # create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
 # create_WaitCase()  # 创建WaitCase.py 必须
 # file_renames() # 将文件名后缀从1变成001 可选
@@ -577,3 +622,41 @@ def add_notes():
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
 add_notes()
 # check_AppPageElement()
+# a = []
+# b = []
+# for i in dir(MainPageWidgetAndroid):
+#     tmp = re.findall("__.+", i)
+#     if tmp == []:
+#         a.append(i)
+# for i in dir(PopupWidgetAndroid):
+#     tmp = re.findall("__.+", i)
+#     if tmp == []:
+#         b.append(i)
+# script = r"src/testcase/case/ToLoginPage.py"
+# with open(script, "r") as files:
+#     page = files.read()
+#     for i in a:
+#         page = page.replace("%s" % i,'self.page["%s"]' % i)
+#     for i in b:
+#         page = page.replace("%s" % i, 'self.page["%s"]' % i)
+# with open(script, "w") as files:
+#     files.write(page)
+# rootdir = r"./src/testcase/case"
+# for parent, dirnames, filenames in os.walk(rootdir):
+#     for filename in filenames:
+#         if "GNAPP" in filename and "pyc" not in filename:
+#             script = os.path.join(parent, filename)
+#             with open(script, "r") as files:
+#                 page = files.read()
+#                 a = re.findall(r".+?(self.page\[.+])\[", page)
+#                 # print a
+#                 b = re.findall(r".+(self.page\[.+?])", page)
+#                 # print b
+#                 for i in xrange(len(a)):
+#                     page = page.replace(a[i], b[i])
+# for i in a:
+#     page = page.replace("%s" % i,'self.page["%s"]' % i)
+# for i in b:
+#         page = page.replace("%s" % i, 'self.page["%s"]' % i)
+#     with open(script, "w") as files:
+#         files.write(page)
