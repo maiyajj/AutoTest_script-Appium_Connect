@@ -588,13 +588,16 @@ def add_notes():
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "r") as files:
+                with open(filepath, "w") as files:
                     for i in range(1, lines + 1):
-                        if '''popup''' in linecache.getline(filepath, i):
+                        if '''% (i * 10''' in linecache.getline(filepath, i):
+                            a = re.findall(r"( +).+", linecache.getline(filepath, i))[0]
+                            print '''%sself.wait_widget(self.page["god_page"]["title"]).click()\n''' % a
                             print filename, linecache.getline(filepath, i)
-                            #     files.write(linecache.getline(filepath, i).replace('''replase''', '''replace'''))
-                            # else:
-                            #     files.write(linecache.getline(filepath, i))
+                            files.write('''%sself.wait_widget(self.page["god_page"]["title"]).click()\n''' % a)
+                            files.write(linecache.getline(filepath, i))
+                        else:
+                            files.write(linecache.getline(filepath, i))
                             # # for i in a:
                             #     filepath = os.path.join(parent,filename)
                             #     with open(filepath, "w") as files:

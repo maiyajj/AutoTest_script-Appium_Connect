@@ -89,6 +89,7 @@ class ToDevicePage(object):
                             i = 1
                             while i <= 33:
                                 time.sleep(10)
+                                self.wait_widget(self.page["god_page"]["title"]).click()
                                 print "time sleep %sS" % (i * 10)
                                 i += 1
                             self.widget_click(self.page["login_page"]["title"],
