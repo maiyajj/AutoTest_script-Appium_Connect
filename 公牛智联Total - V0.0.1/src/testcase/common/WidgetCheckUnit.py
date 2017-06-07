@@ -19,7 +19,7 @@ class WidgetCheckUnit(Exception):
         self.logger = logger
         self.page = page_element
 
-    def wait_widget(self, main_widget=None, timeout=1.0, interval=1.0):
+    def wait_widget(self, main_widget=None, timeout=1.0, interval=1.0, text=None):
         locate = main_widget[1]
         widget = main_widget[0]
         end_time = time.time() + timeout
@@ -40,6 +40,14 @@ class WidgetCheckUnit(Exception):
                 else:
                     raise KeyError('find_element_by_%s must in'
                                    '["id", "name", "class", "xpath", "activity", "accessibility_id"' % locate)
+                try:
+                    popup_text = main_widget[3]
+                    if element.get_attribute("name") == popup_text:
+                        pass
+                    else:
+                        raise TimeoutException()
+                except IndexError:
+                    pass
                 return element
             except NoSuchElementException:
                 time.sleep(interval)

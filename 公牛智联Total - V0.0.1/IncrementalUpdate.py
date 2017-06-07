@@ -588,13 +588,13 @@ def add_notes():
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "w") as files:
+                with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''data = str(conf''' in linecache.getline(filepath, i):
-                            print filename, linecache.getline(filepath, i).replace('''replase''', '''replace''')
-                            files.write(linecache.getline(filepath, i).replace('''replase''', '''replace'''))
-                        else:
-                            files.write(linecache.getline(filepath, i))
+                        if '''popup''' in linecache.getline(filepath, i):
+                            print filename, linecache.getline(filepath, i)
+                            #     files.write(linecache.getline(filepath, i).replace('''replase''', '''replace'''))
+                            # else:
+                            #     files.write(linecache.getline(filepath, i))
                             # # for i in a:
                             #     filepath = os.path.join(parent,filename)
                             #     with open(filepath, "w") as files:

@@ -32,10 +32,16 @@ def modified_conf(config):
         conf_yaml.write("wifi_pwd: %s\n" % config["wifi_pwd"])
         conf_yaml.write("# 待选择App\n")
         conf_yaml.write("App:\n")
-        conf_yaml.write("  GN: ['com.iotbull.android.superapp',"
-                        " 'com.iotbull.android.superapp.activitys.regist_login.SplashActivity',"
-                        " 'com.iotbull.android.superapp/.activitys.regist_login.LoginActivity']\n")
-        conf_yaml.write("  JD: ['com.jd.smart', 'com.jd.smart.activity.LoadingActivity']\n")
+        conf_yaml.write("  GN_Android:\n")
+        conf_yaml.write('''    "appPackage": 'com.iotbull.android.superapp'\n''')
+        conf_yaml.write('''    "appActivity": 'com.iotbull.android.superapp.activitys.regist_login.SplashActivity'\n''')
+        conf_yaml.write(
+            '''    "waitActivity": 'com.iotbull.android.superapp/.activitys.regist_login.LoginActivity'\n''')
+        conf_yaml.write('''  GN_iOS:\n''')
+        conf_yaml.write('''    "bundleId": 'com.eamon.gongniu'\n''')
+        conf_yaml.write('''  JD:\n''')
+        conf_yaml.write('''    "appPackage": 'com.jd.smart'\n''')
+        conf_yaml.write('''    "appActivity": 'com.jd.smart.activity.LoadingActivity'\n''')
         conf_yaml.write("# Toast消息\n")
         conf_yaml.write("Toast:\n")
         conf_yaml.write("  login_password_mistake: [40, 1570, 1040, 1750]\n")

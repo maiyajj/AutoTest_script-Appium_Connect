@@ -20,4 +20,3 @@ def app_init():
         device[k]["desired_caps"]['newCommandTimeout'] = '999999'
 
     return device
-
