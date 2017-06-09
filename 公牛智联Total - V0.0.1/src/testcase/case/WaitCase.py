@@ -116,12 +116,12 @@ class WaitCase(object):
         database["case_location"] = self.No
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])
-            # self.write_report(GNAppVersion1)  # 1992, 当前版本为最新版本，页面信息检查
-            # self.write_report(GNAppLogin1)  # 1889, 登录页面—新用户注册页面跳转
-            # self.write_report(GNAppLogin2)  # 1890, 登录页面—忘记密码页面跳转
-            # self.write_report(GNAppLogin3)  # 1891, 登录页面—登录功能检查
-            # self.write_report(GNAppLogin4)  # 1903, 登录页面—成功登录后杀掉APP，再次开启APP的状态查看
-            # self.write_report(GNAppLogin5)  # 1900, 登录页面—成功登录后注销账号，再次进入登录页面查看
+            self.write_report(GNAppVersion1)  # 1992, 当前版本为最新版本，页面信息检查
+            self.write_report(GNAppLogin1)  # 1889, 登录页面—新用户注册页面跳转
+            self.write_report(GNAppLogin2)  # 1890, 登录页面—忘记密码页面跳转
+            self.write_report(GNAppLogin3)  # 1891, 登录页面—登录功能检查
+            self.write_report(GNAppLogin4)  # 1903, 登录页面—成功登录后杀掉APP，再次开启APP的状态查看
+            self.write_report(GNAppLogin5)  # 1900, 登录页面—成功登录后注销账号，再次进入登录页面查看
             self.write_report(GNAppLogin6)  # 1899, 登录页面—错误密码输入次数超过5次后，账号锁定1分钟验证
             self.write_report(GNAppLogin7)  # 1897, 登录页面—错误密码，登录提示信息检查
             self.write_report(GNAppLogin8)  # 1898, 登录页面—密码输入超过5次后，信息检查
