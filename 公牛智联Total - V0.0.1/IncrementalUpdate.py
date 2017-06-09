@@ -590,27 +590,12 @@ def add_notes():
                 # print filename[:-3]
                 with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''user_and_pwd''' in linecache.getline(filepath, i):
-                            if "0" in linecache.getline(filepath, i):
-                                a = linecache.getline(filepath, i).replace("0", '"user_name"')
-                                b = re.findall(r"(.+)data = str\((.+])\)", a)[0]
-                                files.write("%sdata = %s\n" % (b[0], b[1]))
-                                files.write(a.replace(b[1], "data"))
-                                print filename, linecache.getline(filepath, i).replace("0", '"user_name"')
-                            elif "1" in linecache.getline(filepath, i):
-                                a = linecache.getline(filepath, i).replace("1", '"login_pwd"')
-                                b = re.findall(r"(.+)data = str\((.+])\)", a)[0]
-                                files.write("%sdata = %s\n" % (b[0], b[1]))
-                                files.write(a.replace(b[1], "data"))
-                                print filename, linecache.getline(filepath, i).replace("1", '"login_pwd"')
-                            elif "2" in linecache.getline(filepath, i):
-                                a = linecache.getline(filepath, i).replace("2", '"new_pwd"')
-                                b = re.findall(r"(.+)data = str\((.+])\)", a)[0]
-                                files.write("%sdata = %s\n" % (b[0], b[1]))
-                                files.write(a.replace(b[1], "data"))
-                                print filename, linecache.getline(filepath, i).replace("2", '"new_pwd"')
-                        else:
-                            files.write(linecache.getline(filepath, i))
+                        if '''widget_px = self.page["god_page"]["title"][3]["px"]''' in linecache.getline(filepath, i):
+                            print filename, i, linecache.getline(filepath, i)
+        
+                            #     files.write(linecache.getline(filepath, i).replace('["to_next"]','["to_next"][3]["px"]'))
+                            # else:
+                            #     files.write(linecache.getline(filepath, i))
                             # # for i in a:
                             #     filepath = os.path.join(parent,filename)
                             #     with open(filepath, "w") as files:

@@ -4,7 +4,7 @@ class MainPageWidgetAndroid(object):
     def god_page(self):
         d = {}
         d["title"] = ["android.widget.FrameLayout", "class", u"万能控件",
-                      {"px": {"width": 0.01, "height": 0.01}}]
+                      {"px": {"width": 0, "height": 0}}]
         return d
 
     # 引导页

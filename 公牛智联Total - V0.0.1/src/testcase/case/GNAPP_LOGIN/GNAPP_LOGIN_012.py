@@ -33,9 +33,9 @@ class GNAppLogin12(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["空用户名"] input success')
             time.sleep(0.5)
 
-            widget_px = self.page["login_page"]["login_button"]
-            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
-            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
+            widget_px = self.page["login_page"]["login_button"][3]["px"]
+            width = int(int(self.device_info["dpi"]["width"]) * widget_px["width"])
+            height = int(int(self.device_info["dpi"]["height"]) * widget_px["height"])
             self.driver.tap([(width, height)], )
             self.logger.info(u'[APP_CLICK] operate_widget ["%s"] success' % widget_px[2])
 
@@ -68,7 +68,10 @@ class GNAppLogin12(LaunchApp):
                 i = 1
                 while i <= 33:
                     time.sleep(10)
-                    self.wait_widget(self.page["god_page"]["title"]).click()
+                    widget_px = self.page["god_page"]["title"][3]["px"]
+                    width = int(int(self.device_info["dpi"]["width"]) * widget_px["width"])
+                    height = int(int(self.device_info["dpi"]["height"]) * widget_px["height"])
+                    self.driver.tap([(width, height)], )
                     print "time sleep %sS" % (i * 10)
                     i += 1
                 self.widget_click(self.page["login_page"]["title"],
