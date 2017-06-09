@@ -100,6 +100,7 @@ def create_AppPageElement():
             files.write('''            raise KeyError("The OS is wrong!")\n\n''')
             files.write("        return %s\n\n" % i)
 
+
 def create_INPUT_CASE():
     # 写INPUT_CASE文件夹内容
     rootdir = r"./src/testcase/case"  # 指明被遍历的文件夹
@@ -220,7 +221,6 @@ def create_INPUT_CASE():
     ThemeStyle.write("\n")
     for i in tmpThemeStyle:
         ThemeStyle.write(i + " = " + i + "\n")
-
 
     DevicePage.close()
     ForgetPassword.close()
@@ -508,6 +508,7 @@ def check_AppPageElement():
             print re.findall(r".+def %s.+" % i, app)
             print sys._getframe().f_lineno
 
+
 # def print_element(element ,values):
 #     if element == "account_setting_page":
 #         MainPageWidget().account_setting_page()
@@ -612,6 +613,7 @@ def add_notes():
                             #             # files.write('''                raise WebDriverException()\n''')
                             #             else:
                             #                 files.write(linecache.getline(filepath, i))
+
 
 # create_ReadConf()  # 创建ReadConf.py 必须
 # create_ReadAPPElement()  # 创建ReadAPPElement.py 必须

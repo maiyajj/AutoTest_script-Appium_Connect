@@ -43,7 +43,7 @@ class GNAppAccountSettings8(LaunchApp):
 
             # 全选
             nickname.clear()
-            nickname.send_keys(u"被修改的昵称") 
+            nickname.send_keys(u"被修改的昵称")
             self.logger.info(u'[APP_INPUT] ["昵称"] input success')
             time.sleep(0.5)
 

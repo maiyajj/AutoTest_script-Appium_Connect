@@ -38,7 +38,6 @@ class LaunchAppiumServicesAndroid(object):
                 if self.sc.find_proc_and_pid_by_port(ports) == []:  # 判断当前端口是否被占用
                     print "%s端口未占用" % ports
 
-
     def create_adb_folder(self):
         command = "adb -s %s shell mkdir /sdcard/Appium" % self.udid
         os.popen(command)
@@ -52,4 +51,3 @@ class LaunchAppiumServicesAndroid(object):
             shutil.rmtree("./screenshots/%s" % self.folder, True)
             if os.path.isdir("./screenshots/%s" % self.folder) is False:
                 os.makedirs("./screenshots/%s" % self.folder)
-

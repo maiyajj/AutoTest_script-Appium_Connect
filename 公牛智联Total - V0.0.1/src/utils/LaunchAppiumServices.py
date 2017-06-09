@@ -2,6 +2,7 @@
 from LaunchAppiumServices_Android import *
 from LaunchAppiumServices_iOS import *
 
+
 class LaunchAppiumServices(object):
     def __init__(self, device_list, device_name):
         self.device_info = device_list[device_name]
