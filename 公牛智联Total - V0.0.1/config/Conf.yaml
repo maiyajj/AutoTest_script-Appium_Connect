@@ -19,26 +19,66 @@ wifi_pwd: 696f74313233343536
 # 待选择App
 App:
   GN_Android:
-    "appPackage": 'com.iotbull.android.superapp'
-    "appActivity": 'com.iotbull.android.superapp.activitys.regist_login.SplashActivity'
-    "waitActivity": 'com.iotbull.android.superapp/.activitys.regist_login.LoginActivity'
+    appPackage: 'com.iotbull.android.superapp'
+    appActivity: 'com.iotbull.android.superapp.activitys.regist_login.SplashActivity'
+    waitActivity: 'com.iotbull.android.superapp/.activitys.regist_login.LoginActivity'
   GN_iOS:
-    "bundleId": 'com.eamon.gongniu'
+    bundleId: 'com.eamon.gongniu'
   JD:
-    "appPackage": 'com.jd.smart'
-    "appActivity": 'com.jd.smart.activity.LoadingActivity'
+    appPackage: 'com.jd.smart'
+    appActivity: 'com.jd.smart.activity.LoadingActivity'
 # Toast消息
 Toast:
   login_password_mistake: [40, 1570, 1040, 1750]
-user_and_pwd:  # 用户名，（登录密码/旧密码）， 新密码
-  'name10': ['31373020303030302030303130', '3132333435363738', '3837363534333231']
-  'name09': ['31373020303030302030303039', '3837363534333231', '3132333435363738']
-  'name08': ['31373020303030302030303038', '3132333435363738', '3837363534333231']
-  'name07': ['31373020303030302030303037', '3132333435363738', '3837363534333231']
-  '6910ec366b7e396410c2be813bff57ef1c9ccc7e': ['31373020303030302030303035', '3132333435363738', '3837363534333231']
-  '85GABMN9UDD2': ['31373020303030302030303031', '3132333435363738', '3837363534333231']
-  '8681-M02-0xa0a151df': ['31373020303030302030303032', '3132333435363738', '3837363534333231']
-  '1b010b2e0d07c07aba0490d20056ff6295ce727b': ['31373020303030302030303036', '3837363534333231', '3132333435363738']
-  'eda69645': ['31373020303030302030303033', '3132333435363738', '3837363534333231']
-  'ZTEC880U': ['31373020303030302030303034', '3132333435363738', '3837363534333231']
-
+# 用户名，（登录密码/旧密码）， 新密码
+user_and_pwd:
+  name10:
+    user_name: '31373020303030302030303130'
+    login_pwd: '3132333435363738'
+    new_pwd: '3837363534333231'
+    precise_pwd: ['3132333435363738', '3837363534333231']
+  name09:
+    user_name: '31373020303030302030303039'
+    login_pwd: '3837363534333231'
+    new_pwd: '3132333435363738'
+    precise_pwd: ['3837363534333231', '3132333435363738']
+  name08:
+    user_name: '31373020303030302030303038'
+    login_pwd: '3132333435363738'
+    new_pwd: '3837363534333231'
+    precise_pwd: ['3132333435363738', '3837363534333231']
+  name07:
+    user_name: '31373020303030302030303037'
+    login_pwd: '3132333435363738'
+    new_pwd: '3837363534333231'
+    precise_pwd: ['3132333435363738', '3837363534333231']
+  6910ec366b7e396410c2be813bff57ef1c9ccc7e:
+    user_name: '31373020303030302030303035'
+    login_pwd: '3132333435363738'
+    new_pwd: '3837363534333231'
+    precise_pwd: ['3132333435363738', '3837363534333231']
+  85GABMN9UDD2:
+    user_name: '31373020303030302030303031'
+    login_pwd: '3132333435363738'
+    new_pwd: '3837363534333231'
+    precise_pwd: ['3132333435363738', '3837363534333231']
+  8681-M02-0xa0a151df:
+    user_name: '31373020303030302030303032'
+    login_pwd: '3132333435363738'
+    new_pwd: '3837363534333231'
+    precise_pwd: ['3132333435363738', '3837363534333231']
+  1b010b2e0d07c07aba0490d20056ff6295ce727b:
+    user_name: '31373020303030302030303036'
+    login_pwd: '3837363534333231'
+    new_pwd: '3132333435363738'
+    precise_pwd: ['3837363534333231', '3132333435363738']
+  eda69645:
+    user_name: '31373020303030302030303033'
+    login_pwd: '3132333435363738'
+    new_pwd: '3837363534333231'
+    precise_pwd: ['3132333435363738', '3837363534333231']
+  ZTEC880U:
+    user_name: '31373020303030302030303034'
+    login_pwd: '3132333435363738'
+    new_pwd: '3837363534333231'
+    precise_pwd: ['3132333435363738', '3837363534333231']

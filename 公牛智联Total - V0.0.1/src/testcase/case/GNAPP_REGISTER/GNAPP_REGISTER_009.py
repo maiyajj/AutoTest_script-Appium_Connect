@@ -32,7 +32,8 @@ class GNAppRegister9(LaunchApp):
                                           1, 1, 1, 10, 0.5)
 
             # 发送数据
-            data = str(conf["user_and_pwd"][self.user][0]).decode('hex').replace(" ", "")
+            data = conf["user_and_pwd"][self.user]["user_name"]
+            data = str(data).decode('hex').replace(" ", "")
             user_name.clear()
             self.ac.send_keys(user_name, data)
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')

@@ -40,7 +40,8 @@ class GNAppAccountSettings1(LaunchApp):
                                         self.page["change_pwd_page"]["old_pwd"],
                                         self.page["change_pwd_page"]["title"],
                                         1, 1, 1, 10, 0.5)
-            data = str(conf["user_and_pwd"][self.user][1]).decode('hex').replace(" ", "")
+            data = conf["user_and_pwd"][self.user]["login_pwd"]
+            data = str(data).decode('hex').replace(" ", "")
             old_pwd.clear()
             self.ac.send_keys(old_pwd, data)
             self.logger.info(u'[APP_INPUT] ["旧密码"] input success')
@@ -50,7 +51,8 @@ class GNAppAccountSettings1(LaunchApp):
                                         self.page["change_pwd_page"]["new_pwd"],
                                         self.page["change_pwd_page"]["title"],
                                         1, 1, 1, 10, 0.5)
-            data = str(conf["user_and_pwd"][self.user][2]).decode('hex').replace(" ", "")
+            data = conf["user_and_pwd"][self.user]["new_pwd"]
+            data = str(data).decode('hex').replace(" ", "")
             new_pwd.clear()
             self.ac.send_keys(new_pwd, data)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
@@ -60,7 +62,8 @@ class GNAppAccountSettings1(LaunchApp):
                                             self.page["change_pwd_page"]["conform_pwd"],
                                             self.page["change_pwd_page"]["title"],
                                             1, 1, 1, 10, 0.5)
-            data = str(conf["user_and_pwd"][self.user][2]).decode('hex').replace(" ", "")
+            data = conf["user_and_pwd"][self.user]["new_pwd"]
+            data = str(data).decode('hex').replace(" ", "")
             conform_pwd.clear()
             self.ac.send_keys(conform_pwd, data)
             self.logger.info(u'[APP_INPUT] ["确认新密码"] input success')

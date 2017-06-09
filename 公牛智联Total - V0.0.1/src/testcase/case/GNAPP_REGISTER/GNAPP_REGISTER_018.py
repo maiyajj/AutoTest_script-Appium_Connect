@@ -32,7 +32,8 @@ class GNAppRegister18(LaunchApp):
                                           1, 1, 1, 10, 0.5)
 
             # 发送数据
-            data = str(conf["user_and_pwd"][self.user][0]).decode('hex').replace(" ", "")
+            data = conf["user_and_pwd"][self.user]["user_name"]
+            data = str(data).decode('hex').replace(" ", "")
             user_name.clear()
             self.ac.send_keys(user_name, data)
             self.logger.info(u'[APP_INPUT] ["已注册用户名"] input success')
@@ -62,8 +63,8 @@ class GNAppRegister18(LaunchApp):
             time.sleep(0.5)
 
             widget_px = self.page["register_page"]["register_button"]
-            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["width"])
-            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["height"])
+            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
+            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
             self.driver.tap([(width, height)], )
             self.logger.info(u'[APP_CLICK] operate_widget ["%s"] success' % widget_px[2])
 

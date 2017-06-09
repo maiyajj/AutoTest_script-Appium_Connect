@@ -38,7 +38,8 @@ class GNAppLogin13(LaunchApp):
                                           self.page["login_page"]["title"],
                                           1, 1, 1, 10, 0.5)
 
-            data = str(conf["user_and_pwd"][self.user][1]).decode('hex').replace(" ", "")
+            data = conf["user_and_pwd"][self.user]["login_pwd"]
+            data = str(data).decode('hex').replace(" ", "")
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
             login_pwd.clear()
             self.ac.send_keys(login_pwd, data)
@@ -46,8 +47,8 @@ class GNAppLogin13(LaunchApp):
             time.sleep(0.5)
 
             widget_px = self.page["login_page"]["login_button"]
-            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["width"])
-            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["height"])
+            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
+            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
             self.driver.tap([(width, height)], )
             self.logger.info(u'[APP_CLICK] operate_widget ["%s"] success' % widget_px[2])
 
@@ -66,7 +67,8 @@ class GNAppLogin13(LaunchApp):
                                               self.page["login_page"]["title"],
                                               1, 1, 1, 10, 0.5)
 
-                data = str(conf["user_and_pwd"][self.user][1]).decode('hex').replace(" ", "")
+                data = conf["user_and_pwd"][self.user]["login_pwd"]
+                data = str(data).decode('hex').replace(" ", "")
                 self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
                 login_pwd.clear()
                 self.ac.send_keys(login_pwd, data)

@@ -3,7 +3,8 @@ class MainPageWidgetAndroid(object):
     # 万能页面
     def god_page(self):
         d = {}
-        d["title"] = ["android.widget.FrameLayout", "class", u"万能控件"]
+        d["title"] = ["android.widget.FrameLayout", "class", u"万能控件",
+                      {"px": {"width": 0.01, "height": 0.01}}]
         return d
 
     # 引导页
@@ -30,7 +31,7 @@ class MainPageWidgetAndroid(object):
         d["to_find_password"] = ["com.iotbull.android.superapp:id/login_tv_go_find_password", "id", u"忘记密码"]
         # 登录按钮
         d["login_button"] = ["com.iotbull.android.superapp:id/login_btn_commit", "id", u"登录按钮",
-                             {"width": 0.5, "height": 0.65}]
+                             {"px": {"width": 0.5, "height": 0.65}}]
         # 新账号注册
         d["to_register"] = ["com.iotbull.android.superapp:id/login_tv_go_regist", "id", u"新账号注册"]
         return d
@@ -53,7 +54,7 @@ class MainPageWidgetAndroid(object):
                                u"获取验证码"]
         # 下一步
         d["to_next"] = ["com.iotbull.android.superapp:id/forget_password_commit_button", "id", u"下一步",
-                        {"width": 0.5, "height": 0.45}]
+                        {"px": {"width": 0.5, "height": 0.45}}]
         return d
 
     # 忘记密码→重置密码页
@@ -91,7 +92,7 @@ class MainPageWidgetAndroid(object):
         d["get_check_code"] = ["com.iotbull.android.superapp:id/regist_tv_get_check_code", "id", u"获取验证码"]
         # 立即注册按钮
         d["register_button"] = ["com.iotbull.android.superapp:id/regist_commit_button", "id", u"立即注册按钮",
-                                {"width": 0.5, "height": 0.75}]
+                                {"px": {"width": 0.5, "height": 0.75}}]
         # 公牛服务协议
         d["to_protocol"] = ["com.iotbull.android.superapp:id/regist_tv_go_regist_protocol", "id", u"公牛服务协议"]
         # 已有账户登录
@@ -133,21 +134,24 @@ class MainPageWidgetAndroid(object):
         # 账户设置
         d["account_setting"] = ["//android.widget.LinearLayout/android.support.v7.widget.RecyclerView"
                                 "/android.widget.LinearLayout", "xpath", u"账户设置"]
+        # 微信链接
+        d["using_help"] = ["//android.widget.LinearLayout/android.support.v7.widget.RecyclerView"
+                           "/android.widget.LinearLayout[2]", "xpath", u"微信链接"]
         # 使用帮助
         d["using_help"] = ["//android.widget.LinearLayout/android.support.v7.widget.RecyclerView"
-                           "/android.widget.LinearLayout[2]", "xpath", u"使用帮助"]
+                           "/android.widget.LinearLayout[3]", "xpath", u"使用帮助"]
         # 意见反馈
         d["feedback"] = ["//android.widget.LinearLayout/android.support.v7.widget.RecyclerView"
-                         "/android.widget.LinearLayout[3]", "xpath", u"意见反馈"]
+                         "/android.widget.LinearLayout[4]", "xpath", u"意见反馈"]
         # 主题风格
         d["theme_style"] = ["//android.widget.LinearLayout/android.support.v7.widget.RecyclerView"
-                            "/android.widget.LinearLayout[4]", "xpath", u"主题风格"]
+                            "/android.widget.LinearLayout[5]", "xpath", u"主题风格"]
         # 版本信息
         d["version_info"] = ["//android.widget.LinearLayout/android.support.v7.widget.RecyclerView"
-                             "/android.widget.LinearLayout[5]", "xpath", u"版本信息"]
+                             "/android.widget.LinearLayout[6]", "xpath", u"版本信息"]
         # 关于我们
         d["about_us"] = ["//android.widget.LinearLayout/android.support.v7.widget.RecyclerView"
-                         "/android.widget.LinearLayout[6]", "xpath", u"关于我们"]
+                         "/android.widget.LinearLayout[7]", "xpath", u"关于我们"]
         return d
 
     # 账户设置页
@@ -223,7 +227,7 @@ class MainPageWidgetAndroid(object):
                             "user_password_update_new_password_commit_password_edit_text", "id", u"确认新密码"]
         # 确定
         d["commit"] = ["com.iotbull.android.superapp:id/user_password_update_commit_button", "id", u"确定",
-                       {"width": 0.5, "height": 0.7}]
+                       {"px": {"width": 0.5, "height": 0.7}}]
         return d
 
     # 使用帮助页
@@ -487,7 +491,7 @@ class PopupWidgetAndroid(object):
         d = {}
         # 标题
         # d["title"] = [u"新版提示", "name", u"标题"]
-        d["title"] = ["android:id/content", "id", u"标题", u"新版提示"]
+        d["title"] = ["android:id/message", "id", u"标题", {"text": u"新版提示"}]
         # 立即体验
         d["confirm"] = ["android:id/button1", "id", u"立即体验"]
         # 稍后更新
@@ -507,7 +511,7 @@ class PopupWidgetAndroid(object):
         d = {}
         # 标题
         # d["title"] = [u"操作失败，账号在其他手机登录，请确认是否本人使用。", "name", u"提示 - 重新登录"]
-        d["title"] = ["android:id/message", "id", u"提示 - 重新登录", u"操作失败，账号在其他手机登录，请确认是否本人使用。"]
+        d["title"] = ["android:id/message", "id", u"提示 - 重新登录", {"text": u"操作失败，账号在其他手机登录，请确认是否本人使用。"}]
         # 页面activity
         d["activity"] = [".activitys.regist_login.SplashActivity", "activity", u"页面activity"]
         # 登录
@@ -521,7 +525,7 @@ class PopupWidgetAndroid(object):
         d = {}
         # 标题
         # d["title"] = [u"是否确认退出登录？", "name", u"退出确认"]
-        d["title"] = ["android:id/message", "id", u"退出确认", u"是否确认退出登录？"]
+        d["title"] = ["android:id/message", "id", u"退出确认", {"text": u"是否确认退出登录？"}]
         # 确认
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消
@@ -533,7 +537,7 @@ class PopupWidgetAndroid(object):
         d = {}
         # 标题
         # d["title"] = [u"是否确认终止添加设备？", "name", u"取消确认"]
-        d["title"] = ["android:id/message", "id", u"取消确认", u"是否确认终止添加设备？"]
+        d["title"] = ["android:id/message", "id", u"取消确认", {"text": u"是否确认终止添加设备？"}]
         # 确认
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消
@@ -545,7 +549,7 @@ class PopupWidgetAndroid(object):
         d = {}
         # 标题
         # d["title"] = ["loading...", "name", u"正在加载中loading..."]
-        d["title"] = ["android:id/message", "id", u"正在加载中loading...", "loading..."]
+        d["title"] = ["android:id/message", "id", u"正在加载中loading...", {"text": "loading..."}]
         return d
 
     # 清空活动历史消息
@@ -553,7 +557,7 @@ class PopupWidgetAndroid(object):
         d = {}
         # 标题
         # d["title"] = [u"是否清除活动消息？", "name", u"清除确认"]
-        d["title"] = ["android:id/message", "id", u"清除确认", u"是否清除活动消息？"]
+        d["title"] = ["android:id/message", "id", u"清除确认", {"text": u"是否清除活动消息？"}]
         # 确认
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消
@@ -566,7 +570,7 @@ class PopupWidgetAndroid(object):
         d = {}
         # 标题
         # d["title"] = [u"是否清除设备消息？", "name", u"清除确认"]
-        d["title"] = ["android:id/message", "id", u"清除确认", u"是否清除设备消息？"]
+        d["title"] = ["android:id/message", "id", u"清除确认", {"text": u"是否清除设备消息？"}]
         # 确认
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消

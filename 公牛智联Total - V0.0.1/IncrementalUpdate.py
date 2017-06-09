@@ -588,14 +588,27 @@ def add_notes():
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "w") as files:
+                with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''% (i * 10''' in linecache.getline(filepath, i):
-                            a = re.findall(r"( +).+", linecache.getline(filepath, i))[0]
-                            print '''%sself.wait_widget(self.page["god_page"]["title"]).click()\n''' % a
-                            print filename, linecache.getline(filepath, i)
-                            files.write('''%sself.wait_widget(self.page["god_page"]["title"]).click()\n''' % a)
-                            files.write(linecache.getline(filepath, i))
+                        if '''user_and_pwd''' in linecache.getline(filepath, i):
+                            if "0" in linecache.getline(filepath, i):
+                                a = linecache.getline(filepath, i).replace("0", '"user_name"')
+                                b = re.findall(r"(.+)data = str\((.+])\)", a)[0]
+                                files.write("%sdata = %s\n" % (b[0], b[1]))
+                                files.write(a.replace(b[1], "data"))
+                                print filename, linecache.getline(filepath, i).replace("0", '"user_name"')
+                            elif "1" in linecache.getline(filepath, i):
+                                a = linecache.getline(filepath, i).replace("1", '"login_pwd"')
+                                b = re.findall(r"(.+)data = str\((.+])\)", a)[0]
+                                files.write("%sdata = %s\n" % (b[0], b[1]))
+                                files.write(a.replace(b[1], "data"))
+                                print filename, linecache.getline(filepath, i).replace("1", '"login_pwd"')
+                            elif "2" in linecache.getline(filepath, i):
+                                a = linecache.getline(filepath, i).replace("2", '"new_pwd"')
+                                b = re.findall(r"(.+)data = str\((.+])\)", a)[0]
+                                files.write("%sdata = %s\n" % (b[0], b[1]))
+                                files.write(a.replace(b[1], "data"))
+                                print filename, linecache.getline(filepath, i).replace("2", '"new_pwd"')
                         else:
                             files.write(linecache.getline(filepath, i))
                             # # for i in a:

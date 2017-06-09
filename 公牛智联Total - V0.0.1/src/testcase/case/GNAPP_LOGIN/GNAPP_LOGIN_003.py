@@ -28,7 +28,8 @@ class GNAppLogin3(LaunchApp):
                                           1, 1, 1, 10, 0.5)
 
             # 发送数据
-            data = str(conf["user_and_pwd"][self.user][0]).decode('hex').replace(" ", "")
+            data = conf["user_and_pwd"][self.user]["user_name"]
+            data = str(data).decode('hex').replace(" ", "")
             user_name.clear()
             self.ac.send_keys(user_name, data)
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
@@ -39,7 +40,8 @@ class GNAppLogin3(LaunchApp):
                                           self.page["login_page"]["title"],
                                           1, 1, 1, 10, 0.5)
 
-            data = str(conf["user_and_pwd"][self.user][1]).decode('hex').replace(" ", "")
+            data = conf["user_and_pwd"][self.user]["login_pwd"]
+            data = str(data).decode('hex').replace(" ", "")
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
             login_pwd.clear()
             self.ac.send_keys(login_pwd, data)

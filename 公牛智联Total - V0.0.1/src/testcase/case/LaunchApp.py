@@ -3,6 +3,7 @@ import traceback
 from urllib2 import URLError
 
 from appium import webdriver
+
 from src.testcase.case.ToDevicePage import *
 from src.testcase.case.ToLoginPage import *
 from src.testcase.common.WidgetCheckUnit import *
@@ -21,6 +22,7 @@ class LaunchApp(object):
         self.ac = AppiumCommand(self.device_info["platformName"])
 
         self.debug = self.device_info["debug"]
+        self.driver = "driver's initializtion"
         self.user = self.device_name
         self.case_module = ""  # 用例所属模块
         self.case_title = ""  # 用例名称
@@ -43,8 +45,6 @@ class LaunchApp(object):
                     driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
                                               self.device_info["desired_caps"])  # 启动APP
                     self.debug.info("init_app driver(launch success):%s" % driver)
-                    driver.close_app()
-                    self.debug.info("init_app driver(close_app success):%s" % driver)
                     break
                 except WebDriverException:
                     self.debug.error("init_app driver(WebDriverException):%s times" % i)
@@ -62,9 +62,75 @@ class LaunchApp(object):
                             self.debug.error(
                                 "init_app Appium Sever Restart Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
                             break
-
+            self.init_operate()
+            ToLoginPage(driver, self.logger, self.device_info, self.page)
+            while True:
+                try:
+                    user_name = self.widget_click(self.page["login_page"]["title"],
+                                                  self.page["login_page"]["username"],
+                                                  self.page["login_page"]["title"],
+                                                  1, 1, 1, 10, 5, 0)
+        
+                    # 发送数据
+                    data = conf["user_and_pwd"][self.device_info["udid"]]["user_name"]
+                    data = str(data).decode('hex').replace(" ", "")
+                    user_name.clear()
+                    self.ac.send_keys(user_name, data)
+                    time.sleep(0.5)
+        
+                    precise_pwd = conf["user_and_pwd"][self.device_info["udid"]]["precise_pwd"]
+                    for x in xrange(len(precise_pwd)):
+                        login_pwd = self.widget_click(self.page["login_page"]["title"],
+                                                      self.page["login_page"]["password"],
+                                                      self.page["login_page"]["title"],
+                                                      1, 1, 1, 10, 5, 0)
+            
+                        data = str(precise_pwd[x]).decode('hex').replace(" ", "")
+            
+                        self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
+                        login_pwd.clear()
+                        self.ac.send_keys(login_pwd, data)
+                        try:
+                            self.widget_click(self.page["login_page"]["title"],
+                                              self.page["login_page"]["login_button"],
+                                              self.page["device_page"]["title"],
+                                              1, 1, 1, 10, 5, 0)
+                            if x == 0:
+                                conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[0]
+                                conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[1]
+                            else:
+                                conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[1]
+                                conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[0]
+                            break
+                        except TimeoutException:
+                            i = 1
+                            while i <= 33:
+                                time.sleep(10)
+                                widget_px = self.page["god_page"]["title"]
+                                width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
+                                height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
+                                driver.tap([(width, height)], )
+                                print "time sleep %sS" % (i * 10)
+                                i += 1
+                            self.widget_click(self.page["login_page"]["title"],
+                                              self.page["login_page"]["login_button"],
+                                              self.page["device_page"]["title"],
+                                              1, 1, 1, 10, 5, 0)
+                            if x == 0:
+                                conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[0]
+                                conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[1]
+                            else:
+                                conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[1]
+                                conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[0]
+                            break
+                    break
+                except TimeoutException:
+                    self.debug.error("init_app:%s" % traceback.format_exc())
         except BaseException:
             self.debug.error(traceback.format_exc())
+        finally:
+            driver.close_app()
+            self.debug.info("init_app driver(close_app success):%s" % driver)
 
     def init_operate(self):
         self.debug.info("driver(init_operate):%s" % driver)

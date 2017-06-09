@@ -62,8 +62,8 @@ class GNAppRegister11(LaunchApp):
             time.sleep(0.5)
 
             widget_px = self.page["register_page"]["register_button"]
-            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["width"])
-            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["height"])
+            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
+            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
             self.driver.tap([(width, height)], )
             self.logger.info(u'[APP_CLICK] operate_widget ["%s"] success' % widget_px[2])
 

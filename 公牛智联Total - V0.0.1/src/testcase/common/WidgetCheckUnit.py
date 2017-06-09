@@ -1,8 +1,9 @@
 # coding=utf-8
 import time
 
-from data.Database import *
 from selenium.common.exceptions import *
+
+from data.Database import *
 
 
 class TimeoutError(Exception):
@@ -22,6 +23,13 @@ class WidgetCheckUnit(Exception):
     def wait_widget(self, main_widget=None, timeout=1.0, interval=1.0):
         locate = main_widget[1]
         widget = main_widget[0]
+        popup_text = ""
+        try:
+            popup_text = main_widget[3]["text"]
+        except IndexError:
+            pass
+        except KeyError:
+            pass
         end_time = time.time() + timeout
         while True:
             try:
@@ -40,14 +48,11 @@ class WidgetCheckUnit(Exception):
                 else:
                     raise KeyError('find_element_by_%s must in'
                                    '["id", "name", "class", "xpath", "activity", "accessibility_id"' % locate)
-                try:
-                    popup_text = main_widget[3]
+                if popup_text != "":
                     if element.get_attribute("name") == popup_text:
                         pass
                     else:
                         raise TimeoutException()
-                except IndexError:
-                    pass
                 return element
             except NoSuchElementException:
                 time.sleep(interval)

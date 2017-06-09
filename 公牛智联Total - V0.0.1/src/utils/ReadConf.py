@@ -8,7 +8,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 conf = yaml.load(file(r"config/Conf.yaml"))
-
+precise_pwd = conf["user_and_pwd"]["8681-M02-0xa0a151df"]["precise_pwd"]
 
 def modified_conf(config):
     with open(r"config/Conf.yaml", "w") as conf_yaml:
@@ -33,18 +33,22 @@ def modified_conf(config):
         conf_yaml.write("# 待选择App\n")
         conf_yaml.write("App:\n")
         conf_yaml.write("  GN_Android:\n")
-        conf_yaml.write('''    "appPackage": 'com.iotbull.android.superapp'\n''')
-        conf_yaml.write('''    "appActivity": 'com.iotbull.android.superapp.activitys.regist_login.SplashActivity'\n''')
-        conf_yaml.write(
-            '''    "waitActivity": 'com.iotbull.android.superapp/.activitys.regist_login.LoginActivity'\n''')
+        conf_yaml.write('''    appPackage: 'com.iotbull.android.superapp'\n''')
+        conf_yaml.write('''    appActivity: 'com.iotbull.android.superapp.activitys.regist_login.SplashActivity'\n''')
+        conf_yaml.write('''    waitActivity: 'com.iotbull.android.superapp/.activitys.regist_login.LoginActivity'\n''')
         conf_yaml.write('''  GN_iOS:\n''')
-        conf_yaml.write('''    "bundleId": 'com.eamon.gongniu'\n''')
+        conf_yaml.write('''    bundleId: 'com.eamon.gongniu'\n''')
         conf_yaml.write('''  JD:\n''')
-        conf_yaml.write('''    "appPackage": 'com.jd.smart'\n''')
-        conf_yaml.write('''    "appActivity": 'com.jd.smart.activity.LoadingActivity'\n''')
+        conf_yaml.write('''    appPackage: 'com.jd.smart'\n''')
+        conf_yaml.write('''    appActivity: 'com.jd.smart.activity.LoadingActivity'\n''')
         conf_yaml.write("# Toast消息\n")
         conf_yaml.write("Toast:\n")
         conf_yaml.write("  login_password_mistake: [40, 1570, 1040, 1750]\n")
-        conf_yaml.write("user_and_pwd:  # 用户名，（登录密码/旧密码）， 新密码\n")
+        conf_yaml.write("# 用户名，（登录密码/旧密码）， 新密码\n")
+        conf_yaml.write("user_and_pwd:\n")
         for k, v in config["user_and_pwd"].items():
-            conf_yaml.write("  '%s': %s\n" % (k, v))
+            conf_yaml.write("  %s:\n" % k)
+            conf_yaml.write("    user_name: '%s'\n" % v['user_name'])
+            conf_yaml.write("    login_pwd: '%s'\n" % v['login_pwd'])
+            conf_yaml.write("    new_pwd: '%s'\n" % v['new_pwd'])
+            conf_yaml.write("    precise_pwd: ['%s', '%s']\n" % (v['login_pwd'], v['new_pwd']))

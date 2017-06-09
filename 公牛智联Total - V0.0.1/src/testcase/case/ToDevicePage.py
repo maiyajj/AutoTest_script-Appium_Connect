@@ -19,7 +19,7 @@ class ToDevicePage(object):
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
         # 唤醒设备
-        self.wait_widget(self.page["god_page"]["title"]).click()
+        self.driver.tap([(10, 10)])
         time.sleep(0.01)
         self.case()
 
@@ -63,7 +63,8 @@ class ToDevicePage(object):
                                                       1, 1, 1, 10, 0.5)
 
                         # 发送数据
-                        data = str(conf["user_and_pwd"][self.device_info["udid"]][0]).decode('hex').replace(" ", "")
+                        data = conf["user_and_pwd"][self.device_info["udid"]]["user_name"]
+                        data = str(data).decode('hex').replace(" ", "")
                         user_name.clear()
                         self.ac.send_keys(user_name, data)
                         self.logger.info(u'[APP_INPUT] ["重新登陆用户名"] input success')
@@ -74,8 +75,9 @@ class ToDevicePage(object):
                                                       self.page["login_page"]["title"],
                                                       1, 1, 1, 10, 0.5)
 
-                        data = str(conf["user_and_pwd"][self.device_info["udid"]][1]).decode('hex').replace(" ", "")
-
+                        data = conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"]
+                        data = str(data).decode('hex').replace(" ", "")
+                        
                         self.show_pwd()
                         login_pwd.clear()
                         self.ac.send_keys(login_pwd, data)
@@ -89,7 +91,10 @@ class ToDevicePage(object):
                             i = 1
                             while i <= 33:
                                 time.sleep(10)
-                                self.wait_widget(self.page["god_page"]["title"]).click()
+                                widget_px = self.page["god_page"]["title"]
+                                width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
+                                height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
+                                self.driver.tap([(width, height)], )
                                 print "time sleep %sS" % (i * 10)
                                 i += 1
                             self.widget_click(self.page["login_page"]["title"],

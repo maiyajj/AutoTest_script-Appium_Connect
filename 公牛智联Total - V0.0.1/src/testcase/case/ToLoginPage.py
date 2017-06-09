@@ -16,7 +16,7 @@ class ToLoginPage(object):
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
         # 唤醒设备
-        self.wait_widget(self.page["god_page"]["title"]).click()
+        self.driver.tap([(10, 10)])
         time.sleep(0.01)
         self.case()
 
