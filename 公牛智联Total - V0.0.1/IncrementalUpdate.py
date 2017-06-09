@@ -590,10 +590,15 @@ def add_notes():
                 # print filename[:-3]
                 with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''widget_px = self.page["god_page"]["title"][3]["px"]''' in linecache.getline(filepath, i):
-                            print filename, i, linecache.getline(filepath, i)
-        
-                            #     files.write(linecache.getline(filepath, i).replace('["to_next"]','["to_next"][3]["px"]'))
+                        if '''tap([(width, height)]''' in linecache.getline(filepath, i):
+                            print "*" * 40
+                            print filename, i
+                            print linecache.getline(filepath, i - 3),
+                            print linecache.getline(filepath, i - 2),
+                            print linecache.getline(filepath, i - 1),
+                            print linecache.getline(filepath, i),
+                            print linecache.getline(filepath, i + 1),
+                            #     files.write(linecache.getline(filepath, i).replace('widget_px["','widget_px[3]["px"]["'))
                             # else:
                             #     files.write(linecache.getline(filepath, i))
                             # # for i in a:
