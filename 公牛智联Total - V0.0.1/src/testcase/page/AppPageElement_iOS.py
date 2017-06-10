@@ -3,7 +3,8 @@ class MainPageWidgetIos(object):
     # 万能页面
     def god_page(self):
         d = {}
-        d["title"] = ["//XCUIElementTypeStatusBar", "xpath", u"万能控件"]
+        d["title"] = ["//XCUIElementTypeStatusBar", "xpath", u"万能控件",
+                      {"px": {"width": 0, "height": 0}}]
         return d
 
     # 引导页
@@ -30,7 +31,7 @@ class MainPageWidgetIos(object):
         d["to_find_password"] = [u"忘记密码？", "accessibility_id", u"忘记密码"]
         # 登录按钮
         d["login_button"] = [u"登  录", "accessibility_id", u"登录按钮",
-                             {"width": 0.5, "height": 0.65}]
+                             {"px": {"width": 0.5, "height": 0.65}}]
         # 新账号注册
         d["to_register"] = [u"新用户注册", "accessibility_id", u"新账号注册"]
         return d
@@ -52,7 +53,7 @@ class MainPageWidgetIos(object):
         d["get_check_code"] = ["//XCUIElementTypeTextField[2]/XCUIElementTypeButton", "xpath", u"获取验证码"]
         # 下一步
         d["to_next"] = [u"下一步", "accessibility_id", u"下一步",
-                        {"width": 0.5, "height": 0.45}]
+                        {"px": {"width": 0.5, "height": 0.45}}]
         return d
 
     # 忘记密码→重置密码页
@@ -89,7 +90,7 @@ class MainPageWidgetIos(object):
         d["get_check_code"] = [u"获取验证码", "accessibility_id", u"获取验证码"]
         # 立即注册按钮
         d["register_button"] = [u"立即注册", "accessibility_id", u"立即注册按钮",
-                                {"width": 0.5, "height": 0.75}]
+                                {"px": {"width": 0.5, "height": 0.75}}]
         # 公牛服务协议
         d["to_protocol"] = ["//XCUIElementTypeOther/XCUIElementTypeButton[2]", "xpath", u"公牛服务协议"]
         # 已有账户登录
@@ -216,7 +217,7 @@ class MainPageWidgetIos(object):
         d["conform_pwd"] = ["//XCUIElementTypeOther[2]//XCUIElementTypeSecureTextField[3]", "xpath", u"确认新密码"]
         # 确定
         d["commit"] = [u"确  定", "accessibility_id", u"确定",
-                       {"width": 0.5, "height": 0.7}]
+                       {"px": {"width": 0.5, "height": 0.7}}]
         return d
 
     # 使用帮助页
