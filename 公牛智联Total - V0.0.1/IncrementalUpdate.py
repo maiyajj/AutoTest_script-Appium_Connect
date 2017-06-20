@@ -508,100 +508,23 @@ def check_AppPageElement():
             print re.findall(r".+def %s.+" % i, app)
             print sys._getframe().f_lineno
 
-
-# def print_element(element ,values):
-#     if element == "account_setting_page":
-#         MainPageWidget().account_setting_page()
-#     if element == "add_device_failed_page":
-#         MainPageWidget().add_device_failed_page()
-#     if element == "app_help_page":
-#         MainPageWidget().app_help_page()
-#         if element == "change_nickname_page":
-#          = MainPageWidget().change_nickname_page()
-#         if element == "app_help_page":
-#          = MainPageWidget().change_pwd_page()
-#         if element == "app_help_page":
-#         device_add_scan_page = MainPageWidget().device_add_scan_page()
-#         if element == "app_help_page":
-#         device_control_page = MainPageWidget().device_control_page()
-#         if element == "app_help_page":
-#         device_page = MainPageWidget().device_page()
-#         if element == "app_help_page":
-#         feedback_page = MainPageWidget().feedback_page()
-#         if element == "app_help_page":
-#         find_password_page = MainPageWidget().find_password_page()
-#         if element == "app_help_page":
-#         gender_page = MainPageWidget().gender_page()
-#         if element == "app_help_page":
-#         home_message_page = MainPageWidget().home_message_page()
-#         if element == "app_help_page":
-#         login_page = MainPageWidget().login_page()
-#         if element == "app_help_page":
-#         message_classify_page = MainPageWidget().message_classify_page()
-#         if element == "app_help_page":
-#         message_setting_page = MainPageWidget().message_setting_page()
-#         if element == "app_help_page":
-#         new_password_page = MainPageWidget().new_password_page()
-#         if element == "app_help_page":
-#         personal_settings_page = MainPageWidget().personal_settings_page()
-#         if element == "app_help_page":
-#         prepare_set_network_page = MainPageWidget().prepare_set_network_page()
-#         if element == "app_help_page":
-#         protocol_page = MainPageWidget().protocol_page()
-#         if element == "app_help_page":
-#         register_page = MainPageWidget().register_page()
-#         if element == "app_help_page":
-#         scan_with_subscribe_page = MainPageWidget().scan_with_subscribe_page()
-#         if element == "app_help_page":
-#         set_network_page = MainPageWidget().set_network_page()
-#         if element == "app_help_page":
-#         upgrade_page = MainPageWidget().upgrade_page()
-#         if element == "app_help_page":
-#         view_pager_page = MainPageWidget().view_pager_page()
-#
-#         if element == "app_help_page":
-#         clear_activity_popup = PopupWidget().clear_activity_popup()
-#         if element == "app_help_page":
-#         clear_device_popup = PopupWidget().clear_device_popup()
-#         if element == "app_help_page":
-#
-#         loading_popup = PopupWidget().loading_popup()
-#         if element == "app_help_page":
-#         login_popup = PopupWidget().login_popup()
-#
-#         if element == "app_help_page":
-#         logout_popup = PopupWidget().logout_popup()
-#         if element == "app_help_page":
-#         terminate_add_device_popup = PopupWidget().terminate_add_device_popup()
-#         if element == "app_help_page":
-#         update_popup = PopupWidget().update_popup()
-#
-#     try:
-#         print MainPageWidget().element()[values]
-#     except NameError:
-#         print PopupWidget().element()[values]
-
 def add_notes():
-    rootdir = r"./src/"
+    rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "IncrementalUpdate" not in filename and "pyc" not in filename and "AppPageElement" not in filename:
+            if "GNAPP" in filename and "pyc" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
                 with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''tap([(width, height)]''' in linecache.getline(filepath, i):
+                        if '''self.driver = self.return_driver()''' in linecache.getline(filepath, i):
                             print "*" * 40
                             print filename, i
-                            print linecache.getline(filepath, i - 3),
-                            print linecache.getline(filepath, i - 2),
-                            print linecache.getline(filepath, i - 1),
                             print linecache.getline(filepath, i),
-                            print linecache.getline(filepath, i + 1),
                             #     files.write(linecache.getline(filepath, i).replace('widget_px["','widget_px[3]["px"]["'))
-                            # else:
-                            #     files.write(linecache.getline(filepath, i))
+                        else:
+                            files.write(linecache.getline(filepath, i))
                             # # for i in a:
                             #     filepath = os.path.join(parent,filename)
                             #     with open(filepath, "w") as files:

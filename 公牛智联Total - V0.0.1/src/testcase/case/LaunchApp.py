@@ -10,19 +10,99 @@ from src.testcase.common.WidgetCheckUnit import *
 from src.utils.ScreenShot import *
 
 
+def launch_fail_fix(func):
+    def wrapper(self):
+        i = 1
+        ii = 1
+        iii = 1
+        while True:
+            try:
+                func(self)
+                break
+            except WebDriverException, e:
+                e = str(e)
+                if "A new session could not be created" not in e:
+                    self.debug.error("launch_app driver(WebDriverException):%s times" % i)
+                    i += 1
+                    time.sleep(1)
+                else:
+                    try:
+                        port = re.findall(r"cannot bind to 127.0.0.1:(\d+):", e)[0]
+                        pid = self.sc.find_proc_and_pid_by_port(port)  # 判断5037端口是否被占用
+                        for i in pid:
+                            self.sc.kill_proc_by_pid(i[1])
+                            self.debug.error(u"appium重启后关闭%s进程" % i[0])
+                    except IndexError:
+                        self.debug.error(u"appium重启后没有程序占用端口")
+            except URLError:
+                self.debug.error("launch_app driver(URLError):%s times" % ii)
+                ii += 1
+                self.check_appium_launch()
+                while True:
+                    try:
+                        driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
+                                                  self.device_info["desired_caps"])  # 启动APP
+                        self.driver = driver
+                        break
+                    except WebDriverException:
+                        self.debug.error("URLError driver(WebDriverException):%s times" % iii)
+                        iii += 1
+                break
+
+    return wrapper
+
+
+def decor_init_app(func):
+    def wrapper(self):
+        try:
+            func(self)
+            self.check_user_pwd()
+        except BaseException:
+            self.debug.error(traceback.format_exc())
+        finally:
+            self.driver.close_app()
+            self.debug.info("init_app driver(close_app success)")
+
+    return wrapper
+
+
+def decor_launch_app(func):
+    def wrapper(self, page_login):
+        self.driver = self.return_driver()
+        self.debug.info("basename:%s" % self.basename)
+        self.data_statistics(self.zentao_id)
+        try:
+            func(self)
+            self.init_operate()
+            self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
+            self.logger.info('app start [time=%s]' % self.start_time)  # 记录log，APP打开时间
+            self.success = False
+
+            if page_login is True:
+                ToLoginPage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到登录页面等待
+            elif page_login is False:
+                ToDevicePage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到设备主页面等待
+        except BaseException:
+            self.case_over("unknown")
+            self.debug.error("case_over:%s" % traceback.format_exc())
+            raise WebDriverException("Case launch unknown")
+
+    return wrapper
+
+
 class LaunchApp(object):
     conf = conf
 
-    def __init__(self, device_info_list):
-        self.device_info = device_info_list["device_info"]
+    def __init__(self, **kwargs):
+        self.device_info = kwargs["device_info"]
+        self.page = kwargs["page_element"]
+        self.logger = kwargs["logger"]
+        self.sc = kwargs["sc"]
         self.device_name = self.device_info["udid"]
-        self.page = device_info_list["page_element"]
-        self.logger = device_info_list["logger"]
-        self.sc = device_info_list["sc"]
+        self.port = self.device_info["port"]
         self.ac = AppiumCommand(self.device_info["platformName"])
 
         self.debug = self.device_info["debug"]
-        self.driver = "driver's initializtion"
         self.user = self.device_name
         self.case_module = ""  # 用例所属模块
         self.case_title = ""  # 用例名称
@@ -34,107 +114,90 @@ class LaunchApp(object):
         self.wait_widget = None
         self.start_time = None
 
-    def init_app(self):
-        global driver
-        try:
-            i = 1
-            ii = 1
-            while True:
-                try:
-                    self.debug.warn("init_app driver(ready launch)")
-                    driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
-                                              self.device_info["desired_caps"])  # 启动APP
-                    self.debug.info("init_app driver(launch success):%s" % driver)
-                    break
-                except WebDriverException:
-                    self.debug.error("init_app driver(WebDriverException):%s times" % i)
-                    i += 1
-                    time.sleep(1)
-                except URLError:
-                    self.debug.error("init_app driver(URLError):%s times" % ii)
-                    ii += 1
-                    while True:
-                        try:
-                            self.sc.find_proc_and_pid_by_port(self.device_info["port"])[0]
-                        except IndexError:
-                            time.sleep(1)
-                        else:
-                            self.debug.error(
-                                "init_app Appium Sever Restart Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
-                            break
-            self.init_operate()
-            ToLoginPage(driver, self.logger, self.device_info, self.page)
-            while True:
-                try:
-                    user_name = self.widget_click(self.page["login_page"]["title"],
-                                                  self.page["login_page"]["username"],
+    def check_appium_launch(self):
+        while True:
+            try:
+                self.sc.find_proc_and_pid_by_port(self.port)[0]
+            except IndexError:
+                time.sleep(1)
+            else:
+                self.debug.info("Appium Sever launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
+                break
+
+    def wait_pwd_timeout(self):
+        i = 1
+        while i <= 33:
+            time.sleep(10)
+            widget_px = self.page["god_page"]["title"]
+            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
+            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
+            self.driver.tap([(width, height)], )
+            print "time sleep %sS" % (i * 10)
+            i += 1
+
+    def check_user_pwd(self):
+        self.init_operate()
+        ToLoginPage(self.driver, self.logger, self.device_info, self.page)
+        while True:
+            try:
+                user_name = self.widget_click(self.page["login_page"]["title"],
+                                              self.page["login_page"]["username"],
+                                              self.page["login_page"]["title"],
+                                              1, 1, 1, 10, 5, 0)
+
+                # 发送数据
+                data = conf["user_and_pwd"][self.device_info["udid"]]["user_name"]
+                data = str(data).decode('hex').replace(" ", "")
+                user_name.clear()
+                self.ac.send_keys(user_name, data)
+                time.sleep(0.5)
+
+                precise_pwd = conf["user_and_pwd"][self.device_info["udid"]]["precise_pwd"]
+                for x in xrange(len(precise_pwd)):
+                    login_pwd = self.widget_click(self.page["login_page"]["title"],
+                                                  self.page["login_page"]["password"],
                                                   self.page["login_page"]["title"],
                                                   1, 1, 1, 10, 5, 0)
-        
-                    # 发送数据
-                    data = conf["user_and_pwd"][self.device_info["udid"]]["user_name"]
-                    data = str(data).decode('hex').replace(" ", "")
-                    user_name.clear()
-                    self.ac.send_keys(user_name, data)
-                    time.sleep(0.5)
-        
-                    precise_pwd = conf["user_and_pwd"][self.device_info["udid"]]["precise_pwd"]
-                    for x in xrange(len(precise_pwd)):
-                        login_pwd = self.widget_click(self.page["login_page"]["title"],
-                                                      self.page["login_page"]["password"],
-                                                      self.page["login_page"]["title"],
-                                                      1, 1, 1, 10, 5, 0)
-            
-                        data = str(precise_pwd[x]).decode('hex').replace(" ", "")
-            
-                        self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-                        login_pwd.clear()
-                        self.ac.send_keys(login_pwd, data)
-                        try:
-                            self.widget_click(self.page["login_page"]["title"],
-                                              self.page["login_page"]["login_button"],
-                                              self.page["device_page"]["title"],
-                                              1, 1, 1, 10, 5, 0)
-                            if x == 0:
-                                conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[0]
-                                conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[1]
-                            else:
-                                conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[1]
-                                conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[0]
-                            break
-                        except TimeoutException:
-                            i = 1
-                            while i <= 33:
-                                time.sleep(10)
-                                widget_px = self.page["god_page"]["title"]
-                                width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
-                                height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
-                                driver.tap([(width, height)], )
-                                print "time sleep %sS" % (i * 10)
-                                i += 1
-                            self.widget_click(self.page["login_page"]["title"],
-                                              self.page["login_page"]["login_button"],
-                                              self.page["device_page"]["title"],
-                                              1, 1, 1, 10, 5, 0)
-                            if x == 0:
-                                conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[0]
-                                conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[1]
-                            else:
-                                conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[1]
-                                conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[0]
-                            break
-                    break
-                except TimeoutException:
-                    self.debug.error("init_app:%s" % traceback.format_exc())
-        except BaseException:
-            self.debug.error(traceback.format_exc())
-        finally:
-            driver.close_app()
-            self.debug.info("init_app driver(close_app success):%s" % driver)
+
+                    data = str(precise_pwd[x]).decode('hex').replace(" ", "")
+
+                    self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
+                    login_pwd.clear()
+                    self.ac.send_keys(login_pwd, data)
+                    try:
+                        self.widget_click(self.page["login_page"]["title"],
+                                          self.page["login_page"]["login_button"],
+                                          self.page["device_page"]["title"],
+                                          1, 1, 1, 10, 5, 0)
+                        if x == 0:
+                            conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[0]
+                            conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[1]
+                        else:
+                            conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[1]
+                            conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[0]
+                        break
+                    except TimeoutException:
+                        if x != (len(precise_pwd) - 1):
+                            pass
+                        else:
+                            raise TimeoutException()
+                modified_conf(conf)
+                break
+            except TimeoutException:
+                self.wait_pwd_timeout()
+                self.debug.error("init_app:%s" % traceback.format_exc())
+
+    @decor_init_app
+    @launch_fail_fix
+    def init_app(self):
+        global driver
+        driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
+                                  self.device_info["desired_caps"])  # 启动APP
+        self.driver = driver
 
     def init_operate(self):
-        self.debug.info("driver(init_operate):%s" % driver)
-        widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger)  # 元素初始化
+        self.debug.info("driver(init_operate)")
+        widget_check_unit = WidgetCheckUnit(self.driver, self.page, self.logger)  # 元素初始化
         self.widget_click = widget_check_unit.widget_click  # 初始化self.widget_click
         self.wait_widget = widget_check_unit.wait_widget  # 初始化self.wait_widget
 
@@ -153,113 +216,15 @@ class LaunchApp(object):
             database[self.device_name][zentao_id]["case_title"] = self.case_title
         self.debug.info("%s:%s" % (zentao_id, database[self.device_name][zentao_id]))
 
-    def launch_app(self, page_login):
-        global driver
-        self.debug.info("basename:%s" % self.basename)
-        self.data_statistics(self.zentao_id)
-        try:
-            i = 1
-            ii = 1
-            iii = 1
-            while True:
-                try:
-                    self.debug.warn("launch_app driver(ready launch)")
-                    driver.close_app()
-                    self.debug.info("launch_app driver(close_app success):%s" % driver)
-                    driver.launch_app()
-                    self.debug.info("launch_app driver(launch_app success):%s" % driver)
-                    break
-                except WebDriverException, e:
-                    if "A new session could not be created" not in e:
-                        self.debug.error("launch_app driver(WebDriverException):%s times" % i)
-                        i += 1
-                        time.sleep(1)
-                    else:
-                        try:
-                            pid = self.sc.find_proc_and_pid_by_port(5037)  # 判断5037端口是否被占用
-                            for i in pid:
-                                self.sc.kill_proc_by_pid(i[1])
-                                self.debug.error(u"appium重启后关闭%s进程" % i[0])
-                        except IndexError:
-                            self.debug.error(u"appium重启后没有程序占用5037端口")
-                            
-                except URLError:
-                    self.debug.error("launch_app driver(URLError):%s times" % ii)
-                    ii += 1
-                    while True:
-                        try:
-                            self.sc.find_proc_and_pid_by_port(self.device_info["port"])[0]
-                        except IndexError:
-                            time.sleep(1)
-                        else:
-                            self.debug.error(
-                                "launch_app Appium Sever Restart Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
-                            while True:
-                                try:
-                                    driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
-                                                              self.device_info["desired_caps"])  # 启动APP
-                                    break
-                                except WebDriverException:
-                                    self.debug.error("URLError driver(WebDriverException):%s times" % iii)
-                                    iii += 1
-                            break
+    @decor_launch_app
+    @launch_fail_fix
+    def launch_app(self):
+        self.debug.warn("launch_app driver(ready launch)")
+        self.driver.close_app()
+        self.debug.info("launch_app driver(close_app success)")
+        self.driver.launch_app()
+        self.debug.info("launch_app driver(launch_app success)")
 
-            self.init_operate()
-            self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
-            self.logger.info('app start [time=%s]' % self.start_time)  # 记录log，APP打开时间
-            self.success = False
-
-            if page_login is True:
-                ToLoginPage(driver, self.logger, self.device_info, self.page)  # 使APP跳转到登录页面等待
-            elif page_login is False:
-                ToDevicePage(driver, self.logger, self.device_info, self.page)  # 使APP跳转到设备主页面等待
-        except BaseException:
-            self.case_over("unknown")
-            self.debug.error("case_over:%s" % traceback.format_exc())
-            raise WebDriverException("Case launch unknown")
-
-    # def launch_app(self, page_login, first_time=True):
-    #     self.debug.info("basename:%s" % self.basename)
-    #     self.data_statistics(self.zentao_id)
-    #     self.start_fail = False
-    #     try:
-    #         i = 1
-    #         while i <= 3:
-    #             try:
-    #                 while True:
-    #                     try:
-    #                         try:
-    #                             driver.quit()  # 确保appium服务已关闭
-    #                         except AttributeError:
-    #                             raise WebDriverException()
-    #                     except WebDriverException:
-    #                         driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
-    #                                                        self.device_info["desired_caps"])  # 启动APP
-    #                         self.start_fail = False  # 缺少此条语句将造成APP启动一直失败原因为第73行
-    #                         self.debug.info("driver(while):%s" % driver)
-    #                         break
-    #                 break
-    #             except WebDriverException:
-    #                 self.start_fail = True
-    #                 i += 1
-    #                 self.debug.error("driver(WebDriverException):%s,%s" % (self.start_fail, i))
-    #
-    #         self.debug.info("driver(over):%s" % driver)
-    #         if self.start_fail is True:
-    #             self.debug.error("driver(over):App start failed")
-    #             raise WebDriverException("App start failed")
-    #
-    #         self.debug.warn("self.start_fail:%s" % self.start_fail)
-    #         self.init_operate(driver)
-    #
-    #         if page_login is True and first_time is True:
-    #             ToLoginPage(driver, self.logger, self.device_info)  # 使APP跳转到登录页面等待
-    #         elif page_login is False and first_time is True:
-    #             ToDevicePage(driver, self.logger, self.device_info)  # 使APP跳转到设备主页面等待
-    #     except WebDriverException:
-    #         self.case_over("unknown")
-    #         self.debug.error("case_over:Case launch unknown")
-    #         raise WebDriverException("Case launch unknown")
     def return_driver(self):
         return driver
 
@@ -272,12 +237,12 @@ class LaunchApp(object):
                     element.click()
         except TimeoutException:
             pass
-        
+
     def case_over(self, success):
         self.success = success
         time.sleep(1)
         try:
-            driver.close_app()  # 关闭APP
+            self.driver.close_app()  # 关闭APP
             self.debug.warn("(%s)driver.close_app() App close" % self.basename)
         except WebDriverException:
             self.debug.error("case_over(success):Case launch unknown")
@@ -288,19 +253,11 @@ class LaunchApp(object):
 
     # 记录运行结果
     def result(self):
-        if self.success is True:
-            self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] success!' % self.case_title)
-            database[self.device_name][self.zentao_id]["test_pass"] += 1
-            return "success", self.zentao_id, self.case_title, self.start_time
-        elif self.success is False:
-            self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] failed!' % self.case_title)
-            database[self.device_name][self.zentao_id]["test_fail"] += 1
-            return "failed", self.zentao_id, self.case_title, self.start_time
-        elif self.success == "unknown":
-            self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] unknown!' % self.case_title)
-            database[self.device_name][self.zentao_id]["test_error"] += 1
-            return "unknown", self.zentao_id, self.case_title, self.start_time
-        elif self.success == "screen":
-            self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] waiting for review!' % self.case_title)
-            database[self.device_name][self.zentao_id]["test_wait"] += 1
-            return "wait", self.zentao_id, self.case_title, self.start_time
+        d_result = {True: ["success", "test_pass"],
+                    False: ["failed", "test_fail"],
+                    "unknown": ["unknown", "test_error"],
+                    "screen": ["wait", "test_wait"]}
+        result = d_result[self.success]
+        self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
+        database[self.device_name][self.zentao_id][result[1]] += 1
+        return "%s" % result[0], self.zentao_id, self.case_title, self.start_time

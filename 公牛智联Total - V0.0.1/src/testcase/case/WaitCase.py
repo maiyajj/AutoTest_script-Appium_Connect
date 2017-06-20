@@ -76,6 +76,7 @@ class WaitCase(object):
     def create_debug(self):
         check_debug(self.device_list, self.device_name)
         self.debug = self.device_info["debug"]
+        os.popen(r"adb logcat -s SplashActivity:e > ./debug/%s_adb.log" % self.device_info["udid"])
 
     def write_xls(self):
         self.xls = WriteXls(self.device_list, self.device_name)
@@ -85,7 +86,7 @@ class WaitCase(object):
                                  "page_element": self.page_element,
                                  "logger": self.logger,
                                  "sc": self.sc}
-        LaunchApp(self.device_info_list).init_app()
+        LaunchApp(**self.device_info_list).init_app()
 
     def check_appium(self):
         while True:
@@ -188,7 +189,7 @@ class WaitCase(object):
 
     def write_report(self, case_name):
         try:
-            case = case_name(self.device_info_list).output()
+            case = case_name(**self.device_info_list).output()
             end_time = time.strftime("%Y-%m-%d %H:%M:%S")
             zentao_id = case[1]
             data = u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % \
