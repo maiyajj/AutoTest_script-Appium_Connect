@@ -76,7 +76,6 @@ class WaitCase(object):
     def create_debug(self):
         check_debug(self.device_list, self.device_name)
         self.debug = self.device_info["debug"]
-        os.popen(r"adb logcat -s SplashActivity:e > ./debug/%s_adb.log" % self.device_info["udid"])
 
     def write_xls(self):
         self.xls = WriteXls(self.device_list, self.device_name)

@@ -26,6 +26,12 @@ class ShellCommandMac(object):
         :param port:
         :return:(proc, pid)
         '''
+        try:
+            int(port)
+        except ValueError:
+            raise KeyError("key must be port! Is int, but real %s!" % type(port))
+        except TypeError:
+            raise KeyError("key must be port! Is int, but real %s!" % type(port))
         command = 'lsof -i:%s' % port  # 判断端口是否被占用
         find_pid = re.findall(r"(.+?) .+?(\d+).+LISTEN.+?", os.popen(command).read())
         return find_pid
@@ -36,6 +42,12 @@ class ShellCommandMac(object):
         :param pid:
         :return:
         '''
+        try:
+            int(pid)
+        except ValueError:
+            raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
+        except TypeError:
+            raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
         command = 'lsof -p %s' % pid
         find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())))
 
@@ -54,7 +66,7 @@ class ShellCommandMac(object):
 
     def kill_proc_by_proc(self, proc):
         if not isinstance(proc, str):
-            raise KeyError("key must be process name! Is string")
+            raise KeyError("key must be process name! Is string, but real %s!" % type(proc))
 
         command = 'killall -9 %s' % proc  # 通过进程名杀死进程
         os.popen(command)
@@ -67,9 +79,9 @@ class ShellCommandMac(object):
         try:
             int(pid)
         except ValueError:
-            raise KeyError("key must be pid! Is int")
+            raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
         except TypeError:
-            raise KeyError("key must be pid! Is int")
+            raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
 
         command = 'kill -9 %s' % pid  # 通过pid杀死进程
         os.popen(command)

@@ -14,39 +14,37 @@ def launch_fail_fix(func):
     def wrapper(self):
         i = 1
         ii = 1
-        iii = 1
         while True:
             try:
                 func(self)
                 break
             except WebDriverException, e:
                 e = str(e)
-                if "A new session could not be created" not in e:
+                self.debug.error(e)
+                if "session" in e:
+                    port = [self.port, self.bp_port, self.wda_port]
+                    for x in port:
+                        try:
+                            pid = self.sc.find_proc_and_pid_by_port(x)
+                            for y in pid:
+                                self.debug.error(y)
+                                self.sc.kill_proc_by_pid(y[1])
+                                self.debug.error(u"appium重启后关闭%s进程" % y[0])
+                        except IndexError:
+                            self.debug.error(u"%s端口未占用" % i)
+                    self.http_run_app()
+                else:
                     self.debug.error("launch_app driver(WebDriverException):%s times" % i)
                     i += 1
                     time.sleep(1)
-                else:
-                    try:
-                        port = re.findall(r"cannot bind to 127.0.0.1:(\d+):", e)[0]
-                        pid = self.sc.find_proc_and_pid_by_port(port)  # 判断5037端口是否被占用
-                        for i in pid:
-                            self.sc.kill_proc_by_pid(i[1])
-                            self.debug.error(u"appium重启后关闭%s进程" % i[0])
-                    except IndexError:
-                        self.debug.error(u"appium重启后没有程序占用端口")
+                    if i == 3:
+                        self.http_run_app()
+                        i = 0
+
             except URLError:
                 self.debug.error("launch_app driver(URLError):%s times" % ii)
                 ii += 1
-                self.check_appium_launch()
-                while True:
-                    try:
-                        driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
-                                                  self.device_info["desired_caps"])  # 启动APP
-                        self.driver = driver
-                        break
-                    except WebDriverException:
-                        self.debug.error("URLError driver(WebDriverException):%s times" % iii)
-                        iii += 1
+                self.http_run_app()
                 break
 
     return wrapper
@@ -54,14 +52,21 @@ def launch_fail_fix(func):
 
 def decor_init_app(func):
     def wrapper(self):
-        try:
-            func(self)
-            self.check_user_pwd()
-        except BaseException:
-            self.debug.error(traceback.format_exc())
-        finally:
-            self.driver.close_app()
-            self.debug.info("init_app driver(close_app success)")
+        while True:
+            try:
+                self.check_appium_launch()
+                try:
+                    self.driver.quit()
+                    self.debug.warn("driver quit success")
+                except BaseException:
+                    self.debug.warn("driver need not quit")
+                func(self)
+                self.check_user_pwd()
+                self.driver.close_app()
+                self.debug.info("init_app driver(close_app success)")
+                break
+            except BaseException:
+                self.debug.error(traceback.format_exc())
 
     return wrapper
 
@@ -100,6 +105,8 @@ class LaunchApp(object):
         self.sc = kwargs["sc"]
         self.device_name = self.device_info["udid"]
         self.port = self.device_info["port"]
+        self.bp_port = self.device_info["bp_port"]
+        self.wda_port = self.device_info["wda_port"]
         self.ac = AppiumCommand(self.device_info["platformName"])
 
         self.debug = self.device_info["debug"]
@@ -113,6 +120,26 @@ class LaunchApp(object):
         self.widget_click = None
         self.wait_widget = None
         self.start_time = None
+
+    def http_run_app(self):
+        global driver
+        while True:
+            try:
+                self.check_appium_launch()
+                try:
+                    self.driver.quit()
+                    self.debug.warn("driver quit success")
+                except BaseException:
+                    self.debug.warn("driver need not quit")
+                driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
+                                          self.device_info["desired_caps"])  # 启动APP
+                self.driver = driver
+                break
+            except WebDriverException:
+                self.debug.error("URLError driver(WebDriverException)")
+            except URLError:
+                self.debug.error("URLError driver(URLError)")
+                break
 
     def check_appium_launch(self):
         while True:
@@ -196,10 +223,10 @@ class LaunchApp(object):
         self.driver = driver
 
     def init_operate(self):
-        self.debug.info("driver(init_operate)")
         widget_check_unit = WidgetCheckUnit(self.driver, self.page, self.logger)  # 元素初始化
         self.widget_click = widget_check_unit.widget_click  # 初始化self.widget_click
         self.wait_widget = widget_check_unit.wait_widget  # 初始化self.wait_widget
+        self.debug.info("driver(init_operate success)")
 
     def data_statistics(self, zentao_id):
         self.debug.info("zentao_id:%s" % zentao_id)
@@ -214,7 +241,7 @@ class LaunchApp(object):
             database[self.device_name][zentao_id]["test_wait"] = 0
             database[self.device_name][zentao_id]["ZenTao"] = zentao_id
             database[self.device_name][zentao_id]["case_title"] = self.case_title
-        self.debug.info("%s:%s" % (zentao_id, database[self.device_name][zentao_id]))
+        self.debug.info("case_title:%s" % self.case_title)
 
     @decor_launch_app
     @launch_fail_fix
@@ -240,15 +267,6 @@ class LaunchApp(object):
 
     def case_over(self, success):
         self.success = success
-        time.sleep(1)
-        try:
-            self.driver.close_app()  # 关闭APP
-            self.debug.warn("(%s)driver.close_app() App close" % self.basename)
-        except WebDriverException:
-            self.debug.error("case_over(success):Case launch unknown")
-            self.debug.error(traceback.format_exc())
-
-        self.logger.info('app closed [time=%s]' % time.strftime("%Y-%m-%d %H:%M:%S"))
         database[self.device_name][self.zentao_id]["test_count"] += 1
 
     # 记录运行结果
