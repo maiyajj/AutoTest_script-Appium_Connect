@@ -1,5 +1,6 @@
 # coding=utf-8
 import traceback
+from httplib import BadStatusLine
 from urllib2 import URLError
 
 from appium import webdriver
@@ -40,10 +41,13 @@ def launch_fail_fix(func):
                     if i == 3:
                         self.http_run_app()
                         i = 0
-
             except URLError:
                 self.debug.error("launch_app driver(URLError):%s times" % ii)
                 ii += 1
+                self.http_run_app()
+                break
+            except BadStatusLine:
+                self.debug.error("launch_app driver(BadStatusLine)")
                 self.http_run_app()
                 break
 
