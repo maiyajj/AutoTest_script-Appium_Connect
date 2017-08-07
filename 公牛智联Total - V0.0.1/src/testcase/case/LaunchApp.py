@@ -99,6 +99,34 @@ def decor_launch_app(func):
     return wrapper
 
 
+def case_run(func):
+    def wrapper(self):
+        func(self)
+        self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_LOGIN_001
+        self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
+                         % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
+
+        try:
+            self.launch_app(True)  # 启动APP
+            battery = self.wait_widget(self.page["god_page"]["battery"], 3, 1).get_attribute("name").split(u"：")[1]
+            self.logger.warn(u"手机剩余电量：%s" % battery)
+            self.case()
+        except BaseException:
+            self.debug.error(traceback.format_exc())  # Message: ***
+            self.case_over("unknown")
+
+        # 记录运行结果
+        d_result = {True: ["success", "test_pass"],
+                    False: ["failed", "test_fail"],
+                    "unknown": ["unknown", "test_error"],
+                    "screen": ["wait", "test_wait"]}
+        result = d_result[self.success]
+        self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
+        database[self.device_name][self.zentao_id][result[1]] += 1
+        return "%s" % result[0], self.zentao_id, self.case_title, self.start_time
+
+    return wrapper
+
 class LaunchApp(object):
     conf = conf
 
@@ -185,12 +213,14 @@ class LaunchApp(object):
 
                 precise_pwd = conf["user_and_pwd"][self.device_info["udid"]]["precise_pwd"]
                 for x in xrange(len(precise_pwd)):
+                    print "sdfadsfasdfasdf", x, precise_pwd[x]
                     login_pwd = self.widget_click(self.page["login_page"]["title"],
                                                   self.page["login_page"]["password"],
                                                   self.page["login_page"]["title"],
                                                   1, 1, 1, 10, 5, 0)
 
                     data = str(precise_pwd[x]).decode('hex').replace(" ", "")
+                    print data
 
                     self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
                     login_pwd.clear()
@@ -200,18 +230,22 @@ class LaunchApp(object):
                                           self.page["login_page"]["login_button"],
                                           self.page["device_page"]["title"],
                                           1, 1, 1, 10, 5, 0)
-                        if x == 0:
-                            conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[0]
-                            conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[1]
-                        else:
-                            conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[1]
-                            conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[0]
+                        # if x == 0:
+                        #     conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[0]
+                        #     conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[1]
+                        # else:
+                        #     conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[1]
+                        #     conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[0]
                         break
                     except TimeoutException:
-                        if x != (len(precise_pwd) - 1):
+                        print "x", x
+                        if x != len(precise_pwd) - 1:
+                            print "pass"
                             pass
                         else:
+                            print "why"
                             raise TimeoutException()
+                print "????????????????"
                 modified_conf(conf)
                 break
             except TimeoutException:
@@ -274,12 +308,12 @@ class LaunchApp(object):
         database[self.device_name][self.zentao_id]["test_count"] += 1
 
     # 记录运行结果
-    def result(self):
-        d_result = {True: ["success", "test_pass"],
-                    False: ["failed", "test_fail"],
-                    "unknown": ["unknown", "test_error"],
-                    "screen": ["wait", "test_wait"]}
-        result = d_result[self.success]
-        self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
-        database[self.device_name][self.zentao_id][result[1]] += 1
-        return "%s" % result[0], self.zentao_id, self.case_title, self.start_time
+        # def result(self):
+        #     d_result = {True: ["success", "test_pass"],
+        #                 False: ["failed", "test_fail"],
+        #                 "unknown": ["unknown", "test_error"],
+        #                 "screen": ["wait", "test_wait"]}
+        #     result = d_result[self.success]
+        #     self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
+        #     database[self.device_name][self.zentao_id][result[1]] += 1
+        #     return "%s" % result[0], self.zentao_id, self.case_title, self.start_time

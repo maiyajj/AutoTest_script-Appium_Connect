@@ -3,20 +3,12 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppForgetPassword2(LaunchApp):
+    @case_run
     def run(self):
         self.case_module = u"忘记密码"  # 用例所属模块
         self.case_title = u'忘记密码页面-未注册账户检测'  # 用例名称
         self.zentao_id = 1909  # 禅道ID
-        self.basename = os.path.basename(__file__).split(".")[0]  # 获取用例的文件名称:GNAPP_FORGET_PASSWORD_002
-        self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
-                         % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
 
-        try:
-            self.launch_app(True)  # 启动APP
-            self.case()
-        except BaseException:
-            self.debug.error(traceback.format_exc())  # Message: ***
-            self.case_over("unknown")
 
     # 用例动作
     def case(self):
@@ -68,6 +60,3 @@ class GNAppForgetPassword2(LaunchApp):
         except TimeoutException:
             self.case_over(False)
 
-    def output(self):
-        self.run()
-        return self.result()

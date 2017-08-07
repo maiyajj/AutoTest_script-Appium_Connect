@@ -516,13 +516,13 @@ def add_notes():
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "r") as files:
+                with open(filepath, "w") as files:
                     for i in range(1, lines + 1):
-                        if '''self.driver = self.return_driver()''' in linecache.getline(filepath, i):
+                        if '''return self.result()''' in linecache.getline(filepath, i):
                             print "*" * 40
                             print filename, i
                             print linecache.getline(filepath, i),
-                            #     files.write(linecache.getline(filepath, i).replace('widget_px["','widget_px[3]["px"]["'))
+                            # files.write(linecache.getline(filepath, i))
                         else:
                             files.write(linecache.getline(filepath, i))
                             # # for i in a:

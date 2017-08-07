@@ -491,7 +491,7 @@ class PopupWidgetAndroid(object):
         d = {}
         # 标题
         # d["title"] = [u"新版提示", "name", u"标题"]
-        d["title"] = ["android:id/message", "id", u"标题", {"text": u"新版提示"}]
+        d["title"] = ["com.iotbull.android.superapp:id/alertTitle", "id", u"标题", {"text": u"新版提示"}]
         # 立即体验
         d["confirm"] = ["android:id/button1", "id", u"立即体验"]
         # 稍后更新

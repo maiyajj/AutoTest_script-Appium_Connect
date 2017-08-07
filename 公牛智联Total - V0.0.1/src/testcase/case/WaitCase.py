@@ -116,7 +116,6 @@ class WaitCase(object):
         database["case_location"] = self.No
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])
-            self.write_report(GNAppVersion1)  # 1992, 当前版本为最新版本，页面信息检查
             self.write_report(GNAppLogin1)  # 1889, 登录页面—新用户注册页面跳转
             self.write_report(GNAppLogin2)  # 1890, 登录页面—忘记密码页面跳转
             self.write_report(GNAppLogin3)  # 1891, 登录页面—登录功能检查
@@ -183,12 +182,13 @@ class WaitCase(object):
             self.write_report(GNAppThemeStyle4)  # 1988, 切换为红色后，查看风格
             self.write_report(GNAppThemeStyle5)  # 1987, 切换为绿色后，查看风格
             self.write_report(GNAppThemeStyle6)  # 1985, 页面检查
+            self.write_report(GNAppVersion1)  # 1992, 当前版本为最新版本，页面信息检查
 
             database["program_loop_time"] += 1
 
     def write_report(self, case_name):
         try:
-            case = case_name(**self.device_info_list).output()
+            case = case_name(**self.device_info_list).run()
             end_time = time.strftime("%Y-%m-%d %H:%M:%S")
             zentao_id = case[1]
             data = u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % \

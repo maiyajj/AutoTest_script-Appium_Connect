@@ -19,5 +19,7 @@ class AppInitIos(object):
         device[k]["desired_caps"]["autoAcceptAlerts"] = "True"
         device[k]["desired_caps"]['wdaLocalPort'] = '%s' % device[k]["wda_port"]
         device[k]["desired_caps"]['bundleId'] = '%s' % conf["App"]["GN_iOS"]["bundleId"]
+        device[k]["desired_caps"]["xcodeSigningId"] = "iPhone Developer"
+        device[k]["desired_caps"]["xcodeOrgId"] = "VDJXFKSVCH"
 
         return device

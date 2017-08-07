@@ -28,7 +28,9 @@ class GetPhoneInfoIos(ShellCommand):
             device[i] = {"udid": i}  # {udid:{"udid": udid}}
 
         # 获取多个设备的信息
-        phone_index = {"iPhone8,2": {"name": "iPhone6sPlus", "dpi": [1920, 1080]},
+        phone_index = {"iPhone7,2": {"name": "iPhone6", "dpi": [1334, 750]},
+                       "iPhone8,1": {"name": "iPhone6s", "dpi": [1334, 750]},
+                       "iPhone8,2": {"name": "iPhone6sPlus", "dpi": [1920, 1080]},
                        "iPhone6,1": {"name": "iPhone5s", "dpi": [1136, 640]}}
         for k, v in device.items():
             phone_info = os.popen("ideviceinfo -u %s" % k).read()

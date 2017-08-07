@@ -21,7 +21,11 @@ def check_report(device_list, device_name):
 
     log_report = r"./report/log_report/%s" % current_time
     if os.path.exists(log_report) is False:
-        os.makedirs(log_report)
+        try:
+            os.makedirs(log_report)
+        except OSError:
+            import traceback
+            print traceback.format_exc()
 
     if os.path.exists(r"./screenshots/") is False:
         os.makedirs(r"./screenshots/")

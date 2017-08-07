@@ -5,6 +5,8 @@ class MainPageWidgetIos(object):
         d = {}
         d["title"] = ["//XCUIElementTypeStatusBar", "xpath", u"万能控件",
                       {"px": {"width": 0, "height": 0}}]
+        d["battery"] = ["//XCUIElementTypeApplication/XCUIElementTypeWindow[3]/"
+                        "XCUIElementTypeStatusBar/XCUIElementTypeOther[2]/XCUIElementTypeOther[7]", "xpath", u"手机电量", ]
         return d
 
     # 引导页

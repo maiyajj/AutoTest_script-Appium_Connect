@@ -20,7 +20,11 @@ def check_log(device_list, device_name):
     current_time = time.strftime("%Y-%m-%d_%H.%M")
 
     if os.path.exists(r"./log/%s" % current_time) is False:
-        os.makedirs(r"./log/%s" % current_time)
+        try:
+            os.makedirs(r"./log/%s" % current_time)
+        except OSError:
+            import traceback
+            print traceback.format_exc()
 
     logger_name = r"./log/%s/Log_%s - [%s].log" % (current_time, log_name, udid)
     device_list[device_name]["logger"] = init_log(logger_name, logging.getLogger("Log_%s" % udid))
