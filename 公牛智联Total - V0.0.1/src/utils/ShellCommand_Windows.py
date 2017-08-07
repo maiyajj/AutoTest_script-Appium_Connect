@@ -26,6 +26,12 @@ class ShellCommandWindows(object):
         :param port:
         :return:(proc, pid)
         '''
+        try:
+            int(port)
+        except ValueError:
+            raise KeyError("key must be port! Is int, but real %s!" % type(port))
+        except TypeError:
+            raise KeyError("key must be port! Is int, but real %s!" % type(port))
         command = 'netstat -aon|findstr %s' % port  # 判断端口是否被占用
         bind_pid = re.findall(r".+LIS.+?(\d+)", os.popen(command).read())
         find_pid = []
@@ -41,6 +47,12 @@ class ShellCommandWindows(object):
         :param pid:
         :return:
         '''
+        try:
+            int(pid)
+        except ValueError:
+            raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
+        except TypeError:
+            raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
         command = 'tasklist|findstr %s' % pid
         find_pid = re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())
 
@@ -52,6 +64,8 @@ class ShellCommandWindows(object):
         :param proc:
         :return:
         '''
+        if not isinstance(proc, str):
+            raise KeyError("key must be process name! Is string, but real %s!" % type(proc))
         command = 'tasklist|findstr %s' % proc
         find_pid = re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())
 
@@ -59,7 +73,7 @@ class ShellCommandWindows(object):
 
     def kill_proc_by_proc(self, proc):
         if not isinstance(proc, str):
-            raise KeyError("key must be process name! Is string")
+            raise KeyError("key must be process name! Is string, but real %s!" % type(proc))
         if ".exe" in proc:
             command = 'taskkill /f /t /im %s' % proc  # 通过进程名杀死进程
         else:
@@ -75,9 +89,9 @@ class ShellCommandWindows(object):
         try:
             int(pid)
         except ValueError:
-            raise KeyError("key must be pid! Is int")
+            raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
         except TypeError:
-            raise KeyError("key must be pid! Is int")
+            raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
 
         command = 'taskkill /f /t /pid %s' % pid  # 通过pid杀死进程
         os.popen(command)
