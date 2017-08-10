@@ -3,12 +3,11 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppRegister3(LaunchApp):
-    @case_run
+    @case_run(True)
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-正确的用户名和密码，验证码大于6位，注册验证'  # 用例名称
         self.zentao_id = 1884  # 禅道ID
-
 
     # 用例动作
     def case(self):
@@ -31,13 +30,14 @@ class GNAppRegister3(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)
 
+            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
             pwd = self.widget_click(self.page["register_page"]["title"],
                                     self.page["register_page"]["password"],
                                     self.page["register_page"]["title"],
                                     1, 1, 1, 10, 0.5)  # 点击密码输入框
 
-            data = "123456"
-            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
+            data = conf["user_and_pwd"][self.user]["login_pwd"]
+            data = str(data).decode('hex').replace(" ", "")
             pwd.clear()
             self.ac.send_keys(pwd, data)
             self.logger.info(u'[APP_INPUT] ["密码"] input success')
@@ -54,11 +54,11 @@ class GNAppRegister3(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
             time.sleep(0.5)
 
-            check_code = self.wait_widget(self.page["register_page"]["check_code"], 1, 0.5).get_attribute("name")
+            element = self.wait_widget(self.page["register_page"]["check_code"], 1, 0.5)
+            check_code = self.ac.get_attribute(element, "name")
             if len(check_code) != 6:  # 检测验证码长度
                 raise TimeoutException()
 
             self.case_over(True)
         except TimeoutException:
             self.case_over(False)
-

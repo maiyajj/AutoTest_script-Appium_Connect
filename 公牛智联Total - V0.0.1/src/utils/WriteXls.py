@@ -80,7 +80,11 @@ class WriteXls(object):
         current_time = time.strftime("%Y-%m-%d_%H.%M")
         parent_path = r"./report/xls_report/%s" % current_time
         if os.path.exists(parent_path) is False:
-            os.makedirs(parent_path)
+            try:
+                os.makedirs(parent_path)
+            except OSError:
+                import traceback
+                print traceback.format_exc()
 
         self.sheet_name = self.device_info["log_name"]
         self.xls_file = r"%s/%s.xls" % (parent_path, self.sheet_name)

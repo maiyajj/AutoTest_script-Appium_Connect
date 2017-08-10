@@ -8,12 +8,8 @@ class AppiumCommandAndroid(object):
         self.element.send_keys(keys)
 
     def get_attribute(self, name):
-        if name == "id":
-            attribute_value = self.element.get_attribute("id")
-        elif name == "name":
-            attribute_value = self.element.get_attribute("name")
-        elif name == "checked":
-            attribute_value = self.element.get_attribute("checked")
-        else:
-            attribute_value = self.element.get_attribute(name)
+        attribute_value = self.element.get_attribute(name)
         return attribute_value
+
+    def hide_keyboard(self, driver):
+        driver.hide_keyboard()

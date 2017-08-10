@@ -26,7 +26,11 @@ class LaunchAppiumServicesIos(object):
     def launch_appium(self):
         log_tmp = os.path.join(self.sc.set_appium_log_addr(), "AutoTestGNApp")
         if os.path.exists(log_tmp) is False:
-            os.makedirs(log_tmp)
+            try:
+                os.makedirs(log_tmp)
+            except OSError:
+                import traceback
+                print traceback.format_exc()
         i = 0
         while True:
             log = os.path.join(log_tmp, "%s_%s.log" % (self.log_name, i))

@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppRegister16(LaunchApp):
-    @case_run
+    @case_run(True)
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-用户名为中文字符时，提示信息检查'  # 用例名称
@@ -30,7 +30,8 @@ class GNAppRegister16(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["中文用户名"] input success')
             time.sleep(0.5)
 
-            user_name = self.wait_widget(self.page["register_page"]["username"], 1, 0.5).get_attribute("name")
+            element = self.wait_widget(self.page["register_page"]["username"], 1, 0.5)
+            user_name = self.ac.get_attribute(element, "name")
             if len(user_name) != 0:
                 raise TimeoutException()
 

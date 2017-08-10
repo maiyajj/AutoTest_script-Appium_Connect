@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppMessageClassify1(LaunchApp):
-    @case_run
+    @case_run(False)
     def run(self):
         self.case_module = u"消息"  # 用例所属模块
         self.case_title = u'消息分类页面信息检查'  # 用例名称
@@ -31,8 +31,9 @@ class GNAppMessageClassify1(LaunchApp):
                               self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(self.page["message_classify_page"]["all_device"],
-                                      3, 1).get_attribute("checked")
+
+            element = self.wait_widget(self.page["message_classify_page"]["all_device"], 3, 1)
+            result = self.ac.get_attribute(element, "checked")
             if result != "true":
                 raise TimeoutException()
 
@@ -44,8 +45,9 @@ class GNAppMessageClassify1(LaunchApp):
                               self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(self.page["message_classify_page"]["experience_data"],
-                                      3, 1).get_attribute("checked")
+
+            element = self.wait_widget(self.page["message_classify_page"]["experience_data"], 3, 1)
+            result = self.ac.get_attribute(element, "checked")
             if result != "true":
                 raise TimeoutException()
 
@@ -57,8 +59,9 @@ class GNAppMessageClassify1(LaunchApp):
                               self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(self.page["message_classify_page"]["A2"],
-                                      3, 1).get_attribute("checked")
+
+            element = self.wait_widget(self.page["message_classify_page"]["A2"], 3, 1)
+            result = self.ac.get_attribute(element, "checked")
             if result != "true":
                 raise TimeoutException()
 
@@ -70,8 +73,9 @@ class GNAppMessageClassify1(LaunchApp):
                               self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(self.page["message_classify_page"]["A3"],
-                                      3, 1).get_attribute("checked")
+
+            element = self.wait_widget(self.page["message_classify_page"]["A3"], 3, 1)
+            result = self.ac.get_attribute(element, "checked")
             if result != "true":
                 raise TimeoutException()
 
@@ -83,8 +87,9 @@ class GNAppMessageClassify1(LaunchApp):
                               self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(self.page["message_classify_page"]["A4"],
-                                      3, 1).get_attribute("checked")
+
+            element = self.wait_widget(self.page["message_classify_page"]["A4"], 3, 1)
+            result = self.ac.get_attribute(element, "checked")
             if result != "true":
                 raise TimeoutException()
 
@@ -96,8 +101,9 @@ class GNAppMessageClassify1(LaunchApp):
                               self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"],
                               1, 1, 1, 10, 0.5)
-            result = self.wait_widget(self.page["message_classify_page"]["A5"],
-                                      3, 1).get_attribute("checked")
+
+            element = self.wait_widget(self.page["message_classify_page"]["A5"], 3, 1)
+            result = self.ac.get_attribute(element, "checked")
             if result != "true":
                 raise TimeoutException()
             self.case_over(True)

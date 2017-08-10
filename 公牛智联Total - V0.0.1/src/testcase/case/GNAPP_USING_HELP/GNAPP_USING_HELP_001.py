@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppUsingHelp1(LaunchApp):
-    @case_run
+    @case_run(False)
     def run(self):
         self.case_module = u"使用帮助"  # 用例所属模块
         self.case_title = u'返回按钮功能确认'  # 用例名称

@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppAccountSettings4(LaunchApp):
-    @case_run
+    @case_run(False)
     def run(self):
         self.case_module = u"账户设置"  # 用例所属模块
         self.case_title = u'退出当前账号后，确定按钮功能检查'  # 用例名称
@@ -34,7 +34,8 @@ class GNAppAccountSettings4(LaunchApp):
                               1, 1, 1, 10, 0.5, 0)
 
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-            pwd = self.wait_widget(self.page["login_page"]["password"], 1, 0.5).get_attribute("name")
+            element = self.wait_widget(self.page["login_page"]["password"], 1, 0.5)
+            pwd = self.ac.get_attribute(element, "name")
             if len(pwd) != 0:
                 raise TimeoutException()
 

@@ -516,13 +516,14 @@ def add_notes():
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                with open(filepath, "w") as files:
+                with open(filepath, "r") as files:
                     for i in range(1, lines + 1):
-                        if '''return self.result()''' in linecache.getline(filepath, i):
+                        if '''@case_run''' in linecache.getline(filepath, i):
                             print "*" * 40
                             print filename, i
                             print linecache.getline(filepath, i),
-                            # files.write(linecache.getline(filepath, i))
+                            files.write(linecache.getline(filepath, i).replace('''@case_run(True)(True)''',
+                                                                               '''@case_run(True)'''))
                         else:
                             files.write(linecache.getline(filepath, i))
                             # # for i in a:

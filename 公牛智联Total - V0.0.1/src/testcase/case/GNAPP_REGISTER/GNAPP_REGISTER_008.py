@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppRegister8(LaunchApp):
-    @case_run
+    @case_run(True)
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-验证码为英文字符时，提示信息检查'  # 用例名称
@@ -18,6 +18,7 @@ class GNAppRegister8(LaunchApp):
                               self.page["register_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
+            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
             check_code = self.widget_click(self.page["register_page"]["title"],
                                            self.page["register_page"]["check_code"],
                                            self.page["register_page"]["title"],
@@ -29,7 +30,8 @@ class GNAppRegister8(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
             time.sleep(0.5)
 
-            check_code = self.wait_widget(self.page["register_page"]["check_code"], 1, 0.5).get_attribute("name")
+            element = self.wait_widget(self.page["register_page"]["check_code"], 1, 0.5)
+            check_code = self.ac.get_attribute(element, "name")
             if len(check_code) != 0:
                 raise TimeoutException()
 

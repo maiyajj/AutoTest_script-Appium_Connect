@@ -26,7 +26,9 @@ class MainPageWidgetIos(object):
         # 用户名输入框
         d["username"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField", "xpath", u"用户名输入框"]
         # 密码输入框
-        d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeSecureTextField", "xpath", u"密码输入框"]
+        # d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeSecureTextField", "xpath", u"密码输入框"]
+        # 密码显示的输入框
+        d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField[2]", "xpath", u"密码显示输入框"]
         # 显示密码
         d["check_box"] = ["eye close", "accessibility_id", u"密码可见/不可见"]
         # 忘记密码
@@ -85,9 +87,11 @@ class MainPageWidgetIos(object):
         # 用户名
         d["username"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField", "xpath", u"用户名"]
         # 密码
-        d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeSecureTextField", "xpath", u"密码"]
+        # d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeSecureTextField", "xpath", u"密码"]
+        # 密码显示的输入框
+        d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField[2]", "xpath", u"密码显示输入框"]
         # 验证码
-        d["check_code"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField[2]", "xpath", u"验证码"]
+        d["check_code"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField[3]", "xpath", u"验证码"]
         # 获取验证码
         d["get_check_code"] = [u"获取验证码", "accessibility_id", u"获取验证码"]
         # 立即注册按钮

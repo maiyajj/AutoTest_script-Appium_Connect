@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppMessageClassify5(LaunchApp):
-    @case_run
+    @case_run(False)
     def run(self):
         self.case_module = u"消息"  # 用例所属模块
         self.case_title = u'消息分类页面，选择多个设备后的消息内容检查'  # 用例名称

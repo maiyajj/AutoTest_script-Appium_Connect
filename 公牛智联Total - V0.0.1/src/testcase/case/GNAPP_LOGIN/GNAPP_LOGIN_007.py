@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppLogin7(LaunchApp):
-    @case_run
+    @case_run(True)
     def run(self):
         self.case_module = u"登录"  # 用例所属模块
         self.case_title = u'登录页面—错误密码，登录提示信息检查'  # 用例名称
@@ -26,13 +26,13 @@ class GNAppLogin7(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)
 
+            self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
             login_pwd = self.widget_click(self.page["login_page"]["title"],
                                           self.page["login_page"]["password"],
                                           self.page["login_page"]["title"],
                                           1, 1, 1, 10, 0.5)
 
             data = str(conf["err_pwd"]).decode('hex').replace(" ", "")
-            self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
             login_pwd.clear()
             self.ac.send_keys(login_pwd, data)
             self.logger.info(u'[APP_INPUT] ["错误密码"] input success')
@@ -54,6 +54,7 @@ class GNAppLogin7(LaunchApp):
                 ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
 
             try:
+                self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
                 login_pwd = self.widget_click(self.page["login_page"]["title"],
                                               self.page["login_page"]["password"],
                                               self.page["login_page"]["title"],
@@ -61,7 +62,6 @@ class GNAppLogin7(LaunchApp):
 
                 data = conf["user_and_pwd"][self.user]["login_pwd"]
                 data = str(data).decode('hex').replace(" ", "")
-                self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
                 login_pwd.clear()
                 self.ac.send_keys(login_pwd, data)
                 self.logger.info(u'[APP_INPUT] ["正确密码"] input success')

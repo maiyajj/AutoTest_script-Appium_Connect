@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppMessageClassify2(LaunchApp):
-    @case_run
+    @case_run(False)
     def run(self):
         self.case_module = u"消息"  # 用例所属模块
         self.case_title = u'消息设置页面，清空活动历时消息功能检查'  # 用例名称
@@ -38,7 +38,8 @@ class GNAppMessageClassify2(LaunchApp):
                               self.page["home_message_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            state = self.wait_widget(self.page["home_message_page"]["device"], 3, 1).get_attribute("checked")
+            element = self.wait_widget(self.page["home_message_page"]["device"], 3, 1)
+            state = self.ac.get_attribute(element, "checked")
             if state is True:
                 self.wait_widget(self.page["home_message_page"]["no_message"], 3, 1)
             else:

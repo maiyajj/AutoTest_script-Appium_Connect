@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppAccountSettings5(LaunchApp):
-    @case_run
+    @case_run(False)
     def run(self):
         self.case_module = u"账户设置"  # 用例所属模块
         self.case_title = u'密码修改页面，旧密码输入错误，提示信息检查'  # 用例名称

@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppLogin10(LaunchApp):
-    @case_run
+    @case_run(True)
     def run(self):
         self.case_module = u"登录"  # 用例所属模块
         self.case_title = u'登录页面—位数错误的数字账号，登录提示信息检查'  # 用例名称
@@ -25,6 +25,7 @@ class GNAppLogin10(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["位数错误用户名"] input success')
             time.sleep(0.5)
 
+            self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
             login_pwd = self.widget_click(self.page["login_page"]["title"],
                                           self.page["login_page"]["password"],
                                           self.page["login_page"]["title"],
@@ -32,7 +33,6 @@ class GNAppLogin10(LaunchApp):
 
             data = conf["user_and_pwd"][self.user]["login_pwd"]
             data = str(data).decode('hex').replace(" ", "")
-            self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
             login_pwd.clear()
             self.ac.send_keys(login_pwd, data)
             self.logger.info(u'[APP_INPUT] ["登录密码"] input success')
@@ -54,6 +54,20 @@ class GNAppLogin10(LaunchApp):
                 ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
 
             try:
+                user_name = self.widget_click(self.page["login_page"]["title"],
+                                              self.page["login_page"]["username"],
+                                              self.page["login_page"]["title"],
+                                              1, 1, 1, 10, 0.5)
+
+                # 发送数据
+                data = conf["user_and_pwd"][self.user]["user_name"]
+                data = str(data).decode('hex').replace(" ", "")
+                user_name.clear()
+                self.ac.send_keys(user_name, data)
+                self.logger.info(u'[APP_INPUT] ["正确用户名"] input success')
+                time.sleep(0.5)
+
+                self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
                 login_pwd = self.widget_click(self.page["login_page"]["title"],
                                               self.page["login_page"]["password"],
                                               self.page["login_page"]["title"],
@@ -61,7 +75,6 @@ class GNAppLogin10(LaunchApp):
 
                 data = conf["user_and_pwd"][self.user]["login_pwd"]
                 data = str(data).decode('hex').replace(" ", "")
-                self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
                 login_pwd.clear()
                 self.ac.send_keys(login_pwd, data)
                 self.logger.info(u'[APP_INPUT] ["正确密码"] input success')

@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppRegister13(LaunchApp):
-    @case_run
+    @case_run(True)
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-用户名为空，注册验证'  # 用例名称
@@ -30,13 +30,13 @@ class GNAppRegister13(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["空白用户名"] input success')
             time.sleep(0.5)
 
+            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
             pwd = self.widget_click(self.page["register_page"]["title"],
                                     self.page["register_page"]["password"],
                                     self.page["register_page"]["title"],
                                     1, 1, 1, 10, 0.5)
 
             data = "1234"
-            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
             pwd.clear()
             self.ac.send_keys(pwd, data)
             self.logger.info(u'[APP_INPUT] ["注册密码"] input success')

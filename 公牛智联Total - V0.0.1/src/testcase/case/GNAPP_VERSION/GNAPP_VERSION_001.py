@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp import *
 
 
 class GNAppVersion1(LaunchApp):
-    @case_run
+    @case_run(False)
     def run(self):
         self.case_module = u"版本信息"  # 用例所属模块
         self.case_title = u'当前版本为最新版本，页面信息检查'  # 用例名称
@@ -23,12 +23,14 @@ class GNAppVersion1(LaunchApp):
                               self.page["upgrade_page"]["title"],
                               1, 1, 1, 10, 0.5)
 
-            current_version = self.wait_widget(self.page["upgrade_page"]["current_version"], 3, 1).get_attribute(
-                "name")[-10:]
+            element = self.wait_widget(self.page["upgrade_page"]["current_version"], 3, 1)
+            current_version = self.ac.get_attribute(element, "name")[-10:]
 
-            new_version = self.wait_widget(self.page["upgrade_page"]["new_version"], 3, 1).get_attribute("name")[-10:]
+            element = self.wait_widget(self.page["upgrade_page"]["new_version"], 3, 1)
+            new_version = self.ac.get_attribute(element, "name")[-10:]
 
-            btn_state = self.wait_widget(self.page["upgrade_page"]["upgrade_button"], 3, 1).get_attribute("enabled")
+            element = self.wait_widget(self.page["upgrade_page"]["upgrade_button"], 3, 1)
+            btn_state = self.ac.get_attribute(element, "enabled")
 
             if current_version == new_version and btn_state != "false":
                 raise TimeoutException()

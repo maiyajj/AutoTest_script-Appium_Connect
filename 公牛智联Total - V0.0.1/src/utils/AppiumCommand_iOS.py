@@ -8,11 +8,30 @@ class AppiumCommandIos(object):
         self.element.set_value(value)
 
     def get_attribute(self, name):
-        if name == "id":
-            attribute_value = self.element.get_attribute("id")
-        elif name == "name":
-            attribute_value = self.element.get_attribute("name")
-        elif name == "checked":
+        '''
+        Valid attribute names are: (
+        accessibilityContainer,
+        accessible,
+        enabled,
+        frame,
+        label,
+        name,
+        rect,
+        type,
+        value,
+        visible,
+        wdAccessibilityContainer,
+        wdAccessible,
+        wdEnabled,
+        wdFrame,
+        wdLabel,
+        wdName,
+        wdRect,
+        wdType,
+        wdValue,
+        wdVisible
+        '''
+        if name == "checked":
             try:
                 attribute_value = self.element.get_attribute("wdValue")
                 if attribute_value is None:
@@ -21,6 +40,15 @@ class AppiumCommandIos(object):
                     raise ValueError()
             except AttributeError:
                 attribute_value = 'true'
+        elif name == "name":
+            attribute_value = self.element.get_attribute("value")
         else:
             attribute_value = self.element.get_attribute(name)
         return attribute_value
+
+    def hide_keyboard(self, driver):
+        location = self.element.location
+        x = location["x"] - 1
+        y = location["y"] - 1
+        driver.tap([(x, y)])
+        driver.hide_keyboard()

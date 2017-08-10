@@ -70,6 +70,7 @@ class ToDevicePage(object):
                         self.logger.info(u'[APP_INPUT] ["重新登陆用户名"] input success')
                         time.sleep(0.5)
 
+                        self.show_pwd()
                         login_pwd = self.widget_click(self.page["login_page"]["title"],
                                                       self.page["login_page"]["password"],
                                                       self.page["login_page"]["title"],
@@ -78,7 +79,6 @@ class ToDevicePage(object):
                         data = conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"]
                         data = str(data).decode('hex').replace(" ", "")
                         
-                        self.show_pwd()
                         login_pwd.clear()
                         self.ac.send_keys(login_pwd, data)
                         self.logger.info(u'[APP_INPUT] ["重新输入登录密码"] input success')

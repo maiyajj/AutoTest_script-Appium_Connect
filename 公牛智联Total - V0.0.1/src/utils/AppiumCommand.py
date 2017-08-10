@@ -23,3 +23,12 @@ class AppiumCommand(object):
         else:
             raise KeyError("The OS is wrong!")
         return attribute_value
+
+    def hide_keyboard(self, element, driver):
+        if self.phone_os == "Android":
+            attribute_value = AppiumCommandAndroid(element).hide_keyboard(driver)
+        elif self.phone_os == "iOS":
+            attribute_value = AppiumCommandIos(element).hide_keyboard(driver)
+        else:
+            raise KeyError("The OS is wrong!")
+        return attribute_value
