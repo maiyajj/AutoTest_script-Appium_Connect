@@ -108,7 +108,7 @@ class GNAppLogin5(LaunchApp):
             data = conf["user_and_pwd"][self.user]["user_name"]
             data = str(data).decode('hex').replace(" ", "")
             user_name.clear()
-            self.ac.send_keys(user_name, data)
+            self.ac.send_keys(user_name, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)
 
@@ -120,7 +120,7 @@ class GNAppLogin5(LaunchApp):
             data = conf["user_and_pwd"][self.user]["login_pwd"]
             data = str(data).decode('hex').replace(" ", "")
             login_pwd.clear()
-            self.ac.send_keys(login_pwd, data)
+            self.ac.send_keys(login_pwd, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["密码"] input success')
             time.sleep(0.5)
 

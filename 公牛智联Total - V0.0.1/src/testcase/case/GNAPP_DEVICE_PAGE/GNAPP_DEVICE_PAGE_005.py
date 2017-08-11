@@ -29,7 +29,7 @@ class GNAppDevicePage5(LaunchApp):
 
             data = str(conf["wifi_pwd"]).decode('hex').replace(" ", "")
             wifi_pwd.clear()
-            self.ac.send_keys(wifi_pwd, data)
+            self.ac.send_keys(wifi_pwd, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
             time.sleep(0.5)
 

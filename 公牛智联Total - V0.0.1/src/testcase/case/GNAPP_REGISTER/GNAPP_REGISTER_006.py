@@ -24,7 +24,7 @@ class GNAppRegister6(LaunchApp):
 
             data = u"△▽○◇"
             check_code.clear()
-            self.ac.send_keys(check_code, data)
+            self.ac.send_keys(check_code, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
             time.sleep(0.5)
 

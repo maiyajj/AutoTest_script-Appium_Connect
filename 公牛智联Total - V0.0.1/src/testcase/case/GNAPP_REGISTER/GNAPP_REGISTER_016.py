@@ -24,7 +24,7 @@ class GNAppRegister16(LaunchApp):
             # 发送数据
             data = u"测试中文"
             user_name.clear()
-            self.ac.send_keys(user_name, data)
+            self.ac.send_keys(user_name, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["中文用户名"] input success')
             time.sleep(0.5)
 
