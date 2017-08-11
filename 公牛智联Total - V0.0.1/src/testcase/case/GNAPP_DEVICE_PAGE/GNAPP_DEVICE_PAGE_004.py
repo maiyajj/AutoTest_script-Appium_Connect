@@ -15,20 +15,17 @@ class GNAppDevicePage4(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["add_device"],
-                              self.page["device_add_scan_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["device_add_scan_page"]["title"])
 
             self.widget_click(self.page["device_add_scan_page"]["title"],
                               self.page["device_add_scan_page"]["gateway_hw"],
-                              self.page["set_network_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["set_network_page"]["title"])
 
             self.widget_click(self.page["set_network_page"]["title"],
                               self.page["set_network_page"]["prepare_next"],
-                              self.page["set_network_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["set_network_page"]["title"])
 
-            wifi_pwd = self.wait_widget(self.page["set_network_page"]["wifi_pwd"], 3, 1)
+            wifi_pwd = self.wait_widget(self.page["set_network_page"]["wifi_pwd"])
 
             data = str(conf["wifi_pwd"]).decode('hex').replace(" ", "")
             wifi_pwd.clear()
@@ -38,18 +35,15 @@ class GNAppDevicePage4(LaunchApp):
 
             self.widget_click(self.page["set_network_page"]["title"],
                               self.page["set_network_page"]["prepare_next"],
-                              self.page["scan_with_subscribe_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["scan_with_subscribe_page"]["title"])
 
             self.widget_click(self.page["scan_with_subscribe_page"]["title"],
                               self.page["scan_with_subscribe_page"]["to_return"],
-                              self.page["terminate_add_device_popup"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["terminate_add_device_popup"]["title"])
 
             self.widget_click(self.page["terminate_add_device_popup"]["title"],
                               self.page["terminate_add_device_popup"]["confirm"],
-                              self.page["set_network_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["set_network_page"]["title"])
             self.case_over(True)
         except TimeoutException:
             self.case_over(False)

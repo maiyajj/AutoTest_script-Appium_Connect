@@ -15,13 +15,11 @@ class GNAppThemeStyle6(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["user_image"],
-                              self.page["personal_settings_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["personal_settings_page"]["title"])
 
             self.widget_click(self.page["personal_settings_page"]["title"],
                               self.page["personal_settings_page"]["theme_style"],
-                              self.page["theme_style_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["theme_style_page"]["title"])
 
             # 截取屏幕信息
             ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)

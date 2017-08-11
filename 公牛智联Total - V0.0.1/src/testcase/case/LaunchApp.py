@@ -22,21 +22,7 @@ def launch_fail_fix(func):
                 break
             except WebDriverException:
                 self.debug.error(traceback.format_exc())
-                # if "session" in e:
                 self.debug.error("launch_app driver(WebDriverException):%s times" % i)
-                port = [self.port, self.bp_port, self.wda_port]
-                for x in port:
-                    try:
-                        pid = self.sc.find_proc_and_pid_by_port(x)
-                        for y in pid:
-                            self.debug.error(y)
-                            self.sc.kill_proc_by_pid(y[1])
-                            self.debug.error(u"appium重启后关闭%s进程" % y[0])
-                    except IndexError:
-                        self.debug.error(u"%s端口未占用" % i)
-                self.http_run_app()
-                # else:
-                #     self.debug.error("launch_app driver(WebDriverException):%s times" % i)
                 i += 1
                 time.sleep(1)
                 if i == 3:
@@ -81,23 +67,35 @@ def decor_launch_app(func):
         self.driver = self.return_driver()
         self.debug.info("basename:%s" % self.basename)
         self.data_statistics(self.zentao_id)
-        try:
-            func(self)
-            self.init_operate()
-            self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
-            self.logger.info('app start [time=%s]' % self.start_time)  # 记录log，APP打开时间
-            self.success = False
+        i = 0
+        while True:
+            try:
+                try:
+                    func(self)
+                    self.init_operate()
+                    self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
+                    self.logger.info('app start [time=%s]' % self.start_time)  # 记录log，APP打开时间
+                    self.success = False
 
-            if page_login is True:
-                ToLoginPage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到登录页面等待
-            elif page_login is False:
-                ToDevicePage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到设备主页面等待
-            elif page_login is None:
-                pass
-        except BaseException:
-            self.case_over("unknown")
-            self.debug.error("case_over:%s" % traceback.format_exc())
-            raise WebDriverException("Case launch unknown")
+                    if page_login is True:
+                        ToLoginPage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到登录页面等待
+                        break
+                    elif page_login is False:
+                        ToDevicePage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到设备主页面等待
+                        break
+                    elif page_login is None:
+                        pass
+                        break
+                    i = 0
+                except BaseException:
+                    i += 1
+                    if i == 3:
+                        i = 0
+                        raise WebDriverException(traceback.format_exc())
+            except BaseException:
+                self.case_over("unknown")
+                self.debug.error("case_over:%s" % traceback.format_exc())
+                raise WebDriverException("Case launch unknown")
 
     return wrapper
 
@@ -185,14 +183,14 @@ class LaunchApp(object):
 
     def wait_pwd_timeout(self):
         i = 1
-        while i <= 33:
+        while i <= 31:
             time.sleep(10)
             widget_px = self.page["god_page"]["title"]
             width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
             height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
             self.driver.tap([(width, height)], )
             print "time sleep %sS" % (i * 10)
-            self.debug.info("time sleep %sS" % (i * 10))
+            self.logger.info("time sleep %sS" % (i * 10))
             i += 1
 
     def check_user_pwd(self):
@@ -203,13 +201,13 @@ class LaunchApp(object):
                 user_name = self.widget_click(self.page["login_page"]["title"],
                                               self.page["login_page"]["username"],
                                               self.page["login_page"]["title"],
-                                              1, 1, 1, 10, 5, 0)
+                                              log_record=0)
 
                 # 发送数据
                 data = conf["user_and_pwd"][self.device_info["udid"]]["user_name"]
                 data = str(data).decode('hex').replace(" ", "")
                 user_name.clear()
-                self.ac.send_keys(user_name, data)
+                self.ac.send_keys(user_name, data, self.driver)
                 time.sleep(0.5)
 
                 precise_pwd = conf["user_and_pwd"][self.device_info["udid"]]["precise_pwd"]
@@ -218,17 +216,17 @@ class LaunchApp(object):
                     login_pwd = self.widget_click(self.page["login_page"]["title"],
                                                   self.page["login_page"]["password"],
                                                   self.page["login_page"]["title"],
-                                                  1, 1, 1, 10, 5, 0)
+                                                  log_record=0)
 
                     data = str(precise_pwd[x]).decode('hex').replace(" ", "")
                     login_pwd.clear()
-                    self.ac.send_keys(login_pwd, data)
-                    self.ac.hide_keyboard(login_pwd, self.driver)
+                    self.ac.send_keys(login_pwd, data, self.driver)
+                    # self.ac.hide_keyboard(login_pwd, self.driver)
                     try:
                         self.widget_click(self.page["login_page"]["title"],
                                           self.page["login_page"]["login_button"],
                                           self.page["device_page"]["title"],
-                                          1, 1, 1, 30, 3, 0)
+                                          log_record=0)
                         if x == 0:
                             conf["user_and_pwd"][self.device_info["udid"]]["login_pwd"] = precise_pwd[0]
                             conf["user_and_pwd"][self.device_info["udid"]]["new_pwd"] = precise_pwd[1]
@@ -280,8 +278,11 @@ class LaunchApp(object):
     @launch_fail_fix
     def launch_app(self):
         self.debug.warn("launch_app driver(ready launch)")
-        self.driver.close_app()
-        self.debug.info("launch_app driver(close_app success)")
+        try:
+            self.driver.close_app()
+            self.debug.info("launch_app close_app success")
+        except BaseException:
+            self.debug.info("launch_app close_app error success")
         self.driver.launch_app()
         self.debug.info("launch_app driver(launch_app success)")
 
@@ -289,21 +290,24 @@ class LaunchApp(object):
         return driver
 
     def show_pwd(self, element, bool=True):
-        try:
-            if bool:
-                while True:
+        if bool:
+            while True:
+                try:
                     if self.ac.get_attribute(element, "checked") == "true":
                         break
                     else:
                         element.click()
-            else:
-                while True:
+                except BaseException:
+                    self.debug(traceback.format_exc())
+        else:
+            while True:
+                try:
                     if self.ac.get_attribute(element, "checked") == "false":
                         break
                     else:
                         element.click()
-        except TimeoutException:
-            pass
+                except BaseException:
+                    self.debug(traceback.format_exc())
 
     def case_over(self, success):
         self.success = success

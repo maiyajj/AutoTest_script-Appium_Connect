@@ -20,15 +20,15 @@ class WidgetCheckUnit(Exception):
         self.logger = logger
         self.page = page_element
 
-    def wait_widget(self, main_widget=None, timeout=1.0, interval=1.0):
+    def wait_widget(self, main_widget=None, timeout=3.0, interval=1.0):
         locate = main_widget[1]
         widget = main_widget[0]
         popup_text = ""
         try:
-            popup_text = main_widget[3]["text"]
+            keys = main_widget[3].keys()
+            if "text" in keys:
+                popup_text = main_widget[3]["text"]
         except IndexError:
-            pass
-        except KeyError:
             pass
         end_time = time.time() + timeout
         while True:
@@ -60,7 +60,7 @@ class WidgetCheckUnit(Exception):
                     raise TimeoutException()
 
     def widget_click(self, check_page=None, operate_widget=None, wait_page=None,
-                     wait_time1=1, wait_time2=1, wait_time3=1, timeout=1,
+                     wait_time1=3, wait_time2=3, wait_time3=3, timeout=10,
                      interval=1, log_record=1):
         """
             Using click operation widgets - 使用点击方式操作控件
@@ -136,4 +136,6 @@ class WidgetCheckUnit(Exception):
                                            "[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
                                            % (operate_widget[0], timeout))
             except TypeError:
-                return False
+                import traceback
+                self.logger.error(traceback.format_exc())
+                return traceback.format_exc()

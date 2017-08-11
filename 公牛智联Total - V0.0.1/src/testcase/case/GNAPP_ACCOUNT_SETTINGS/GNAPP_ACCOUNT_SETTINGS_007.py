@@ -15,24 +15,21 @@ class GNAppAccountSettings7(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["user_image"],
-                              self.page["personal_settings_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["personal_settings_page"]["title"])
 
             self.widget_click(self.page["personal_settings_page"]["title"],
                               self.page["personal_settings_page"]["account_setting"],
-                              self.page["account_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["account_setting_page"]["title"])
 
             self.widget_click(self.page["account_setting_page"]["title"],
                               self.page["account_setting_page"]["nickname"],
-                              self.page["change_nickname_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["change_nickname_page"]["title"])
             # 全选
             self.logger.info(u'[APP_INPUT] ["昵称"] delete success')
             time.sleep(0.5)
 
-            state = self.wait_widget(self.page["change_nickname_page"]["commit"], 3, 1).get_attribute("enabled")
-
+            state = self.wait_widget(self.page["change_nickname_page"]["commit"]).get_attribute("enabled")
+            self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (state, len(state)))
             if state != "false":
                 raise TimeoutException()
 

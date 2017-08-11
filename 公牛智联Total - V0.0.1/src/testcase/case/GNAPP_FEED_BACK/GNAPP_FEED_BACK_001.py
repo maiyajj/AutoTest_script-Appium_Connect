@@ -15,18 +15,15 @@ class GNAppFeedBack1(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["user_image"],
-                              self.page["personal_settings_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["personal_settings_page"]["title"])
 
             self.widget_click(self.page["personal_settings_page"]["title"],
                               self.page["personal_settings_page"]["feedback"],
-                              self.page["feedback_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["feedback_page"]["title"])
 
             self.widget_click(self.page["feedback_page"]["title"],
                               self.page["feedback_page"]["to_return"],
-                              self.page["personal_settings_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["personal_settings_page"]["title"])
 
             self.case_over(True)
         except TimeoutException:

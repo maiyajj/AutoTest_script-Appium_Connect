@@ -35,8 +35,13 @@ class LaunchAppiumServicesAndroid(object):
             os.system(command)
             i += 1
             for ports in [self.port, self.bp_port]:
-                if self.sc.find_proc_and_pid_by_port(ports) == []:  # 判断当前端口是否被占用
-                    print "%s端口未占用" % ports
+                proc_pid = self.sc.find_proc_and_pid_by_port(ports)
+                if proc_pid == []:  # 判断当前端口是否被占用
+                    print "COM %s unused" % ports
+                else:
+                    for i in proc_pid:
+                        self.sc.kill_proc_by_pid(i[1])
+                        print "Kill %s" % i[0]
 
     def create_adb_folder(self):
         command = "adb -s %s shell mkdir /sdcard/Appium" % self.udid

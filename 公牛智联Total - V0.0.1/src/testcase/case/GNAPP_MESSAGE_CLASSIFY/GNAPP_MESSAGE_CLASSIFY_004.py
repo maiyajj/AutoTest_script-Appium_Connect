@@ -15,21 +15,19 @@ class GNAppMessageClassify4(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["message_table"],
-                              self.page["home_message_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["home_message_page"]["title"])
 
             self.widget_click(self.page["home_message_page"]["title"],
                               self.page["home_message_page"]["setting"],
-                              self.page["message_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["message_setting_page"]["title"])
 
-            self.wait_widget(self.page["message_setting_page"]["title"], 3, 1)
+            self.wait_widget(self.page["message_setting_page"]["title"])
 
-            self.wait_widget(self.page["message_setting_page"]["to_return"], 3, 1)
+            self.wait_widget(self.page["message_setting_page"]["to_return"])
 
-            self.wait_widget(self.page["message_setting_page"]["clear_activity"], 3, 1)
+            self.wait_widget(self.page["message_setting_page"]["clear_activity"])
 
-            self.wait_widget(self.page["message_setting_page"]["clear_device"], 3, 1)
+            self.wait_widget(self.page["message_setting_page"]["clear_device"])
 
             self.case_over(True)
         except TimeoutException:

@@ -15,13 +15,11 @@ class GNAppRegister1(LaunchApp):
         try:
             self.widget_click(self.page["login_page"]["title"],
                               self.page["login_page"]["to_register"],
-                              self.page["register_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["register_page"]["title"])
 
             self.widget_click(self.page["register_page"]["title"],
                               self.page["register_page"]["to_login"],
-                              self.page["login_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["login_page"]["title"])
 
             self.case_over(True)
         except TimeoutException:

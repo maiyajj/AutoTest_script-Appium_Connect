@@ -15,28 +15,23 @@ class GNAppAccountSettings3(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["user_image"],
-                              self.page["personal_settings_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["personal_settings_page"]["title"])
 
             self.widget_click(self.page["personal_settings_page"]["title"],
                               self.page["personal_settings_page"]["account_setting"],
-                              self.page["account_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["account_setting_page"]["title"])
 
             self.widget_click(self.page["account_setting_page"]["title"],
                               self.page["account_setting_page"]["logout"],
-                              self.page["logout_popup"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["logout_popup"]["title"])
 
             self.widget_click(self.page["logout_popup"]["title"],
                               self.page["logout_popup"]["cancel"],
-                              self.page["account_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["account_setting_page"]["title"])
 
             self.widget_click(self.page["account_setting_page"]["title"],
                               self.page["account_setting_page"]["logout"],
-                              self.page["logout_popup"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["logout_popup"]["title"])
 
             x = self.driver.get_window_size()['width']
             y = self.driver.get_window_size()['height']
@@ -45,8 +40,15 @@ class GNAppAccountSettings3(LaunchApp):
             self.driver.tap([(x, y)])
             self.widget_click(self.page["account_setting_page"]["title"],
                               self.page["account_setting_page"]["title"],
-                              self.page["account_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["account_setting_page"]["title"])
+            try:
+                self.wait_widget(self.page["logout_popup"]["title"])
+                self.logger.info(u"[CHECK_PAGE]登出弹窗未消失")
+                raise ValueError()
+            except TimeoutException:
+                pass
+            except ValueError:
+                raise TimeoutException()
 
             self.case_over(True)
         except TimeoutException:

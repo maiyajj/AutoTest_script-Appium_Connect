@@ -26,7 +26,8 @@ class MainPageWidgetAndroid(object):
         # 密码输入框
         # d["password"] = ["com.iotbull.android.superapp:id/login_et_password", "id", u"密码输入框"]
         # 密码显示的输入框
-        d["password"] = ["com.iotbull.android.superapp:id/login_et_password", "id", u"密码显示输入框"]
+        d["password"] = ["com.iotbull.android.superapp:id/login_et_password", "id", u"密码显示输入框",
+                         {"default_text": u"请输入密码"}]
         # 显示密码
         d["check_box"] = ["com.iotbull.android.superapp:id/login_cb_show_password", "id", u"密码可见/不可见"]
         # 忘记密码
@@ -85,13 +86,15 @@ class MainPageWidgetAndroid(object):
         # 页面activity
         d["activity"] = [".activitys.regist_login.RegistActivity", "activity", u"页面activity"]
         # 用户名
-        d["username"] = ["com.iotbull.android.superapp:id/regist_et_username", "id", u"用户名"]
+        d["username"] = ["com.iotbull.android.superapp:id/regist_et_username", "id", u"用户名",
+                         {"default_text": u"请输入手机号"}]
         # 密码
         # d["password"] = ["com.iotbull.android.superapp:id/regist_et_password", "id", u"密码"]
         # 密码显示的输入框
         d["password"] = ["com.iotbull.android.superapp:id/regist_et_password", "id", u"密码显示输入框"]
         # 验证码
-        d["check_code"] = ["com.iotbull.android.superapp:id/regist_et_check_code", "id", u"验证码"]
+        d["check_code"] = ["com.iotbull.android.superapp:id/regist_et_check_code", "id", u"验证码",
+                           {"default_text": u"请输入验证码"}]
         # 获取验证码
         d["get_check_code"] = ["com.iotbull.android.superapp:id/regist_tv_get_check_code", "id", u"获取验证码"]
         # 立即注册按钮
@@ -196,7 +199,8 @@ class MainPageWidgetAndroid(object):
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 输入框
-        d["nickname"] = ["com.iotbull.android.superapp:id/user_name_update_nickname_edit_text", "id", u"输入框"]
+        d["nickname"] = ["com.iotbull.android.superapp:id/user_name_update_nickname_edit_text", "id", u"输入框",
+                         {"default_text": u"请输入新名字"}]
         # 完成
         d["commit"] = ["com.iotbull.android.superapp:id/user_name_update_commit_button", "id", u"完成"]
         return d

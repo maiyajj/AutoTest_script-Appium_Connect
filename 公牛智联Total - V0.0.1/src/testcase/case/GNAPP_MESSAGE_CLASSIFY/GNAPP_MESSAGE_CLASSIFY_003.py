@@ -15,38 +15,33 @@ class GNAppMessageClassify3(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["message_table"],
-                              self.page["home_message_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["home_message_page"]["title"])
 
             self.widget_click(self.page["home_message_page"]["title"],
                               self.page["home_message_page"]["setting"],
-                              self.page["message_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["message_setting_page"]["title"])
 
             self.widget_click(self.page["message_setting_page"]["title"],
                               self.page["message_setting_page"]["clear_activity"],
-                              self.page["clear_activity_popup"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["clear_activity_popup"]["title"])
 
             self.widget_click(self.page["clear_activity_popup"]["title"],
                               self.page["clear_activity_popup"]["confirm"],
-                              self.page["home_message_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["home_message_page"]["title"])
 
             self.widget_click(self.page["home_message_page"]["title"],
                               self.page["home_message_page"]["message_activity"],
-                              self.page["home_message_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["home_message_page"]["title"])
 
-            element = self.wait_widget(self.page["home_message_page"]["message_activity"], 3, 1)
+            element = self.wait_widget(self.page["home_message_page"]["message_activity"])
             state = self.ac.get_attribute(element, "checked")
+            self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (state, len(state)))
             if state is True:
-                self.wait_widget(self.page["home_message_page"]["no_message"], 3, 1)
+                self.wait_widget(self.page["home_message_page"]["no_message"])
             else:
                 self.widget_click(self.page["home_message_page"]["title"],
                                   self.page["home_message_page"]["message_activity"],
-                                  self.page["home_message_page"]["title"],
-                                  1, 1, 1, 10, 0.5)
+                                  self.page["home_message_page"]["title"])
 
             self.case_over(True)
         except TimeoutException:

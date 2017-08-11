@@ -15,13 +15,11 @@ class GNAppRegister17(LaunchApp):
         try:
             self.widget_click(self.page["login_page"]["title"],
                               self.page["login_page"]["to_register"],
-                              self.page["register_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["register_page"]["title"])
 
             user_name = self.widget_click(self.page["register_page"]["title"],
                                           self.page["register_page"]["username"],
-                                          self.page["register_page"]["title"],
-                                          1, 1, 1, 10, 0.5)
+                                          self.page["register_page"]["title"])
 
             # 发送数据
             data = "19912345678"
@@ -30,8 +28,10 @@ class GNAppRegister17(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["非正确的手机号码用户名"] input success')
             time.sleep(0.5)
 
-            element = self.wait_widget(self.page["register_page"]["username"], 1, 0.5)
-            user_name = self.ac.get_attribute(element, "name")
+            element = self.page["register_page"]["username"]
+            user_name = self.ac.get_attribute(self.wait_widget(element), "name")
+            self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (user_name, len(user_name)))
+            user_name = user_name.replace(element[3]["default_text"], "")
             if len(user_name) != 0:
                 raise TimeoutException()
 

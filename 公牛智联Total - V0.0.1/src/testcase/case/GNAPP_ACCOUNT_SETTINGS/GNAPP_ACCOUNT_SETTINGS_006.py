@@ -15,27 +15,23 @@ class GNAppAccountSettings6(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["user_image"],
-                              self.page["personal_settings_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["personal_settings_page"]["title"])
 
             self.widget_click(self.page["personal_settings_page"]["title"],
                               self.page["personal_settings_page"]["account_setting"],
-                              self.page["account_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["account_setting_page"]["title"])
 
             self.widget_click(self.page["account_setting_page"]["title"],
                               self.page["account_setting_page"]["nickname"],
-                              self.page["change_nickname_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["change_nickname_page"]["title"])
 
-            self.wait_widget(self.page["change_nickname_page"]["nickname"], 3, 1)
+            self.wait_widget(self.page["change_nickname_page"]["nickname"])
 
-            self.wait_widget(self.page["change_nickname_page"]["commit"], 3, 1)
+            self.wait_widget(self.page["change_nickname_page"]["commit"])
 
             self.widget_click(self.page["change_nickname_page"]["title"],
                               self.page["change_nickname_page"]["to_return"],
-                              self.page["account_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["account_setting_page"]["title"])
 
             self.case_over(True)
         except TimeoutException:

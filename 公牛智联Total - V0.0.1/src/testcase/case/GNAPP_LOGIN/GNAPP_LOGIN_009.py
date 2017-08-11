@@ -14,34 +14,30 @@ class GNAppLogin9(LaunchApp):
         try:
             user_name = self.widget_click(self.page["login_page"]["title"],
                                           self.page["login_page"]["username"],
-                                          self.page["login_page"]["title"],
-                                          1, 1, 1, 10, 0.5)
+                                          self.page["login_page"]["title"])
 
             # 发送数据
             data = conf["user_and_pwd"][self.user]["user_name"]
             data = str(data).decode('hex').replace(" ", "")
             user_name.clear()
-            self.ac.send_keys(user_name, data)
+            self.ac.send_keys(user_name, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)
 
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
             login_pwd = self.widget_click(self.page["login_page"]["title"],
                                           self.page["login_page"]["password"],
-                                          self.page["login_page"]["title"],
-                                          1, 1, 1, 10, 0.5)
+                                          self.page["login_page"]["title"])
 
             data = ""
             login_pwd.clear()
-            self.ac.send_keys(login_pwd, data)
+            self.ac.send_keys(login_pwd, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["空白密码"] input success')
             time.sleep(0.5)
 
-            widget_px = self.page["login_page"]["login_button"]
-            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
-            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
-            self.driver.tap([(width, height)], )
-            self.logger.info(u'[APP_CLICK] operate_widget ["%s"] success' % widget_px[2])
+            widget_px = self.ac.get_location(self.wait_widget(self.page["login_page"]["login_button"]))
+            self.driver.tap([widget_px["centre"]])
+            self.logger.info(u'[APP_CLICK] operate_widget success')
 
             while True:
                 try:
@@ -56,32 +52,24 @@ class GNAppLogin9(LaunchApp):
                 self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
                 login_pwd = self.widget_click(self.page["login_page"]["title"],
                                               self.page["login_page"]["password"],
-                                              self.page["login_page"]["title"],
-                                              1, 1, 1, 10, 0.5)
+                                              self.page["login_page"]["title"])
 
                 data = conf["user_and_pwd"][self.user]["login_pwd"]
                 data = str(data).decode('hex').replace(" ", "")
                 login_pwd.clear()
-                self.ac.send_keys(login_pwd, data)
+                self.ac.send_keys(login_pwd, data, self.driver)
                 self.logger.info(u'[APP_INPUT] ["正确密码"] input success')
                 self.widget_click(self.page["login_page"]["title"],
                                   self.page["login_page"]["login_button"],
-                                  self.page["device_page"]["title"],
-                                  1, 1, 1, 10, 0.5)
+                                  self.page["device_page"]["title"])
             except TimeoutException:
-                i = 1
-                while i <= 33:
-                    time.sleep(10)
-                    widget_px = self.page["god_page"]["title"]
-                    width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
-                    height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
-                    self.driver.tap([(width, height)], )
-                    print "time sleep %sS" % (i * 10)
-                    i += 1
-                self.widget_click(self.page["login_page"]["title"],
-                                  self.page["login_page"]["login_button"],
-                                  self.page["device_page"]["title"],
-                                  1, 1, 1, 10, 0.5)
+                self.wait_pwd_timeout()
+                try:
+                    self.wait_widget(self.page["device_page"]["title"])
+                except TimeoutException:
+                    self.widget_click(self.page["login_page"]["title"],
+                                      self.page["login_page"]["login_button"],
+                                      self.page["device_page"]["title"])
 
             self.case_over("screen")
         except TimeoutException:

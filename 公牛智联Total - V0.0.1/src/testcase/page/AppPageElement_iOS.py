@@ -28,7 +28,8 @@ class MainPageWidgetIos(object):
         # 密码输入框
         # d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeSecureTextField", "xpath", u"密码输入框"]
         # 密码显示的输入框
-        d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField[2]", "xpath", u"密码显示输入框"]
+        d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField[2]", "xpath", u"密码显示输入框",
+                         {"default_text": u"请输入密码"}]
         # 显示密码
         d["check_box"] = ["eye close", "accessibility_id", u"密码可见/不可见"]
         # 忘记密码
@@ -85,13 +86,15 @@ class MainPageWidgetIos(object):
         # 页面activity
         # d["activity"] = [".activitys.regist_login.RegistActivity", "activity", u"页面activity"]
         # 用户名
-        d["username"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField", "xpath", u"用户名"]
+        d["username"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField", "xpath", u"用户名",
+                         {"default_text": u"请输入手机号"}]
         # 密码
         # d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeSecureTextField", "xpath", u"密码"]
         # 密码显示的输入框
         d["password"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField[2]", "xpath", u"密码显示输入框"]
         # 验证码
-        d["check_code"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField[3]", "xpath", u"验证码"]
+        d["check_code"] = ["//XCUIElementTypeOther/XCUIElementTypeTextField[3]", "xpath", u"验证码",
+                           {"default_text": u"请输入验证码"}]
         # 获取验证码
         d["get_check_code"] = [u"获取验证码", "accessibility_id", u"获取验证码"]
         # 立即注册按钮
@@ -182,7 +185,8 @@ class MainPageWidgetIos(object):
         # 返回
         d["to_return"] = ["//XCUIElementTypeButton", "xpath", u"返回"]
         # 输入框
-        d["nickname"] = ["//XCUIElementTypeOther[2]//XCUIElementTypeTextField", "xpath", u"输入框"]
+        d["nickname"] = ["//XCUIElementTypeOther[2]//XCUIElementTypeTextField", "xpath", u"输入框",
+                         {"default_text": u"请输入新名字"}]
         # 完成
         d["commit"] = [u"完 成", "accessibility_id", u"完成"]
         return d
@@ -511,8 +515,6 @@ class PopupWidgetIos(object):
         d = {}
         # 标题
         d["title"] = [u"您的账号在其他设备上登录了", "accessibility_id", u"提示 - 重新登录"]
-        # 页面activity
-        # d["activity"] = [".activitys.regist_login.SplashActivity", "activity", u"页面activity"]
         # 登录
         d["confirm"] = ["//XCUIElementTypeOther[4]/XCUIElementTypeButton", "xpath", u"确定"]
         return d
@@ -550,11 +552,11 @@ class PopupWidgetIos(object):
     def clear_activity_popup(self):
         d = {}
         # 标题
-        d["title"] = [u"是否清除活动消息？", "accessibility_id", u"清除确认"]
+        d["title"] = [u"是否清除消息", "accessibility_id", u"清除确认"]
         # 确认
-        d["confirm"] = ["android:id/button1", "accessibility_id", u"确认"]
+        d["confirm"] = [u"确定", "accessibility_id", u"确认"]
         # 取消
-        d["cancel"] = ["android:id/button2", "accessibility_id", u"取消"]
+        d["cancel"] = [u"取消", "accessibility_id", u"取消"]
         return d
 
         # 清空活动历史消息
@@ -562,9 +564,9 @@ class PopupWidgetIos(object):
     def clear_device_popup(self):
         d = {}
         # 标题
-        d["title"] = [u"是否清除设备消息？", "accessibility_id", u"清除确认"]
+        d["title"] = [u"是否清除消息", "accessibility_id", u"清除确认"]
         # 确认
-        d["confirm"] = ["android:id/button1", "accessibility_id", u"确认"]
+        d["confirm"] = [u"确定", "accessibility_id", u"确认"]
         # 取消
-        d["cancel"] = ["android:id/button2", "accessibility_id", u"取消"]
+        d["cancel"] = [u"取消", "accessibility_id", u"取消"]
         return d

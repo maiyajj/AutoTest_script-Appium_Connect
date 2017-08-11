@@ -15,8 +15,7 @@ class GNAppLogin2(LaunchApp):
         try:
             self.widget_click(self.page["login_page"]["title"],
                               self.page["login_page"]["to_find_password"],
-                              self.page["find_password_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["find_password_page"]["title"])
 
             self.case_over(True)
         except TimeoutException:

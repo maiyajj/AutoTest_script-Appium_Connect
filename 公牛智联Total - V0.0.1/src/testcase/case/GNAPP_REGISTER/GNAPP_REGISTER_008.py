@@ -15,14 +15,12 @@ class GNAppRegister8(LaunchApp):
         try:
             self.widget_click(self.page["login_page"]["title"],
                               self.page["login_page"]["to_register"],
-                              self.page["register_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["register_page"]["title"])
 
             self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
             check_code = self.widget_click(self.page["register_page"]["title"],
                                            self.page["register_page"]["check_code"],
-                                           self.page["register_page"]["title"],
-                                           1, 1, 1, 10, 0.5)
+                                           self.page["register_page"]["title"])
 
             data = u"!@#$%^"
             check_code.clear()
@@ -30,8 +28,10 @@ class GNAppRegister8(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
             time.sleep(0.5)
 
-            element = self.wait_widget(self.page["register_page"]["check_code"], 1, 0.5)
-            check_code = self.ac.get_attribute(element, "name")
+            element = self.page["register_page"]["check_code"]
+            check_code = self.ac.get_attribute(self.wait_widget(element), "name")
+            self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (check_code, len(check_code)))
+            check_code = check_code.replace(element[3]["default_text"], "")
             if len(check_code) != 0:
                 raise TimeoutException()
 

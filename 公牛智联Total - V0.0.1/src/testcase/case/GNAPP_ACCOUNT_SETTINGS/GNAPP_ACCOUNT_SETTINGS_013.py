@@ -15,32 +15,31 @@ class GNAppAccountSettings13(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["user_image"],
-                              self.page["personal_settings_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["personal_settings_page"]["title"])
 
             self.widget_click(self.page["personal_settings_page"]["title"],
                               self.page["personal_settings_page"]["account_setting"],
-                              self.page["account_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["account_setting_page"]["title"])
 
             self.widget_click(self.page["account_setting_page"]["title"],
                               self.page["account_setting_page"]["nickname"],
-                              self.page["change_nickname_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["change_nickname_page"]["title"])
 
             nickname = self.widget_click(self.page["change_nickname_page"]["title"],
                                          self.page["change_nickname_page"]["nickname"],
-                                         self.page["change_pwd_page"]["title"],
-                                         1, 1, 1, 10, 0.5)
+                                         self.page["change_pwd_page"]["title"])
 
             # 发送数据
             data = "12345678901234567"
             nickname.clear()
-            self.ac.send_keys(nickname, data)
+            self.ac.send_keys(nickname, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["17位用户名"] input success')
             time.sleep(0.5)
 
-            nick_name = self.wait_widget(self.page["change_nickname_page"]["nickname"], 1, 0.5).get_attribute("name")
+            element = self.page["change_nickname_page"]["nickname"]
+            nick_name = self.ac.get_attribute(self.wait_widget(element), "name")
+            self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (nick_name, len(nick_name)))
+            nick_name = nick_name.replace(element[3]["default_text"], "")
             if len(nick_name) != 16:
                 raise TimeoutException()
 

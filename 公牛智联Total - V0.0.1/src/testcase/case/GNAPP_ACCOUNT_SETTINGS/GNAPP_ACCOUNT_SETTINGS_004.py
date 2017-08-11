@@ -15,27 +15,25 @@ class GNAppAccountSettings4(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["user_image"],
-                              self.page["personal_settings_page"]["title"],
-                              1, 1, 1, 10, 0.5, 0)
+                              self.page["personal_settings_page"]["title"])
 
             self.widget_click(self.page["personal_settings_page"]["title"],
                               self.page["personal_settings_page"]["account_setting"],
-                              self.page["account_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5, 0)
+                              self.page["account_setting_page"]["title"])
 
             self.widget_click(self.page["account_setting_page"]["title"],
                               self.page["account_setting_page"]["logout"],
-                              self.page["logout_popup"]["title"],
-                              1, 1, 1, 10, 0.5, 0)
+                              self.page["logout_popup"]["title"])
 
             self.widget_click(self.page["logout_popup"]["title"],
                               self.page["logout_popup"]["confirm"],
-                              self.page["login_page"]["title"],
-                              1, 1, 1, 10, 0.5, 0)
+                              self.page["login_page"]["title"])
 
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-            element = self.wait_widget(self.page["login_page"]["password"], 1, 0.5)
-            pwd = self.ac.get_attribute(element, "name")
+            element = self.page["login_page"]["password"]
+            pwd = self.ac.get_attribute(self.wait_widget(element), "name")
+            self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (pwd, len(pwd)))
+            pwd = pwd.replace(element[3]["default_text"], "")
             if len(pwd) != 0:
                 raise TimeoutException()
 

@@ -15,56 +15,52 @@ class GNAppAccountSettings1(LaunchApp):
         try:
             self.widget_click(self.page["device_page"]["title"],
                               self.page["device_page"]["user_image"],
-                              self.page["personal_settings_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["personal_settings_page"]["title"])
 
             self.widget_click(self.page["personal_settings_page"]["title"],
                               self.page["personal_settings_page"]["account_setting"],
-                              self.page["account_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["account_setting_page"]["title"])
 
             self.widget_click(self.page["account_setting_page"]["title"],
                               self.page["account_setting_page"]["change_pwd"],
-                              self.page["change_pwd_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["change_pwd_page"]["title"])
 
             old_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
                                         self.page["change_pwd_page"]["old_pwd"],
-                                        self.page["change_pwd_page"]["title"],
-                                        1, 1, 1, 10, 0.5)
+                                        self.page["change_pwd_page"]["title"])
+
             data = conf["user_and_pwd"][self.user]["login_pwd"]
             data = str(data).decode('hex').replace(" ", "")
             old_pwd.clear()
-            self.ac.send_keys(old_pwd, data)
+            self.ac.send_keys(old_pwd, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["旧密码"] input success')
             time.sleep(0.5)
 
             new_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
                                         self.page["change_pwd_page"]["new_pwd"],
-                                        self.page["change_pwd_page"]["title"],
-                                        1, 1, 1, 10, 0.5)
+                                        self.page["change_pwd_page"]["title"])
+
             data = conf["user_and_pwd"][self.user]["new_pwd"]
             data = str(data).decode('hex').replace(" ", "")
             new_pwd.clear()
-            self.ac.send_keys(new_pwd, data)
+            self.ac.send_keys(new_pwd, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
 
             conform_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
                                             self.page["change_pwd_page"]["conform_pwd"],
-                                            self.page["change_pwd_page"]["title"],
-                                            1, 1, 1, 10, 0.5)
+                                            self.page["change_pwd_page"]["title"])
+
             data = conf["user_and_pwd"][self.user]["new_pwd"]
             data = str(data).decode('hex').replace(" ", "")
             conform_pwd.clear()
-            self.ac.send_keys(conform_pwd, data)
+            self.ac.send_keys(conform_pwd, data, self.driver)
             self.logger.info(u'[APP_INPUT] ["确认新密码"] input success')
             time.sleep(0.5)
 
             self.widget_click(self.page["change_pwd_page"]["title"],
                               self.page["change_pwd_page"]["to_return"],
-                              self.page["account_setting_page"]["title"],
-                              1, 1, 1, 10, 0.5)
+                              self.page["account_setting_page"]["title"])
 
             self.case_over(True)
         except TimeoutException:

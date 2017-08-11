@@ -13,10 +13,11 @@ class GNAppDevicePage1(LaunchApp):
     # 用例动作
     def case(self):
         try:
-            self.wait_widget(self.page["device_page"]["user_image"], 3, 1)
+            self.wait_widget(self.page["device_page"]["user_image"])
 
-            element = self.wait_widget(self.page["device_page"]["welcome"], 3, 1)
+            element = self.wait_widget(self.page["device_page"]["welcome"])
             now_time = self.ac.get_attribute(element, "name")
+            self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (now_time, len(now_time)))
             if 0 < int(time.strftime("%H")) < 12:
                 if now_time != u"上午好":
                     raise TimeoutException()
@@ -24,12 +25,13 @@ class GNAppDevicePage1(LaunchApp):
                 if now_time != u"下午好":
                     raise TimeoutException()
 
-            element = self.wait_widget(self.page["device_page"]["welcome"], 3, 1)
+            element = self.wait_widget(self.page["device_page"]["welcome"])
             city = self.ac.get_attribute(element, "name")
+            self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (city, len(city)))
             if city != u"上海市":
                 raise TimeoutException()
 
-            self.wait_widget(self.page["device_page"]["weather"], 3, 1)
+            self.wait_widget(self.page["device_page"]["weather"])
 
             self.case_over(True)
         except TimeoutException:
