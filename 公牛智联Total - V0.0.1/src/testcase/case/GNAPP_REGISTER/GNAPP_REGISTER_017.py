@@ -28,14 +28,31 @@ class GNAppRegister17(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["非正确的手机号码用户名"] input success')
             time.sleep(0.5)
 
-            element = self.page["register_page"]["username"]
-            user_name = self.ac.get_attribute(self.wait_widget(element), "name")
-            self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (user_name, len(user_name)))
-            user_name = user_name.replace(element[3]["default_text"], "")
-            if len(user_name) != 0:
-                raise TimeoutException()
+            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
+            register_pwd = self.widget_click(self.page["register_page"]["title"],
+                                          self.page["register_page"]["password"],
+                                          self.page["register_page"]["title"])
 
-            self.case_over(True)
+            data = "12345678"
+            register_pwd.clear()
+            self.ac.send_keys(register_pwd, data, self.driver)
+            self.logger.info(u'[APP_INPUT] ["密码"] input success')
+            time.sleep(0.5)
+
+            widget_px = self.ac.get_location(self.wait_widget(self.page["register_page"]["register_button"]))
+            self.driver.tap([widget_px["centre"]])
+            self.logger.info(u'[APP_CLICK] operate_widget success')
+
+            while True:
+                try:
+                    self.wait_widget(self.page["loading_popup"]["title"], 0.5, 0.1)
+                except TimeoutException:
+                    break
+
+                # 截屏获取设备toast消息
+                ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
+
+            self.case_over("screen")
         except TimeoutException:
             self.case_over(False)
 

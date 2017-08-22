@@ -82,10 +82,7 @@ class ToDevicePage(object):
                     i = 1
                     while i <= 31:
                         time.sleep(10)
-                        widget_px = self.page["god_page"]["title"]
-                        width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
-                        height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
-                        self.driver.tap([(width, height)], )
+                        self.driver.tap([(10, 10)])
                         self.logger("time sleep %sS" % (i * 10))
                         i += 1
                     self.widget_click(self.page["login_page"]["title"],
@@ -112,6 +109,7 @@ class ToDevicePage(object):
 
     def case(self):
         # 用例动作
+        i = 0
         while True:
             self.check_update()
             self.login_abnormal()
@@ -122,3 +120,6 @@ class ToDevicePage(object):
                 break
             except TimeoutException:
                 pass
+            i += 1
+            if i > 3:
+                raise TimeoutException("ToDevicePage Error!")

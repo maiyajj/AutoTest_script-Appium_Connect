@@ -23,17 +23,15 @@ class LaunchAppiumServicesAndroid(object):
         self.sc.kill_proc_by_proc("adb")
 
     def launch_appium(self):
-        log_tmp = os.path.join(self.sc.set_appium_log_addr(), "AutoTestGNApp")
+        log_tmp = os.path.join(self.sc.set_appium_log_addr(), "AutoTestGNApp/%s" % time.strftime("%Y-%m-%d %H-%M"))
         if os.path.exists(log_tmp) is False:
             os.makedirs(log_tmp)
-        i = 0
         while True:
-            log = os.path.join(log_tmp, "%s_%s.log" % (self.log_name, i))
-            command = 'appium -a 127.0.0.1 -p %s -bp %s -U %s -g "%s" --no-reset' % (
+            log = os.path.join(log_tmp, "%s-[%s].log" % (self.log_name, time.strftime("%Y-%m-%d %H-%M-%S")))
+            command = 'appium -a 127.0.0.1 -p %s -bp %s -U %s -g "%s" --no-reset --local-timezone' % (
                 self.port, self.bp_port, self.udid, log)
             print command
             os.system(command)
-            i += 1
             for ports in [self.port, self.bp_port]:
                 proc_pid = self.sc.find_proc_and_pid_by_port(ports)
                 if proc_pid == []:  # 判断当前端口是否被占用

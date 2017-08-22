@@ -29,6 +29,7 @@ class GNAppRegister10(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)
 
+            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
             check_code = self.widget_click(self.page["register_page"]["title"],
                                            self.page["register_page"]["check_code"],
                                            self.page["register_page"]["title"])

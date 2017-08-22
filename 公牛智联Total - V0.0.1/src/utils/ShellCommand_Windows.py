@@ -15,6 +15,9 @@ class ShellCommandWindows(object):
     def __init__(self):
         pass
 
+    def kill_zombie_proc(self):
+        pass
+
     def kill_other_python(self):
         port = re.findall(r"python.exe.+?(\d+).+", os.popen("tasklist|findstr python").read())
         for i in [i for i in set(port) if str(os.getpid()) != i]:

@@ -27,7 +27,7 @@ class GNAppAccountSettings13(LaunchApp):
 
             nickname = self.widget_click(self.page["change_nickname_page"]["title"],
                                          self.page["change_nickname_page"]["nickname"],
-                                         self.page["change_pwd_page"]["title"])
+                                         self.page["change_nickname_page"]["title"])
 
             # 发送数据
             data = "12345678901234567"

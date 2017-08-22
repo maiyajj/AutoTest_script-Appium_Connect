@@ -356,7 +356,7 @@ class MainPageWidgetIos(object):
         d["classify"] = ["//XCUIElementTypeOther[2]//XCUIElementTypeNavigationBar/XCUIElementTypeButton",
                          "xpath", u"消息分类"]
         # 设置
-        d["setting"] = ["//XCUIElementTypeOther[2]//XCUIElementTypeNavigationBar/XCUIElementTypeButton",
+        d["setting"] = ["//XCUIElementTypeOther[2]//XCUIElementTypeNavigationBar/XCUIElementTypeButton[2]",
                         "xpath", u"设置"]
         # 没有消息
         d["no_message"] = [u"暂时还没有内容哦", "accessibility_id", u"当前页面无消息"]
@@ -438,7 +438,7 @@ class MainPageWidgetIos(object):
     def set_network_page(self):
         d = {}
         # 标题
-        d["title"] = [u"添加网关", "accessibility_id", u"配网说明→配置网络"]
+        d["title"] = [u"一键配网", "accessibility_id", u"配网说明→配置网络"]
         # 页面activity
         # d["activity"] = [".activitys.device_scene.device_add.SetNetworkActivity", "activity", u"页面activity"]
         # 返回

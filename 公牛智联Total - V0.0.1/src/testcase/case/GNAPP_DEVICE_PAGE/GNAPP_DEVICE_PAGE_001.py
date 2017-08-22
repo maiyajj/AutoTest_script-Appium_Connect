@@ -25,7 +25,7 @@ class GNAppDevicePage1(LaunchApp):
                 if now_time != u"下午好":
                     raise TimeoutException()
 
-            element = self.wait_widget(self.page["device_page"]["welcome"])
+            element = self.wait_widget(self.page["device_page"]["city"])
             city = self.ac.get_attribute(element, "name")
             self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (city, len(city)))
             if city != u"上海市":

@@ -77,6 +77,7 @@ class ToLoginPage(object):
 
     def case(self):
         # 用例动作
+        i = 0
         while True:
             self.check_update()
             self.login_abnormal()
@@ -87,3 +88,6 @@ class ToLoginPage(object):
                 break
             except TimeoutException:
                 pass
+            i += 1
+            if i > 3:
+                raise TimeoutException("ToLoginPage Error!")

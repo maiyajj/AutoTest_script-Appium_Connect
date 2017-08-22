@@ -24,4 +24,8 @@ database = {
     # 设备已被绑定次数统计
     "bind_device_bind_count": 0,
     # 设备绑定失败次数统计
-    "bind_device_fail_count": 0}
+    "bind_device_fail_count": 0,
+    # 执行操作间隔时间
+    "step": 0.5,
+    # 连续执行失败次数
+    "unknown": 0}

@@ -24,6 +24,14 @@ class ShellCommand(object):
         if system == "posix":
             return "mac"
 
+    def kill_zombie_proc(self):
+        if self.os == "windows":
+            self.scw.kill_zombie_proc()
+        elif self.os == "mac":
+            self.scm.kill_zombie_proc()
+        else:
+            raise KeyError("The OS is wrong!")
+
     def kill_other_python(self):
         if self.os == "windows":
             self.scw.kill_other_python()
@@ -31,6 +39,14 @@ class ShellCommand(object):
             self.scm.kill_other_python()
         else:
             raise KeyError("The OS is wrong!")
+
+    def get_phone_udid(self):
+        a = self.get_phone_udid_for_android()
+        b = self.get_phone_udid_for_ios()
+        a[0:0] = b
+        udid = a
+
+        return udid
 
     def get_phone_udid_for_android(self):
         '''

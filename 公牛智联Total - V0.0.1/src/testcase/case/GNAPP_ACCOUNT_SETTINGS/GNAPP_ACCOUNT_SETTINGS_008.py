@@ -43,7 +43,8 @@ class GNAppAccountSettings8(LaunchApp):
                               self.page["account_setting_page"]["to_return"],
                               self.page["personal_settings_page"]["title"])
 
-            modified_nickname = self.wait_widget(self.page["personal_settings_page"]["nickname"])
+            element = self.wait_widget(self.page["personal_settings_page"]["nickname"])
+            modified_nickname = self.ac.get_attribute(element, "name")
             if modified_nickname != u"被修改的昵称":
                 raise TimeoutException()
 

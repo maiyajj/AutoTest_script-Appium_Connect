@@ -33,6 +33,7 @@ class WidgetCheckUnit(Exception):
         end_time = time.time() + timeout
         while True:
             try:
+                time.sleep(0.5)
                 if locate == "id":
                     element = self.driver.find_element_by_id(widget)
                 elif locate == "name":

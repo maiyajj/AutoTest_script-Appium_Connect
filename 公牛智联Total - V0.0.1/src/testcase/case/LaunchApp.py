@@ -23,11 +23,14 @@ def launch_fail_fix(func):
             except WebDriverException:
                 self.debug.error(traceback.format_exc())
                 self.debug.error("launch_app driver(WebDriverException):%s times" % i)
-                i += 1
+
                 time.sleep(1)
-                if i == 3:
+                if i >= 3:
                     self.http_run_app()
+                elif i >= 4:
+                    self.http_run_app(True)
                     i = 0
+                i += 1
             except URLError:
                 self.debug.error("launch_app driver(URLError):%s times" % ii)
                 ii += 1
@@ -71,6 +74,7 @@ def decor_launch_app(func):
         while True:
             try:
                 try:
+                    self.sc.kill_zombie_proc()
                     func(self)
                     self.init_operate()
                     self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -117,6 +121,11 @@ def case_run(bool):
             except BaseException:
                 self.debug.error(traceback.format_exc())  # Message: ***
                 self.case_over("unknown")
+                database["unknown"] += 1
+                if database["unknown"] > 1:
+                    database["unknown"] = 0
+                    self.debug.error("Too many unknown case!:%s" % self.basename)
+                    self.reset_port()
 
             # 记录运行结果
             return self.result()
@@ -150,10 +159,25 @@ class LaunchApp(object):
         self.wait_widget = None
         self.start_time = None
 
-    def http_run_app(self):
+    def reset_port(self):
+        for ports in [self.port]:
+            proc_pid = self.sc.find_proc_and_pid_by_port(ports)
+            if proc_pid == []:  # 判断当前端口是否被占用
+                print "COM %s unused" % ports
+                self.debug.info("COM %s unused" % ports)
+            else:
+                for i in proc_pid:
+                    self.sc.kill_proc_by_pid(i[1])
+                    print "Kill %s" % i[0]
+                    self.debug.info("Kill %s" % i[0])
+
+    def http_run_app(self, strong_reboot=False):
         global driver
         while True:
             try:
+                if strong_reboot == True:
+                    if self.device_info["udid"] in self.sc.get_phone_udid():
+                        self.reset_port()
                 self.check_appium_launch()
                 try:
                     self.driver.quit()
@@ -174,8 +198,9 @@ class LaunchApp(object):
     def check_appium_launch(self):
         while True:
             try:
-                self.sc.find_proc_and_pid_by_port(self.port)[0]
+                print self.sc.find_proc_and_pid_by_port(self.port)[0]
             except IndexError:
+                self.debug.info("Appium Sever is death! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
                 time.sleep(1)
             else:
                 self.debug.info("Appium Sever launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
@@ -185,10 +210,7 @@ class LaunchApp(object):
         i = 1
         while i <= 31:
             time.sleep(10)
-            widget_px = self.page["god_page"]["title"]
-            width = int(int(self.device_info["dpi"]["width"]) * widget_px[3]["px"]["width"])
-            height = int(int(self.device_info["dpi"]["height"]) * widget_px[3]["px"]["height"])
-            self.driver.tap([(width, height)], )
+            self.driver.tap([(10, 10)])
             print "time sleep %sS" % (i * 10)
             self.logger.info("time sleep %sS" % (i * 10))
             i += 1
@@ -276,10 +298,12 @@ class LaunchApp(object):
         self.debug.warn("launch_app driver(ready launch)")
         try:
             self.driver.close_app()
+            time.sleep(0.5)
             self.debug.info("launch_app close_app success")
         except BaseException:
             self.debug.info("launch_app close_app error success")
         self.driver.launch_app()
+        time.sleep(0.5)
         self.debug.info("launch_app driver(launch_app success)")
 
     def return_driver(self):
@@ -294,7 +318,7 @@ class LaunchApp(object):
                     else:
                         element.click()
                 except BaseException:
-                    self.debug(traceback.format_exc())
+                    self.debug.error(traceback.format_exc())
         else:
             while True:
                 try:
@@ -303,7 +327,7 @@ class LaunchApp(object):
                     else:
                         element.click()
                 except BaseException:
-                    self.debug(traceback.format_exc())
+                    self.debug.error(traceback.format_exc())
 
     def case_over(self, success):
         self.success = success

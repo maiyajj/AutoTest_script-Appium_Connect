@@ -185,6 +185,13 @@ class WaitCase(object):
             self.write_report(GNAppVersion1)  # 1992, 当前版本为最新版本，页面信息检查
 
             database["program_loop_time"] += 1
+            ports = [self.device_info["port"], self.device_info["bp_port"], self.device_info["wda_port"]]
+            for port in ports:
+                try:
+                    pid = self.sc.find_proc_and_pid_by_port(port)[1]
+                    self.sc.kill_proc_by_pid(pid)
+                except IndexError:
+                    pass
 
     def write_report(self, case_name):
         try:

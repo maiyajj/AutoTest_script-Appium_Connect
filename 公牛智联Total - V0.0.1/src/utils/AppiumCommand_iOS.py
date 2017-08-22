@@ -33,16 +33,15 @@ class AppiumCommandIos(object):
         wdVisible
         '''
         if name == "checked":
-            try:
-                attribute_value = self.element.get_attribute("wdValue")
-                if attribute_value is None:
-                    attribute_value = 'false'
-                else:
-                    raise ValueError()
-            except AttributeError:
+            attribute_value = self.element.get_attribute("wdValue")
+            if attribute_value is None:
+                attribute_value = 'false'
+            else:
                 attribute_value = 'true'
         elif name == "name":
             attribute_value = self.element.get_attribute("value")
+        elif name == "enabled":
+            attribute_value = str(self.element.is_enabled()).lower()
         else:
             attribute_value = self.element.get_attribute(name)
         return attribute_value
@@ -58,10 +57,10 @@ class AppiumCommandIos(object):
         location = self.element.location
         size = self.element.size
         location = dict(location, **size)
-        self.x = int(location["x"])
-        self.y = int(location["y"])
-        self.height = int(location["height"])
-        self.width = int(location["width"])
-        self.centre = (self.x + self.width / 2, self.y + self.height / 2)
-        location["centre"] = self.centre
+        x = int(location["x"])
+        y = int(location["y"])
+        height = int(location["height"])
+        width = int(location["width"])
+        centre = (x + width / 2, y + height / 2)
+        location["centre"] = centre
         return location

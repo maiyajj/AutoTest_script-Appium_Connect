@@ -17,9 +17,9 @@ class GNAppRegister9(LaunchApp):
                               self.page["login_page"]["to_register"],
                               self.page["register_page"]["title"])
 
-            user_name = self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["username"],
-                                          self.page["login_page"]["title"])
+            user_name = self.widget_click(self.page["register_page"]["title"],
+                                          self.page["register_page"]["username"],
+                                          self.page["register_page"]["title"])
 
             # 发送数据
             data = conf["user_and_pwd"][self.user]["user_name"]
@@ -29,6 +29,7 @@ class GNAppRegister9(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["用户名"] input success')
             time.sleep(0.5)
 
+            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
             check_code = self.widget_click(self.page["register_page"]["title"],
                                            self.page["register_page"]["check_code"],
                                            self.page["register_page"]["title"])
@@ -39,7 +40,6 @@ class GNAppRegister9(LaunchApp):
             self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
             time.sleep(0.5)
 
-            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
             pwd = self.widget_click(self.page["register_page"]["title"],
                                     self.page["register_page"]["password"],
                                     self.page["register_page"]["title"])

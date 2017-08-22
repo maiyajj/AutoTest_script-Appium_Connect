@@ -9,7 +9,6 @@ class GNAppAccountSettings7(LaunchApp):
         self.case_title = u'昵称为空时，功能检查'  # 用例名称
         self.zentao_id = 1948  # 禅道ID
 
-
     # 用例动作
     def case(self):
         try:
@@ -21,14 +20,16 @@ class GNAppAccountSettings7(LaunchApp):
                               self.page["personal_settings_page"]["account_setting"],
                               self.page["account_setting_page"]["title"])
 
-            self.widget_click(self.page["account_setting_page"]["title"],
-                              self.page["account_setting_page"]["nickname"],
-                              self.page["change_nickname_page"]["title"])
+            nickname = self.widget_click(self.page["account_setting_page"]["title"],
+                                         self.page["account_setting_page"]["nickname"],
+                                         self.page["change_nickname_page"]["title"])
+            nickname.clear()
             # 全选
             self.logger.info(u'[APP_INPUT] ["昵称"] delete success')
             time.sleep(0.5)
 
-            state = self.wait_widget(self.page["change_nickname_page"]["commit"]).get_attribute("enabled")
+            element = self.wait_widget(self.page["change_nickname_page"]["commit"])
+            state = self.ac.get_attribute(element, "enabled")
             self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (state, len(state)))
             if state != "false":
                 raise TimeoutException()
@@ -36,4 +37,3 @@ class GNAppAccountSettings7(LaunchApp):
             self.case_over(True)
         except TimeoutException:
             self.case_over(False)
-
