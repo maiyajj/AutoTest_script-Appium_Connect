@@ -40,7 +40,7 @@ class ShellCommandMac(object):
         except TypeError:
             raise KeyError("key must be port! Is int, but real %s!" % type(port))
         command = 'lsof -i:%s' % port  # 判断端口是否被占用
-        find_pid = re.findall(r"(.+?) .+?(\d+).+LISTEN.+?", os.popen(command).read())
+        find_pid = re.findall(r"(.+?) .+?(\d+).+\(LISTEN.+?", os.popen(command).read())
 
         self.kill_zombie_proc()
         return find_pid

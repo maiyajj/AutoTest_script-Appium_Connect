@@ -14,6 +14,8 @@ _build_version = ""
 def run(device_list, device_name):
     run_appium = 1
     run_case = 1
+    # case = Process(target=WaitCase, args=(device_list, device_name,app))
+    # case.start()
     while True:
         if run_appium == 1:
             run_appium = 0
@@ -44,7 +46,6 @@ def check_port(device_list):
         port[k].append(v['port'])
         port[k].append(v['bp_port'])
         port[k].append(v['wda_port'])
-    print port
     with open(r"./node_mem_%s.log" % time.strftime("%Y-%m-%d %H:%M:%S"), "w") as files:
         while True:
             try:
@@ -78,14 +79,14 @@ def check_proc():
 if __name__ == '__main__':
     device_list = AppInit().app_init()
     print device_list
-    # port = Process(target=check_port, args=(device_list,))
+    port = Process(target=check_port, args=(device_list,))
     # port.start()
-    # proc = Process(target=check_proc)
+    proc = Process(target=check_proc)
     # proc.start()
     scan_case = Process(target=scan_case_name)
-    scan_case.start()
-    scan_case.join()
+    # scan_case.start()
+    # scan_case.join()
 
-    process = [Process(target=run, args=(device_list, device_name,)) for device_name in device_list.keys()]
+    process = [Process(target=run, args=(device_list, device_name)) for device_name in device_list.keys()]
     for i in process:
         i.start()

@@ -36,7 +36,7 @@ class ShellCommandWindows(object):
         except TypeError:
             raise KeyError("key must be port! Is int, but real %s!" % type(port))
         command = 'netstat -aon|findstr %s' % port  # 判断端口是否被占用
-        bind_pid = re.findall(r".+LIS.+?(\d+)", os.popen(command).read())
+        bind_pid = re.findall(r".+LISTEN.+?(\d+)", os.popen(command).read())
         find_pid = []
         for i in bind_pid:
             command = 'tasklist|findstr %s' % i
