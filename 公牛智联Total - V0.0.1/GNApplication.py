@@ -6,6 +6,7 @@ import psutil
 from src.testcase.case.WaitCase import *
 from src.testcase.suite.ScanCaseName import *
 from src.utils.LaunchAppiumServices import *
+from src.utils.SendMail import *
 
 _main_version = ""
 _build_version = ""
@@ -76,6 +77,46 @@ def check_proc():
             files.write("\n************%s***************" % len(psutil.pids()))
 
 
+def scan_files():
+    file_list = []
+    mail_list = ["chenghao@gongniu.cn"]
+    mail_title = 'Hey subject'
+    mail_content = 'Hey this is content'
+    while True:
+        try:
+            parent_path = database["parent_path"]
+            break
+        except KeyError:
+            time.sleep(1)
+    for parent, dirnames, filenames in os.walk(parent_path):
+        for filename in filenames:
+            file_path = os.path.join(parent, filename)
+            file_list.append(file_path)
+    kwargs = {"mail_list": mail_list,
+              "mail_title": mail_title,
+              "mail_content": mail_content,
+              "file_path": file_list}
+    return kwargs
+
+def send_mail():
+    while True:
+        now_time = str(time.strftime("%Y-%m-%d %H:%M:%S"))
+        print now_time
+        if "12:00:00" in now_time:
+            kwargs = scan_files()
+            Mailer(**kwargs).send_mail()
+        elif "14:00:00" in now_time:
+            kwargs = scan_files()
+            Mailer(**kwargs).send_mail()
+        elif "16:00:00" in now_time:
+            kwargs = scan_files()
+            Mailer(**kwargs).send_mail()
+        elif "18:00:00" in now_time:
+            kwargs = scan_files()
+            Mailer(**kwargs).send_mail()
+        time.sleep(1)
+
+
 if __name__ == '__main__':
     device_list = AppInit().app_init()
     print device_list
@@ -86,6 +127,8 @@ if __name__ == '__main__':
     scan_case = Process(target=scan_case_name)
     # scan_case.start()
     # scan_case.join()
+    mail = Process(target=send_mail)
+    mail.start()
 
     process = [Process(target=run, args=(device_list, device_name)) for device_name in device_list.keys()]
     for i in process:

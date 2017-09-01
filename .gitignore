@@ -54,6 +54,7 @@ coverage.xml
 
 # Django stuff:
 *.log
+*.xls
 local_settings.py
 
 # Flask stuff:
