@@ -124,9 +124,11 @@ class MainPageWidgetAndroidJD(object):
         self.confirm = "".join((ListView, LinearLayout, LinearLayout, TextView))
         d = {}
         # 标题
-        d["title"] = [self.search_device_success, "xpath", u"搜索设备超时"]
+        d["title"] = [u"完成", "name", u"搜索到设备"]
         # 确认
         d["confirm"] = [self.confirm, "xpath", u"确定"]
+        # 搜索到设备，不一定是待配置设备
+        d["device"] = [self.search_device_success, "xpath", u"搜索设备超时"]
         return d
 
     # 搜索设备超时

@@ -44,22 +44,31 @@ class JDAppSmartLink1(LaunchAppJD):
                               self.page["input_wifi_password_page"]["confirm"],
                               self.page["search_device_loading_page"]["title"])
 
+            start_time = time.time()
+            end_time = start_time + 60
             while True:
                 try:
                     self.wait_widget(self.page["search_device_fail_page"]["title"], 1, 0.5)
                     raise TimeoutException()
                 except TimeoutException:
-                    pass
+                    time.sleep(1)
                 try:
                     self.wait_widget(self.page["bind_device_page"]["title"], 1, 0.5)
                     raise TimeoutException()
                 except TimeoutException:
-                    pass
+                    time.sleep(1)
                 try:
                     self.wait_widget(self.page["search_device_success_page"]["title"], 1, 0.5)
                     break
                 except TimeoutException:
-                    pass
+                    time.sleep(1)
+                try:
+                    self.wait_widget(self.page["search_device_success_page"]["title"], 1, 0.5)
+                    self.wait_widget(self.page["search_device_success_page"]["device"])
+                    break
+                except TimeoutException:
+                    if time.time() > end_time:
+                        raise TimeoutException()
 
             self.widget_click(self.page["search_device_success_page"]["title"],
                               self.page["search_device_success_page"]["confirm"],

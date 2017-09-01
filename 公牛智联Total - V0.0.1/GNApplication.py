@@ -113,7 +113,7 @@ def send_mail():
         elif "16:00:00" in now_time:
             kwargs = scan_files()
             Mailer(**kwargs).send_mail()
-        elif "17:50:00" in now_time:
+        elif "18:00:00" in now_time:
             kwargs = scan_files()
             Mailer(**kwargs).send_mail()
         time.sleep(1)
