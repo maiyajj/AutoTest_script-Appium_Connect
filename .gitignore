@@ -3,6 +3,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.DS_Store
 *$py.class
 
 # C extensions
@@ -204,3 +205,4 @@ JD-V4.0.1/test_case/testcase_obj/__init__.pyc
 "\345\205\254\347\211\233\346\231\272\350\201\224 - V0.0.1/src/te
 stcase/case/GNAPP_DEVICE_PAGE/__init__.pyc"
 "\345\205\254\347\211\233\346\231\272\350\201\224 - V0.0.1/src/testcase/case/GNAPP_VERSION/__init__.pyc"
+公牛智联Total - V0.0.1/report/.DS_Store
