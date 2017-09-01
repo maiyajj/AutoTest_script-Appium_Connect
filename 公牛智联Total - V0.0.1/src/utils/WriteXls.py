@@ -4,6 +4,7 @@ import os
 import time
 
 from xlwt import *
+from src.utils.ShellCommand import *
 
 '''
 # font.bold = True
@@ -79,6 +80,9 @@ class WriteXls(object):
     def check_path(self):
         current_time = time.strftime("%Y-%m-%d_%H.%M")
         parent_path = r"./report/xls_report/%s" % current_time
+        file_path = ShellCommand().set_appium_log_addr()
+        with open(os.path.join(file_path, "temp.log"), "w") as files:
+            files.write(str(parent_path))
         if os.path.exists(parent_path) is False:
             try:
                 os.makedirs(parent_path)

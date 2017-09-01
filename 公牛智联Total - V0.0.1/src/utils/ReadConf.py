@@ -22,7 +22,7 @@ def modified_conf(config):
         conf_yaml.write("# 程序操作等待时间\n")
         conf_yaml.write("operate_wait_time: %s\n" % config["operate_wait_time"])
         conf_yaml.write("# 待添加的设备Mac\n")
-        conf_yaml.write("MAC: %s\n" % config["MAC"])
+        conf_yaml.write("MAC: '%s'\n" % config["MAC"])
         conf_yaml.write("# Mac地址列表选取标志位\n")
         conf_yaml.write("mac_choose_flag: %s\n" % config["mac_choose_flag"])
         conf_yaml.write("# 错误密码\n")

@@ -2,7 +2,6 @@
 from multiprocessing import *
 
 import psutil
-
 from src.testcase.case.WaitCase import *
 from src.testcase.suite.ScanCaseName import *
 from src.utils.LaunchAppiumServices import *
@@ -15,8 +14,6 @@ _build_version = ""
 def run(device_list, device_name):
     run_appium = 1
     run_case = 1
-    # case = Process(target=WaitCase, args=(device_list, device_name,app))
-    # case.start()
     while True:
         if run_appium == 1:
             run_appium = 0
@@ -30,10 +27,12 @@ def run(device_list, device_name):
             if appium.is_alive() is False:
                 run_appium = 1
                 print appium.pid
+                time.sleep(1)
                 break
             elif case.is_alive() is False:
                 run_case = 1
                 print case.pid
+                time.sleep(1)
                 break
             else:
                 print appium.name
@@ -79,14 +78,17 @@ def check_proc():
 
 def scan_files():
     file_list = []
-    mail_list = ["chenghao@gongniu.cn"]
+    mail_list = ["chenghao@gongniu.cn", "zhulei@gongniu.cn", "fanrt@gongniu.cn", "sunsy@gongniu.cn"]
     mail_title = 'Hey subject'
     mail_content = 'Hey this is content'
     while True:
         try:
-            parent_path = database["parent_path"]
-            break
-        except KeyError:
+            file_path = os.path.join(ShellCommand().set_appium_log_addr(), "temp.log")
+            with open(file_path, "r") as files:
+                parent_path = files.read()
+                os.remove(file_path)
+                break
+        except OSError:
             time.sleep(1)
     for parent, dirnames, filenames in os.walk(parent_path):
         for filename in filenames:
@@ -111,7 +113,7 @@ def send_mail():
         elif "16:00:00" in now_time:
             kwargs = scan_files()
             Mailer(**kwargs).send_mail()
-        elif "18:00:00" in now_time:
+        elif "17:50:00" in now_time:
             kwargs = scan_files()
             Mailer(**kwargs).send_mail()
         time.sleep(1)

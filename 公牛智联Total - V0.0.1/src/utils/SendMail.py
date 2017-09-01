@@ -24,7 +24,7 @@ class Mailer(object):
 
         me = self.mail_user + "<" + self.mail_user + "@" + self.mail_postfix + ">"
         msg = MIMEMultipart()
-        msg['Subject'] = 'Python mail Test'
+        msg['Subject'] = u'自动化测试结果输出'
         msg['From'] = self.format_addr(u'自动化测试 <%s>' % me)
         msg['To'] = self.format_addr(u'管理员 <%s>' % ";".join(self.mail_list))
 
