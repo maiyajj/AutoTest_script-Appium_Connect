@@ -44,7 +44,7 @@ class MainPageWidgetAndroidJD(object):
     def add_history_list_page(self):
         d = {}
         # 标题
-        d["title"] = [u"设备品类", "name", u"进入设备添加历史页面"]
+        d["title"] = [u"已添加设备", "name", u"进入设备添加历史页面"]
         # 公牛Wi-Fi智能转换器2代电量计量版
         d["y201J"] = [u"公牛WiFi智能电量统计版转换器2代", "name", u"公牛Wi-Fi智能转换器2代电量计量版"]
         # 公牛Wi-Fi智能转换器2代
