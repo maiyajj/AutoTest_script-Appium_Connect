@@ -74,21 +74,12 @@ class MainFunc(object):
                 time.sleep(1)
                 files.write("\n************%s***************" % len(psutil.pids()))
 
-    def scan_files(self):
+    def scan_files(self, parent_path):
         file_list = []
         # mail_list = ["chenghao@gongniu.cn", "zhulei@gongniu.cn", "fanrt@gongniu.cn", "sunsy@gongniu.cn"]
         mail_list = ["1045373828@qq.com"]
         mail_title = 'Hey subject'
         mail_content = 'Hey this is content'
-        while True:
-            try:
-                file_path = os.path.join(ShellCommand().set_appium_log_addr(), "temp.log")
-                with open(file_path, "r") as files:
-                    parent_path = files.read()
-                    os.remove(file_path)
-                    break
-            except OSError:
-                time.sleep(1)
         for parent, dirnames, filenames in os.walk(parent_path):
             for filename in filenames:
                 file_path = os.path.join(parent, filename)
@@ -102,16 +93,19 @@ class MainFunc(object):
 
     def send_mail(self):
         while True:
+            try:
+                file_path = os.path.join(ShellCommand().set_appium_log_addr(), "temp.log")
+                with open(file_path, "r") as files:
+                    parent_path = files.read()
+                    os.remove(file_path)
+                    break
+            except OSError:
+                time.sleep(1)
+        while True:
             now_time = str(time.strftime("%Y-%m-%d %H:%M:%S"))
             print now_time
-            if "12:00:00" in now_time:
-                Mailer(**self.scan_files()).send_mail()
-            elif "14:00:00" in now_time:
-                Mailer(**self.scan_files()).send_mail()
-            elif "16:00:00" in now_time:
-                Mailer(**self.scan_files()).send_mail()
-            elif "18:00:00" in now_time:
-                Mailer(**self.scan_files()).send_mail()
+            if "07:00:00" in now_time:
+                Mailer(**self.scan_files(parent_path)).send_mail()
             time.sleep(1)
 
 
