@@ -19,6 +19,9 @@ class MainPageWidgetJD(object):
         else:
             raise KeyError("The OS is wrong!")
 
+    def account_setting_page(self):
+        return self.wrapper(self.mpwa.account_setting_page(), self.mpwi.account_setting_page())
+
     def add_device_list_page(self):
         return self.wrapper(self.mpwa.add_device_list_page(), self.mpwi.add_device_list_page())
 
@@ -55,8 +58,14 @@ class MainPageWidgetJD(object):
     def god_page(self):
         return self.wrapper(self.mpwa.god_page(), self.mpwi.god_page())
 
+    def help_setting_page(self):
+        return self.wrapper(self.mpwa.help_setting_page(), self.mpwi.help_setting_page())
+
     def input_wifi_password_page(self):
         return self.wrapper(self.mpwa.input_wifi_password_page(), self.mpwi.input_wifi_password_page())
+
+    def login_page(self):
+        return self.wrapper(self.mpwa.login_page(), self.mpwi.login_page())
 
     def search_device_fail_page(self):
         return self.wrapper(self.mpwa.search_device_fail_page(), self.mpwi.search_device_fail_page())
@@ -75,6 +84,9 @@ class MainPageWidgetJD(object):
 
     def loading_popup(self):
         return self.wrapper(self.pwa.loading_popup(), self.pwi.loading_popup())
+
+    def logout_popup(self):
+        return self.wrapper(self.pwa.logout_popup(), self.pwi.logout_popup())
 
     def unbind_device_popup(self):
         return self.wrapper(self.pwa.unbind_device_popup(), self.pwi.unbind_device_popup())

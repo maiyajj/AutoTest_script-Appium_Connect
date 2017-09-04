@@ -10,6 +10,7 @@ class PageElementJD(object):
 
     def get_page_element(self):
         self.device["page"] = {}
+        self.device["page"]["account_setting_page"] = self.mpw.account_setting_page()
         self.device["page"]["add_device_list_page"] = self.mpw.add_device_list_page()
         self.device["page"]["add_device_method_page"] = self.mpw.add_device_method_page()
         self.device["page"]["add_history_list_page"] = self.mpw.add_history_list_page()
@@ -22,7 +23,9 @@ class PageElementJD(object):
         self.device["page"]["control_device_page"] = self.mpw.control_device_page()
         self.device["page"]["device_info_page"] = self.mpw.device_info_page()
         self.device["page"]["god_page"] = self.mpw.god_page()
+        self.device["page"]["help_setting_page"] = self.mpw.help_setting_page()
         self.device["page"]["input_wifi_password_page"] = self.mpw.input_wifi_password_page()
+        self.device["page"]["login_page"] = self.mpw.login_page()
         self.device["page"]["search_device_fail_page"] = self.mpw.search_device_fail_page()
         self.device["page"]["search_device_loading_page"] = self.mpw.search_device_loading_page()
         self.device["page"]["search_device_success_page"] = self.mpw.search_device_success_page()
@@ -30,5 +33,6 @@ class PageElementJD(object):
         self.device["page"]["bind_device_fail_popup"] = self.mpw.bind_device_fail_popup()
         self.device["page"]["close_ad_popup"] = self.mpw.close_ad_popup()
         self.device["page"]["loading_popup"] = self.mpw.loading_popup()
+        self.device["page"]["logout_popup"] = self.mpw.logout_popup()
         self.device["page"]["unbind_device_popup"] = self.mpw.unbind_device_popup()
         self.device["page"]["update_popup"] = self.mpw.update_popup()

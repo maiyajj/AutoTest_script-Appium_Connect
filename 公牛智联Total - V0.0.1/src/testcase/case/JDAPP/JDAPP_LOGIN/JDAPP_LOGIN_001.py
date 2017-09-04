@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp_JD import *
 
 
 class JDAppSmartLink1(LaunchAppJD):
-    @case_run_jd(False)
+    @case_run_jd(True)
     def run(self):
         self.case_module = u"一键配网"  # 用例所属模块
         self.case_title = u'配网成功率统计"'  # 用例名称
@@ -24,12 +24,6 @@ class JDAppSmartLink1(LaunchAppJD):
                               self.page["add_history_list_page"]["y201J"],
                               self.page["add_specification_page"]["title"])
 
-            while True:
-                state = self.ac.get_attribute(self.wait_widget(self.page["add_specification_page"]["next"]), "enabled")
-                if state == "true":
-                    break
-                else:
-                    time.sleep(1)
             self.widget_click(self.page["add_specification_page"]["title"],
                               self.page["add_specification_page"]["next"],
                               self.page["input_wifi_password_page"]["title"])

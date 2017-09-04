@@ -10,6 +10,43 @@ class MainPageWidgetAndroidJD(object):
                       {"px": {"width": 0, "height": 0}}]
         return d
 
+    # 账户设置页
+    def account_setting_page(self):
+        d = {}
+        # 标题
+        d["title"] = ["com.jd.smart:id/iv_avatar", "id", u"账户设置页"]
+        # 帮助与设置
+        d["help_setting"] = ["com.jd.smart:id/iv_setting", "id", u"帮助与设置"]
+        # 点击登录
+        d["to_login"] = [u"点击登录", "name", u"点击登录"]
+        return d
+
+    # 帮助与设置
+    def help_setting_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"帮助与设置", "name", u"帮助与设置"]
+        # 帮助与设置
+        d["return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
+        # 登出
+        d["logout"] = ["com.jd.smart:id/button_exit", "id", u"退出登录"]
+        return d
+
+    # 登录页面
+    def login_page(self):
+        d = {}
+        # 标题
+        d["title"] = ["com.jd.smart:id/login_title_icon", "id", u"登录页面"]
+        # 用户名
+        d["user_name"] = ["com.jd.smart:id/username", "id", u"用户名输入框"]
+        # 密码
+        d["password"] = ["com.jd.smart:id/password", "id", u"密码输入框"]
+        # 显示/关闭密码
+        d["check_box"] = ["com.jd.smart:id/eye", "id", u"退出登录"]
+        # 登录
+        d["login_button"] = ["com.jd.smart:id/button_login", "id", u"退出登录"]
+        return d
+
     # APP主页面
     def app_home_page(self):
         d = {}
@@ -17,6 +54,8 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"微联", "name", u"App主页面"]
         # +号
         d["add_device"] = ["com.jd.smart:id/iv_right", "id", u"+号"]
+        # 账户管理
+        d["account_setting"] = ["com.jd.smart:id/iv_left", "id", u"账户管理"]
         return d
 
     # 添加设备页面
@@ -192,9 +231,11 @@ class PopupWidgetAndroidJD(object):
     # 设备升级确认弹窗
     def update_popup(self):
         d = {}
-        d["title"] = ["com.jd.smart:id/cancel", "id", u"有更新"]
+        d["title"] = ["com.jd.smart:id/title", "id", u"有更新", {"text": u"更新提示"}]
+        # 更新
+        d["confirm"] = ["com.jd.smart:id/confirm", "id", u"更新"]
         # 检查更新
-        d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
+        d["cancel"] = ["com.jd.smart:id/cancel", "id", u"稍后提醒"]
         return d
 
     def close_ad_popup(self):
@@ -214,6 +255,7 @@ class PopupWidgetAndroidJD(object):
         d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
         # 取消
         d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
+        return d
 
     def bind_device_fail_popup(self):
         d = {}
@@ -230,4 +272,14 @@ class PopupWidgetAndroidJD(object):
         # 标题
         # d["title"] = ["loading...", "name", u"正在加载中loading..."]
         d["title"] = ["android:id/message", "id", u"正在加载中loading..."]
+        return d
+
+    def logout_popup(self):
+        d = {}
+        # 退出登录弹窗
+        d["title"] = ["com.jd.smart:id/title", "id", u"删除设备按钮", {"text": u"确定要退出当前账户吗？"}]
+        # 确认
+        d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
+        # 取消
+        d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
         return d
