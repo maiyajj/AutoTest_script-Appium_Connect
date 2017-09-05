@@ -12,12 +12,10 @@ class GNAppRegister3(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["login_page"]["title"],
-                              self.page["login_page"]["to_register"],
+            self.widget_click(self.page["login_page"]["to_register"],
                               self.page["register_page"]["title"])  # 点击“新用户注册按钮”
 
-            user_name = self.widget_click(self.page["register_page"]["title"],
-                                          self.page["register_page"]["username"],
+            user_name = self.widget_click(self.page["register_page"]["username"],
                                           self.page["register_page"]["title"])  # 点击用户名输入框
 
             # 发送数据
@@ -29,8 +27,7 @@ class GNAppRegister3(LaunchAppGN):
             time.sleep(0.5)
 
             self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
-            pwd = self.widget_click(self.page["register_page"]["title"],
-                                    self.page["register_page"]["password"],
+            pwd = self.widget_click(self.page["register_page"]["password"],
                                     self.page["register_page"]["title"])  # 点击密码输入框
 
             data = self.user["login_pwd"]
@@ -40,8 +37,7 @@ class GNAppRegister3(LaunchAppGN):
             self.logger.info(u'[APP_INPUT] ["密码"] input success')
             time.sleep(0.5)
 
-            check_code = self.widget_click(self.page["register_page"]["title"],
-                                           self.page["register_page"]["check_code"],
+            check_code = self.widget_click(self.page["register_page"]["check_code"],
                                            self.page["register_page"]["title"])  # 点击验证码输入框
 
             data = "1234567"  # 传入超过6位的验证码

@@ -12,20 +12,16 @@ class GNAppAccountSettings11(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["user_image"],
+            self.widget_click(self.page["device_page"]["user_image"],
                               self.page["personal_settings_page"]["title"])
 
-            self.widget_click(self.page["personal_settings_page"]["title"],
-                              self.page["personal_settings_page"]["account_setting"],
+            self.widget_click(self.page["personal_settings_page"]["account_setting"],
                               self.page["account_setting_page"]["title"])
 
-            self.widget_click(self.page["account_setting_page"]["title"],
-                              self.page["account_setting_page"]["change_pwd"],
+            self.widget_click(self.page["account_setting_page"]["change_pwd"],
                               self.page["change_pwd_page"]["title"])
 
-            old_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
-                                        self.page["change_pwd_page"]["old_pwd"],
+            old_pwd = self.widget_click(self.page["change_pwd_page"]["old_pwd"],
                                         self.page["change_pwd_page"]["title"])
 
             # 发送数据
@@ -35,8 +31,7 @@ class GNAppAccountSettings11(LaunchAppGN):
             self.logger.info(u'[APP_INPUT] ["旧密码"] input success')
             time.sleep(0.5)
 
-            new_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
-                                        self.page["change_pwd_page"]["new_pwd"],
+            new_pwd = self.widget_click(self.page["change_pwd_page"]["new_pwd"],
                                         self.page["change_pwd_page"]["title"])
 
             # 发送数据
@@ -46,8 +41,7 @@ class GNAppAccountSettings11(LaunchAppGN):
             self.logger.info(u'[APP_INPUT] ["新密码"] input success')
             time.sleep(0.5)
 
-            conform_new_pwd = self.widget_click(self.page["change_pwd_page"]["title"],
-                                                self.page["change_pwd_page"]["conform_pwd"],
+            conform_new_pwd = self.widget_click(self.page["change_pwd_page"]["conform_pwd"],
                                                 self.page["change_pwd_page"]["title"])
 
             # 发送数据

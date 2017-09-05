@@ -12,16 +12,13 @@ class GNAppDevicePage3(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["add_device"],
+            self.widget_click(self.page["device_page"]["add_device"],
                               self.page["device_add_scan_page"]["title"])
 
-            self.widget_click(self.page["device_add_scan_page"]["title"],
-                              self.page["device_add_scan_page"]["gateway_hw"],
+            self.widget_click(self.page["device_add_scan_page"]["gateway_hw"],
                               self.page["set_network_page"]["title"])
 
-            self.widget_click(self.page["set_network_page"]["title"],
-                              self.page["set_network_page"]["prepare_next"],
+            self.widget_click(self.page["set_network_page"]["prepare_next"],
                               self.page["set_network_page"]["title"])
 
             wifi_pwd = self.wait_widget(self.page["set_network_page"]["wifi_pwd"])
@@ -32,16 +29,13 @@ class GNAppDevicePage3(LaunchAppGN):
             self.logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
             time.sleep(0.5)
 
-            self.widget_click(self.page["set_network_page"]["title"],
-                              self.page["set_network_page"]["prepare_next"],
+            self.widget_click(self.page["set_network_page"]["prepare_next"],
                               self.page["scan_with_subscribe_page"]["title"])
 
-            self.widget_click(self.page["scan_with_subscribe_page"]["title"],
-                              self.page["scan_with_subscribe_page"]["to_return"],
+            self.widget_click(self.page["scan_with_subscribe_page"]["to_return"],
                               self.page["terminate_add_device_popup"]["title"])
 
-            self.widget_click(self.page["terminate_add_device_popup"]["title"],
-                              self.page["terminate_add_device_popup"]["cancel"],
+            self.widget_click(self.page["terminate_add_device_popup"]["cancel"],
                               self.page["scan_with_subscribe_page"]["title"])
             self.case_over(True)
         except TimeoutException:

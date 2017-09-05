@@ -12,20 +12,16 @@ class GNAppAccountSettings8(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["user_image"],
+            self.widget_click(self.page["device_page"]["user_image"],
                               self.page["personal_settings_page"]["title"])
 
-            self.widget_click(self.page["personal_settings_page"]["title"],
-                              self.page["personal_settings_page"]["account_setting"],
+            self.widget_click(self.page["personal_settings_page"]["account_setting"],
                               self.page["account_setting_page"]["title"])
 
-            self.widget_click(self.page["account_setting_page"]["title"],
-                              self.page["account_setting_page"]["nickname"],
+            self.widget_click(self.page["account_setting_page"]["nickname"],
                               self.page["change_nickname_page"]["title"])
 
-            nickname = self.widget_click(self.page["change_nickname_page"]["title"],
-                                         self.page["change_nickname_page"]["nickname"],
+            nickname = self.widget_click(self.page["change_nickname_page"]["nickname"],
                                          self.page["change_nickname_page"]["title"])
 
             # 全选
@@ -34,12 +30,10 @@ class GNAppAccountSettings8(LaunchAppGN):
             self.logger.info(u'[APP_INPUT] ["昵称"] input success')
             time.sleep(0.5)
 
-            self.widget_click(self.page["change_nickname_page"]["title"],
-                              self.page["change_nickname_page"]["commit"],
+            self.widget_click(self.page["change_nickname_page"]["commit"],
                               self.page["account_setting_page"]["title"])
 
-            self.widget_click(self.page["account_setting_page"]["title"],
-                              self.page["account_setting_page"]["to_return"],
+            self.widget_click(self.page["account_setting_page"]["to_return"],
                               self.page["personal_settings_page"]["title"])
 
             element = self.wait_widget(self.page["personal_settings_page"]["nickname"])

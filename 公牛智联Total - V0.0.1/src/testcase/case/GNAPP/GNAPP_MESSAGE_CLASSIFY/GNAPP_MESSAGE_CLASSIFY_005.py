@@ -12,12 +12,10 @@ class GNAppMessageClassify5(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["message_table"],
+            self.widget_click(self.page["device_page"]["message_table"],
                               self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["title"],
-                              self.page["home_message_page"]["setting"],
+            self.widget_click(self.page["home_message_page"]["setting"],
                               self.page["message_setting_page"]["title"])
 
             self.wait_widget(self.page["message_setting_page"]["title"])

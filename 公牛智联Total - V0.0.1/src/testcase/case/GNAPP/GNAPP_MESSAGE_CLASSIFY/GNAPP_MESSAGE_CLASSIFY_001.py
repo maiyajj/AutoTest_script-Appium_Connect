@@ -12,20 +12,16 @@ class GNAppMessageClassify1(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["message_table"],
+            self.widget_click(self.page["device_page"]["message_table"],
                               self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["title"],
-                              self.page["home_message_page"]["classify"],
+            self.widget_click(self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"])
 
-            self.widget_click(self.page["message_classify_page"]["title"],
-                              self.page["message_classify_page"]["all_device"],
+            self.widget_click(self.page["message_classify_page"]["all_device"],
                               self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["title"],
-                              self.page["home_message_page"]["classify"],
+            self.widget_click(self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"])
 
             element = self.wait_widget(self.page["message_classify_page"]["all_device"])
@@ -34,12 +30,10 @@ class GNAppMessageClassify1(LaunchAppGN):
             if result != "true":
                 raise TimeoutException()
 
-            self.widget_click(self.page["message_classify_page"]["title"],
-                              self.page["message_classify_page"]["experience_data"],
+            self.widget_click(self.page["message_classify_page"]["experience_data"],
                               self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["title"],
-                              self.page["home_message_page"]["classify"],
+            self.widget_click(self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"])
 
             element = self.wait_widget(self.page["message_classify_page"]["experience_data"])
@@ -48,12 +42,10 @@ class GNAppMessageClassify1(LaunchAppGN):
             if result != "true":
                 raise TimeoutException()
 
-            self.widget_click(self.page["message_classify_page"]["title"],
-                              self.page["message_classify_page"]["A2"],
+            self.widget_click(self.page["message_classify_page"]["A2"],
                               self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["title"],
-                              self.page["home_message_page"]["classify"],
+            self.widget_click(self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"])
 
             element = self.wait_widget(self.page["message_classify_page"]["A2"])
@@ -62,12 +54,10 @@ class GNAppMessageClassify1(LaunchAppGN):
             if result != "true":
                 raise TimeoutException()
 
-            self.widget_click(self.page["message_classify_page"]["title"],
-                              self.page["message_classify_page"]["A3"],
+            self.widget_click(self.page["message_classify_page"]["A3"],
                               self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["title"],
-                              self.page["home_message_page"]["classify"],
+            self.widget_click(self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"])
 
             element = self.wait_widget(self.page["message_classify_page"]["A3"])
@@ -76,12 +66,10 @@ class GNAppMessageClassify1(LaunchAppGN):
             if result != "true":
                 raise TimeoutException()
 
-            self.widget_click(self.page["message_classify_page"]["title"],
-                              self.page["message_classify_page"]["A4"],
+            self.widget_click(self.page["message_classify_page"]["A4"],
                               self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["title"],
-                              self.page["home_message_page"]["classify"],
+            self.widget_click(self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"])
 
             element = self.wait_widget(self.page["message_classify_page"]["A4"])
@@ -90,12 +78,10 @@ class GNAppMessageClassify1(LaunchAppGN):
             if result != "true":
                 raise TimeoutException()
 
-            self.widget_click(self.page["message_classify_page"]["title"],
-                              self.page["message_classify_page"]["A5"],
+            self.widget_click(self.page["message_classify_page"]["A5"],
                               self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["title"],
-                              self.page["home_message_page"]["classify"],
+            self.widget_click(self.page["home_message_page"]["classify"],
                               self.page["message_classify_page"]["title"])
 
             element = self.wait_widget(self.page["message_classify_page"]["A5"])

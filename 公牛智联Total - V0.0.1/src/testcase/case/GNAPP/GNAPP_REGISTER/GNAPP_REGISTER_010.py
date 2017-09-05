@@ -12,12 +12,10 @@ class GNAppRegister10(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["login_page"]["title"],
-                              self.page["login_page"]["to_register"],
+            self.widget_click(self.page["login_page"]["to_register"],
                               self.page["register_page"]["title"])
 
-            user_name = self.widget_click(self.page["register_page"]["title"],
-                                          self.page["register_page"]["username"],
+            user_name = self.widget_click(self.page["register_page"]["username"],
                                           self.page["register_page"]["title"])
 
             # 发送数据
@@ -29,8 +27,7 @@ class GNAppRegister10(LaunchAppGN):
             time.sleep(0.5)
 
             self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
-            check_code = self.widget_click(self.page["register_page"]["title"],
-                                           self.page["register_page"]["check_code"],
+            check_code = self.widget_click(self.page["register_page"]["check_code"],
                                            self.page["register_page"]["title"])
 
             data = "123456"
@@ -40,8 +37,7 @@ class GNAppRegister10(LaunchAppGN):
             time.sleep(0.5)
 
             self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
-            pwd = self.widget_click(self.page["register_page"]["title"],
-                                    self.page["register_page"]["password"],
+            pwd = self.widget_click(self.page["register_page"]["password"],
                                     self.page["register_page"]["title"])
 
             data = "1234"

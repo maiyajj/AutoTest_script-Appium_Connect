@@ -56,6 +56,8 @@ class MainPageWidgetAndroidJD(object):
         d["add_device"] = ["com.jd.smart:id/iv_right", "id", u"+号"]
         # 账户管理
         d["account_setting"] = ["com.jd.smart:id/iv_left", "id", u"账户管理"]
+        # 没有设备/未登录
+        d["no_device"] = ["com.jd.smart:id/layout_no_device", "id", u"没有设备/未登录"]
         return d
 
     # 添加设备页面

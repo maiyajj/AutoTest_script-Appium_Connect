@@ -12,16 +12,13 @@ class GNAppThemeStyle4(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["user_image"],
+            self.widget_click(self.page["device_page"]["user_image"],
                               self.page["personal_settings_page"]["title"])
 
-            self.widget_click(self.page["personal_settings_page"]["title"],
-                              self.page["personal_settings_page"]["theme_style"],
+            self.widget_click(self.page["personal_settings_page"]["theme_style"],
                               self.page["theme_style_page"]["title"])
 
-            self.widget_click(self.page["theme_style_page"]["title"],
-                              self.page["theme_style_page"]["red"],
+            self.widget_click(self.page["theme_style_page"]["red"],
                               self.page["theme_style_page"]["title"])
 
             # 截取屏幕信息

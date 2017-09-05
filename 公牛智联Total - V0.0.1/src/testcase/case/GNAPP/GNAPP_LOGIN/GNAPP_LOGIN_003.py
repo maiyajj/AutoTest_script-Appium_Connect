@@ -13,8 +13,7 @@ class GNAppLogin3(LaunchAppGN):
     def case(self):
 
         try:
-            user_name = self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["username"],
+            user_name = self.widget_click(self.page["login_page"]["username"],
                                           self.page["login_page"]["title"])
 
             # 发送数据
@@ -26,8 +25,7 @@ class GNAppLogin3(LaunchAppGN):
             time.sleep(0.5)
 
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-            login_pwd = self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["password"],
+            login_pwd = self.widget_click(self.page["login_page"]["password"],
                                           self.page["login_page"]["title"])
 
             data = self.user["login_pwd"]
@@ -37,8 +35,7 @@ class GNAppLogin3(LaunchAppGN):
             self.logger.info(u'[APP_INPUT] ["密码"] input success')
             time.sleep(0.5)
 
-            self.widget_click(self.page["login_page"]["title"],
-                              self.page["login_page"]["login_button"],
+            self.widget_click(self.page["login_page"]["login_button"],
                               self.page["device_page"]["title"])
 
             self.case_over(True)

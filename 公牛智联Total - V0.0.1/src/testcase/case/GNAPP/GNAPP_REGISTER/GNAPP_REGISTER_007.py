@@ -12,13 +12,11 @@ class GNAppRegister7(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["login_page"]["title"],
-                              self.page["login_page"]["to_register"],
+            self.widget_click(self.page["login_page"]["to_register"],
                               self.page["register_page"]["title"])
 
             self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
-            check_code = self.widget_click(self.page["register_page"]["title"],
-                                           self.page["register_page"]["check_code"],
+            check_code = self.widget_click(self.page["register_page"]["check_code"],
                                            self.page["register_page"]["title"])
 
             data = u"测试"

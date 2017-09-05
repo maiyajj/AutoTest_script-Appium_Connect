@@ -12,16 +12,13 @@ class GNAppUsingHelp1(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["user_image"],
+            self.widget_click(self.page["device_page"]["user_image"],
                               self.page["personal_settings_page"]["title"])
 
-            self.widget_click(self.page["personal_settings_page"]["title"],
-                              self.page["personal_settings_page"]["using_help"],
+            self.widget_click(self.page["personal_settings_page"]["using_help"],
                               self.page["app_help_page"]["title"])
 
-            self.widget_click(self.page["app_help_page"]["title"],
-                              self.page["app_help_page"]["to_return"],
+            self.widget_click(self.page["app_help_page"]["to_return"],
                               self.page["personal_settings_page"]["title"])
 
             self.case_over(True)

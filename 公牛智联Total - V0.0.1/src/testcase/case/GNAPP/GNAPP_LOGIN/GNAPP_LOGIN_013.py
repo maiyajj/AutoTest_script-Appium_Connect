@@ -13,8 +13,7 @@ class GNAppLogin13(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            user_name = self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["username"],
+            user_name = self.widget_click(self.page["login_page"]["username"],
                                           self.page["login_page"]["title"])
 
             # 发送数据
@@ -25,8 +24,7 @@ class GNAppLogin13(LaunchAppGN):
             time.sleep(0.5)
 
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-            login_pwd = self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["password"],
+            login_pwd = self.widget_click(self.page["login_page"]["password"],
                                           self.page["login_page"]["title"])
 
             data = self.user["login_pwd"]
@@ -50,8 +48,7 @@ class GNAppLogin13(LaunchAppGN):
                 ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
 
             try:
-                user_name = self.widget_click(self.page["login_page"]["title"],
-                                              self.page["login_page"]["username"],
+                user_name = self.widget_click(self.page["login_page"]["username"],
                                               self.page["login_page"]["title"])
 
                 # 发送数据
@@ -63,8 +60,7 @@ class GNAppLogin13(LaunchAppGN):
                 time.sleep(0.5)
 
                 self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-                login_pwd = self.widget_click(self.page["login_page"]["title"],
-                                              self.page["login_page"]["password"],
+                login_pwd = self.widget_click(self.page["login_page"]["password"],
                                               self.page["login_page"]["title"])
 
                 data = self.user["login_pwd"]
@@ -72,16 +68,14 @@ class GNAppLogin13(LaunchAppGN):
                 login_pwd.clear()
                 self.ac.send_keys(login_pwd, data, self.driver)
                 self.logger.info(u'[APP_INPUT] ["正确密码"] input success')
-                self.widget_click(self.page["login_page"]["title"],
-                                  self.page["login_page"]["login_button"],
+                self.widget_click(self.page["login_page"]["login_button"],
                                   self.page["device_page"]["title"])
             except TimeoutException:
                 self.wait_pwd_timeout()
                 try:
                     self.wait_widget(self.page["device_page"]["title"])
                 except TimeoutException:
-                    self.widget_click(self.page["login_page"]["title"],
-                                      self.page["login_page"]["login_button"],
+                    self.widget_click(self.page["login_page"]["login_button"],
                                       self.page["device_page"]["title"])
 
             self.case_over("screen")

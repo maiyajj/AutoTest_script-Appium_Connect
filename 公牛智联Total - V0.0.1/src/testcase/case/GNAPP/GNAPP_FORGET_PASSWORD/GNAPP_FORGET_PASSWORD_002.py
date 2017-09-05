@@ -12,12 +12,10 @@ class GNAppForgetPassword2(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["login_page"]["title"],
-                              self.page["login_page"]["to_find_password"],
+            self.widget_click(self.page["login_page"]["to_find_password"],
                               self.page["find_password_page"]["title"])
 
-            user_name = self.widget_click(self.page["find_password_page"]["title"],
-                                          self.page["find_password_page"]["user_name"],
+            user_name = self.widget_click(self.page["find_password_page"]["user_name"],
                                           self.page["find_password_page"]["title"])
 
             # 发送数据
@@ -27,8 +25,7 @@ class GNAppForgetPassword2(LaunchAppGN):
             self.logger.info(u'[APP_INPUT] ["未注册用户名"] input success')
             time.sleep(0.5)
 
-            check_code = self.widget_click(self.page["find_password_page"]["title"],
-                                           self.page["find_password_page"]["check_code"],
+            check_code = self.widget_click(self.page["find_password_page"]["check_code"],
                                            self.page["find_password_page"]["title"])
 
             data = "123456"

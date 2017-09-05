@@ -12,16 +12,13 @@ class GNAppDevicePage6(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["add_device"],
+            self.widget_click(self.page["device_page"]["add_device"],
                               self.page["device_add_scan_page"]["title"])
 
-            self.widget_click(self.page["device_add_scan_page"]["title"],
-                              self.page["device_add_scan_page"]["gateway_hw"],
+            self.widget_click(self.page["device_add_scan_page"]["gateway_hw"],
                               self.page["set_network_page"]["title"])
 
-            self.widget_click(self.page["set_network_page"]["title"],
-                              self.page["set_network_page"]["prepare_next"],
+            self.widget_click(self.page["set_network_page"]["prepare_next"],
                               self.page["set_network_page"]["title"])
 
             wifi_pwd = self.wait_widget(self.page["set_network_page"]["wifi_pwd"])
@@ -32,14 +29,12 @@ class GNAppDevicePage6(LaunchAppGN):
             self.logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
             time.sleep(0.5)
 
-            self.widget_click(self.page["set_network_page"]["title"],
-                              self.page["set_network_page"]["prepare_next"],
+            self.widget_click(self.page["set_network_page"]["prepare_next"],
                               self.page["scan_with_subscribe_page"]["title"])
 
             self.wait_widget(self.page["add_device_failed_page"]["title"], 60, 1)
 
-            self.widget_click(self.page["add_device_failed_page"]["title"],
-                              self.page["add_device_failed_page"]["cancel"],
+            self.widget_click(self.page["add_device_failed_page"]["cancel"],
                               self.page["scan_with_subscribe_page"]["title"])
 
             self.case_over(True)

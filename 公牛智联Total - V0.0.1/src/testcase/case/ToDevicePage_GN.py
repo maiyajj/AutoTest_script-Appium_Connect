@@ -28,8 +28,7 @@ class ToDevicePageGN(object):
         try:
             self.wait_widget(self.page["update_popup"]["title"], 1, 0.5)
             self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
-            self.widget_click(self.page["update_popup"]["title"],
-                              self.page["update_popup"]["cancel"],
+            self.widget_click(self.page["update_popup"]["cancel"],
                               self.page["god_page"]["title"],
                               log_record=0)
             self.logger.info(u"[APP_INF] 取消更新")
@@ -40,8 +39,7 @@ class ToDevicePageGN(object):
         try:
             self.wait_widget(self.page["login_popup"]["title"], 1, 0.5)
             self.logger.info(u"[APP_INF] APP需要重新登陆，等待重新登录")
-            self.widget_click(self.page["login_popup"]["title"],
-                              self.page["login_popup"]["confirm"],
+            self.widget_click(self.page["login_popup"]["confirm"],
                               self.page["login_page"]["title"],
                               log_record=0)
         except TimeoutException:
@@ -52,8 +50,7 @@ class ToDevicePageGN(object):
             self.wait_widget(self.page["login_page"]["title"], 1, 0.5)
             try:
                 self.logger.info(u"[APP_INF] APP当前页面为登录页面,登录")
-                user_name = self.widget_click(self.page["login_page"]["title"],
-                                              self.page["login_page"]["username"],
+                user_name = self.widget_click(self.page["login_page"]["username"],
                                               self.page["login_page"]["title"])
 
                 # 发送数据
@@ -65,8 +62,7 @@ class ToDevicePageGN(object):
                 time.sleep(0.5)
 
                 self.show_pwd()
-                login_pwd = self.widget_click(self.page["login_page"]["title"],
-                                              self.page["login_page"]["password"],
+                login_pwd = self.widget_click(self.page["login_page"]["password"],
                                               self.page["login_page"]["title"])
 
                 data = self.user["login_pwd"]
@@ -75,8 +71,7 @@ class ToDevicePageGN(object):
                 self.ac.send_keys(login_pwd, data, self.driver)
                 self.logger.info(u'[APP_INPUT] ["重新输入登录密码"] input success')
                 try:
-                    self.widget_click(self.page["login_page"]["title"],
-                                      self.page["login_page"]["login_button"],
+                    self.widget_click(self.page["login_page"]["login_button"],
                                       self.page["device_page"]["title"])
 
                 except TimeoutException:
@@ -86,8 +81,7 @@ class ToDevicePageGN(object):
                         self.driver.tap([(10, 10)])
                         self.logger("time sleep %sS" % (i * 10))
                         i += 1
-                    self.widget_click(self.page["login_page"]["title"],
-                                      self.page["login_page"]["login_button"],
+                    self.widget_click(self.page["login_page"]["login_button"],
                                       self.page["device_page"]["title"])
             except TimeoutException:
                 self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")

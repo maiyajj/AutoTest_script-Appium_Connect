@@ -12,24 +12,19 @@ class GNAppAccountSettings3(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["user_image"],
+            self.widget_click(self.page["device_page"]["user_image"],
                               self.page["personal_settings_page"]["title"])
 
-            self.widget_click(self.page["personal_settings_page"]["title"],
-                              self.page["personal_settings_page"]["account_setting"],
+            self.widget_click(self.page["personal_settings_page"]["account_setting"],
                               self.page["account_setting_page"]["title"])
 
-            self.widget_click(self.page["account_setting_page"]["title"],
-                              self.page["account_setting_page"]["logout"],
+            self.widget_click(self.page["account_setting_page"]["logout"],
                               self.page["logout_popup"]["title"])
 
-            self.widget_click(self.page["logout_popup"]["title"],
-                              self.page["logout_popup"]["cancel"],
+            self.widget_click(self.page["logout_popup"]["cancel"],
                               self.page["account_setting_page"]["title"])
 
-            self.widget_click(self.page["account_setting_page"]["title"],
-                              self.page["account_setting_page"]["logout"],
+            self.widget_click(self.page["account_setting_page"]["logout"],
                               self.page["logout_popup"]["title"])
 
             x = self.driver.get_window_size()['width']
@@ -38,7 +33,6 @@ class GNAppAccountSettings3(LaunchAppGN):
             y = int(y * 0.1)
             self.driver.tap([(x, y)])
             self.widget_click(self.page["account_setting_page"]["title"],
-                              self.page["account_setting_page"]["title"],
                               self.page["account_setting_page"]["title"])
             try:
                 self.wait_widget(self.page["logout_popup"]["title"])

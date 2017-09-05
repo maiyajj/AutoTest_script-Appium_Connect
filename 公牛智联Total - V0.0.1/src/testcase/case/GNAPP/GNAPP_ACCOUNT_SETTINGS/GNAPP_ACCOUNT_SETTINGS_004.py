@@ -12,20 +12,16 @@ class GNAppAccountSettings4(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["user_image"],
+            self.widget_click(self.page["device_page"]["user_image"],
                               self.page["personal_settings_page"]["title"])
 
-            self.widget_click(self.page["personal_settings_page"]["title"],
-                              self.page["personal_settings_page"]["account_setting"],
+            self.widget_click(self.page["personal_settings_page"]["account_setting"],
                               self.page["account_setting_page"]["title"])
 
-            self.widget_click(self.page["account_setting_page"]["title"],
-                              self.page["account_setting_page"]["logout"],
+            self.widget_click(self.page["account_setting_page"]["logout"],
                               self.page["logout_popup"]["title"])
 
-            self.widget_click(self.page["logout_popup"]["title"],
-                              self.page["logout_popup"]["confirm"],
+            self.widget_click(self.page["logout_popup"]["confirm"],
                               self.page["login_page"]["title"])
 
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))

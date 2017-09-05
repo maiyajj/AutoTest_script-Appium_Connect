@@ -12,12 +12,10 @@ class GNAppRegister16(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["login_page"]["title"],
-                              self.page["login_page"]["to_register"],
+            self.widget_click(self.page["login_page"]["to_register"],
                               self.page["register_page"]["title"])
 
-            user_name = self.widget_click(self.page["register_page"]["title"],
-                                          self.page["register_page"]["username"],
+            user_name = self.widget_click(self.page["register_page"]["username"],
                                           self.page["register_page"]["title"])
 
             # 发送数据

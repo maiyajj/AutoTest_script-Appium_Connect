@@ -222,8 +222,8 @@ class LaunchAppGN(object):
         ToLoginPage(self.driver, self.logger, self.device_info, self.page)
         while True:
             try:
-                user_name = self.widget_click(self.page["login_page"]["title"],
-                                              self.page["login_page"]["username"],
+                self.wait_widget(self.page["login_page"]["title"])
+                user_name = self.widget_click(self.page["login_page"]["username"],
                                               self.page["login_page"]["title"])
 
                 # 发送数据
@@ -236,16 +236,14 @@ class LaunchAppGN(object):
                 precise_pwd = self.user["precise_pwd"]
                 for x in xrange(len(precise_pwd)):
                     self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-                    login_pwd = self.widget_click(self.page["login_page"]["title"],
-                                                  self.page["login_page"]["password"],
+                    login_pwd = self.widget_click(self.page["login_page"]["password"],
                                                   self.page["login_page"]["title"])
 
                     data = str(precise_pwd[x]).decode('hex').replace(" ", "")
                     login_pwd.clear()
                     self.ac.send_keys(login_pwd, data, self.driver)
                     try:
-                        self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["login_button"],
+                        self.widget_click(self.page["login_page"]["login_button"],
                                           self.page["device_page"]["title"])
                         if x == 0:
                             self.user["login_pwd"] = precise_pwd[0]

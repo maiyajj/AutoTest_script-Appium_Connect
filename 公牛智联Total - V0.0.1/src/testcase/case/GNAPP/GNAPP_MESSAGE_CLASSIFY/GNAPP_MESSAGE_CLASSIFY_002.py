@@ -12,24 +12,19 @@ class GNAppMessageClassify2(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["message_table"],
+            self.widget_click(self.page["device_page"]["message_table"],
                               self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["title"],
-                              self.page["home_message_page"]["setting"],
+            self.widget_click(self.page["home_message_page"]["setting"],
                               self.page["message_setting_page"]["title"])
 
-            self.widget_click(self.page["message_setting_page"]["title"],
-                              self.page["message_setting_page"]["clear_device"],
+            self.widget_click(self.page["message_setting_page"]["clear_device"],
                               self.page["clear_device_popup"]["title"])
 
-            self.widget_click(self.page["clear_device_popup"]["title"],
-                              self.page["clear_device_popup"]["confirm"],
+            self.widget_click(self.page["clear_device_popup"]["confirm"],
                               self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["title"],
-                              self.page["home_message_page"]["device"],
+            self.widget_click(self.page["home_message_page"]["device"],
                               self.page["home_message_page"]["title"])
 
             element = self.wait_widget(self.page["home_message_page"]["device"])
@@ -38,8 +33,7 @@ class GNAppMessageClassify2(LaunchAppGN):
             if state is True:
                 self.wait_widget(self.page["home_message_page"]["no_message"])
             else:
-                self.widget_click(self.page["home_message_page"]["title"],
-                                  self.page["home_message_page"]["device"],
+                self.widget_click(self.page["home_message_page"]["device"],
                                   self.page["home_message_page"]["title"])
 
             self.case_over(True)

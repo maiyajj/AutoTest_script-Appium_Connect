@@ -24,8 +24,7 @@ class ToLoginPageJD(object):
         try:
             self.wait_widget(self.page["update_popup"]["title"], 1, 0.5)
             self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
-            self.widget_click(self.page["update_popup"]["title"],
-                              self.page["update_popup"]["cancel"],
+            self.widget_click(self.page["update_popup"]["cancel"],
                               self.page["god_page"]["title"],
                               log_record=0)
             self.logger.info(u"[APP_INF] 取消更新")
@@ -36,46 +35,71 @@ class ToLoginPageJD(object):
         try:
             self.wait_widget(self.page["close_ad_popup"]["title"], 1, 0.5)
             self.logger.info(u"[APP_INF] 页面有广告，关闭广告")
-            self.widget_click(self.page["close_ad_popup"]["title"],
-                              self.page["close_ad_popup"]["confirm"],
+            self.widget_click(self.page["close_ad_popup"]["confirm"],
                               self.page["app_home_page"]["title"],
                               log_record=0)
         except TimeoutException:
             pass
+    def no_login_to_login(self):
+        try:
+            self.wait_widget(self.page["app_home_page"]["no_device"], 1, 0.5)
+            self.widget_click(self.page["app_home_page"]["account_setting"],
+                              self.page["account_setting_page"]["title"],
+                              log_record=0)
+            self.wait_widget(self.page["account_setting_page"]["to_login"], 1, 0.5)
+            self.logger.info(u"[APP_INF] APP当前页面为未登录的主页面,等待退出")
+            try:
+                self.widget_click(self.page["app_home_page"]["account_setting"],
+                                  self.page["account_setting_page"]["title"],
+                                  log_record=0)
 
+                self.widget_click(self.page["account_setting_page"]["help_setting"],
+                                  self.page["help_setting_page"]["title"],
+                                  log_record=0)
+
+                self.driver.swipe(100, 500, 100, 100, 0)
+                self.widget_click(self.page["help_setting_page"]["logout"],
+                                  self.page["logout_popup"]["title"],
+                                  log_record=0)
+
+                self.widget_click(self.page["logout_popup"]["confirm"],
+                                  self.page["login_page"]["title"],
+                                  log_record=0)
+            except TimeoutException:
+                self.logger.info(u"[APP_INF] APP进入登录页面失败，正在重新启动")
+                self.driver.close_app()
+                self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
+                raise WebDriverException()
+        except TimeoutException:
+            pass
     def device_to_login(self):
-        pass
-        # try:
-        #     self.wait_widget(self.page["app_home_page"]["title"], 1, 0.5)
-        #     self.logger.info(u"[APP_INF] APP当前页面为主页面,等待退出")
-        #     try:
-        #         self.widget_click(self.page["app_home_page"]["title"],
-        #                           self.page["app_home_page"]["account_setting"],
-        #                           self.page["account_setting_page"]["title"],
-        #                           log_record=0)
-        #
-        #         self.widget_click(self.page["account_setting_page"]["title"],
-        #                           self.page["account_setting_page"]["help_setting"],
-        #                           self.page["help_setting_page"]["title"],
-        #                           log_record=0)
-        #
-        #         self.driver.swipe(100, 500, 100, 100, 0)
-        #         self.widget_click(self.page["help_setting_page"]["title"],
-        #                           self.page["help_setting_page"]["logout"],
-        #                           self.page["logout_popup"]["title"],
-        #                           log_record=0)
-        #
-        #         self.widget_click(self.page["logout_popup"]["title"],
-        #                           self.page["logout_popup"]["confirm"],
-        #                           self.page["login_page"]["title"],
-        #                           log_record=0)
-        #     except TimeoutException:
-        #         self.logger.info(u"[APP_INF] APP进入登录页面失败，正在重新启动")
-        #         self.driver.close_app()
-        #         self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
-        #         raise WebDriverException()
-        # except TimeoutException:
-        #     pass
+        try:
+            self.wait_widget(self.page["app_home_page"]["title"], 1, 0.5)
+            self.logger.info(u"[APP_INF] APP当前页面为主页面,等待退出")
+            try:
+                self.widget_click(self.page["app_home_page"]["account_setting"],
+                                  self.page["account_setting_page"]["title"],
+                                  log_record=0)
+
+                self.widget_click(self.page["account_setting_page"]["help_setting"],
+                                  self.page["help_setting_page"]["title"],
+                                  log_record=0)
+
+                self.driver.swipe(100, 500, 100, 100, 0)
+                self.widget_click(self.page["help_setting_page"]["logout"],
+                                  self.page["logout_popup"]["title"],
+                                  log_record=0)
+
+                self.widget_click(self.page["logout_popup"]["confirm"],
+                                  self.page["login_page"]["title"],
+                                  log_record=0)
+            except TimeoutException:
+                self.logger.info(u"[APP_INF] APP进入登录页面失败，正在重新启动")
+                self.driver.close_app()
+                self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
+                raise WebDriverException()
+        except TimeoutException:
+            pass
 
     def case(self):
         # 用例动作

@@ -12,16 +12,13 @@ class JDAppSmartLink1(LaunchAppJD):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["app_home_page"]["title"],
-                              self.page["app_home_page"]["add_device"],
+            self.widget_click(self.page["app_home_page"]["add_device"],
                               self.page["add_device_method_page"]["title"])
 
-            self.widget_click(self.page["add_device_method_page"]["title"],
-                              self.page["add_device_method_page"]["history"],
+            self.widget_click(self.page["add_device_method_page"]["history"],
                               self.page["add_history_list_page"]["title"])
 
-            self.widget_click(self.page["add_history_list_page"]["title"],
-                              self.page["add_history_list_page"]["y201J"],
+            self.widget_click(self.page["add_history_list_page"]["y201J"],
                               self.page["add_specification_page"]["title"])
 
             while True:
@@ -30,13 +27,11 @@ class JDAppSmartLink1(LaunchAppJD):
                     break
                 else:
                     time.sleep(1)
-            self.widget_click(self.page["add_specification_page"]["title"],
-                              self.page["add_specification_page"]["next"],
+            self.widget_click(self.page["add_specification_page"]["next"],
                               self.page["input_wifi_password_page"]["title"])
 
             self.show_pwd(self.wait_widget(self.page["input_wifi_password_page"]["check_box"]))
-            pwd = self.widget_click(self.page["input_wifi_password_page"]["title"],
-                                    self.page["input_wifi_password_page"]["password"],
+            pwd = self.widget_click(self.page["input_wifi_password_page"]["password"],
                                     self.page["input_wifi_password_page"]["title"])
 
             data = conf["wifi_pwd"]
@@ -46,8 +41,7 @@ class JDAppSmartLink1(LaunchAppJD):
             self.logger.info(u'[APP_INPUT] ["wifi密码"] input success')
             time.sleep(0.5)
 
-            self.widget_click(self.page["input_wifi_password_page"]["title"],
-                              self.page["input_wifi_password_page"]["confirm"],
+            self.widget_click(self.page["input_wifi_password_page"]["confirm"],
                               self.page["search_device_loading_page"]["title"])
 
             start_time = time.time()
@@ -76,38 +70,32 @@ class JDAppSmartLink1(LaunchAppJD):
                     if time.time() > end_time:
                         raise TimeoutException()
 
-            self.widget_click(self.page["search_device_success_page"]["title"],
-                              self.page["search_device_success_page"]["confirm"],
+            self.widget_click(self.page["search_device_success_page"]["confirm"],
                               self.page["control_device_page"]["title"])
 
             i = 5
             while i < 0:
                 try:
                     self.wait_widget(self.page["control_device_page"]["power_on"], 1, 0.5)
-                    self.widget_click(self.page["control_device_page"]["title"],
-                                      self.page["control_device_page"]["power_button"],
+                    self.widget_click(self.page["control_device_page"]["power_button"],
                                       self.page["control_device_page"]["power_off"])
                 except TimeoutException:
                     pass
                 try:
                     self.wait_widget(self.page["control_device_page"]["power_off"], 1, 0.5)
-                    self.widget_click(self.page["control_device_page"]["title"],
-                                      self.page["control_device_page"]["power_button"],
+                    self.widget_click(self.page["control_device_page"]["power_button"],
                                       self.page["control_device_page"]["power_on"])
                 except TimeoutException:
                     pass
                 i -= 1
 
-            self.widget_click(self.page["control_device_page"]["title"],
-                              self.page["control_device_page"]["device_info"],
+            self.widget_click(self.page["control_device_page"]["device_info"],
                               self.page["device_info_page"]["title"])
 
-            self.widget_click(self.page["device_info_page"]["title"],
-                              self.page["device_info_page"]["unbind"],
+            self.widget_click(self.page["device_info_page"]["unbind"],
                               self.page["unbind_device_popup"]["title"])
 
-            self.widget_click(self.page["unbind_device_popup"]["title"],
-                              self.page["unbind_device_popup"]["confirm"],
+            self.widget_click(self.page["unbind_device_popup"]["confirm"],
                               self.page["app_home_page"]["title"])
 
             self.case_over(True)

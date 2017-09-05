@@ -12,8 +12,7 @@ class GNAppLogin4(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            user_name = self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["username"],
+            user_name = self.widget_click(self.page["login_page"]["username"],
                                           self.page["login_page"]["title"])
 
             # 发送数据
@@ -25,8 +24,7 @@ class GNAppLogin4(LaunchAppGN):
             time.sleep(0.5)
 
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-            login_pwd = self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["password"],
+            login_pwd = self.widget_click(self.page["login_page"]["password"],
                                           self.page["login_page"]["title"])
 
             data = self.user["login_pwd"]
@@ -36,8 +34,7 @@ class GNAppLogin4(LaunchAppGN):
             self.logger.info(u'[APP_INPUT] ["密码"] input success')
             time.sleep(0.5)
 
-            self.widget_click(self.page["login_page"]["title"],
-                              self.page["login_page"]["login_button"],
+            self.widget_click(self.page["login_page"]["login_button"],
                               self.page["device_page"]["title"])
 
             self.driver.close_app()  # 关闭App
@@ -51,8 +48,7 @@ class GNAppLogin4(LaunchAppGN):
                 try:
                     self.wait_widget(self.page["update_popup"]["title"])
                     self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
-                    self.widget_click(self.page["update_popup"]["title"],
-                                      self.page["update_popup"]["cancel"],
+                    self.widget_click(self.page["update_popup"]["cancel"],
                                       self.page["god_page"]["title"],
                                       log_record=0)
                     self.logger.info(u"[APP_INF] 取消更新")
@@ -61,8 +57,7 @@ class GNAppLogin4(LaunchAppGN):
                 try:
                     self.wait_widget(self.page["login_popup"]["title"])
                     self.logger.info(u"[APP_INF] APP需要重新登陆，等待重新登录")
-                    self.widget_click(self.page["login_popup"]["title"],
-                                      self.page["login_popup"]["confirm"],
+                    self.widget_click(self.page["login_popup"]["confirm"],
                                       self.page["login_page"]["title"],
                                       log_record=0)
                 except TimeoutException:

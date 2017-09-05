@@ -12,8 +12,7 @@ class GNAppLogin6(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            user_name = self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["username"],
+            user_name = self.widget_click(self.page["login_page"]["username"],
                                           self.page["login_page"]["title"])
 
             # 发送数据
@@ -27,8 +26,7 @@ class GNAppLogin6(LaunchAppGN):
             count = 5
             while count > 0:
                 self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-                login_pwd = self.widget_click(self.page["login_page"]["title"],
-                                              self.page["login_page"]["password"],
+                login_pwd = self.widget_click(self.page["login_page"]["password"],
                                               self.page["login_page"]["title"])
 
                 data = str(conf["err_pwd"]).decode('hex').replace(" ", "")
@@ -37,8 +35,7 @@ class GNAppLogin6(LaunchAppGN):
                 self.logger.info(u'[APP_INPUT] ["错误密码"] input success')
                 time.sleep(0.5)
 
-                self.widget_click(self.page["login_page"]["title"],
-                                  self.page["login_page"]["login_button"],
+                self.widget_click(self.page["login_page"]["login_button"],
                                   self.page["god_page"]["title"])
 
                 while True:
@@ -50,8 +47,7 @@ class GNAppLogin6(LaunchAppGN):
                 count -= 1
 
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-            login_pwd = self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["password"],
+            login_pwd = self.widget_click(self.page["login_page"]["password"],
                                           self.page["login_page"]["title"])
 
             data = self.user["login_pwd"]
@@ -76,8 +72,7 @@ class GNAppLogin6(LaunchAppGN):
 
             self.wait_pwd_timeout()
             self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
-            login_pwd = self.widget_click(self.page["login_page"]["title"],
-                                          self.page["login_page"]["password"],
+            login_pwd = self.widget_click(self.page["login_page"]["password"],
                                           self.page["login_page"]["title"])
 
             data = self.user["login_pwd"]

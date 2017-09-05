@@ -12,16 +12,13 @@ class GNAppAccountSettings7(LaunchAppGN):
     # 用例动作
     def case(self):
         try:
-            self.widget_click(self.page["device_page"]["title"],
-                              self.page["device_page"]["user_image"],
+            self.widget_click(self.page["device_page"]["user_image"],
                               self.page["personal_settings_page"]["title"])
 
-            self.widget_click(self.page["personal_settings_page"]["title"],
-                              self.page["personal_settings_page"]["account_setting"],
+            self.widget_click(self.page["personal_settings_page"]["account_setting"],
                               self.page["account_setting_page"]["title"])
 
-            nickname = self.widget_click(self.page["account_setting_page"]["title"],
-                                         self.page["account_setting_page"]["nickname"],
+            nickname = self.widget_click(self.page["account_setting_page"]["nickname"],
                                          self.page["change_nickname_page"]["title"])
             nickname.clear()
             # 全选
