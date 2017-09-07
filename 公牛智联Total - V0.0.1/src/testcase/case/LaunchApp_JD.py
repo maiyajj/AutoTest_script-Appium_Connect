@@ -244,7 +244,7 @@ class LaunchAppJD(object):
                     self.ac.send_keys(login_pwd, data, self.driver)
                     try:
                         self.widget_click(self.page["login_page"]["login_button"],
-                                          self.page["app_home_page"]["title"])
+                                          self.page["account_setting_page"]["title"])
                         if x == 0:
                             self.user["login_pwd"] = precise_pwd[0]
                             self.user["new_pwd"] = precise_pwd[1]

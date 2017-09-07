@@ -20,7 +20,13 @@ class WidgetCheckUnit(Exception):
         self.logger = logger
         self.page = page_element
 
-    def wait_widget(self, main_widget=None, timeout=3.0, interval=1.0):
+    def wait_widget(self, main_widget, timeout=3.0, interval=1.0, plural=False, driver="find_element_in_driver"):
+        if driver == "find_element_in_driver":
+            parent_element = self.driver
+        else:
+            parent_element = driver
+        if not isinstance(main_widget, list):
+            raise TypeError("main_widget must be list! [widget, locate method...]")
         locate = main_widget[1]
         widget = main_widget[0]
         popup_text = ""
@@ -35,17 +41,32 @@ class WidgetCheckUnit(Exception):
             try:
                 time.sleep(0.5)
                 if locate == "id":
-                    element = self.driver.find_element_by_id(widget)
+                    if plural == False:
+                        element = parent_element.find_element_by_id(widget)
+                    else:
+                        element = parent_element.find_elements_by_id(widget)
                 elif locate == "name":
-                    element = self.driver.find_element_by_name(widget)
+                    if plural == False:
+                        element = parent_element.find_element_by_name(widget)
+                    else:
+                        element = parent_element.find_elements_by_name(widget)
                 elif locate == "class":
-                    element = self.driver.find_element_by_class_name(widget)
+                    if plural == False:
+                        element = parent_element.find_element_by_class_name(widget)
+                    else:
+                        element = parent_element.find_elements_by_class_name(widget)
                 elif locate == "xpath":
-                    element = self.driver.find_element_by_xpath(widget)
+                    if plural == False:
+                        element = parent_element.find_element_by_xpath(widget)
+                    else:
+                        element = parent_element.find_elements_by_xpath(widget)
                 elif locate == "activity":
-                    element = self.driver.wait_activity(widget)
+                    element = parent_element.wait_activity(widget)
                 elif locate == "accessibility_id":
-                    element = self.driver.find_element_by_accessibility_id(widget)
+                    if plural == False:
+                        element = parent_element.find_element_by_accessibility_id(widget)
+                    else:
+                        element = parent_element.find_elements_by_accessibility_id(widget)
                 else:
                     raise KeyError('find_element_by_%s must in'
                                    '["id", "name", "class", "xpath", "activity", "accessibility_id"' % locate)
@@ -60,8 +81,8 @@ class WidgetCheckUnit(Exception):
                 if time.time() > end_time:
                     raise TimeoutException()
 
-    def widget_click(self,operate_widget=None, wait_page=None, wait_time1=3, wait_time2=3, timeout=7,
-                     interval=1, log_record=1):
+    def widget_click(self, operate_widget=None, wait_page=None, wait_time1=3, wait_time2=3, timeout=7, interval=1,
+                     log_record=1, operate_driver="find_element_in_driver", wait_driver="find_element_in_driver"):
         """
             Using click operation widgets - 使用点击方式操作控件
             widget_click(self, operate_widget=None, wait_page=None,
@@ -97,7 +118,7 @@ class WidgetCheckUnit(Exception):
             try:
                 flag = 0
                 # self.logger.info('[APP_CLICK] check_page ["%s"] success' % check_page[2])
-                widget = self.wait_widget(operate_widget, wait_time1, interval)
+                widget = self.wait_widget(operate_widget, wait_time1, interval, driver=operate_driver)
                 widget.click()
                 while True:
                     try:
@@ -108,7 +129,7 @@ class WidgetCheckUnit(Exception):
                     self.logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
                 time.sleep(0.1)
                 flag = 1
-                self.wait_widget(wait_page, wait_time2, interval)
+                self.wait_widget(wait_page, wait_time2, interval, driver=wait_driver)
                 # self.logger.info('[APP_CLICK] wait_page ["%s"] success' % wait_page[2])
                 return widget
             except TimeoutException:

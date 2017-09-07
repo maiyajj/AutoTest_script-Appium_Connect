@@ -1,7 +1,4 @@
 # coding=utf-8
-from src.utils.ReadConf import *
-
-
 class MainPageWidgetAndroidJD(object):
     # 万能页面
     def god_page(self):
@@ -155,21 +152,11 @@ class MainPageWidgetAndroidJD(object):
 
     def search_device_success_page(self):
         # 搜索到设备MAC
-        mac = conf["MAC"]
-        ListView = "//android.widget.ListView"
-        LinearLayout = "/android.widget.LinearLayout"
-        TextView = "/android.widget.TextView"
-        TextValue = "[@text='%s']" % mac
-        self.search_device_success = "".join((ListView, LinearLayout, LinearLayout,
-                                              LinearLayout, TextView, TextValue))
-        self.confirm = "".join((ListView, LinearLayout, LinearLayout, TextView))
         d = {}
         # 标题
-        d["title"] = [u"完成", "name", u"搜索到设备"]
+        d["title"] = ["com.jd.smart:id/tv_desc", "id", u"有设备出现"]
         # 确认
-        d["confirm"] = [self.confirm, "xpath", u"确定"]
-        # 搜索到设备，不一定是待配置设备
-        d["device"] = [self.search_device_success, "xpath", u"搜索设备超时"]
+        d["confirm"] = [u"使用", "name", u"确定"]
         return d
 
     # 搜索设备超时
@@ -252,7 +239,7 @@ class PopupWidgetAndroidJD(object):
     def unbind_device_popup(self):
         d = {}
         # 删除设备弹窗
-        d["title"] = ["com.jd.smart:id/confirm", "id", u"删除设备按钮", {"text": u"确定要删除设备吗？"}]
+        d["title"] = ["com.jd.smart:id/cancel", "id", u"删除设备按钮"]
         # 确认
         d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
         # 取消

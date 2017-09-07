@@ -92,12 +92,17 @@ class ToDevicePageJD(object):
                         self.widget_click(self.page["login_page"]["login_button"],
                                           self.page["app_home_page"]["title"])
                 else:
-                    self.widget_click(self.page["app_home_page"]["add_device"],
-                                      self.page["app_home_page"]["title"])
-                    if self.ac.get_attribute(element, "is_displayed") == False:
-                        pass
-                    else:
-                        raise TimeoutException()
+                    px = self.driver.get_window_size()
+                    end_time = time.time() + 2
+                    while True:
+                        self.driver.tap([(px["width"] - 1, px["height"] - 1)])
+                        time.sleep(1)
+                        if self.ac.get_attribute(element, "is_displayed") == "false" and self.ac.get_attribute(
+                                self.wait_widget(self.page["app_home_page"]["title"]), "is_displayed") == "true":
+                            break
+                        else:
+                            if time.time() > end_time:
+                                raise TimeoutException()
             except TimeoutException:
                 self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
                 self.driver.close_app()

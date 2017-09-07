@@ -94,14 +94,14 @@ class MainFunc(object):
         return kwargs
 
     def send_mail(self):
+        file_path = os.path.join(ShellCommand().set_appium_log_addr(), "temp.log")
         while True:
             try:
-                file_path = os.path.join(ShellCommand().set_appium_log_addr(), "temp.log")
                 with open(file_path, "r") as files:
                     parent_path = files.read()
                     os.remove(file_path)
                     break
-            except OSError:
+            except BaseException:
                 time.sleep(1)
         while True:
             now_time = str(time.strftime("%Y-%m-%d %H:%M:%S"))

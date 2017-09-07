@@ -21,12 +21,7 @@ class JDAppSmartLink1(LaunchAppJD):
             self.widget_click(self.page["add_history_list_page"]["y201J"],
                               self.page["add_specification_page"]["title"])
 
-            while True:
-                state = self.ac.get_attribute(self.wait_widget(self.page["add_specification_page"]["next"]), "enabled")
-                if state == "true":
-                    break
-                else:
-                    time.sleep(1)
+            time.sleep(4)
             self.widget_click(self.page["add_specification_page"]["next"],
                               self.page["input_wifi_password_page"]["title"])
 
@@ -59,22 +54,27 @@ class JDAppSmartLink1(LaunchAppJD):
                     time.sleep(1)
                 try:
                     self.wait_widget(self.page["search_device_success_page"]["title"], 1, 0.5)
-                    break
-                except TimeoutException:
-                    time.sleep(1)
-                try:
-                    self.wait_widget(self.page["search_device_success_page"]["title"], 1, 0.5)
-                    self.wait_widget(self.page["search_device_success_page"]["device"])
-                    break
+                    try:
+                        while True:
+                            element = self.wait_widget(self.page["search_device_success_page"]["title"], 1, 0.5, True)
+                            for i in element:
+                                if self.ac.get_attribute(i, "name") == conf["MAC"]:
+                                    self.widget_click(self.page["search_device_success_page"]["confirm"],
+                                                      self.page["control_device_page"]["title"],
+                                                      operate_driver=i.parent)
+                                    raise ValueError()
+                                else:
+                                    self.driver.swipe(600, 1100, 600, 900, 0)
+                                    time.sleep(1)
+                    except ValueError:
+                        break
                 except TimeoutException:
                     if time.time() > end_time:
                         raise TimeoutException()
+                    time.sleep(1)
 
-            self.widget_click(self.page["search_device_success_page"]["confirm"],
-                              self.page["control_device_page"]["title"])
-
-            i = 5
-            while i < 0:
+            i = 3
+            while i > 0:
                 try:
                     self.wait_widget(self.page["control_device_page"]["power_on"], 1, 0.5)
                     self.widget_click(self.page["control_device_page"]["power_button"],
