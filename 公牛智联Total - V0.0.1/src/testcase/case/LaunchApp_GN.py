@@ -310,24 +310,14 @@ class LaunchAppGN(object):
         return driver
 
     def show_pwd(self, element, bool=True):
-        if bool:
-            while True:
-                try:
-                    if self.ac.get_attribute(element, "checked") == "true":
-                        break
-                    else:
-                        element.click()
-                except BaseException:
-                    self.debug.error(traceback.format_exc())
-        else:
-            while True:
-                try:
-                    if self.ac.get_attribute(element, "checked") == "false":
-                        break
-                    else:
-                        element.click()
-                except BaseException:
-                    self.debug.error(traceback.format_exc())
+        while True:
+            try:
+                if self.ac.get_attribute(element, "checked") == str(bool).lower():
+                    break
+                else:
+                    element.click()
+            except BaseException:
+                self.debug.error(traceback.format_exc())
 
     def case_over(self, success):
         self.success = success

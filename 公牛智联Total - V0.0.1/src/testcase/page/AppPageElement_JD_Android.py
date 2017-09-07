@@ -18,7 +18,7 @@ class MainPageWidgetAndroidJD(object):
         # 帮助与设置
         d["help_setting"] = ["com.jd.smart:id/iv_setting", "id", u"帮助与设置"]
         # 点击登录
-        d["to_login"] = [u"点击登录", "name", u"点击登录"]
+        d["username"] = ["com.jd.smart:id/tv_username", "id", u"用户名"]
         return d
 
     # 帮助与设置
@@ -38,13 +38,13 @@ class MainPageWidgetAndroidJD(object):
         # 标题
         d["title"] = ["com.jd.smart:id/login_title_icon", "id", u"登录页面"]
         # 用户名
-        d["user_name"] = ["com.jd.smart:id/username", "id", u"用户名输入框"]
+        d["username"] = ["com.jd.smart:id/username", "id", u"用户名输入框"]
         # 密码
         d["password"] = ["com.jd.smart:id/password", "id", u"密码输入框"]
         # 显示/关闭密码
-        d["check_box"] = ["com.jd.smart:id/eye", "id", u"退出登录"]
+        d["check_box"] = ["com.jd.smart:id/eye", "id", u"显示/关闭密码"]
         # 登录
-        d["login_button"] = ["com.jd.smart:id/button_login", "id", u"退出登录"]
+        d["login_button"] = ["com.jd.smart:id/button_login", "id", u"登录按钮"]
         return d
 
     # APP主页面

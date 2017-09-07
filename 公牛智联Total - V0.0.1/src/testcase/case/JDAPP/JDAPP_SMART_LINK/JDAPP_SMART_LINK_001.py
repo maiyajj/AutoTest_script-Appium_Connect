@@ -30,7 +30,7 @@ class JDAppSmartLink1(LaunchAppJD):
             self.widget_click(self.page["add_specification_page"]["next"],
                               self.page["input_wifi_password_page"]["title"])
 
-            self.show_pwd(self.wait_widget(self.page["input_wifi_password_page"]["check_box"]))
+            self.show_pwd(self.wait_widget(self.page["input_wifi_password_page"]["check_box"]), param="checked")
             pwd = self.widget_click(self.page["input_wifi_password_page"]["password"],
                                     self.page["input_wifi_password_page"]["title"])
 

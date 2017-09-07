@@ -46,57 +46,71 @@ class ToDevicePageJD(object):
             pass
 
     def login_to_device(self):
-        pass
-        # try:
-        #     self.wait_widget(self.page["login_page"]["title"], 1, 0.5)
-        #     try:
-        #         self.logger.info(u"[APP_INF] APP当前页面为登录页面,登录")
-        #         user_name = self.widget_click(self.page["login_page"]["username"],
-        #                                       self.page["login_page"]["title"])
-        #
-        #         # 发送数据
-        #         data = self.user["user_name"]
-        #         data = str(data).decode('hex').replace(" ", "")
-        #         user_name.clear()
-        #         self.ac.send_keys(user_name, data, self.driver)
-        #         self.logger.info(u'[APP_INPUT] ["重新登陆用户名"] input success')
-        #         time.sleep(0.5)
-        #
-        #         self.show_pwd()
-        #         login_pwd = self.widget_click(self.page["login_page"]["password"],
-        #                                       self.page["login_page"]["title"])
-        #
-        #         data = self.user["login_pwd"]
-        #         data = str(data).decode('hex').replace(" ", "")
-        #         login_pwd.clear()
-        #         self.ac.send_keys(login_pwd, data, self.driver)
-        #         self.logger.info(u'[APP_INPUT] ["重新输入登录密码"] input success')
-        #         try:
-        #             self.widget_click(self.page["login_page"]["login_button"],
-        #                               self.page["app_home_page"]["title"])
-        #
-        #         except TimeoutException:
-        #             i = 1
-        #             while i <= 31:
-        #                 time.sleep(10)
-        #                 self.driver.tap([(10, 10)])
-        #                 self.logger("time sleep %sS" % (i * 10))
-        #                 i += 1
-        #             self.widget_click(self.page["login_page"]["login_button"],
-        #                               self.page["app_home_page"]["title"])
-        #     except TimeoutException:
-        #         self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
-        #         self.driver.close_app()
-        #         self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
-        #         raise WebDriverException(u"[APP_INF] APP进入设备主页失败，退出")
-        # except TimeoutException:
-        #     pass
+        try:
+            self.wait_widget(self.page["app_home_page"]["no_device"], 1, 0.5)
+            self.widget_click(self.page["app_home_page"]["account_setting"],
+                              self.page["account_setting_page"]["title"],
+                              log_record=0)
+            try:
+                element = self.wait_widget(self.page["account_setting_page"]["username"])
+                if self.ac.get_attribute(element, "name") == u'点击登录':
+                    self.logger.info(u"[APP_INF] 当前APP未登录，开始重新登录")
+                    self.widget_click(self.page["account_setting_page"]["username"],
+                                      self.page["login_page"]["title"],
+                                      log_record=0)
+                    user_name = self.widget_click(self.page["login_page"]["username"],
+                                                  self.page["login_page"]["title"])
+
+                    # 发送数据
+                    data = self.user["user_name"]
+                    data = str(data).decode('hex').replace(" ", "")
+                    user_name.clear()
+                    self.ac.send_keys(user_name, data, self.driver)
+                    self.logger.info(u'[APP_INPUT] ["重新登陆用户名"] input success')
+                    time.sleep(0.5)
+
+                    self.show_pwd()
+                    login_pwd = self.widget_click(self.page["login_page"]["password"],
+                                                  self.page["login_page"]["title"])
+
+                    data = self.user["login_pwd"]
+                    data = str(data).decode('hex').replace(" ", "")
+                    login_pwd.clear()
+                    self.ac.send_keys(login_pwd, data, self.driver)
+                    self.logger.info(u'[APP_INPUT] ["重新输入登录密码"] input success')
+                    try:
+                        self.widget_click(self.page["login_page"]["login_button"],
+                                          self.page["app_home_page"]["title"])
+
+                    except TimeoutException:
+                        i = 1
+                        while i <= 31:
+                            time.sleep(10)
+                            self.driver.tap([(10, 10)])
+                            self.logger("time sleep %sS" % (i * 10))
+                            i += 1
+                        self.widget_click(self.page["login_page"]["login_button"],
+                                          self.page["app_home_page"]["title"])
+                else:
+                    self.widget_click(self.page["app_home_page"]["add_device"],
+                                      self.page["app_home_page"]["title"])
+                    if self.ac.get_attribute(element, "is_displayed") == False:
+                        pass
+                    else:
+                        raise TimeoutException()
+            except TimeoutException:
+                self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
+                self.driver.close_app()
+                self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
+                raise WebDriverException(u"[APP_INF] APP进入设备主页失败，退出")
+        except TimeoutException:
+            pass
 
     def show_pwd(self):
         try:
             element = self.wait_widget(self.page["login_page"]["check_box"])
             while True:
-                if self.ac.get_attribute(element, "checked") == "true":
+                if self.ac.get_attribute(self.wait_widget(self.page["login_page"]["password"]), "name") != "":
                     break
                 else:
                     element.click()

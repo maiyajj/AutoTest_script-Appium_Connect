@@ -1,6 +1,6 @@
 # coding=utf-8
-from src.testcase.case.JDAPP.INPUT_CASE.JDAppSmartLink import *
-from src.testcase.common.AppInit import *
+from src.testcase.case.JDAPP.INPUT_CASE.JDAppInputCase import *
+# from src.testcase.common.AppInit import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
 from src.utils.OutputReport import *
@@ -109,6 +109,7 @@ class WaitCaseJD(object):
         database["case_location"] = self.No
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])
+            # self.write_report(JDAppLogin1)  # 1965, 修改密码页面，返回"按钮功能检查"
             self.write_report(JDAppSmartLink1)  # 1965, 修改密码页面，返回"按钮功能检查"
 
             database["program_loop_time"] += 1
