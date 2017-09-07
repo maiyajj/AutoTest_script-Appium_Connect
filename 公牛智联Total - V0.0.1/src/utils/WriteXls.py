@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import datetime
-import os
-import time
 
 from xlwt import *
+
 from src.utils.ShellCommand import *
 
 '''
@@ -132,8 +131,6 @@ class WriteXls(object):
         self.sheet.write(self.result, 0, u"执行结果：", self.easyxf9)
         self.sheet.write_merge(self.result, self.result, 1, 7, u"通过 0； 失败 0； 执行错误 0； 人工检查 0；", self.easyxf2)
 
-
-
         self.sheet.write_merge(8, 8, 0, 7, "", self.easyxf7)
         self.sheet.write_merge(9, 9, 0, 7, u"用例执行情况：", self.easyxf7)
         self.sheet.write_merge(10, 10, 0, 7, "", self.easyxf7)
@@ -211,4 +208,3 @@ class WriteXls(object):
         # 写入运行时长
         with open(r"./runTime.log", "w") as run_time:
             run_time.write(str(continue_time))
-

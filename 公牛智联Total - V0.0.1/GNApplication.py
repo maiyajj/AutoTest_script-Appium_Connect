@@ -2,7 +2,9 @@
 from multiprocessing import *
 
 import psutil
+
 from src.testcase.case.WaitCase import *
+from src.testcase.common.AppInit import *
 from src.testcase.suite.ScanCaseName import *
 from src.utils.LaunchAppiumServices import *
 from src.utils.SendMail import *
@@ -118,8 +120,8 @@ if __name__ == '__main__':
     proc = Process(target=mf.check_proc)
     # proc.start()
     scan_case = Process(target=scan_case_name)
-    # scan_case.start()
-    # scan_case.join()
+    scan_case.start()
+    scan_case.join()
     mail = Process(target=mf.send_mail)
     mail.start()
 

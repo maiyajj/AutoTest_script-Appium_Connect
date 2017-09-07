@@ -1,6 +1,5 @@
 # coding=utf-8
 from src.testcase.case.GNAPP.INPUT_CASE.GNAppInputCase import *
-from src.testcase.common.AppInit import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
 from src.utils.OutputReport import *
