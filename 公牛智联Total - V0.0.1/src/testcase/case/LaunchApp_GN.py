@@ -1,6 +1,5 @@
 # coding=utf-8
 import inspect
-import traceback
 from httplib import BadStatusLine
 from urllib2 import URLError
 
@@ -67,7 +66,6 @@ def decor_init_app_gn(func):
 
 def decor_launch_app_gn(func):
     def wrapper(self, page_login):
-        self.driver = self.return_driver()
         self.debug.info("basename:%s" % self.basename)
         self.data_statistics(self.zentao_id)
         i = 0
@@ -88,13 +86,13 @@ def decor_launch_app_gn(func):
                         ToDevicePage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到设备主页面等待
                         break
                     elif page_login is None:
-                        pass
                         break
                     i = 0
                 except BaseException:
                     i += 1
                     if i == 3:
                         i = 0
+                        print "i", i
                         raise WebDriverException(traceback.format_exc())
             except BaseException:
                 self.case_over("unknown")
@@ -118,11 +116,12 @@ def case_run_gn(bool):
                 # battery = self.wait_widget(self.page["god_page"]["battery"], 3, 1).get_attribute("name")
                 # self.logger.warn(u"手机%s" % battery)
                 self.case()
+                database["unknown"] = 0
             except BaseException:
                 self.debug.error(traceback.format_exc())  # Message: ***
                 self.case_over("unknown")
                 database["unknown"] += 1
-                if database["unknown"] > 1:
+                if database["unknown"] > 2:
                     database["unknown"] = 0
                     self.debug.error("Too many unknown case!:%s" % self.basename)
                     self.reset_port()
@@ -173,21 +172,21 @@ class LaunchAppGN(object):
                     self.debug.info("Kill %s" % i[0])
 
     def http_run_app(self, strong_reboot=False):
-        global driver
         while True:
             try:
                 if strong_reboot == True:
                     if self.device_info["udid"] in self.sc.get_phone_udid():
                         self.reset_port()
+                    else:
+                        self.debug.error("device is disconnected")
                 self.check_appium_launch()
                 try:
                     self.driver.quit()
                     self.debug.warn("driver quit success")
                 except BaseException:
                     self.debug.warn("driver need not quit")
-                driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
-                                          self.device_info["desired_caps"])  # 启动APP
-                self.driver = driver
+                self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
+                                               self.device_info["desired_caps"])  # 启动APP
                 self.init_operate()
                 break
             except WebDriverException:
@@ -198,12 +197,15 @@ class LaunchAppGN(object):
                 break
 
     def check_appium_launch(self):
+        end_time = time.time() + 10
         while True:
             try:
                 self.sc.find_proc_and_pid_by_port(self.port)[0]
             except IndexError:
                 self.debug.info("Appium Sever is death! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
                 time.sleep(1)
+                if time.time() > end_time:
+                    self.http_run_app(True)
             else:
                 self.debug.info("Appium Sever launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
                 break
@@ -271,6 +273,13 @@ class LaunchAppGN(object):
                                   self.device_info["desired_caps"])  # 启动APP
         self.driver = driver
 
+    def return_driver(self):
+        try:
+            print self.driver
+        except AttributeError:
+            self.driver = driver
+        return self.driver
+
     def init_operate(self):
         widget_check_unit = WidgetCheckUnit(self.driver, self.page, self.logger)  # 元素初始化
         self.widget_click = widget_check_unit.widget_click  # 初始化self.widget_click
@@ -306,13 +315,10 @@ class LaunchAppGN(object):
         time.sleep(0.5)
         self.debug.info("launch_app driver(launch_app success)")
 
-    def return_driver(self):
-        return driver
-
-    def show_pwd(self, element, bool=True):
+    def show_pwd(self, element, display=True):
         while True:
             try:
-                if self.ac.get_attribute(element, "checked") == str(bool).lower():
+                if self.ac.get_attribute(element, "checked") == str(display).lower():
                     break
                 else:
                     element.click()

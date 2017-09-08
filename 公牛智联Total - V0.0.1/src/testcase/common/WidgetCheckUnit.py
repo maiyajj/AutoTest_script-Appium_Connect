@@ -1,5 +1,6 @@
 # coding=utf-8
 import time
+import traceback
 
 from selenium.common.exceptions import *
 
@@ -41,29 +42,29 @@ class WidgetCheckUnit(Exception):
             try:
                 time.sleep(0.5)
                 if locate == "id":
-                    if plural == False:
+                    if plural is False:
                         element = parent_element.find_element_by_id(widget)
                     else:
                         element = parent_element.find_elements_by_id(widget)
                 elif locate == "name":
-                    if plural == False:
+                    if plural is False:
                         element = parent_element.find_element_by_name(widget)
                     else:
                         element = parent_element.find_elements_by_name(widget)
                 elif locate == "class":
-                    if plural == False:
+                    if plural is False:
                         element = parent_element.find_element_by_class_name(widget)
                     else:
                         element = parent_element.find_elements_by_class_name(widget)
                 elif locate == "xpath":
-                    if plural == False:
+                    if plural is False:
                         element = parent_element.find_element_by_xpath(widget)
                     else:
                         element = parent_element.find_elements_by_xpath(widget)
                 elif locate == "activity":
                     element = parent_element.wait_activity(widget)
                 elif locate == "accessibility_id":
-                    if plural == False:
+                    if plural is False:
                         element = parent_element.find_element_by_accessibility_id(widget)
                     else:
                         element = parent_element.find_elements_by_accessibility_id(widget)
@@ -75,29 +76,33 @@ class WidgetCheckUnit(Exception):
                         pass
                     else:
                         raise TimeoutException()
-                return element
+                if plural is False:
+                    print element.is_displayed()
+                    if element.is_displayed() is True:
+                        return element
+                    else:
+                        raise NoSuchElementException()
+                else:
+                    return element
             except NoSuchElementException:
                 time.sleep(interval)
                 if time.time() > end_time:
                     raise TimeoutException()
 
-    def widget_click(self, operate_widget=None, wait_page=None, wait_time1=3, wait_time2=3, timeout=7, interval=1,
+    def widget_click(self, operate_widget=None, wait_page=None, wait_time1=3, wait_time2=3, timeout=6, interval=1,
                      log_record=1, operate_driver="find_element_in_driver", wait_driver="find_element_in_driver"):
         """
             Using click operation widgets - 使用点击方式操作控件
-            widget_click(self, operate_widget=None, wait_page=None,
-                         wait_time1=1, wait_time2=1, timeout=10,
-                         interval=1, log_record=1)
+            widget_click(self, operate_widget=None, wait_page=None, wait_time1=1, wait_time2=1, timeout=6, interval=1,
+                         log_record=1, operate_driver="find_element_in_driver", wait_driver="find_element_in_driver")
         Args:
             :param operate_widget: To control operation
                                待操作的控件
             :param wait_page: Check whether the widgets operation is successful
                           检查控件是否操作成功
-            :param wait_time1: check_page——wait_time
-                           check_page操作等待时间，超时报错
-            :param wait_time2: operate_widget——wait_time
+            :param wait_time1: operate_widget——wait_time
                            operate_widget操作等待时间，超时报错
-            :param wait_time3: wait_page——wait_time
+            :param wait_time2: wait_page——wait_time
                            wait_page操作等待时间，超时报错
             :param interval: Polling time
                          轮询时间
@@ -105,8 +110,11 @@ class WidgetCheckUnit(Exception):
                         操作超时
             :param log_record: The flag of record the log
                         是否记录log
-
-        :return FALSE
+            :param operate_driver: not app drier,is node parent's driver
+                        不是启动APP时的driver，是节点的父节点的driver
+            :param wait_driver: 
+                        the same
+        :return element
         """
         if not isinstance(operate_widget, list):
             raise TypeError("operate_widget must be list! [widget_id, type(widget_id)]")
@@ -117,7 +125,6 @@ class WidgetCheckUnit(Exception):
         while True:
             try:
                 flag = 0
-                # self.logger.info('[APP_CLICK] check_page ["%s"] success' % check_page[2])
                 widget = self.wait_widget(operate_widget, wait_time1, interval, driver=operate_driver)
                 widget.click()
                 while True:
@@ -129,9 +136,10 @@ class WidgetCheckUnit(Exception):
                     self.logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
                 time.sleep(0.1)
                 flag = 1
-                self.wait_widget(wait_page, wait_time2, interval, driver=wait_driver)
-                # self.logger.info('[APP_CLICK] wait_page ["%s"] success' % wait_page[2])
-                return widget
+                if self.wait_widget(wait_page, wait_time2, interval, driver=wait_driver).is_displayed() is True:
+                    return widget
+                else:
+                    raise TimeoutException()
             except TimeoutException:
                 time.sleep(interval)
                 if time.time() > end_time:
@@ -148,6 +156,5 @@ class WidgetCheckUnit(Exception):
                                            "[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
                                            % (operate_widget[0], timeout))
             except TypeError:
-                import traceback
                 self.logger.error(traceback.format_exc())
                 return traceback.format_exc()

@@ -18,7 +18,10 @@ class GNAppAccountSettings7(LaunchAppGN):
             self.widget_click(self.page["personal_settings_page"]["account_setting"],
                               self.page["account_setting_page"]["title"])
 
-            nickname = self.widget_click(self.page["account_setting_page"]["nickname"],
+            self.widget_click(self.page["account_setting_page"]["nickname"],
+                              self.page["change_nickname_page"]["title"])
+
+            nickname = self.widget_click(self.page["change_nickname_page"]["nickname"],
                                          self.page["change_nickname_page"]["title"])
             nickname.clear()
             # 全选

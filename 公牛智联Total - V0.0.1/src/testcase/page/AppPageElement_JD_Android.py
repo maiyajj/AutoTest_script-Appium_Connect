@@ -14,7 +14,7 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = ["com.jd.smart:id/iv_avatar", "id", u"账户设置页"]
         # 帮助与设置
         d["help_setting"] = ["com.jd.smart:id/iv_setting", "id", u"帮助与设置"]
-        # 点击登录
+        # 用户名
         d["username"] = ["com.jd.smart:id/tv_username", "id", u"用户名"]
         return d
 
@@ -266,7 +266,7 @@ class PopupWidgetAndroidJD(object):
     def logout_popup(self):
         d = {}
         # 退出登录弹窗
-        d["title"] = ["com.jd.smart:id/title", "id", u"删除设备按钮", {"text": u"确定要退出当前账户吗？"}]
+        d["title"] = ["com.jd.smart:id/title", "id", u"退出登录弹窗", {"text": u"确定要退出当前账户吗？"}]
         # 确认
         d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
         # 取消
