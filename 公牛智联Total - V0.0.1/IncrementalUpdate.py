@@ -514,19 +514,25 @@ def add_notes():
     rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "JDAPP" in filename and "pyc" not in filename:
+            if "APP" in filename and "pyc" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
+                a = -100
                 with open(filepath, "r") as files:
-                    for i in range(1, lines + 1):
-                        if '''@case_run(''' in linecache.getline(filepath, i):
-                            print "*" * 40
-                            print filename, i
-                            print linecache.getline(filepath, i).replace('''LaunchApp_GN''', '''(LaunchAppGN)'''),
-                            files.write(linecache.getline(filepath, i).replace('''@case_run(''', '''@case_run_jd('''))
+                    print linecache.getline(filepath, lines + 1 - 2)
+                    for i in range(1, lines + 1 - 2):
+                        if i == a:
+                            pass
                         else:
-                            files.write(linecache.getline(filepath, i))
+                            if '''def case(self):''' in linecache.getline(filepath, i):
+                                a = i + 1
+                                print "*" * 40
+                                print filename, i
+                                print linecache.getline(filepath, i)
+                                files.write(linecache.getline(filepath, i))
+                            else:
+                                files.write(linecache.getline(filepath, i))
                             # # for i in a:
                             #     filepath = os.path.join(parent,filename)
                             #     with open(filepath, "w") as files:
@@ -553,7 +559,7 @@ def add_notes():
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
-# add_notes()
+add_notes()
 # check_AppPageElement()
 # a = []
 # b = []

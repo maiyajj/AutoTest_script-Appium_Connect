@@ -115,7 +115,10 @@ def case_run_gn(bool):
                 self.launch_app(bool)  # 启动APP
                 # battery = self.wait_widget(self.page["god_page"]["battery"], 3, 1).get_attribute("name")
                 # self.logger.warn(u"手机%s" % battery)
-                self.case()
+                try:
+                    self.case()
+                except TimeoutException:
+                    self.case_over(False)
                 database["unknown"] = 0
             except BaseException:
                 self.debug.error(traceback.format_exc())  # Message: ***

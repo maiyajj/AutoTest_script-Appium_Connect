@@ -11,10 +11,7 @@ class GNAppLogin2(LaunchAppGN):
 
     # 用例动作
     def case(self):
-        try:
-            self.widget_click(self.page["login_page"]["to_find_password"],
-                              self.page["find_password_page"]["title"])
+        self.widget_click(self.page["login_page"]["to_find_password"],
+                          self.page["find_password_page"]["title"])
 
-            self.case_over(True)
-        except TimeoutException:
-            self.case_over(False)
+        self.case_over(True)

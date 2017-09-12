@@ -136,10 +136,8 @@ class WidgetCheckUnit(Exception):
                     self.logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
                 time.sleep(0.1)
                 flag = 1
-                if self.wait_widget(wait_page, wait_time2, interval, driver=wait_driver).is_displayed() is True:
-                    return widget
-                else:
-                    raise TimeoutException()
+                self.wait_widget(wait_page, wait_time2, interval, driver=wait_driver)
+                return widget
             except TimeoutException:
                 time.sleep(interval)
                 if time.time() > end_time:

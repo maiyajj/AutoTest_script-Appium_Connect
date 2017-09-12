@@ -10,10 +10,7 @@ class GNAppLogin1(LaunchAppGN):
         self.zentao_id = 1889  # 禅道ID
 
     def case(self):
-        try:
-            self.widget_click(self.page["login_page"]["to_register"],
-                              self.page["register_page"]["title"])
+        self.widget_click(self.page["login_page"]["to_register"],
+                          self.page["register_page"]["title"])
 
-            self.case_over(True)
-        except TimeoutException:
-            self.case_over(False)
+        self.case_over(True)

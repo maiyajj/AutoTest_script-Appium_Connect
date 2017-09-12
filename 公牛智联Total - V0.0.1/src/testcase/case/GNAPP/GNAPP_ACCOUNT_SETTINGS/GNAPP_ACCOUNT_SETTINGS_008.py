@@ -11,36 +11,33 @@ class GNAppAccountSettings8(LaunchAppGN):
 
     # 用例动作
     def case(self):
-        try:
-            self.widget_click(self.page["device_page"]["user_image"],
-                              self.page["personal_settings_page"]["title"])
+        self.widget_click(self.page["device_page"]["user_image"],
+                          self.page["personal_settings_page"]["title"])
 
-            self.widget_click(self.page["personal_settings_page"]["account_setting"],
-                              self.page["account_setting_page"]["title"])
+        self.widget_click(self.page["personal_settings_page"]["account_setting"],
+                          self.page["account_setting_page"]["title"])
 
-            self.widget_click(self.page["account_setting_page"]["nickname"],
-                              self.page["change_nickname_page"]["title"])
+        self.widget_click(self.page["account_setting_page"]["nickname"],
+                          self.page["change_nickname_page"]["title"])
 
-            nickname = self.widget_click(self.page["change_nickname_page"]["nickname"],
-                                         self.page["change_nickname_page"]["title"])
+        nickname = self.widget_click(self.page["change_nickname_page"]["nickname"],
+                                     self.page["change_nickname_page"]["title"])
 
-            # 全选
-            nickname.clear()
-            self.ac.send_keys(nickname, u"被修改的昵称", self.driver)
-            self.logger.info(u'[APP_INPUT] ["昵称"] input success')
-            time.sleep(0.5)
+        # 全选
+        nickname.clear()
+        self.ac.send_keys(nickname, u"被修改的昵称", self.driver)
+        self.logger.info(u'[APP_INPUT] ["昵称"] input success')
+        time.sleep(0.5)
 
-            self.widget_click(self.page["change_nickname_page"]["commit"],
-                              self.page["account_setting_page"]["title"])
+        self.widget_click(self.page["change_nickname_page"]["commit"],
+                          self.page["account_setting_page"]["title"])
 
-            self.widget_click(self.page["account_setting_page"]["to_return"],
-                              self.page["personal_settings_page"]["title"])
+        self.widget_click(self.page["account_setting_page"]["to_return"],
+                          self.page["personal_settings_page"]["title"])
 
-            element = self.wait_widget(self.page["personal_settings_page"]["nickname"])
-            modified_nickname = self.ac.get_attribute(element, "name")
-            if modified_nickname != u"被修改的昵称":
-                raise TimeoutException()
+        element = self.wait_widget(self.page["personal_settings_page"]["nickname"])
+        modified_nickname = self.ac.get_attribute(element, "name")
+        if modified_nickname != u"被修改的昵称":
+            raise TimeoutException()
 
-            self.case_over(True)
-        except TimeoutException:
-            self.case_over(False)
+        self.case_over(True)

@@ -11,27 +11,24 @@ class GNAppRegister8(LaunchAppGN):
 
     # 用例动作
     def case(self):
-        try:
-            self.widget_click(self.page["login_page"]["to_register"],
-                              self.page["register_page"]["title"])
+        self.widget_click(self.page["login_page"]["to_register"],
+                          self.page["register_page"]["title"])
 
-            self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
-            check_code = self.widget_click(self.page["register_page"]["check_code"],
-                                           self.page["register_page"]["title"])
+        self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
+        check_code = self.widget_click(self.page["register_page"]["check_code"],
+                                       self.page["register_page"]["title"])
 
-            data = u"!@#$%^"
-            check_code.clear()
-            self.ac.send_keys(check_code, data, self.driver)
-            self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
-            time.sleep(0.5)
+        data = u"!@#$%^"
+        check_code.clear()
+        self.ac.send_keys(check_code, data, self.driver)
+        self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
+        time.sleep(0.5)
 
-            element = self.page["register_page"]["check_code"]
-            check_code = self.ac.get_attribute(self.wait_widget(element), "name")
-            self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (check_code, len(check_code)))
-            check_code = check_code.replace(element[3]["default_text"], "")
-            if len(check_code) != 0:
-                raise TimeoutException()
+        element = self.page["register_page"]["check_code"]
+        check_code = self.ac.get_attribute(self.wait_widget(element), "name")
+        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (check_code, len(check_code)))
+        check_code = check_code.replace(element[3]["default_text"], "")
+        if len(check_code) != 0:
+            raise TimeoutException()
 
-            self.case_over(True)
-        except TimeoutException:
-            self.case_over(False)
+        self.case_over(True)

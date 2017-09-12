@@ -11,21 +11,18 @@ class GNAppMessageClassify4(LaunchAppGN):
 
     # 用例动作
     def case(self):
-        try:
-            self.widget_click(self.page["device_page"]["message_table"],
-                              self.page["home_message_page"]["title"])
+        self.widget_click(self.page["device_page"]["message_table"],
+                          self.page["home_message_page"]["title"])
 
-            self.widget_click(self.page["home_message_page"]["setting"],
-                              self.page["message_setting_page"]["title"])
+        self.widget_click(self.page["home_message_page"]["setting"],
+                          self.page["message_setting_page"]["title"])
 
-            self.wait_widget(self.page["message_setting_page"]["title"])
+        self.wait_widget(self.page["message_setting_page"]["title"])
 
-            self.wait_widget(self.page["message_setting_page"]["to_return"])
+        self.wait_widget(self.page["message_setting_page"]["to_return"])
 
-            self.wait_widget(self.page["message_setting_page"]["clear_activity"])
+        self.wait_widget(self.page["message_setting_page"]["clear_activity"])
 
-            self.wait_widget(self.page["message_setting_page"]["clear_device"])
+        self.wait_widget(self.page["message_setting_page"]["clear_device"])
 
-            self.case_over(True)
-        except TimeoutException:
-            self.case_over(False)
+        self.case_over(True)
