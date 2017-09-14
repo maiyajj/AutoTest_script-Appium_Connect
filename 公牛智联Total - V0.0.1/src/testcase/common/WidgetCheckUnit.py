@@ -76,14 +76,7 @@ class WidgetCheckUnit(Exception):
                         pass
                     else:
                         raise TimeoutException()
-                if plural is False:
-                    print element.is_displayed()
-                    if element.is_displayed() is True:
-                        return element
-                    else:
-                        raise NoSuchElementException()
-                else:
-                    return element
+                return element
             except NoSuchElementException:
                 time.sleep(interval)
                 if time.time() > end_time:
