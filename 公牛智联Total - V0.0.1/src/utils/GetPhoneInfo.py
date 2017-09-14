@@ -41,17 +41,12 @@ class GetPhoneInfo(ShellCommand):
 
         # Appium可使用的端口 #
         selected_port = 4725  # Appium服务初始选择端口
-        for k, v in device.items():
-            if v["platformName"] == "Android":
-                need_port = ["port", "bp_port", "wda_port"]
-                for ports in need_port:
-                    device[k][ports] = self.selecte_port(selected_port)
-                    selected_port += 1
-            elif v["platformName"] == "iOS":
-                need_port = ["port", "bp_port", "wda_port"]
-                for ports in need_port:
-                    device[k][ports] = self.selecte_port(selected_port)
-                    selected_port += 1
+        for k in device.keys():
+            need_port = ["port", "bp_port", "wda_port"]
+            for ports in need_port:
+                selected_port = self.selecte_port(selected_port)
+                device[k][ports] = selected_port
+                selected_port += 1
         '''
         device: {'8681-M02-0xa0a151df':
                    {'deviceName': '8681-M02', 
