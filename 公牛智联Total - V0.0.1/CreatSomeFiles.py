@@ -1,5 +1,5 @@
 # coding=utf-8
-
+from src.testcase.case.WaitCase import *
 from src.utils.LaunchAppiumServices import *
 from src.utils.SendMail import *
 
@@ -37,41 +37,45 @@ class CreateFunc(object):
                 files.write('''        self.device["page"]["{0}"] = self.mpw.{0}()\n'''.format(i))
 
     def create_AppPageElement(self, func1, func2):
-            app = str(func1.__name__)[-2:].upper()
-            a = []
-            b = []
-            for i in dir(func1):
-                tmp = re.findall("__.+", i)
-                if tmp == []:
-                    a.append(i)
-            for i in dir(func2):
-                tmp = re.findall("__.+", i)
-                if tmp == []:
-                    b.append(i)
-            with open(r"./src/testcase/page/AppPageElement_%s.py" % app, "w") as files:
-                files.write("# coding=utf-8\n")
-                files.write("from AppPageElement_%s_Android import *\n" % app)
-                files.write("from AppPageElement_%s_iOS import *\n\n" % app)
-                files.write("class MainPageWidget%s(object):\n" % app)
-                files.write("    def __init__(self, phone_os):\n")
-                files.write("        self.phone_os = phone_os\n")
-                files.write("        self.mpwa = MainPageWidgetAndroid%s()\n" % app)
-                files.write("        self.mpwi = MainPageWidgetIos%s()\n" % app)
-                files.write("        self.pwa = PopupWidgetAndroid%s()\n" % app)
-                files.write("        self.pwi = PopupWidgetIos%s()\n" % app)
-                files.write("    def wrapper(self, func1, func2):\n")
-                files.write('''        if self.phone_os == "Android":\n''')
-                files.write('''            return func1\n''')
-                files.write('''        elif self.phone_os == "iOS":\n''')
-                files.write('''            return func2\n''')
-                files.write('''        else:\n''')
-                files.write('''            raise KeyError("The OS is wrong!")\n\n''')
-                for i in a:
-                    files.write("    def %s(self):\n" % i)
-                    files.write("        return self.wrapper(self.mpwa.{0}(), self.mpwi.{0}())\n\n".format(i))
-                for i in b:
+        app = str(func1.__name__)[-2:].upper()
+        a = []
+        b = []
+        for i in dir(func1):
+            tmp = re.findall("__.+", i)
+            if tmp == []:
+                a.append(i)
+        for i in dir(func2):
+            tmp = re.findall("__.+", i)
+            if tmp == []:
+                b.append(i)
+        with open(r"./src/testcase/page/AppPageElement_%s.py" % app, "w") as files:
+            files.write("# coding=utf-8\n")
+            files.write("from AppPageElement_%s_Android import *\n" % app)
+            files.write("from AppPageElement_%s_iOS import *\n\n\n" % app)
+            files.write("class MainPageWidget%s(object):\n" % app)
+            files.write("    def __init__(self, phone_os):\n")
+            files.write("        self.phone_os = phone_os\n")
+            files.write("        self.mpwa = MainPageWidgetAndroid%s()\n" % app)
+            files.write("        self.mpwi = MainPageWidgetIos%s()\n" % app)
+            files.write("        self.pwa = PopupWidgetAndroid%s()\n" % app)
+            files.write("        self.pwi = PopupWidgetIos%s()\n" % app)
+            files.write("    def wrapper(self, func1, func2):\n")
+            files.write('''        if self.phone_os == "Android":\n''')
+            files.write('''            return func1\n''')
+            files.write('''        elif self.phone_os == "iOS":\n''')
+            files.write('''            return func2\n''')
+            files.write('''        else:\n''')
+            files.write('''            raise KeyError("The OS is wrong!")\n\n''')
+            for i in a:
+                files.write("    def %s(self):\n" % i)
+                files.write("        return self.wrapper(self.mpwa.{0}(), self.mpwi.{0}())\n\n".format(i))
+            for i in b:
+                if i != b[-1]:
                     files.write("    def %s(self):\n" % i)
                     files.write("        return self.wrapper(self.pwa.{0}(), self.pwi.{0}())\n\n".format(i))
+                else:
+                    files.write("    def %s(self):\n" % i)
+                    files.write("        return self.wrapper(self.pwa.{0}(), self.pwi.{0}())\n".format(i))
 
     def create_INPUT_CASE(self):
         # 写INPUT_CASE文件夹内容
@@ -111,8 +115,8 @@ class CreateFunc(object):
 
 
 CF = CreateFunc()
-CF.create_INPUT_CASE()
-# CF.create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
-# CF.create_AppPageElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
-# CF.create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
-# CF.create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
+# CF.create_INPUT_CASE()
+CF.create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
+CF.create_AppPageElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
+CF.create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
+CF.create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)

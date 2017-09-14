@@ -29,8 +29,7 @@ class LaunchAppiumServicesIos(object):
             try:
                 os.makedirs(log_tmp)
             except OSError:
-                import traceback
-                print traceback.format_exc()
+                pass
         while True:
             log = os.path.join(log_tmp, "%s-[%s].log" % (self.log_name, time.strftime("%Y-%m-%d %H-%M-%S")))
             command = 'appium -a 127.0.0.1 -p %s -bp %s -U %s -g "%s" --no-reset --local-timezone' % (

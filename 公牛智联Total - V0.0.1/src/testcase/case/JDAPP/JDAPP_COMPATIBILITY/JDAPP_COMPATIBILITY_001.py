@@ -42,25 +42,27 @@ class JDAppCompatibility1(LaunchAppJD):
         end_time = start_time + 60
         while True:
             try:
-                self.wait_widget(self.page["search_device_fail_page"]["title"], 1, 0.5)
+                self.wait_widget(self.page["search_device_fail_page"]["title"])
                 raise TimeoutException()
             except TimeoutException:
                 time.sleep(1)
             try:
-                self.wait_widget(self.page["bind_device_page"]["title"], 1, 0.5)
+                self.wait_widget(self.page["bind_device_page"]["title"])
                 raise TimeoutException()
             except TimeoutException:
                 time.sleep(1)
             try:
-                self.wait_widget(self.page["search_device_success_page"]["title"], 1, 0.5)
+                self.wait_widget(self.page["search_device_success_page"]["title"])
                 try:
                     while True:
-                        element = self.wait_widget(self.page["search_device_success_page"]["title"], 1, 0.5, True)
-                        for i in element:
-                            if self.ac.get_attribute(i, "name") == conf["MAC"][0]:
+                        elements = self.wait_widget(self.page["search_device_success_page"]["device_box"])
+                        for index, element in elements.items():
+                            if self.ac.get_attribute(element, "name") == conf["MAC"][0]:
+                                self.page["search_device_success_page"]["confirm"][0] = \
+                                    self.page["search_device_success_page"]["confirm"][0][index]
+
                                 self.widget_click(self.page["search_device_success_page"]["confirm"],
-                                                  self.page["control_device_page"]["title"],
-                                                  operate_driver=i.parent)
+                                                  self.page["control_device_page"]["title"])
                                 raise ValueError()
                             else:
                                 self.driver.swipe(600, 1100, 600, 900, 0)
@@ -75,15 +77,13 @@ class JDAppCompatibility1(LaunchAppJD):
         i = 3
         while i > 0:
             try:
-                self.wait_widget(self.page["control_device_page"]["power_on"], 1, 0.5)
                 self.widget_click(self.page["control_device_page"]["power_button"],
-                                  self.page["control_device_page"]["power_off"])
+                                  self.page["control_device_page"]["title"])
             except TimeoutException:
                 pass
             try:
-                self.wait_widget(self.page["control_device_page"]["power_off"], 1, 0.5)
                 self.widget_click(self.page["control_device_page"]["power_button"],
-                                  self.page["control_device_page"]["power_on"])
+                                  self.page["control_device_page"]["title"])
             except TimeoutException:
                 pass
             i -= 1
@@ -98,7 +98,7 @@ class JDAppCompatibility1(LaunchAppJD):
                                      self.page["change_nickname_page"]["title"])
         data = conf["MAC"][0]
         nickname.clear()
-        self.ac.send_keys(nickname, data)
+        self.ac.send_keys(nickname, data, self.driver)
         self.logger.info(u'[APP_INPUT] ["设备备注"] input success')
         time.sleep(0.5)
 

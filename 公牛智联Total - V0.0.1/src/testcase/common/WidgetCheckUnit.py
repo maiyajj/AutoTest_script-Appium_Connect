@@ -20,8 +20,10 @@ class WidgetCheckUnit(Exception):
         self.driver = driver
         self.logger = logger
         self.page = page_element
+        self.index = None
 
-    def wait_widget(self, main_widget, timeout=3.0, interval=1.0, plural=False, driver="find_element_in_driver"):
+    def wait_widget(self, main_widget, timeout=3.0, interval=1.0, driver="find_element_in_driver"):
+        plural = False
         if driver == "find_element_in_driver":
             parent_element = self.driver
         else:
@@ -30,8 +32,10 @@ class WidgetCheckUnit(Exception):
             raise TypeError("main_widget must be list! [widget, locate method...]")
         locate = main_widget[1]
         widget = main_widget[0]
-        popup_text = ""
+        popup_text = "None"
         try:
+            if isinstance(widget, dict):
+                plural = True
             keys = main_widget[3].keys()
             if "text" in keys:
                 popup_text = main_widget[3]["text"]
@@ -42,25 +46,21 @@ class WidgetCheckUnit(Exception):
             try:
                 time.sleep(0.5)
                 if locate == "id":
-                    if plural is False:
-                        element = parent_element.find_element_by_id(widget)
-                    else:
-                        element = parent_element.find_elements_by_id(widget)
+                    element = parent_element.find_element_by_id(widget)
                 elif locate == "name":
-                    if plural is False:
-                        element = parent_element.find_element_by_name(widget)
-                    else:
-                        element = parent_element.find_elements_by_name(widget)
+                    element = parent_element.find_element_by_name(widget)
                 elif locate == "class":
-                    if plural is False:
-                        element = parent_element.find_element_by_class_name(widget)
-                    else:
-                        element = parent_element.find_elements_by_class_name(widget)
+                    element = parent_element.find_element_by_class_name(widget)
                 elif locate == "xpath":
                     if plural is False:
                         element = parent_element.find_element_by_xpath(widget)
                     else:
-                        element = parent_element.find_elements_by_xpath(widget)
+                        element = {}
+                        for k, v in widget.items():
+                            try:
+                                element[k] = parent_element.find_element_by_xpath(v)
+                            except NoSuchElementException:
+                                pass
                 elif locate == "activity":
                     element = parent_element.wait_activity(widget)
                 elif locate == "accessibility_id":
@@ -71,7 +71,7 @@ class WidgetCheckUnit(Exception):
                 else:
                     raise KeyError('find_element_by_%s must in'
                                    '["id", "name", "class", "xpath", "activity", "accessibility_id"' % locate)
-                if popup_text != "":
+                if popup_text != "None":
                     if element.get_attribute("name") == popup_text:
                         pass
                     else:
@@ -149,3 +149,6 @@ class WidgetCheckUnit(Exception):
             except TypeError:
                 self.logger.error(traceback.format_exc())
                 return traceback.format_exc()
+
+    def return_index(self):
+        return self.index

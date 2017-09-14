@@ -26,7 +26,7 @@ class ToDevicePageGN(object):
 
     def check_update(self):
         try:
-            self.wait_widget(self.page["update_popup"]["title"], 1, 0.5)
+            self.wait_widget(self.page["update_popup"]["title"])
             self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
             self.widget_click(self.page["update_popup"]["cancel"],
                               self.page["god_page"]["title"],
@@ -37,7 +37,7 @@ class ToDevicePageGN(object):
 
     def login_abnormal(self):
         try:
-            self.wait_widget(self.page["login_popup"]["title"], 1, 0.5)
+            self.wait_widget(self.page["login_popup"]["title"])
             self.logger.info(u"[APP_INF] APP需要重新登陆，等待重新登录")
             self.widget_click(self.page["login_popup"]["confirm"],
                               self.page["login_page"]["title"],
@@ -47,7 +47,7 @@ class ToDevicePageGN(object):
 
     def login_to_device(self):
         try:
-            self.wait_widget(self.page["login_page"]["title"], 1, 0.5)
+            self.wait_widget(self.page["login_page"]["title"])
             try:
                 self.logger.info(u"[APP_INF] APP当前页面为登录页面,登录")
                 user_name = self.widget_click(self.page["login_page"]["username"],
@@ -110,7 +110,7 @@ class ToDevicePageGN(object):
             self.login_abnormal()
             self.login_to_device()
             try:
-                self.wait_widget(self.page["device_page"]["title"], 1, 0.5)
+                self.wait_widget(self.page["device_page"]["title"])
                 self.logger.info(u"[APP_INF] APP当前页面为主页面")
                 break
             except TimeoutException:

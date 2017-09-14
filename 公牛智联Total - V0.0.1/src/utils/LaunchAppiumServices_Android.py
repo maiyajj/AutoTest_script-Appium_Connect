@@ -25,7 +25,10 @@ class LaunchAppiumServicesAndroid(object):
     def launch_appium(self):
         log_tmp = os.path.join(self.sc.set_appium_log_addr(), "AutoTestGNApp/%s" % time.strftime("%Y-%m-%d %H-%M"))
         if os.path.exists(log_tmp) is False:
-            os.makedirs(log_tmp)
+            try:
+                os.makedirs(log_tmp)
+            except OSError:
+                pass
         while True:
             log = os.path.join(log_tmp, "%s-[%s].log" % (self.log_name, time.strftime("%Y-%m-%d %H-%M-%S")))
             command = 'appium -a 127.0.0.1 -p %s -bp %s -U %s -g "%s" --no-reset --local-timezone' % (

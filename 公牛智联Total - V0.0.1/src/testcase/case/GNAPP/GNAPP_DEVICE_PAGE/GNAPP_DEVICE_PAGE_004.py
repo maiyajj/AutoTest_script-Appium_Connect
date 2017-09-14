@@ -15,9 +15,9 @@ class GNAppDevicePage4(LaunchAppGN):
                           self.page["device_add_scan_page"]["title"])
 
         self.widget_click(self.page["device_add_scan_page"]["gateway_hw"],
-                          self.page["set_network_page"]["title"])
+                          self.page["prepare_set_network_page"]["title"])
 
-        self.widget_click(self.page["set_network_page"]["prepare_next"],
+        self.widget_click(self.page["prepare_set_network_page"]["prepare_next"],
                           self.page["set_network_page"]["title"])
 
         wifi_pwd = self.wait_widget(self.page["set_network_page"]["wifi_pwd"])

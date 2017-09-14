@@ -10,7 +10,6 @@ class MainPageWidgetJD(object):
         self.mpwi = MainPageWidgetIosJD()
         self.pwa = PopupWidgetAndroidJD()
         self.pwi = PopupWidgetIosJD()
-
     def wrapper(self, func1, func2):
         if self.phone_os == "Android":
             return func1
@@ -49,6 +48,9 @@ class MainPageWidgetJD(object):
     def bind_device_success_page(self):
         return self.wrapper(self.mpwa.bind_device_success_page(), self.mpwi.bind_device_success_page())
 
+    def change_nickname_page(self):
+        return self.wrapper(self.mpwa.change_nickname_page(), self.mpwi.change_nickname_page())
+
     def control_device_page(self):
         return self.wrapper(self.mpwa.control_device_page(), self.mpwi.control_device_page())
 
@@ -67,6 +69,12 @@ class MainPageWidgetJD(object):
     def login_page(self):
         return self.wrapper(self.mpwa.login_page(), self.mpwi.login_page())
 
+    def mode_timer_page(self):
+        return self.wrapper(self.mpwa.mode_timer_page(), self.mpwi.mode_timer_page())
+
+    def normal_timer_page(self):
+        return self.wrapper(self.mpwa.normal_timer_page(), self.mpwi.normal_timer_page())
+
     def search_device_fail_page(self):
         return self.wrapper(self.mpwa.search_device_fail_page(), self.mpwi.search_device_fail_page())
 
@@ -75,6 +83,9 @@ class MainPageWidgetJD(object):
 
     def search_device_success_page(self):
         return self.wrapper(self.mpwa.search_device_success_page(), self.mpwi.search_device_success_page())
+
+    def timer_log_page(self):
+        return self.wrapper(self.mpwa.timer_log_page(), self.mpwi.timer_log_page())
 
     def bind_device_fail_popup(self):
         return self.wrapper(self.pwa.bind_device_fail_popup(), self.pwi.bind_device_fail_popup())
@@ -87,6 +98,9 @@ class MainPageWidgetJD(object):
 
     def logout_popup(self):
         return self.wrapper(self.pwa.logout_popup(), self.pwi.logout_popup())
+
+    def timer_log_clear_popup(self):
+        return self.wrapper(self.pwa.timer_log_clear_popup(), self.pwi.timer_log_clear_popup())
 
     def unbind_device_popup(self):
         return self.wrapper(self.pwa.unbind_device_popup(), self.pwi.unbind_device_popup())

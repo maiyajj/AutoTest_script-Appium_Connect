@@ -24,7 +24,7 @@ class ToLoginPageJD(object):
 
     def check_update(self):
         try:
-            self.wait_widget(self.page["update_popup"]["title"], 1, 0.5)
+            self.wait_widget(self.page["update_popup"]["title"])
             self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
             self.widget_click(self.page["update_popup"]["cancel"],
                               self.page["god_page"]["title"],
@@ -35,7 +35,7 @@ class ToLoginPageJD(object):
 
     def close_ad(self):
         try:
-            self.wait_widget(self.page["close_ad_popup"]["title"], 1, 0.5)
+            self.wait_widget(self.page["close_ad_popup"]["title"])
             self.logger.info(u"[APP_INF] 页面有广告，关闭广告")
             self.widget_click(self.page["close_ad_popup"]["confirm"],
                               self.page["app_home_page"]["title"],
@@ -45,7 +45,7 @@ class ToLoginPageJD(object):
 
     def device_to_login(self):
         try:
-            self.wait_widget(self.page["app_home_page"]["title"], 1, 0.5)
+            self.wait_widget(self.page["app_home_page"]["title"])
             self.widget_click(self.page["app_home_page"]["account_setting"],
                               self.page["account_setting_page"]["title"],
                               log_record=0)
@@ -86,11 +86,11 @@ class ToLoginPageJD(object):
             self.close_ad()
             self.device_to_login()
             try:
-                self.wait_widget(self.page["login_page"]["title"], 1, 0.5)
+                self.wait_widget(self.page["login_page"]["title"])
                 self.logger.info(u"[APP_INF] APP当前页面为登录页面")
                 break
             except TimeoutException:
-                pass
+                time.sleep(1)
             i += 1
             if i > 3:
                 raise TimeoutException("ToLoginPage Error!")

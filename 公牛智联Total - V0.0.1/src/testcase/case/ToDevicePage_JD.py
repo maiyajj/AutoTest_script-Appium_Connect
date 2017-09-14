@@ -26,7 +26,7 @@ class ToDevicePageJD(object):
 
     def check_update(self):
         try:
-            self.wait_widget(self.page["update_popup"]["title"], 1, 0.5)
+            self.wait_widget(self.page["update_popup"]["title"])
             self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
             self.widget_click(self.page["update_popup"]["cancel"],
                               self.page["god_page"]["title"],
@@ -37,7 +37,7 @@ class ToDevicePageJD(object):
 
     def close_ad(self):
         try:
-            self.wait_widget(self.page["close_ad_popup"]["title"], 1, 0.5)
+            self.wait_widget(self.page["close_ad_popup"]["title"])
             self.logger.info(u"[APP_INF] 页面有广告，关闭广告")
             self.widget_click(self.page["close_ad_popup"]["confirm"],
                               self.page["app_home_page"]["title"],
@@ -47,7 +47,7 @@ class ToDevicePageJD(object):
 
     def login_to_device(self):
         try:
-            self.wait_widget(self.page["app_home_page"]["no_device"], 1, 0.5)
+            self.wait_widget(self.page["app_home_page"]["no_device"])
             self.widget_click(self.page["app_home_page"]["account_setting"],
                               self.page["account_setting_page"]["title"],
                               log_record=0)
@@ -69,7 +69,7 @@ class ToDevicePageJD(object):
                     self.logger.info(u'[APP_INPUT] ["重新登陆用户名"] input success')
                     time.sleep(0.5)
 
-                    self.show_pwd()
+                    # self.show_pwd()
                     login_pwd = self.widget_click(self.page["login_page"]["password"],
                                                   self.page["login_page"]["title"])
 
@@ -130,7 +130,7 @@ class ToDevicePageJD(object):
             self.close_ad()
             self.login_to_device()
             try:
-                self.wait_widget(self.page["app_home_page"]["title"], 1, 0.5)
+                self.wait_widget(self.page["app_home_page"]["title"])
                 self.logger.info(u"[APP_INF] APP当前页面为主页面")
                 break
             except TimeoutException:

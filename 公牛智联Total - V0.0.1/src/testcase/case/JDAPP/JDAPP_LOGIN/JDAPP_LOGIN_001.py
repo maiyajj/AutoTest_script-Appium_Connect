@@ -22,8 +22,8 @@ class JDAppLogin1(LaunchAppJD):
         self.logger.info(u'[APP_INPUT] ["用户名"] input success')
         time.sleep(0.5)
 
-        self.show_pwd(self.wait_widget(self.page["login_page"]["password"]),
-                      self.wait_widget(self.page["login_page"]["check_box"]))
+        # self.show_pwd(self.wait_widget(self.page["login_page"]["password"]),
+        #               self.wait_widget(self.page["login_page"]["check_box"]))
         login_pwd = self.widget_click(self.page["login_page"]["password"],
                                       self.page["login_page"]["title"])
 

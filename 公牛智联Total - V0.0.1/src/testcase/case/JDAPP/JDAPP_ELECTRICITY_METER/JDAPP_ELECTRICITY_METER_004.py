@@ -13,7 +13,7 @@ class JDAppElectricityMeter4(LaunchAppJD):
     def case(self):
         try:
             while True:
-                element = self.wait_widget(self.page["app_home_page"]["device"], 1, 0.5, True)
+                element = self.wait_widget(self.page["app_home_page"]["device"])
                 for i in element:
                     if self.ac.get_attribute(i, "name") == conf["MAC"][0]:
                         self.widget_click(self.page["app_home_page"]["device"],
@@ -27,7 +27,7 @@ class JDAppElectricityMeter4(LaunchAppJD):
             pass
 
         try:
-            self.wait_widget(self.page["control_device_page"]["power_on"], 1, 0.5)
+            self.wait_widget(self.page["control_device_page"]["power_on"])
             self.widget_click(self.page["control_device_page"]["power_button"],
                               self.page["control_device_page"]["power_off"])
         except TimeoutException:

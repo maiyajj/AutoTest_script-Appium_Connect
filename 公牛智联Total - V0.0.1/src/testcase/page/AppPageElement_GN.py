@@ -10,7 +10,6 @@ class MainPageWidgetGN(object):
         self.mpwi = MainPageWidgetIosGN()
         self.pwa = PopupWidgetAndroidGN()
         self.pwi = PopupWidgetIosGN()
-
     def wrapper(self, func1, func2):
         if self.phone_os == "Android":
             return func1

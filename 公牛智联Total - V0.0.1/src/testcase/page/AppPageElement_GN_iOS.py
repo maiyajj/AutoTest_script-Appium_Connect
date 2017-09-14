@@ -438,7 +438,7 @@ class MainPageWidgetIosGN(object):
     def set_network_page(self):
         d = {}
         # 标题
-        d["title"] = [u"一键配网", "accessibility_id", u"配网说明→配置网络"]
+        d["title"] = [u"添加网关", "accessibility_id", u"配网说明→配置网络"]
         # 页面activity
         # d["activity"] = [".activitys.device_scene.device_add.SetNetworkActivity", "activity", u"页面activity"]
         # 返回
@@ -459,7 +459,7 @@ class MainPageWidgetIosGN(object):
     def scan_with_subscribe_page(self):
         d = {}
         # 标题
-        d["title"] = [u"添加设备", "accessibility_id", u"配置网络→添加设备"]
+        d["title"] = [u"添加网关", "accessibility_id", u"配置网络→添加设备"]
         # 页面activity
         # d["activity"] = [".activitys.device_scene.device_add.ScanWithSubscribeActivity", "activity", u"页面activity"]
         # 返回

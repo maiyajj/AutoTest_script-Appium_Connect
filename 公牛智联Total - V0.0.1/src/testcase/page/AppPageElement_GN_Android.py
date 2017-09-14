@@ -413,7 +413,7 @@ class MainPageWidgetAndroidGN(object):
         # 返回
         d["to_return"] = ["android.widget.ImageButton", "class", u"返回"]
         # 公牛智能网关-硬件 .activitys.device_scene.device_add.PrepareSetNetworkActivity
-        d["gateway_hw"] = ["//android.widget.ListView/android.widget.LinearLayout", "xpath", u"公牛智能网关-硬件"]
+        d["gateway_hw"] = [u"//android.widget.TextView[@text='公牛智能网关-硬件']", "xpath", u"公牛智能网关-硬件"]
         # 公牛智能网关-模拟器
         d["gateway_sim"] = ["//android.widget.ListView/android.widget.LinearLayout[2]", "xpath", u"公牛智能网关-设备模拟器"]
         # 公牛Wi-Fi智能插座二代-硬件
@@ -428,7 +428,7 @@ class MainPageWidgetAndroidGN(object):
     def prepare_set_network_page(self):
         d = {}
         # 标题
-        d["title"] = ["com.iotbull.android.superapp:id/prepare_next_button", "id", u"选择产品类型→配网说明"]
+        d["title"] = [u"//android.widget.TextView[@text='配网说明']", "xpath", u"选择产品类型→配网说明"]
         # 页面activity
         d["activity"] = [".activitys.device_scene.device_add.PrepareSetNetworkActivity", "activity", u"页面activity"]
         # 返回
@@ -441,7 +441,7 @@ class MainPageWidgetAndroidGN(object):
     def set_network_page(self):
         d = {}
         # 标题
-        d["title"] = ["com.iotbull.android.superapp:id/button_hiflying_smartlinker_start", "id", u"配网说明→配置网络"]
+        d["title"] = [u"//android.widget.TextView[@text='配置网络']", "xpath", u"配网说明→配置网络"]
         # 页面activity
         d["activity"] = [".activitys.device_scene.device_add.SetNetworkActivity", "activity", u"页面activity"]
         # 返回

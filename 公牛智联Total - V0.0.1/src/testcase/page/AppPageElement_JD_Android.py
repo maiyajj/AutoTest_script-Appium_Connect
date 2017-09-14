@@ -22,7 +22,8 @@ class MainPageWidgetAndroidJD(object):
     def help_setting_page(self):
         d = {}
         # 标题
-        d["title"] = [u"帮助与设置", "name", u"帮助与设置"]
+        d["title"] = ["com.jd.smart:id/tv_title", "id", u"帮助与设置",
+                      {"text": u"帮助与设置"}]
         # 帮助与设置
         d["return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
         # 登出
@@ -48,7 +49,7 @@ class MainPageWidgetAndroidJD(object):
     def app_home_page(self):
         d = {}
         # 标题
-        d["title"] = [u"微联", "name", u"App主页面"]
+        d["title"] = [u"//android.widget.TextView[@text='微联']", "xpath", u"App主页面"]
         # +号
         d["add_device"] = ["com.jd.smart:id/iv_right", "id", u"+号"]
         # 账户管理
@@ -63,7 +64,7 @@ class MainPageWidgetAndroidJD(object):
     def add_device_method_page(self):
         d = {}
         # 标题
-        d["title"] = [u"添加设备", "name", u"添加设备页面"]
+        d["title"] = [u"//android.widget.TextView[@text='添加设备']", "xpath", u"添加设备页面"]
         # 通过设备品类添加
         d["variety"] = [u"通过设备品类添加", "name", u"通过设备品类添加"]
         # 添加历史
@@ -84,13 +85,15 @@ class MainPageWidgetAndroidJD(object):
     def add_history_list_page(self):
         d = {}
         # 标题
-        d["title"] = [u"已添加设备", "name", u"进入设备添加历史页面"]
+        d["title"] = [u"//android.widget.TextView[@text='已添加设备']", "xpath", u"进入设备添加历史页面"]
+        # 设备列表
+        d["device_list"] = ["com.jd.smart:id/tv_dev_name", "id", u"设备列表"]
         # 公牛Wi-Fi智能转换器2代电量计量版
-        d["y201J"] = [u"公牛WiFi智能电量统计版转换器2代", "name", u"公牛Wi-Fi智能转换器2代电量计量版"]
+        d["y201J"] = [u"//android.widget.TextView[@text='公牛WiFi智能电量统计版转换器2代']", "xpath", u"公牛Wi-Fi智能转换器2代电量计量版"]
         # 公牛Wi-Fi智能转换器2代
-        d["y2011"] = [u"公牛Wi-Fi智能转换器2代", "name", u"公牛Wi-Fi智能转换器2代"]
+        d["y2011"] = [u"//android.widget.TextView[@text='公牛Wi-Fi智能转换器2代']", "xpath", u"公牛Wi-Fi智能转换器2代"]
         # 公牛Wi-Fi智能插座2代加强版
-        d["y2011dl"] = [u"公牛Wi-Fi智能插座2代加强版", "name", u"公牛Wi-Fi智能插座2代加强版"]
+        d["y2011dl"] = [u"//android.widget.TextView[@text='公牛Wi-Fi智能插座2代加强版']", "xpath", u"公牛Wi-Fi智能插座2代加强版"]
         return d
 
     # 进入插座列表页面
@@ -152,13 +155,23 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"批量添加", "name", u"设备等待添加"]
         return d
 
+    # 搜索到设备
     def search_device_success_page(self):
         # 搜索到设备MAC
         d = {}
         # 标题
         d["title"] = ["com.jd.smart:id/tv_desc", "id", u"有设备出现"]
-        # 确认
-        d["confirm"] = [u"使用", "name", u"确定"]
+        # 设备元素路径
+        device_box = {}
+        confirm_box = {}
+        for i in xrange(1, 5):
+            device_box[i] = "//android.widget.ListView/android.widget.LinearLayout[%s]//android.widget.TextView[2]" % i
+            confirm_box[
+                i] = "//android.widget.ListView/android.widget.LinearLayout[%s]/android.widget.LinearLayout/android.widget.TextView" % i
+        # 设备路径
+        d["device_box"] = [device_box, "xpath", u"设备等待添加"]
+        # 使用
+        d["confirm"] = [confirm_box, "xpath", u"使用"]
         return d
 
     # 搜索设备超时
@@ -200,9 +213,9 @@ class MainPageWidgetAndroidJD(object):
         # 电源开关
         d["power_button"] = ["android.widget.Button", "class", u"电源开关"]
         # 电源开启
-        d["power_on"] = [u"设备已开启", "name", u"电源开启"]
+        d["power_on"] = [u"//android.widget.TextView[@text='设备已开启']", "xpath", u"电源开启"]
         # 电源关闭
-        d["power_off"] = [u"设备已关闭", "name", u"电源关闭"]
+        d["power_off"] = [u"//android.widget.TextView[@text='设备已关闭']", "xpath", u"电源关闭"]
         # 设备记忆模式
         d["memory_mode"] = [u"记忆模式", "name", u"设备记忆模式"]
         # 设备安全模式
@@ -217,7 +230,7 @@ class MainPageWidgetAndroidJD(object):
     def device_info_page(self):
         d = {}
         # 标题
-        d["title"] = [u"设置", "name", u"设备信息页面"]
+        d["title"] = [u"//android.widget.TextView[@text='设置']", "xpath", u"设备信息页面"]
         # 删除设备按钮
         d["unbind"] = ["com.jd.smart:id/btn_unbind", "id", u"删除设备按钮"]
         # 编辑设备备注
@@ -230,9 +243,9 @@ class MainPageWidgetAndroidJD(object):
     def change_nickname_page(self):
         d = {}
         # 标题
-        d["title"] = [u"修改名称", "name", u"修改设备备注页面"]
+        d["title"] = [u"//android.widget.TextView[@text='修改名称']", "xpath", u"修改设备备注页面"]
         # 保存
-        d["saved"] = [u"保存", "name", u"保存"]
+        d["saved"] = ["com.jd.smart:id/btn_cancel", "id", u"保存"]
         # 备注输入框
         d["nickname"] = ["com.jd.smart:id/et_device_name", "id", u"备注输入框"]
         # 返回按钮
