@@ -149,6 +149,3 @@ class WidgetCheckUnit(Exception):
             except TypeError:
                 self.logger.error(traceback.format_exc())
                 return traceback.format_exc()
-
-    def return_index(self):
-        return self.index
