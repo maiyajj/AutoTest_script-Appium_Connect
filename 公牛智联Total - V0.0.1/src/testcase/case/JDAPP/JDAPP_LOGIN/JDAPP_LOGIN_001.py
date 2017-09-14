@@ -6,8 +6,8 @@ class JDAppLogin1(LaunchAppJD):
     @case_run_jd(True)
     def run(self):
         self.case_module = u"登录"  # 用例所属模块
-        self.case_title = u'正常登录'  # 用例名称
-        self.zentao_id = 1965  # 禅道ID
+        self.case_title = u'京东微联APP账号登录'  # 用例名称
+        self.zentao_id = 0000  # 禅道ID
 
     # 用例动作
     def case(self):

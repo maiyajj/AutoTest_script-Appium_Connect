@@ -55,6 +55,8 @@ class MainPageWidgetAndroidJD(object):
         d["account_setting"] = ["com.jd.smart:id/iv_left", "id", u"账户管理"]
         # 没有设备/未登录
         d["no_device"] = ["com.jd.smart:id/layout_no_device", "id", u"没有设备/未登录"]
+        # 设备
+        d["device"] = ["com.jd.smart:id/tv_name", "id", u"没有设备/未登录"]
         return d
 
     # 添加设备页面
@@ -205,14 +207,75 @@ class MainPageWidgetAndroidJD(object):
         d["memory_mode"] = [u"记忆模式", "name", u"设备记忆模式"]
         # 设备安全模式
         d["safe_mode"] = [u"安全模式", "name", u"设备安全模式"]
+        # 模式定时
+        d["mode_timer"] = [u"自定义模式", "name", u"模式定时"]
+        # 模式定时
+        d["normal_timer"] = [u"定时设置", "name", u"普通定时"]
         return d
 
+    # 设备信息页面
     def device_info_page(self):
         d = {}
         # 标题
-        d["title"] = [u"设置", "name", u"设备信息页面标志"]
+        d["title"] = [u"设置", "name", u"设备信息页面"]
         # 删除设备按钮
         d["unbind"] = ["com.jd.smart:id/btn_unbind", "id", u"删除设备按钮"]
+        # 编辑设备备注
+        d["nickname"] = ["com.jd.smart:id/ads_edit_name", "id", u"编辑设备备注"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
+        return d
+
+    # 修改设备备注页面
+    def change_nickname_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"修改名称", "name", u"修改设备备注页面"]
+        # 保存
+        d["saved"] = [u"保存", "name", u"保存"]
+        # 备注输入框
+        d["nickname"] = ["com.jd.smart:id/et_device_name", "id", u"备注输入框"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
+        return d
+
+    # 模式定时页面
+    def mode_timer_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"自定义模式", "name", u"模式定时页面"]
+        # 热水器模式开关
+        d["water_button"] = ["com.jd.smart:id/btn_unbind", "id", u"热水器模式开关"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
+    # 普通定时页面
+    def normal_timer_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"定时设置", "name", u"普通定时页面"]
+        # 添加定时
+        d["add_timer"] = ["com.jd.smart:id/button4", "id", u"添加定时按钮"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        # 执行记录
+        d["timer_log"] = [u"执行记录", "name", u"执行记录"]
+        return d
+
+    # 定时执行记录页面
+    def timer_log_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"执行记录", "name", u"定时执行记录页面"]
+        # 清空定时记录
+        d["clear"] = [u"清空", "name", u"清空定时记录"]
+        # 返回
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        # 有执行记录
+        d["has_log"] = [u"定时开机删除", "name", u"返回"]
+        # 无执行记录
+        d["no_log"] = [u"暂无执行纪录！", "name", u"返回"]
         return d
 
 
@@ -271,4 +334,15 @@ class PopupWidgetAndroidJD(object):
         d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
         # 取消
         d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
+        return d
+
+    # 定时执行记录清除弹窗
+    def timer_log_clear_popup(self):
+        d = {}
+        # 标题
+        d["title"] = [u"是否清空记录", "name", u"是否清空记录"]
+        # 确认
+        d["confirm"] = [u"是", "name", u"确认"]
+        # 取消
+        d["cancel"] = [u"否", "name", u"取消"]
         return d

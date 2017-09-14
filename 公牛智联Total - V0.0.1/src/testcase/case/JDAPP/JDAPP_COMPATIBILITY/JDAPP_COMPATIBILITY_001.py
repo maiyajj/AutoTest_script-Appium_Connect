@@ -2,12 +2,12 @@
 from src.testcase.case.LaunchApp_JD import *
 
 
-class JDAppSmartLink1(LaunchAppJD):
+class JDAppCompatibility1(LaunchAppJD):
     @case_run_jd(False)
     def run(self):
-        self.case_module = u"一键配网"  # 用例所属模块
-        self.case_title = u'配网成功率统计"'  # 用例名称
-        self.zentao_id = 1965  # 禅道ID
+        self.case_module = u"兼容性测试"  # 用例所属模块
+        self.case_title = u'在TP-link品牌的路由器下添加设备检查"'  # 用例名称
+        self.zentao_id = 1272  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -57,7 +57,7 @@ class JDAppSmartLink1(LaunchAppJD):
                     while True:
                         element = self.wait_widget(self.page["search_device_success_page"]["title"], 1, 0.5, True)
                         for i in element:
-                            if self.ac.get_attribute(i, "name") == conf["MAC"]:
+                            if self.ac.get_attribute(i, "name") == conf["MAC"][0]:
                                 self.widget_click(self.page["search_device_success_page"]["confirm"],
                                                   self.page["control_device_page"]["title"],
                                                   operate_driver=i.parent)
@@ -89,6 +89,20 @@ class JDAppSmartLink1(LaunchAppJD):
             i -= 1
 
         self.widget_click(self.page["control_device_page"]["device_info"],
+                          self.page["device_info_page"]["title"])
+
+        self.widget_click(self.page["device_info_page"]["nickname"],
+                          self.page["change_nickname_page"]["title"])
+
+        nickname = self.widget_click(self.page["change_nickname_page"]["nickname"],
+                                     self.page["change_nickname_page"]["title"])
+        data = conf["MAC"][0]
+        nickname.clear()
+        self.ac.send_keys(nickname, data)
+        self.logger.info(u'[APP_INPUT] ["设备备注"] input success')
+        time.sleep(0.5)
+
+        self.widget_click(self.page["change_nickname_page"]["saved"],
                           self.page["device_info_page"]["title"])
 
         self.widget_click(self.page["device_info_page"]["unbind"],

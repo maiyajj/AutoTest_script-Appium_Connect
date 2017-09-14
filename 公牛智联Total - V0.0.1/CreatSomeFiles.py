@@ -1,9 +1,5 @@
 # coding=utf-8
-from multiprocessing import *
 
-import psutil
-from src.testcase.case.WaitCase import *
-from src.testcase.suite.ScanCaseName import *
 from src.utils.LaunchAppiumServices import *
 from src.utils.SendMail import *
 
@@ -77,7 +73,46 @@ class CreateFunc(object):
                     files.write("    def %s(self):\n" % i)
                     files.write("        return self.wrapper(self.pwa.{0}(), self.pwi.{0}())\n\n".format(i))
 
-CreateFunc().create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
-CreateFunc().create_AppPageElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
-CreateFunc().create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
-CreateFunc().create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
+    def create_INPUT_CASE(self):
+        # 写INPUT_CASE文件夹内容
+        rootdir = r"./src/testcase/case/"  # 指明被遍历的文件夹
+        for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
+            for dirname in [i for i in dirnames if "_" not in i]:
+                if "GNAPP" in dirname:
+                    file_list = []
+                    files_list = {}
+                    file_path = os.path.join(rootdir, "GNAPP/INPUT_CASE")
+                    for parent, dirnames, filenames in os.walk(os.path.join(parent, dirname)):
+                        for dirname in [i for i in dirnames if "INPUT_CASE" not in i]:
+                            path_tmp = os.path.join(parent, dirname)
+                            files = [i for i in os.listdir(path_tmp) if "pyc" not in i and "init" not in i]
+                            input_name = files[0][:-7]
+                            tmp = ""
+                            for i in [i.capitalize() for i in input_name.split("_")[1:]]:
+                                tmp = tmp + i
+                            input_names = "GNApp" + tmp + ".py"
+                            file_list.append(input_names)
+                            files_list[input_names] = files
+
+                    for k, v in files_list:
+                        print k
+                        print v
+                        # with open(os.path.join(file_path,i), "w") as files:
+                        #     files.write("# coding=utf-8\n")
+                        # with open()
+                        #     for filename in [i for i in filenames if "pyc" not in i and "init" not in i and "App" not in i]:
+                        #         file_list.append(filename)
+                        # print list(set(file_list))
+
+
+
+                else:
+                    rootpath = os.path.join(parent, dirname)
+
+
+CF = CreateFunc()
+CF.create_INPUT_CASE()
+# CF.create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
+# CF.create_AppPageElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
+# CF.create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
+# CF.create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)

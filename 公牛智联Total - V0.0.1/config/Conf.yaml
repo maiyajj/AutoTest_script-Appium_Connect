@@ -9,9 +9,9 @@ offline_recovery_timeout: 10
 # 程序操作等待时间
 operate_wait_time: 0.1
 # 待添加的设备Mac
-MAC: 'C4-11-E0-00-BE-F6'
-# Mac地址列表选取标志位
-mac_choose_flag: 1
+MAC: ['C4-11-E0-00-BE-F6']
+# 电量计量设备备注名
+Elec_stat_mac: ['Elec_test_1', 'Elec_test_2', 'Elec_test_3', 'Elec_test_4', 'Elec_test_5', 'Elec_test_6', 'Elec_test_7', 'Elec_test_8', 'Elec_test_9', 'Elec_test_10']
 # 错误密码
 err_pwd: '31323334353637383930'
 # wifi密码

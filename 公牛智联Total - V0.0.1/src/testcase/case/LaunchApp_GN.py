@@ -66,6 +66,7 @@ def decor_init_app_gn(func):
 
 def decor_launch_app_gn(func):
     def wrapper(self, page_login):
+        self.driver = self.return_driver()
         self.debug.info("basename:%s" % self.basename)
         self.data_statistics(self.zentao_id)
         i = 0

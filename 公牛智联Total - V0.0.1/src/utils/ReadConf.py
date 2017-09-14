@@ -9,6 +9,7 @@ sys.setdefaultencoding('utf-8')
 
 conf = yaml.load(file(r"config/Conf.yaml"))
 
+
 def modified_conf(config):
     with open(r"config/Conf.yaml", "w") as conf_yaml:
         conf_yaml.write("# 打开APP超时时间\n")
@@ -22,9 +23,9 @@ def modified_conf(config):
         conf_yaml.write("# 程序操作等待时间\n")
         conf_yaml.write("operate_wait_time: %s\n" % config["operate_wait_time"])
         conf_yaml.write("# 待添加的设备Mac\n")
-        conf_yaml.write("MAC: '%s'\n" % config["MAC"])
-        conf_yaml.write("# Mac地址列表选取标志位\n")
-        conf_yaml.write("mac_choose_flag: %s\n" % config["mac_choose_flag"])
+        conf_yaml.write("MAC: %s\n" % config["MAC"])
+        conf_yaml.write("# 电量计量设备备注名\n")
+        conf_yaml.write("Elec_stat_mac: %s\n" % config["Elec_stat_mac"])
         conf_yaml.write("# 错误密码\n")
         conf_yaml.write("err_pwd: '%s'\n" % config["err_pwd"])
         conf_yaml.write("# wifi密码\n")
