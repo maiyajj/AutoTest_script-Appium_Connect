@@ -1,8 +1,6 @@
 # coding=utf-8
 from multiprocessing import *
 
-import psutil
-
 from src.testcase.case.WaitCase import *
 from src.testcase.common.AppInit import *
 from src.testcase.suite.ScanCaseName import *
@@ -15,31 +13,10 @@ _build_version = ""
 
 class MainFunc(object):
     def run(self, device_list, device_name):
-        run_appium = 1
-        run_case = 1
-        while True:
-            if run_appium == 1:
-                run_appium = 0
-                appium = Process(target=LaunchAppiumServices, args=(device_list, device_name,), name=device_name)
-                appium.start()
-            if run_case == 1:
-                run_case = 0
-                case = Process(target=WaitCase, args=(device_list, device_name,))
-                case.start()
-            while True:
-                if appium.is_alive() is False:
-                    run_appium = 1
-                    print appium.pid
-                    time.sleep(1)
-                    break
-                elif case.is_alive() is False:
-                    run_case = 1
-                    print case.pid
-                    time.sleep(1)
-                    break
-                else:
-                    print appium.name
-                    time.sleep(1)
+        appium = Process(target=LaunchAppiumServices, args=(device_list, device_name,), name=device_name)
+        appium.start()
+        case = Process(target=WaitCase, args=(device_list, device_name,))
+        case.start()
 
     def check_port(self, device_list):
         port = {}
