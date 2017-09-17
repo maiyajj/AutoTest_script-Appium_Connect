@@ -37,8 +37,8 @@ class MainPageWidgetIosJD(object):
         # 用户名
         d["username"] = ["//XCUIElementTypeOther[3]//XCUIElementTypeTextField", "xpath", u"用户名输入框"]
         # 密码
-        d["password"] = ["//XCUIElementTypeOther[3]//XCUIElementTypeOther[2]/XCUIElementTypeTextField", "xpath",
-                         u"密码输入框"]
+        d["password"] = ["//XCUIElementTypeOther[3]//XCUIElementTypeOther[2]/XCUIElementTypeSecureTextField",
+                         "xpath", u"密码输入框"]
         # 显示/关闭密码
         d["check_box"] = ["//XCUIElementTypeOther[3]//XCUIElementTypeButton", "xpath", u"显示/关闭密码"]
         # 登录

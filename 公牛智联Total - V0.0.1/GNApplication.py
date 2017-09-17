@@ -55,8 +55,8 @@ class MainFunc(object):
 
     def scan_files(self, parent_path):
         file_list = []
-        # mail_list = ["chenghao@gongniu.cn", "zhulei@gongniu.cn", "fanrt@gongniu.cn", "sunsy@gongniu.cn"]
-        mail_list = ["1045373828@qq.com"]
+        mail_list = ["chenghao@gongniu.cn", "zhulei@gongniu.cn", "fanrt@gongniu.cn", "sunsy@gongniu.cn"]
+        # mail_list = ["1045373828@qq.com"]
         mail_title = 'Hey subject'
         mail_content = 'Hey this is content'
         for parent, dirnames, filenames in os.walk(parent_path):

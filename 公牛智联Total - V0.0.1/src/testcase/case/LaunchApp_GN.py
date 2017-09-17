@@ -277,8 +277,8 @@ class LaunchAppGN(object):
     @launch_fail_fix_gn
     def init_app(self):
         global driver
-        with open("appium command %s.txt" % self.device_name, "w") as files:
-            files.write('''driver = webdriver.Remote('http://localhost:%s/wd/hub', %s''' % (
+        with open("appium command %s.txt" % self.device_name, "a") as files:
+            files.write('''driver = webdriver.Remote('http://localhost:%s/wd/hub', %s)''' % (
                 self.device_info["port"], self.device_info["desired_caps"]) + "\n\n")
 
         driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],

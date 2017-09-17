@@ -64,7 +64,7 @@ class WidgetCheckUnit(Exception):
                             try:
                                 element[k] = parent_element.find_element_by_xpath(v)
                             except NoSuchElementException:
-                                pass
+                                element[k] = None
                 elif locate == "activity":
                     element = parent_element.wait_activity(widget)
                 elif locate == "accessibility_id":

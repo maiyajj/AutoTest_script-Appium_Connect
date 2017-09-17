@@ -1,7 +1,8 @@
 # coding=utf-8
-import psutil
 import shutil
 from subprocess import *
+
+import psutil
 
 from ShellCommand import *
 
@@ -59,7 +60,7 @@ class LaunchAppiumServicesIos(object):
                         files.write(str(appium_pid) + "\n")
                         break
                     else:
-                        time.sleep(1)
+                        time.sleep(3)
 
                 while True:
                     if self.sc.find_proc_and_pid_by_port(self.port) == []:
@@ -71,7 +72,7 @@ class LaunchAppiumServicesIos(object):
                         appium_proc.kill()
                         break
                     else:
-                        time.sleep(1)
+                        time.sleep(3)
                         files.write(time.strftime("%Y-%m-%d %H-%M-%S") + ":" + str(self.port) + "," + str(port) + "\n")
 
     def create_adb_folder(self):
