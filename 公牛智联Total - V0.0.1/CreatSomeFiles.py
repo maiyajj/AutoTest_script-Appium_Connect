@@ -146,8 +146,8 @@ class CreateFunc(object):
 
 CF = CreateFunc()
 CF.create_INPUT_CASE()
-# CF.create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
-# CF.create_AppPageElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
-# CF.create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
-# CF.create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
+CF.create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
+CF.create_AppPageElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
+CF.create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
+CF.create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
 CF.correct_func_name()

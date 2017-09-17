@@ -546,6 +546,18 @@ def add_notes():
                             #                 files.write(linecache.getline(filepath, i))
 
 
+def src_line():
+    rootdir = r"./"
+    line = 0
+    for parent, dirnames, filenames in os.walk(rootdir):
+        for filename in [i for i in filenames if "IncrementalUpdate" not in i and ".py" in i and "pyc" not in i]:
+            lines = len(linecache.getlines(os.path.join(parent, filename)))
+            line = lines + line
+    print line
+
+
+src_line()
+
 # create_ReadConf()  # 创建ReadConf.py 必须
 # create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
 # create_AppPageElement()  # 创建AppPageElement.py 必须
@@ -559,7 +571,7 @@ def add_notes():
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
-add_notes()
+# add_notes()
 # check_AppPageElement()
 # a = []
 # b = []

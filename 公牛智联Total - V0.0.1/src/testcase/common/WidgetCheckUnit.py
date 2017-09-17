@@ -64,10 +64,7 @@ class WidgetCheckUnit(Exception):
                 elif locate == "activity":
                     element = parent_element.wait_activity(widget)
                 elif locate == "accessibility_id":
-                    if plural is False:
-                        element = parent_element.find_element_by_accessibility_id(widget)
-                    else:
-                        element = parent_element.find_elements_by_accessibility_id(widget)
+                    element = parent_element.find_element_by_accessibility_id(widget)
                 else:
                     raise KeyError('find_element_by_%s must in'
                                    '["id", "name", "class", "xpath", "activity", "accessibility_id"' % locate)
