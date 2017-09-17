@@ -11,29 +11,6 @@ class JDAppAppFunction2(LaunchAppJD):
 
     # 用例动作
     def case(self):
-        try:
-            while True:
-                element = self.wait_widget(self.page["app_home_page"]["device"])
-                for i in element:
-                    if self.ac.get_attribute(i, "name") == conf["MAC"][0]:
-                        self.widget_click(self.page["app_home_page"]["device"],
-                                          self.page["control_device_page"]["title"],
-                                          operate_driver=i.parent)
-                        raise ValueError()
-                    else:
-                        self.driver.swipe(600, 1100, 600, 900, 0)
-                        time.sleep(1)
-        except ValueError:
-            pass
-
-        try:
-            self.wait_widget(self.page["control_device_page"]["power_on"])
-            self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["power_off"])
-        except TimeoutException:
-            pass
-
-        self.widget_click(self.page["control_device_page"]["mode_timer"],
-                          self.page["control_device_page"]["power_off"])
+        pass
 
         self.case_over(True)

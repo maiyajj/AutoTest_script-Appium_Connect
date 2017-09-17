@@ -28,6 +28,8 @@ App:
     appPackage: 'com.jd.smart'
     appActivity: 'com.jd.smart.activity.LoadingActivity'
     waitActivity: 'com.jd.smart.activity.LoadingActivity'
+  JD_iOS:
+    bundleID: 'com.jd.smart'
 # Toast消息
 Toast:
   login_password_mistake: [40, 1570, 1040, 1750]

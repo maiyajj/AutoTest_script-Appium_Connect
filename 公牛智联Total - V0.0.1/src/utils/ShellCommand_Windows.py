@@ -40,7 +40,8 @@ class ShellCommandWindows(object):
         find_pid = []
         for i in bind_pid:
             command = 'tasklist|findstr %s' % i
-            find_pid.append(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())[0])
+            find_pid.append(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read()))
+        find_pid = [i[0] for i in find_pid if i != []]
         
         return find_pid
 

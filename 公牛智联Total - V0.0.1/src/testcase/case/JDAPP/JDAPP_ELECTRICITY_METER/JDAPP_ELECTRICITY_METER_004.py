@@ -21,7 +21,7 @@ class JDAppElectricityMeter4(LaunchAppJD):
                                           operate_driver=i.parent)
                         raise ValueError()
                     else:
-                        self.driver.swipe(600, 1100, 600, 900, 0)
+                        self.ac.swipe(0.6, 0.9, 0.6, 0.4, 0, self.driver)
                         time.sleep(1)
         except ValueError:
             pass

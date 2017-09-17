@@ -62,7 +62,7 @@ class ToLoginPageJD(object):
                                       self.page["help_setting_page"]["title"],
                                       log_record=0)
 
-                    self.driver.swipe(100, 500, 100, 100, 0)
+                    self.ac.swipe(0.1, 0.9, 0.1, 0.4, 0, self.driver)
                     self.widget_click(self.page["help_setting_page"]["logout"],
                                       self.page["logout_popup"]["title"],
                                       log_record=0)

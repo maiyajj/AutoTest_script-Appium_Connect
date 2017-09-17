@@ -9,35 +9,44 @@ class AppiumCommand(object):
 
     def send_keys(self, element, keys, driver):
         if self.phone_os == "Android":
-            return AppiumCommandAndroid(element).send_keys(keys, driver)
+            return AppiumCommandAndroid().send_keys(element, keys, driver)
         elif self.phone_os == "iOS":
-            return AppiumCommandIos(element).send_keys(keys, driver)
+            return AppiumCommandIos().send_keys(element, keys, driver)
         else:
             raise KeyError("The OS is wrong!")
 
     def get_attribute(self, element, name):
         if self.phone_os == "Android":
-            attribute_value = AppiumCommandAndroid(element).get_attribute(name)
+            attribute_value = AppiumCommandAndroid().get_attribute(element, name)
         elif self.phone_os == "iOS":
-            attribute_value = AppiumCommandIos(element).get_attribute(name)
+            attribute_value = AppiumCommandIos().get_attribute(element, name)
         else:
             raise KeyError("The OS is wrong!")
         return attribute_value
 
     def hide_keyboard(self, element, driver):
         if self.phone_os == "Android":
-            attribute_value = AppiumCommandAndroid(element).hide_keyboard(driver)
+            attribute_value = AppiumCommandAndroid().hide_keyboard(element, driver)
         elif self.phone_os == "iOS":
-            attribute_value = AppiumCommandIos(element).hide_keyboard(driver)
+            attribute_value = AppiumCommandIos().hide_keyboard(element, driver)
         else:
             raise KeyError("The OS is wrong!")
         return attribute_value
 
     def get_location(self, element):
         if self.phone_os == "Android":
-            attribute_value = AppiumCommandAndroid(element).get_location()
+            attribute_value = AppiumCommandAndroid().get_location(element)
         elif self.phone_os == "iOS":
-            attribute_value = AppiumCommandIos(element).get_location()
+            attribute_value = AppiumCommandIos().get_location(element)
+        else:
+            raise KeyError("The OS is wrong!")
+        return attribute_value
+
+    def swipe(self, x1, y1, x2, y2, step, driver):
+        if self.phone_os == "Android":
+            attribute_value = AppiumCommandAndroid().swipe(x1, y1, x2, y2, step, driver)
+        elif self.phone_os == "iOS":
+            attribute_value = AppiumCommandIos().swipe(x1, y1, x2, y2, step, driver)
         else:
             raise KeyError("The OS is wrong!")
         return attribute_value

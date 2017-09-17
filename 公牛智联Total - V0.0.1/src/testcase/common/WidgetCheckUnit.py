@@ -1,4 +1,5 @@
 # coding=utf-8
+import copy
 import time
 import traceback
 
@@ -21,6 +22,9 @@ class WidgetCheckUnit(Exception):
         self.logger = logger
         self.page = page_element
         self.index = None
+
+    def copy(self):
+        copy.copy("init for copy")
 
     def wait_widget(self, main_widget, timeout=3.0, interval=1.0, driver="find_element_in_driver"):
         plural = False

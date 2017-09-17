@@ -57,7 +57,11 @@ class MainPageWidgetAndroidJD(object):
         # 没有设备/未登录
         d["no_device"] = ["com.jd.smart:id/layout_no_device", "id", u"没有设备/未登录"]
         # 设备
-        d["device"] = ["com.jd.smart:id/tv_name", "id", u"没有设备/未登录"]
+        device = {}
+        for i in xrange(1, 6):
+            device[
+                i] = "//android.widget.ListView/android.view.View[%s]//android.widget.LinearLayout/android.widget.TextView" % i
+        d["device"] = [device, "xpath", u"待控设备"]
         return d
 
     # 添加设备页面
@@ -224,6 +228,8 @@ class MainPageWidgetAndroidJD(object):
         d["mode_timer"] = [u"自定义模式", "name", u"模式定时"]
         # 模式定时
         d["normal_timer"] = [u"定时设置", "name", u"普通定时"]
+        # 返回
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
 
     # 设备信息页面

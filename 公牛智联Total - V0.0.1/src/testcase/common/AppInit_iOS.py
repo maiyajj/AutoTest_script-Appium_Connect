@@ -25,7 +25,7 @@ class AppInitIos(object):
         self.device[self.k]["desired_caps"]['browserName'] = ''
         self.device[self.k]["desired_caps"]['platformVersion'] = '%s' % self.device[self.k]["platformVersion"]
         self.device[self.k]["desired_caps"]['deviceName'] = '%s' % self.device[self.k]["deviceName"]
-        self.device[self.k]["desired_caps"]['newCommandTimeout'] = '600'
+        self.device[self.k]["desired_caps"]['newCommandTimeout'] = '999999'
         self.device[self.k]["desired_caps"]["autoAcceptAlerts"] = "True"
         self.device[self.k]["desired_caps"]['wdaLocalPort'] = '%s' % self.device[self.k]["wda_port"]
         self.device[self.k]["desired_caps"]['bundleId'] = '%s' % conf["App"][self.app]["bundleId"]

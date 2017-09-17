@@ -19,17 +19,21 @@ def launch_fail_fix_gn(func):
             try:
                 func(self)
                 break
-            except WebDriverException:
-                self.debug.error(traceback.format_exc())
-                self.debug.error("launch_app driver(WebDriverException):%s times" % i)
+            except WebDriverException, e:
+                e = "".join(str(e).split())
+                if e != "Message:":
+                    self.debug.error(traceback.format_exc())
+                    self.debug.error("launch_app driver(WebDriverException):%s times" % i)
 
-                time.sleep(1)
-                if i >= 3:
+                    time.sleep(1)
+                    if i >= 3:
+                        self.http_run_app()
+                    elif i >= 4:
+                        self.http_run_app(True)
+                        i = 0
+                    i += 1
+                else:
                     self.http_run_app()
-                elif i >= 4:
-                    self.http_run_app(True)
-                    i = 0
-                i += 1
             except URLError:
                 self.debug.error("launch_app driver(URLError):%s times" % ii)
                 ii += 1
@@ -273,6 +277,10 @@ class LaunchAppGN(object):
     @launch_fail_fix_gn
     def init_app(self):
         global driver
+        with open("appium command %s.txt" % self.device_name, "w") as files:
+            files.write('''driver = webdriver.Remote('http://localhost:%s/wd/hub', %s''' % (
+                self.device_info["port"], self.device_info["desired_caps"]) + "\n\n")
+
         driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
                                   self.device_info["desired_caps"])  # 启动APP
         self.driver = driver

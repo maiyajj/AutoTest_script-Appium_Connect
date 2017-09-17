@@ -26,7 +26,7 @@ class AppInitAndroid(object):
         self.device[self.k]["desired_caps"]['browserName'] = ''
         self.device[self.k]["desired_caps"]['platformVersion'] = '%s' % self.device[self.k]["platformVersion"]
         self.device[self.k]["desired_caps"]['deviceName'] = '%s' % self.device[self.k]["deviceName"]
-        self.device[self.k]["desired_caps"]['newCommandTimeout'] = '600'
+        self.device[self.k]["desired_caps"]['newCommandTimeout'] = '999999'
         self.device[self.k]["desired_caps"]["unicodeKeyboard"] = "True"
         self.device[self.k]["desired_caps"]["resetKeyboard"] = "True"
         self.device[self.k]["desired_caps"]['wdaLocalPort'] = '%s' % self.device[self.k]["wda_port"]
