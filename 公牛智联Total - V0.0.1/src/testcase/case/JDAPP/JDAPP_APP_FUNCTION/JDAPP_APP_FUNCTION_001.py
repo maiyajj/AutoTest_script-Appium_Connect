@@ -11,6 +11,7 @@ class JDAppAppFunction1(LaunchAppJD):
 
     # 用例动作
     def case(self):
-        pass
+        self.widget_click(self.page["app_home_page"]["add_device"],
+                          self.page["add_device_method_page"]["title"])
 
         self.case_over(True)

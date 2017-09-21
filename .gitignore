@@ -209,3 +209,4 @@ stcase/case/GNAPP_DEVICE_PAGE/__init__.pyc"
 "\345\205\254\347\211\233\346\231\272\350\201\224 - V0.0.1/src/testcase/case/GNAPP_VERSION/__init__.pyc"
 .idea/AutoTest_script-Appium_Connect.iml
 .idea/misc.xml
+*.txt

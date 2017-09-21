@@ -30,6 +30,9 @@ class MainPageWidgetJD(object):
     def add_history_list_page(self):
         return self.wrapper(self.mpwa.add_history_list_page(), self.mpwi.add_history_list_page())
 
+    def add_normal_timer_page(self):
+        return self.wrapper(self.mpwa.add_normal_timer_page(), self.mpwi.add_normal_timer_page())
+
     def add_outlet_list_page(self):
         return self.wrapper(self.mpwa.add_outlet_list_page(), self.mpwi.add_outlet_list_page())
 
@@ -86,6 +89,9 @@ class MainPageWidgetJD(object):
 
     def timer_log_page(self):
         return self.wrapper(self.mpwa.timer_log_page(), self.mpwi.timer_log_page())
+
+    def timer_repeat_page(self):
+        return self.wrapper(self.mpwa.timer_repeat_page(), self.mpwi.timer_repeat_page())
 
     def bind_device_fail_popup(self):
         return self.wrapper(self.pwa.bind_device_fail_popup(), self.pwi.bind_device_fail_popup())

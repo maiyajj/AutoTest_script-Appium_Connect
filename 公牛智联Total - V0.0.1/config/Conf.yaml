@@ -30,6 +30,12 @@ App:
     waitActivity: 'com.jd.smart.activity.LoadingActivity'
   JD_iOS:
     bundleId: 'com.jd.smart'
+  AL_Android:
+    appPackage: 'com.aliyun.alink'
+    appActivity: 'com.aliyun.alink.page.main.MainActivity'
+    waitActivity: 'com.aliyun.alink.page.main.MainActivity'
+  AL_iOS:
+    bundleId: 'com.aliyun.alink'
 # Toast消息
 Toast:
   login_password_mistake: [40, 1570, 1040, 1750]
@@ -84,7 +90,7 @@ user_and_pwd:
       new_pwd: '3132333435363738'
       precise_pwd: ['3837363534333231', '3132333435363738']
   85GABMN9UDD2:
-    app: 'GN'
+    app: 'JD'
     GN: 
       user_name: '31373020303030302030303031'
       login_pwd: '3132333435363738'

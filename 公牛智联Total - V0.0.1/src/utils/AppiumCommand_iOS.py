@@ -1,11 +1,15 @@
 # coding=utf-8
+import re
+import time
+
 
 class AppiumCommandIos(object):
     def send_keys(self, element, value, driver):
         element.set_value(value)
+        time.sleep(0.1)
         self.hide_keyboard(element, driver)
 
-    def get_attribute(self, element, name):
+    def get_attribute(self, element, name, driver=None):
         '''
         Valid attribute names are: (
         accessibilityContainer,
@@ -41,6 +45,11 @@ class AppiumCommandIos(object):
             attribute_value = str(element.is_enabled()).lower()
         elif name == "is_displayed":
             attribute_value = str(element.is_displayed()).lower()
+        elif name in ["password", "index", "focusable", "focused", "scrollable", "long-clickable", "selected"]:
+            if not isinstance(element, list):
+                raise KeyError("If attribute is password. The 'element' must be id of elements,is list,not WebElement")
+            page_src = driver.page_source
+            attribute_value = re.findall(r'.+%s="(.+?)".+?"%s"' % (name, element[0]), page_src)[0]
         else:
             attribute_value = element.get_attribute(name)
         return attribute_value

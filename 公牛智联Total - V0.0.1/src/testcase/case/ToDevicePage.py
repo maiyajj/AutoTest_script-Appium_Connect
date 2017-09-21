@@ -1,6 +1,8 @@
 # coding=utf-8
+from ToDevicePage_AL import *
 from ToDevicePage_GN import *
 from ToDevicePage_JD import *
+
 
 class ToDevicePage(object):
     def __init__(self, driver, logger, device_info, page_element):
@@ -10,5 +12,7 @@ class ToDevicePage(object):
             ToDevicePageGN(driver, logger, device_info, page_element)
         elif self.app == "JD":
             ToDevicePageJD(driver, logger, device_info, page_element)
+        elif self.app == "AL":
+            ToDevicePageAL(driver, logger, device_info, page_element)
         else:
             raise KeyError("%s:No such App!" % self.app)

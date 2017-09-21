@@ -15,6 +15,9 @@ class AppInitAndroid(object):
         elif self.app == "JD":
             self.app = "JD_Android"
             self.device[k]["app"] = "JD"
+        elif self.app == "AL":
+            self.app = "AL_Android"
+            self.device[k]["app"] = "AL"
         else:
             raise KeyError("%s:No such App!" % self.app)
 

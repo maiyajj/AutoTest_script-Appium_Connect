@@ -28,6 +28,7 @@ class WidgetCheckUnit(Exception):
 
     def wait_widget(self, main_widget, timeout=3.0, interval=1.0, driver="find_element_in_driver"):
         plural = False
+        index = pxx = pxy = 0
         if driver == "find_element_in_driver":
             parent_element = self.driver
         else:
@@ -43,6 +44,11 @@ class WidgetCheckUnit(Exception):
             keys = main_widget[3].keys()
             if "text" in keys:
                 popup_text = main_widget[3]["text"]
+            if "index" in keys:
+                index = int(main_widget[3]["index"])
+            if "px" in keys:
+                px = parent_element.get_window_size()
+                pxx, pxy = int(main_widget[3]["px"][0] * px["width"]), int(main_widget[3]["px"][1] * px["height"])
         except IndexError:
             pass
         end_time = time.time() + timeout
@@ -50,14 +56,20 @@ class WidgetCheckUnit(Exception):
             try:
                 time.sleep(0.5)
                 if locate == "id":
-                    element = parent_element.find_element_by_id(widget)
-                elif locate == "name":
-                    element = parent_element.find_element_by_name(widget)
-                elif locate == "class":
-                    element = parent_element.find_element_by_class_name(widget)
+                    if plural is False:
+                        element = parent_element.find_element_by_id(widget)
+                    else:
+                        element = parent_element.find_elements_by_id(widget)[index]
+                elif locate == "accessibility_id":
+                    if plural is False:
+                        element = parent_element.find_element_by_accessibility_id(widget)
+                    else:
+                        element = parent_element.find_elements_by_accessibility_id(widget)[index]
                 elif locate == "xpath":
                     if plural is False:
                         element = parent_element.find_element_by_xpath(widget)
+                    elif plural is False:
+                        element = parent_element.find_elements_by_xpath(widget)[index]
                     else:
                         element = {}
                         for k, v in widget.items():
@@ -65,10 +77,20 @@ class WidgetCheckUnit(Exception):
                                 element[k] = parent_element.find_element_by_xpath(v)
                             except NoSuchElementException:
                                 element[k] = None
+                elif locate == "tap":
+                    element = parent_element.tap([(pxx, pxy)])
+                elif locate == "class":
+                    if plural is False:
+                        element = parent_element.find_element_by_class_name(widget)
+                    else:
+                        element = parent_element.find_elements_by_class_name(widget)[index]
+                elif locate == "name":
+                    if plural is False:
+                        element = parent_element.find_element_by_name(widget)
+                    else:
+                        element = parent_element.find_elements_by_name(widget)[index]
                 elif locate == "activity":
                     element = parent_element.wait_activity(widget)
-                elif locate == "accessibility_id":
-                    element = parent_element.find_element_by_accessibility_id(widget)
                 else:
                     raise KeyError('find_element_by_%s must in'
                                    '["id", "name", "class", "xpath", "activity", "accessibility_id"' % locate)
