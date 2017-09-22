@@ -220,13 +220,17 @@ class MainPageWidgetAndroidJD(object):
         # 电源关闭
         d["power_off"] = [u"//android.view.View[@content-desc='设备已关闭']", "xpath", u"电源关闭"]
         # 设备记忆模式
-        d["memory_mode"] = [u"记忆模式", "name", u"设备记忆模式"]
+        d["memory_mode"] = [u"//android.widget.Button[@content-desc='记忆模式']", "xpath", u"设备记忆模式"]
         # 设备安全模式
-        d["safe_mode"] = [u"安全模式", "name", u"设备安全模式"]
+        d["safe_mode"] = [u"//android.widget.Button[@content-desc='安全模式']", "xpath", u"设备安全模式"]
         # 模式定时
-        d["mode_timer"] = [u"自定义模式", "name", u"模式定时"]
-        # 模式定时
-        d["normal_timer"] = [u"定时设置", "name", u"普通定时"]
+        d["mode_timer"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]", "xpath", u"模式定时"]
+        # 普通定时
+        d["normal_timer"] = ["//android.webkit.WebView/android.view.View/android.view.View[5]", "xpath", u"普通定时",
+                             {"px": [0.95, 0.5]}]
+        # 指示灯
+        d["led"] = ["//android.webkit.WebView/android.view.View/android.view.View[9]/android.widget.Button", "xpath",
+                    u"设备安全模式"]
         # 返回
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
@@ -288,6 +292,18 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='新建定时']", "xpath", u"新建普通定时页面"]
         # 设定时间
         d["set_timer"] = ["//android.view.View/android.widget.EditText", "xpath", u"设定时间"]
+        # 时，往上翻
+        d["timer_h_up"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时，往上翻",
+                           {"px": [0.51, 0.29]}]
+        # 时，往下翻
+        d["timer_h_down"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时，往下翻",
+                             {"px": [0.51, 0.67]}]
+        # 分，往上翻
+        d["timer_h_up"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"分，往上翻",
+                           {"px": [0.51, 0.29]}]
+        # 分，往下翻
+        d["timer_h_down"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"分，往下翻",
+                             {"px": [0.51, 0.67]}]
         # 重复
         d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"重复"]
         # 定时开机

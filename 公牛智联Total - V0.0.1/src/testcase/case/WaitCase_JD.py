@@ -109,8 +109,9 @@ class WaitCaseJD(object):
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])
             # self.write_report(JDAppLogin1)  # 0000, 京东微联APP账号登录
-            self.write_report(JDAppCompatibility1)  # 1272, 在TP-link品牌的路由器下添加设备检查
-            self.write_report(JDAppElectricityMeter1)  # 1117, 电量统计2H功能及精度检查
+            # self.write_report(JDAppCompatibility1)  # 1272, 在TP-link品牌的路由器下添加设备检查
+            # self.write_report(JDAppElectricityMeter1)  # 1117, 电量统计2H功能及精度检查
+            self.write_report(JDAppAppFunction1)  # 1170, 定时记录删除是否成功
 
             database["program_loop_time"] += 1
             ports = [self.device_info["port"], self.device_info["bp_port"], self.device_info["wda_port"]]

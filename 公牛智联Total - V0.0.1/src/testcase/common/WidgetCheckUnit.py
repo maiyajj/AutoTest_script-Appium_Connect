@@ -21,18 +21,13 @@ class WidgetCheckUnit(Exception):
         self.driver = driver
         self.logger = logger
         self.page = page_element
-        self.index = None
 
     def copy(self):
         copy.copy("init for copy")
 
-    def wait_widget(self, main_widget, timeout=3.0, interval=1.0, driver="find_element_in_driver"):
+    def wait_widget(self, main_widget, timeout=3.0, interval=1.0):
         plural = False
-        index = pxx = pxy = 0
-        if driver == "find_element_in_driver":
-            parent_element = self.driver
-        else:
-            parent_element = driver
+        self.px = False
         if not isinstance(main_widget, list):
             raise TypeError("main_widget must be list! [widget, locate method...]")
         locate = main_widget[1]
@@ -47,8 +42,7 @@ class WidgetCheckUnit(Exception):
             if "index" in keys:
                 index = int(main_widget[3]["index"])
             if "px" in keys:
-                px = parent_element.get_window_size()
-                pxx, pxy = int(main_widget[3]["px"][0] * px["width"]), int(main_widget[3]["px"][1] * px["height"])
+                self.px = main_widget[3]["px"]
         except IndexError:
             pass
         end_time = time.time() + timeout
@@ -57,40 +51,38 @@ class WidgetCheckUnit(Exception):
                 time.sleep(0.5)
                 if locate == "id":
                     if plural is False:
-                        element = parent_element.find_element_by_id(widget)
+                        element = self.driver.find_element_by_id(widget)
                     else:
-                        element = parent_element.find_elements_by_id(widget)[index]
+                        element = self.driver.find_elements_by_id(widget)[index]
                 elif locate == "accessibility_id":
                     if plural is False:
-                        element = parent_element.find_element_by_accessibility_id(widget)
+                        element = self.driver.find_element_by_accessibility_id(widget)
                     else:
-                        element = parent_element.find_elements_by_accessibility_id(widget)[index]
+                        element = self.driver.find_elements_by_accessibility_id(widget)[index]
                 elif locate == "xpath":
                     if plural is False:
-                        element = parent_element.find_element_by_xpath(widget)
+                        element = self.driver.find_element_by_xpath(widget)
                     elif plural is False:
-                        element = parent_element.find_elements_by_xpath(widget)[index]
+                        element = self.driver.find_elements_by_xpath(widget)[index]
                     else:
                         element = {}
                         for k, v in widget.items():
                             try:
-                                element[k] = parent_element.find_element_by_xpath(v)
+                                element[k] = self.driver.find_element_by_xpath(v)
                             except NoSuchElementException:
                                 element[k] = None
-                elif locate == "tap":
-                    element = parent_element.tap([(pxx, pxy)])
                 elif locate == "class":
                     if plural is False:
-                        element = parent_element.find_element_by_class_name(widget)
+                        element = self.driver.find_element_by_class_name(widget)
                     else:
-                        element = parent_element.find_elements_by_class_name(widget)[index]
+                        element = self.driver.find_elements_by_class_name(widget)[index]
                 elif locate == "name":
                     if plural is False:
-                        element = parent_element.find_element_by_name(widget)
+                        element = self.driver.find_element_by_name(widget)
                     else:
-                        element = parent_element.find_elements_by_name(widget)[index]
+                        element = self.driver.find_elements_by_name(widget)[index]
                 elif locate == "activity":
-                    element = parent_element.wait_activity(widget)
+                    element = self.driver.wait_activity(widget)
                 else:
                     raise KeyError('find_element_by_%s must in'
                                    '["id", "name", "class", "xpath", "activity", "accessibility_id"' % locate)
@@ -105,8 +97,8 @@ class WidgetCheckUnit(Exception):
                 if time.time() > end_time:
                     raise TimeoutException()
 
-    def widget_click(self, operate_widget=None, wait_page=None, wait_time1=3, wait_time2=3, timeout=6, interval=1,
-                     log_record=1, operate_driver="find_element_in_driver", wait_driver="find_element_in_driver"):
+    def widget_click(self, operate_widget=None, wait_page=None, wait_time1=3, wait_time2=3,
+                     timeout=6, interval=1, log_record=1):
         """
             Using click operation widgets - 使用点击方式操作控件
             widget_click(self, operate_widget=None, wait_page=None, wait_time1=1, wait_time2=1, timeout=6, interval=1,
@@ -126,10 +118,6 @@ class WidgetCheckUnit(Exception):
                         操作超时
             :param log_record: The flag of record the log
                         是否记录log
-            :param operate_driver: not app drier,is node parent's driver
-                        不是启动APP时的driver，是节点的父节点的driver
-            :param wait_driver: 
-                        the same
         :return element
         """
         if not isinstance(operate_widget, list):
@@ -141,8 +129,14 @@ class WidgetCheckUnit(Exception):
         while True:
             try:
                 flag = 0
-                widget = self.wait_widget(operate_widget, wait_time1, interval, driver=operate_driver)
-                widget.click()
+                widget = self.wait_widget(operate_widget, wait_time1, interval)
+                if self.px is False:
+                    widget.click()
+                else:
+                    lc, sz = widget.location, widget.size
+                    x, y = lc["x"] + self.px[0] * sz["width"], lc["y"] + self.px[1] * sz["height"]
+                    pxx, pxy = int(x), int(y)
+                    self.driver.tap([(pxx, pxy)])
                 while True:
                     try:
                         self.wait_widget(self.page["loading_popup"]["title"], 0.2, 0.1)
@@ -152,7 +146,7 @@ class WidgetCheckUnit(Exception):
                     self.logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
                 time.sleep(0.1)
                 flag = 1
-                self.wait_widget(wait_page, wait_time2, interval, driver=wait_driver)
+                self.wait_widget(wait_page, wait_time2, interval)
                 return widget
             except TimeoutException:
                 time.sleep(interval)

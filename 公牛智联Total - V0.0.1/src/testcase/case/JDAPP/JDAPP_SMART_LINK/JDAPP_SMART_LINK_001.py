@@ -7,7 +7,7 @@ class JDAppCompatibility1(LaunchAppJD):
     def run(self):
         self.case_module = u"一键配网"  # 用例所属模块
         self.case_title = u'在TP-link品牌的路由器下添加设备检查"'  # 用例名称
-        self.zentao_id = 1272  # 禅道ID
+        self.zentao_id = 0001  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -73,13 +73,8 @@ class JDAppCompatibility1(LaunchAppJD):
                     raise TimeoutException()
                 time.sleep(1)
 
-        i = 3
+        i = 2
         while i > 0:
-            try:
-                self.widget_click(self.page["control_device_page"]["power_button"],
-                                  self.page["control_device_page"]["title"])
-            except TimeoutException:
-                pass
             try:
                 self.widget_click(self.page["control_device_page"]["power_button"],
                                   self.page["control_device_page"]["title"])
@@ -103,11 +98,5 @@ class JDAppCompatibility1(LaunchAppJD):
 
         self.widget_click(self.page["change_nickname_page"]["saved"],
                           self.page["device_info_page"]["title"])
-
-        self.widget_click(self.page["device_info_page"]["unbind"],
-                          self.page["unbind_device_popup"]["title"])
-
-        self.widget_click(self.page["unbind_device_popup"]["confirm"],
-                          self.page["app_home_page"]["title"])
 
         self.case_over(True)
