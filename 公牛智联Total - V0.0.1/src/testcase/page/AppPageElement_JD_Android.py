@@ -215,6 +215,9 @@ class MainPageWidgetAndroidJD(object):
         d["offline"] = [u"设备不在线", "name", u"设备离线标志"]
         # 电源开关
         d["power_button"] = ["android.widget.Button", "class", u"电源开关"]
+        # 电源状态
+        d["power_state"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View",
+                            "xpath", u"电源状态"]
         # 电源开启
         d["power_on"] = [u"//android.view.View[@content-desc='设备已开启']", "xpath", u"电源开启"]
         # 电源关闭
@@ -292,18 +295,12 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='新建定时']", "xpath", u"新建普通定时页面"]
         # 设定时间
         d["set_timer"] = ["//android.view.View/android.widget.EditText", "xpath", u"设定时间"]
-        # 时，往上翻
-        d["timer_h_up"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时，往上翻",
-                           {"px": [0.51, 0.29]}]
-        # 时，往下翻
-        d["timer_h_down"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时，往下翻",
-                             {"px": [0.51, 0.67]}]
-        # 分，往上翻
-        d["timer_h_up"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"分，往上翻",
-                           {"px": [0.51, 0.29]}]
+        # 时
+        d["timer_h"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时",
+                        {"px": [0.51, 0.5]}]
         # 分，往下翻
-        d["timer_h_down"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"分，往下翻",
-                             {"px": [0.51, 0.67]}]
+        d["timer_m"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"分",
+                        {"px": [0.51, 0.5]}]
         # 重复
         d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"重复"]
         # 定时开机
@@ -317,7 +314,7 @@ class MainPageWidgetAndroidJD(object):
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         # 保存按钮
-        d["saved"] = [u"//android.widget.TextView[@content-desc='执行记录']", "xpath", u"保存按钮"]
+        d["saved"] = [u"//android.widget.TextView[@content-desc='保存']", "xpath", u"保存按钮"]
         return d
 
     # 定时重复页面
@@ -359,7 +356,10 @@ class MainPageWidgetAndroidJD(object):
         # 清空定时记录
         d["clear"] = [u"//android.widget.TextView[@text='清空']", "xpath", u"清空定时记录"]
         # 有执行记录
-        d["has_log"] = [u"//android.widget.TextView[@content-desc='执行成功']", "xpath", u"返回"]
+        # has_log = {}
+        # for i in xrange(2, 13, 3):
+        #     has_log[i] = "//android.webkit.WebView/android.view.View/android.view.View[%s]" % i
+        d["has_log"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"返回"]
         # 无执行记录
         d["no_log"] = [u"//android.view.View[@content-desc='暂无执行纪录！']", "xpath", u"返回"]
         # 返回按钮

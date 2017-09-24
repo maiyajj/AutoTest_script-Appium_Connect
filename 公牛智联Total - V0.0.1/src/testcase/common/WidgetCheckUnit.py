@@ -26,8 +26,7 @@ class WidgetCheckUnit(Exception):
         copy.copy("init for copy")
 
     def wait_widget(self, main_widget, timeout=3.0, interval=1.0):
-        plural = False
-        self.px = False
+        self.px = plural = False
         if not isinstance(main_widget, list):
             raise TypeError("main_widget must be list! [widget, locate method...]")
         locate = main_widget[1]
@@ -36,13 +35,14 @@ class WidgetCheckUnit(Exception):
         try:
             if isinstance(widget, dict):
                 plural = True
-            keys = main_widget[3].keys()
-            if "text" in keys:
-                popup_text = main_widget[3]["text"]
-            if "index" in keys:
-                index = int(main_widget[3]["index"])
-            if "px" in keys:
-                self.px = main_widget[3]["px"]
+            keys = main_widget[3]
+            key = keys.keys()
+            if "text" in key:
+                popup_text = keys["text"]
+            if "index" in key:
+                index = int(keys["index"])
+            if "px" in key:
+                self.px = keys["px"]
         except IndexError:
             pass
         end_time = time.time() + timeout

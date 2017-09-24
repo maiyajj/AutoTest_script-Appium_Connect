@@ -324,6 +324,59 @@ class LaunchAppJD(object):
                 except BaseException:
                     self.debug.error(traceback.format_exc())
 
+    def set_timer_roll(self, elem_h, elem_m, elem_t, et):
+        if isinstance(et, int):
+            time_seg = True
+        else:
+            time_seg = False
+        # 时滚轮
+        element_h = self.wait_widget(elem_h)
+        pxx_h, pxy_h = elem_h[3]["px"]
+        lc_h, sz_h = element_h.location, element_h.size
+        lcx_h, lcy_h, szw_h, szh_h = float(lc_h["x"]), float(lc_h["y"]), float(sz_h["width"]), float(sz_h["height"])
+        aszh_h = int(szh_h / 5)
+        start_x_h, start_y_h = int(lcx_h + pxx_h * szw_h), int(lcy_h + pxy_h * szh_h)
+        # 分滚轮
+        element_m = self.wait_widget(elem_m)
+        pxx_m, pxy_m = elem_m[3]["px"]
+        lc_m, sz_m = element_m.location, element_m.size
+        lcx_m, lcy_m, szw_m, szh_m = float(lc_m["x"]), float(lc_m["y"]), float(sz_m["width"]), float(sz_m["height"])
+        aszh_m = int(szh_m / 5)
+        start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_m + pxy_m * szh_m)
+
+        now_h, now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
+        now_h, now_m = int(now_h), int(now_m) + 1
+
+        if time_seg is True:
+            set_h, set_m = now_h + et / 60, now_m + et % 60
+            if set_m == 60:
+                set_h, set_m = set_h + 1, 0
+            set_h, set_m = int(set_h), int(set_m)
+        else:
+            set_h, set_m = et.split(":")
+            set_h, set_m = int(set_h), int(set_m)
+
+        self.et_h = set_h - now_h
+        self.et_m = set_m - now_m
+        et_h = abs(self.et_h)
+        et_m = abs(self.et_m)
+        end_y_h = start_y_h - self.et_h / et_h * aszh_h
+        end_y_m = start_y_m - self.et_m / et_m * aszh_m
+        while et_h > 0:
+            self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
+            time.sleep(0.05)
+            et_h -= 1
+        while et_m > 0:
+            self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 0)
+            time.sleep(0.05)
+            et_m -= 1
+        start_time = "%02d:%02d" % (now_h, now_m)
+        set_time = "%02d:%02d" % (set_h, set_m)
+        if self.ac.get_attribute(self.wait_widget(elem_t), "name") == set_time:
+            return start_time, set_time
+        else:
+            raise TimeoutException("timer set error")
+
     def case_over(self, success):
         self.success = success
         database[self.device_name][self.zentao_id]["test_count"] += 1
