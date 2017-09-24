@@ -16,14 +16,15 @@ class JDAppAppFunction1(LaunchAppJD):
                 elements = self.wait_widget(self.page["app_home_page"]["device"])
                 new_value = copy.copy(self.page["app_home_page"]["device"])
                 for index, element in elements.items():
-                    if self.ac.get_attribute(element, "name") == conf["MAC"][0]:
+                    if element is not None and str(self.ac.get_attribute(element, "name")) == conf["MAC"][0]:
                         new_value[0] = new_value[0][index]
-
-                        self.widget_click(new_value, self.page["control_device_page"]["title"])
-                        raise ValueError()
-                    else:
-                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
-                        time.sleep(1)
+                        while True:
+                            try:
+                                self.widget_click(new_value, self.page["control_device_page"]["title"])
+                                raise ValueError()
+                            except TimeoutException:
+                                self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                time.sleep(1)
         except ValueError:
             pass
 
@@ -39,12 +40,14 @@ class JDAppAppFunction1(LaunchAppJD):
 
         self.widget_click(self.page["normal_timer_page"]["timer_log"],
                           self.page["timer_log_page"]["title"])
+        try:
+            self.wait_widget(self.page["timer_log_page"]["no_log"])
+        except TimeoutException:
+            self.widget_click(self.page["timer_log_page"]["clear"],
+                              self.page["timer_log_clear_popup"]["title"])
 
-        self.widget_click(self.page["timer_log_page"]["clear"],
-                          self.page["timer_log_clear_popup"]["title"])
-
-        self.widget_click(self.page["timer_log_clear_popup"]["confirm"],
-                          self.page["timer_log_page"]["no_log"])
+            self.widget_click(self.page["timer_log_clear_popup"]["confirm"],
+                              self.page["timer_log_page"]["no_log"])
 
         self.widget_click(self.page["timer_log_page"]["to_return"],
                           self.page["normal_timer_page"]["title"])
@@ -69,20 +72,21 @@ class JDAppAppFunction1(LaunchAppJD):
             if time.strftime("%H:%M") == start_time:
                 self.widget_click(self.page["add_normal_timer_page"]["saved"],
                                   self.page["normal_timer_page"]["title"])
+                break
             else:
                 if time.time() < end_time:
                     time.sleep(1)
                 else:
-                    break
+                    raise TimeoutException(u"定时未保存成功")
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
 
-        end_time = time.time() + (delay_time + 1) * 60
         if power_state == "power_on":
             power_state = u"设备已关闭"
         elif power_state == "power_off":
             power_state = u"设备已开启"
+        end_time = time.time() + (delay_time + 1) * 60
         while True:
             element = self.wait_widget(self.page["control_device_page"]["power_state"])
             if self.ac.get_attribute(element, "name") == power_state:
@@ -92,7 +96,7 @@ class JDAppAppFunction1(LaunchAppJD):
                 if time.time() < end_time:
                     time.sleep(1)
                 else:
-                    raise TimeoutException()
+                    raise TimeoutException(u"定时未执行")
 
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
@@ -101,10 +105,10 @@ class JDAppAppFunction1(LaunchAppJD):
                           self.page["timer_log_page"]["title"])
 
         month, day = time.strftime("%m-%d").split("-")
-        set_time = u"%s%s月%s日" % (set_time, month, day)
+        set_time_date = u"%s%s月%s日" % (set_time, month, day)
         element = self.wait_widget(self.page["timer_log_page"]["has_log"])
-        if self.ac.get_attribute(element, "name") == set_time:
-            self.logger.info(u"[APP_INFO]存在定时记录%s" % set_time)
+        if self.ac.get_attribute(element, "name") == set_time_date:
+            self.logger.info(u"[APP_INFO]存在定时记录%s" % set_time_date)
         else:
             raise TimeoutException()
 
@@ -112,6 +116,36 @@ class JDAppAppFunction1(LaunchAppJD):
                           self.page["timer_log_clear_popup"]["title"])
 
         self.widget_click(self.page["timer_log_clear_popup"]["confirm"],
-                          self.page["timer_log_clear_popup"]["no_log"])
+                          self.page["timer_log_page"]["no_log"])
+
+        # 定时清理工作
+        self.widget_click(self.page["timer_log_page"]["to_return"],
+                          self.page["normal_timer_page"]["title"])
+
+        try:
+            while True:
+                elements = self.wait_widget(self.page["normal_timer_page"]["out_date_timer"])
+                new_value = copy.copy(self.page["normal_timer_page"]["out_date_timer_edit"])
+                for index, element in elements.items():
+                    if element is not None and str(self.ac.get_attribute(element, "name")) == set_time:
+                        new_value[0] = new_value[0][index]
+                        while True:
+                            try:
+                                self.widget_click(new_value, self.page["out_date_timer_delete_popup"]["title"])
+                                raise ValueError()
+                            except TimeoutException:
+                                self.ac.swipe(0.6, 0.9, 0.6, 0.7, 0, self.driver)
+                time.sleep(1)
+        except ValueError:
+            pass
+
+        self.widget_click(self.page["out_date_timer_delete_popup"]["delete"],
+                          self.page["normal_timer_page"]["title"])
+
+        elements = self.wait_widget(self.page["normal_timer_page"]["out_date_timer"])
+        for index, element in elements.items():
+            if element is not None and self.ac.get_attribute(element, "name") == set_time:
+                self.logger.error(u"[APP_ERROR]定时未删除成功")
+                raise TimeoutException(u"timer delete error")
 
         self.case_over(True)

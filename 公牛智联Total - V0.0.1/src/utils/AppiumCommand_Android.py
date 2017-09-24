@@ -14,7 +14,13 @@ class AppiumCommandAndroid(object):
         if name == "enabled":
             attribute_value = str(element.is_enabled()).lower()
         elif name == "is_displayed":
-            attribute_value = str(element.is_displayed()).lower()
+            windows_size = driver.get_window_size()
+            lc = element.location
+            if 0 <= lc["x"] <= windows_size["width"] and 0 <= lc["y"] <= windows_size["height"]:
+                attribute_value = "true"
+            else:
+                attribute_value = "false"
+                # attribute_value = str(element.is_displayed()).lower()
         elif name in ["password", "index", "focusable", "focused", "scrollable", "long-clickable", "selected"]:
             if not isinstance(element, list):
                 raise KeyError("If attribute is password. The 'element' must be id of elements,is list,not WebElement")

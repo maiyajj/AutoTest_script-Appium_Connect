@@ -42,7 +42,9 @@ class WidgetCheckUnit(Exception):
             if "index" in key:
                 index = int(keys["index"])
             if "px" in key:
-                self.px = keys["px"]
+                self.px = [keys["px"], "px"]
+            if "pxw" in key:
+                self.px = [keys["pxw"], "pxw"]
         except IndexError:
             pass
         end_time = time.time() + timeout
@@ -132,11 +134,24 @@ class WidgetCheckUnit(Exception):
                 widget = self.wait_widget(operate_widget, wait_time1, interval)
                 if self.px is False:
                     widget.click()
-                else:
+                elif self.px[1] == "px":
+                    self.px = self.px[0]
                     lc, sz = widget.location, widget.size
                     x, y = lc["x"] + self.px[0] * sz["width"], lc["y"] + self.px[1] * sz["height"]
                     pxx, pxy = int(x), int(y)
-                    self.driver.tap([(pxx, pxy)])
+                    try:
+                        self.driver.tap([(pxx, pxy)])
+                    except WebDriverException:
+                        raise TimeoutException()
+                else:
+                    self.px = self.px[0]
+                    ws = self.driver.get_window_size()
+                    wsx, wsy = ws["width"], ws["height"]
+                    pxx, pxy = int(wsx * self.px[0]), int(wsy * self.px[1])
+                    try:
+                        self.driver.tap([(pxx, pxy)])
+                    except WebDriverException:
+                        raise TimeoutException()
                 while True:
                     try:
                         self.wait_widget(self.page["loading_popup"]["title"], 0.2, 0.1)

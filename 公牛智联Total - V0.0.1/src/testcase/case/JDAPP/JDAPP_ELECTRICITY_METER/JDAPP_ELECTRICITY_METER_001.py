@@ -14,7 +14,7 @@ class JDAppElectricityMeter1(LaunchAppJD):
         elements = self.wait_widget(self.page["app_home_page"]["device"])
         new_value = copy.copy(self.page["app_home_page"]["device"])  # 直接用等于仍会修改列表的值
         for index, element in elements.items():
-            if self.ac.get_attribute(element, "name") in conf["Elec_stat_mac"]:
+            if element is not None and self.ac.get_attribute(element, "name") in conf["Elec_stat_mac"]:
                 new_value[0] = new_value[0][index]
 
                 self.widget_click(new_value, self.page["control_device_page"]["title"])

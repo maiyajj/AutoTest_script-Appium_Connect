@@ -2,7 +2,7 @@
 from src.testcase.case.LaunchApp_JD import *
 
 
-class JDAppCompatibility1(LaunchAppJD):
+class JDAppSmartLink1(LaunchAppJD):
     @case_run_jd(False)
     def run(self):
         self.case_module = u"一键配网"  # 用例所属模块
@@ -58,14 +58,15 @@ class JDAppCompatibility1(LaunchAppJD):
                         elements = self.wait_widget(self.page["search_device_success_page"]["device_box"])
                         new_value = copy.copy(self.page["search_device_success_page"]["confirm"])
                         for index, element in elements.items():
-                            if self.ac.get_attribute(element, "name") == conf["MAC"][0]:
+                            if element is not None and str(self.ac.get_attribute(element, "name")) == conf["MAC"][0]:
                                 new_value[0] = new_value[0][index]
-
-                                self.widget_click(new_value, self.page["control_device_page"]["title"])
-                                raise ValueError()
-                            else:
-                                self.ac.swipe(0.6, 0.9, 0.6, 0.4, 0, self.driver)
-                                time.sleep(1)
+                                while True:
+                                    try:
+                                        self.widget_click(new_value, self.page["control_device_page"]["title"])
+                                        raise ValueError()
+                                    except TimeoutException:
+                                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                        time.sleep(1)
                 except ValueError:
                     break
             except TimeoutException:

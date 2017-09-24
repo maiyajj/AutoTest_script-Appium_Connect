@@ -345,23 +345,42 @@ class LaunchAppJD(object):
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_m + pxy_m * szh_m)
 
         now_h, now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
-        now_h, now_m = int(now_h), int(now_m) + 1
+        now_h, now_m = int(now_h), int(now_m)
+        tnow_h, tnow_m = time.strftime("%H:%M").split(":")
+        tnow_h, tnow_m = int(tnow_h), int(tnow_m)
+        if now_h != tnow_h or now_m != tnow_m:
+            time_seg = "un_same"
 
+        aet = abs(et)
+        sign_aet = et / aet
         if time_seg is True:
-            set_h, set_m = now_h + et / 60, now_m + et % 60
-            if set_m == 60:
-                set_h, set_m = set_h + 1, 0
-            set_h, set_m = int(set_h), int(set_m)
+            set_h, set_m = now_h + sign_aet * (aet / 60), now_m + 1 + sign_aet * (aet % 60)
+            set_h, set_m = (set_h + (set_m) / 60) % 24, (set_m) % 60
+        elif time_seg == "un_same":
+            set_h, set_m = tnow_h + sign_aet * (aet / 60), tnow_m + 1 + sign_aet * (aet % 60)
+            set_h, set_m = (set_h + (set_m) / 60) % 24, (set_m) % 60
         else:
             set_h, set_m = et.split(":")
             set_h, set_m = int(set_h), int(set_m)
+
+        if now_m + 1 == 60:
+            start_time = "%02d:%02d" % (now_h + 1, 0)
+        else:
+            start_time = "%02d:%02d" % (now_h, now_m + 1)
+        set_time = "%02d:%02d" % (set_h, set_m)
 
         self.et_h = set_h - now_h
         self.et_m = set_m - now_m
         et_h = abs(self.et_h)
         et_m = abs(self.et_m)
-        end_y_h = start_y_h - self.et_h / et_h * aszh_h
-        end_y_m = start_y_m - self.et_m / et_m * aszh_m
+        try:
+            end_y_h = start_y_h - self.et_h / et_h * aszh_h
+        except ZeroDivisionError:
+            end_y_h = start_y_h
+        try:
+            end_y_m = start_y_m - self.et_m / et_m * aszh_m
+        except ZeroDivisionError:
+            end_y_m = start_y_m
         while et_h > 0:
             self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
             time.sleep(0.05)
@@ -370,8 +389,8 @@ class LaunchAppJD(object):
             self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 0)
             time.sleep(0.05)
             et_m -= 1
-        start_time = "%02d:%02d" % (now_h, now_m)
-        set_time = "%02d:%02d" % (set_h, set_m)
+
+        self.logger.info(start_time, set_time)
         if self.ac.get_attribute(self.wait_widget(elem_t), "name") == set_time:
             return start_time, set_time
         else:

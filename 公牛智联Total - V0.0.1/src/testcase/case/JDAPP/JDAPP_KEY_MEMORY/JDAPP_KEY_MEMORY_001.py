@@ -2,12 +2,12 @@
 from src.testcase.case.LaunchApp_JD import *
 
 
-class JDAppAppFunction2(LaunchAppJD):
+class JDAppKeyMemory1(LaunchAppJD):
     @case_run_jd(False)
     def run(self):
         self.case_module = u"APP功能测试"  # 用例所属模块
-        self.case_title = u'启动鱼缸模式定时，APP中开关状态检查'  # 用例名称
-        self.zentao_id = 1307  # 禅道ID
+        self.case_title = u'开关操作及记忆功能'  # 用例名称
+        self.zentao_id = 1216  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -33,16 +33,13 @@ class JDAppAppFunction2(LaunchAppJD):
         except TimeoutException:
             self.widget_click(self.page["control_device_page"]["power_button"],
                               self.page["control_device_page"]["power_off"])
+        tmp = 10
+        while tmp > 0:
+            self.widget_click(self.page["control_device_page"]["power_button"],
+                              self.page["control_device_page"]["power_on"])
 
-        self.widget_click(self.page["control_device_page"]["mode_timer"],
-                          self.page["mode_timer_page"]["title"])
-
-        self.widget_click(self.page["mode_timer_page"]["fish_button"],
-                          self.page["mode_timer_page"]["title"])
-
-        self.widget_click(self.page["mode_timer_page"]["to_return"],
-                          self.page["control_device_page"]["title"])
-
-        self.wait_widget(self.page["control_device_page"]["power_on"])
+            self.widget_click(self.page["control_device_page"]["power_button"],
+                              self.page["control_device_page"]["power_off"])
+            tmp -= 1
 
         self.case_over(True)

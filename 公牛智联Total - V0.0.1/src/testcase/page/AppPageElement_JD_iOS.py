@@ -242,6 +242,64 @@ class MainPageWidgetIosJD(object):
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
 
+    # 热水器模式定时页面
+    def water_mode_timer_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='热水器模式']", "xpath", u"热水器模式定时页面"]
+        # 开启时间
+        d["start_time"] = [u"//android.view.View[@content-desc='插座开启时间']", "xpath", u"插座开启时间"]
+        # 开启时间滚轮,时
+        d["start_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.widget.ListView",
+                        "xpath", u"开启时间滚轮,时", {"px": [0.51, 0.5]}]
+        # 开启时间滚轮,分
+        d["start_m"] = [
+            "//android.webkit.WebView/android.view.View/android.view.View[2]/android.widget.ListView"[2],
+            "xpath", u"开启时间滚轮,分", {"px": [0.51, 0.5]}]
+        # 开启时间
+        d["start_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
+                                u"插座开启时间"]
+        # 关闭时间
+        d["end_time"] = [u"//android.view.View[@content-desc='插座关闭时间']", "xpath", u"插座关闭时间"]
+        # 关闭时间滚轮,时
+        d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]/android.widget.ListView",
+                      "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
+        # 关闭时间滚轮,分
+        d["end_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]/android.widget.ListView"[2],
+                      "xpath", u"关闭时间滚轮,分", {"px": [0.51, 0.5]}]
+        # 关闭时间
+        d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText[2]", "xpath",
+                              u"插座关闭时间"]
+        # 重复
+        d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]", "xpath", u"重复"]
+        # 模式名称
+        d["mode_name"] = ["//android.webkit.WebView/android.view.View/android.view.View[4]", "xpath", u"模式名称"]
+        # 执行结果
+        d["result"] = ["//android.webkit.WebView/android.view.View/android.view.View[5]", "xpath", u"执行结果"]
+        # 取消
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"取消"]
+        # 启动
+        d["launch"] = ["com.jd.smart:id/button4", "id", u"启动"]
+        return d
+
+    # 鱼缸模式定时页面
+    def fish_mode_timer_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='鱼缸模式']", "xpath", u"鱼缸模式定时页面"]
+        # 开启时间
+        d["start_time"] = [u"//android.view.View[@content-desc='插座开启时间']", "xpath", u"插座开启时间"]
+        # 关闭时间
+        d["end_time"] = [u"//android.view.View[@content-desc='插座关闭时间']", "xpath", u"插座关闭时间"]
+        # 重复
+        d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[5]", "xpath", u"重复"]
+        # 模式名称
+        d["mode_name"] = ["//android.webkit.WebView/android.view.View/android.view.View[6]", "xpath", u"模式名称"]
+        # 取消
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"取消"]
+        # 启动
+        d["launch"] = ["com.jd.smart:id/button4", "id", u"启动"]
+        return d
     # 普通定时页面
     def normal_timer_page(self):
         d = {}
@@ -391,4 +449,17 @@ class PopupWidgetIosJD(object):
         d["confirm"] = [u"是", "name", u"确认"]
         # 取消
         d["cancel"] = [u"否", "name", u"取消"]
+        return d
+
+    # 过期定时删除弹窗
+    def out_date_timer_delete_popup(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.Button[@content-desc='编辑']", "xpath", u"编辑"]
+        # 编辑
+        d["edit"] = [u"//android.widget.Button[@content-desc='编辑']", "xpath", u"编辑", {"pxw": [0.5, 0.79]}]
+        # 删除
+        d["delete"] = [u"//android.widget.Button[@content-desc='删除']", "xpath", u"删除", {"pxw": [0.5, 0.87]}]
+        # 取消
+        d["cancel"] = [u"//android.widget.Button[@content-desc='取消']", "xpath", u"取消", {"pxw": [0.5, 0.95]}]
         return d

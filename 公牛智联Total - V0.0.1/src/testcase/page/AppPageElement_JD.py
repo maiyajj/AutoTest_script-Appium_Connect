@@ -60,6 +60,9 @@ class MainPageWidgetJD(object):
     def device_info_page(self):
         return self.wrapper(self.mpwa.device_info_page(), self.mpwi.device_info_page())
 
+    def fish_mode_timer_page(self):
+        return self.wrapper(self.mpwa.fish_mode_timer_page(), self.mpwi.fish_mode_timer_page())
+
     def god_page(self):
         return self.wrapper(self.mpwa.god_page(), self.mpwi.god_page())
 
@@ -93,6 +96,9 @@ class MainPageWidgetJD(object):
     def timer_repeat_page(self):
         return self.wrapper(self.mpwa.timer_repeat_page(), self.mpwi.timer_repeat_page())
 
+    def water_mode_timer_page(self):
+        return self.wrapper(self.mpwa.water_mode_timer_page(), self.mpwi.water_mode_timer_page())
+
     def bind_device_fail_popup(self):
         return self.wrapper(self.pwa.bind_device_fail_popup(), self.pwi.bind_device_fail_popup())
 
@@ -104,6 +110,9 @@ class MainPageWidgetJD(object):
 
     def logout_popup(self):
         return self.wrapper(self.pwa.logout_popup(), self.pwi.logout_popup())
+
+    def out_date_timer_delete_popup(self):
+        return self.wrapper(self.pwa.out_date_timer_delete_popup(), self.pwi.out_date_timer_delete_popup())
 
     def timer_log_clear_popup(self):
         return self.wrapper(self.pwa.timer_log_clear_popup(), self.pwi.timer_log_clear_popup())

@@ -58,7 +58,7 @@ class JDAppCompatibility1(LaunchAppJD):
                         elements = self.wait_widget(self.page["search_device_success_page"]["device_box"])
                         new_value = copy.copy(self.page["search_device_success_page"]["confirm"])
                         for index, element in elements.items():
-                            if self.ac.get_attribute(element, "name") == conf["MAC"][0]:
+                            if element is not None and self.ac.get_attribute(element, "name") == conf["MAC"][0]:
                                 new_value[0] = new_value[0][index]
 
                                 self.widget_click(new_value, self.page["control_device_page"]["title"])
