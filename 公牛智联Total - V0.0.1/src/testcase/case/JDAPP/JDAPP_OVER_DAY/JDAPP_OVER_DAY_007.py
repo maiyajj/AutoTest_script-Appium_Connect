@@ -2,13 +2,13 @@
 from src.testcase.case.LaunchApp_JD import *
 
 
-class JDAppModeTimer1(LaunchAppJD):
+class JDAppOverDay7(LaunchAppJD):
     @case_run_jd(False)
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
-        self.case_title = u'热水器模式下设定的关闭时间早于开启时间的定时是否正确执行'  # 用例名称
-        self.zentao_id = 1061  # 禅道ID
-
+        self.case_title = u'充电保护模式下延迟23h59min关闭'  # 用例名称
+        self.zentao_id = 1306  # 禅道ID
+    
     # 用例动作
     def case(self):
         try:
@@ -27,58 +27,30 @@ class JDAppModeTimer1(LaunchAppJD):
                 time.sleep(1)
         except ValueError:
             pass
-
+        
         try:
             self.wait_widget(self.page["control_device_page"]["power_off"])
         except TimeoutException:
             self.widget_click(self.page["control_device_page"]["power_button"],
                               self.page["control_device_page"]["power_off"])
-
+        
         self.widget_click(self.page["control_device_page"]["mode_timer"],
                           self.page["mode_timer_page"]["title"])
-
-        self.widget_click(self.page["mode_timer_page"]["water_mode"],
-                          self.page["water_mode_timer_page"]["title"])
-
-        delay_time_1 = 1
-        self.widget_click(self.page["water_mode_timer_page"]["start_time"],
-                          self.page["water_mode_timer_page"]["start_h"])
-
-        self.set_timer_roll(self.page["water_mode_timer_page"]["start_h"],
-                            self.page["water_mode_timer_page"]["start_m"],
-                            self.page["water_mode_timer_page"]["start_time_text"], delay_time_1)
-
-        self.widget_click(self.page["water_mode_timer_page"]["start_time"],
-                          self.page["water_mode_timer_page"]["title"])
-
-        delay_time_2 = -2
-        self.widget_click(self.page["water_mode_timer_page"]["end_time"],
-                          self.page["water_mode_timer_page"]["end_h"])
-
-        self.set_timer_roll(self.page["water_mode_timer_page"]["end_h"],
-                            self.page["water_mode_timer_page"]["end_m"],
-                            self.page["water_mode_timer_page"]["end_time_text"], delay_time_2)
-
-        self.widget_click(self.page["water_mode_timer_page"]["end_time"],
-                          self.page["water_mode_timer_page"]["title"])
-
-        attribute = self.ac.get_attribute(self.wait_widget(self.page["water_mode_timer_page"]["repeat"]), "name")
-        if u"执行一次" not in attribute:
-            self.widget_click(self.page["water_mode_timer_page"]["repeat"],
-                              self.page["timer_repeat_page"]["title"])
-            
-            self.widget_click(self.page["timer_repeat_page"]["repeat_button"],
-                              self.page["timer_repeat_page"]["once"])
-    
-            self.widget_click(self.page["timer_repeat_page"]["to_return"],
-                              self.page["water_mode_timer_page"]["title"])
-    
-            attribute = self.ac.get_attribute(self.wait_widget(self.page["water_mode_timer_page"]["repeat"]), "name")
-            if u"执行一次" not in attribute:
-                raise TimeoutException("Cycle set error")
-
+        
+        self.widget_click(self.page["mode_timer_page"]["piocc_mode"],
+                          self.page["piocc_mode_timer_page"]["title"])
+        
+        delay_time_1 = "23:59"
+        self.set_timer_roll(self.page["piocc_mode_timer_page"]["end_h"],
+                            self.page["piocc_mode_timer_page"]["end_m"],
+                            self.page["piocc_mode_timer_page"]["end_time_text"],
+                            delay_time_1)
+        
+        self.widget_click(self.page["piocc_mode_timer_page"]["end_time"],
+                          self.page["piocc_mode_timer_page"]["title"])
+        
         try:
-            self.widget_click(self.page["water_mode_timer_page"]["launch"],
+            self.widget_click(self.page["piocc_mode_timer_page"]["launch"],
                               self.page["mode_timer_page"]["title"])
         except TimeoutException:
             self.wait_widget(self.page["mode_timer_conflict_popup"]["title"])
@@ -87,15 +59,13 @@ class JDAppModeTimer1(LaunchAppJD):
         
         self.widget_click(self.page["mode_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
-
-        self.wait_widget(self.page["control_device_page"]["power_off"])
-
-        self.check_timer(60, u"设备已开启")
-
-        self.check_timer(24 * 60, u"设备已关闭")
-
+        
+        self.wait_widget(self.page["control_device_page"]["power_on"])
+        
+        self.check_timer(60, u"设备已关闭")
+        
         self.case_over(True)
-
+    
     def check_timer(self, time_delay, power_state):
         now = time.time()
         element = self.wait_widget(self.page["control_device_page"]["power_state"])

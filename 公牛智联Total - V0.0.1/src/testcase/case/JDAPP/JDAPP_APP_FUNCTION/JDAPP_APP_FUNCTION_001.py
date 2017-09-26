@@ -56,9 +56,9 @@ class JDAppAppFunction1(LaunchAppJD):
                           self.page["add_normal_timer_page"]["title"])
 
         delay_time = 1
-        start_time, set_time = self.set_timer_roll(self.page["add_normal_timer_page"]["timer_h"],
-                                                   self.page["add_normal_timer_page"]["timer_m"],
-                                                   self.page["add_normal_timer_page"]["set_timer"], delay_time)
+        start_time_1, set_time_1 = self.set_timer_roll(self.page["add_normal_timer_page"]["timer_h"],
+                                                       self.page["add_normal_timer_page"]["timer_m"],
+                                                       self.page["add_normal_timer_page"]["set_timer"], delay_time)
 
         if power_state == "power_on":
             self.widget_click(self.page["add_normal_timer_page"]["power_off"],
@@ -67,17 +67,18 @@ class JDAppAppFunction1(LaunchAppJD):
             self.widget_click(self.page["add_normal_timer_page"]["power_on"],
                               self.page["add_normal_timer_page"]["title"])
 
-        end_time = time.time() + (delay_time + 1) * 60
+        now = time.time()
         while True:
-            if time.strftime("%H:%M") == start_time:
+            if time.strftime("%H:%M") == start_time_1:
                 self.widget_click(self.page["add_normal_timer_page"]["saved"],
                                   self.page["normal_timer_page"]["title"])
+                self.logger.info(u"[APP_INFO]Timer Run:%s" % (time.time() - now))
                 break
             else:
-                if time.time() < end_time:
+                if time.time() < now + 1 * 60 + 30:
                     time.sleep(1)
                 else:
-                    raise TimeoutException(u"定时未保存成功")
+                    raise TimeoutException("Timer Saved Error, time:%s" % set_time_1)
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -86,17 +87,18 @@ class JDAppAppFunction1(LaunchAppJD):
             power_state = u"设备已关闭"
         elif power_state == "power_off":
             power_state = u"设备已开启"
-        end_time = time.time() + (delay_time + 1) * 60
+        now = time.time()
         while True:
             element = self.wait_widget(self.page["control_device_page"]["power_state"])
             if self.ac.get_attribute(element, "name") == power_state:
+                self.logger.info(u"[APP_INFO]Timer Run:%s" % (time.time() - now))
                 self.logger.info(u"[APP_INFO]%s" % power_state)
                 break
             else:
-                if time.time() < end_time:
+                if time.time() < now + 1 * 60 + 30:
                     time.sleep(1)
                 else:
-                    raise TimeoutException(u"定时未执行")
+                    raise TimeoutException("Device state Error")
 
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
@@ -105,7 +107,7 @@ class JDAppAppFunction1(LaunchAppJD):
                           self.page["timer_log_page"]["title"])
 
         month, day = time.strftime("%m-%d").split("-")
-        set_time_date = u"%s%s月%s日" % (set_time, month, day)
+        set_time_date = u"%s%s月%s日" % (set_time_1, month, day)
         element = self.wait_widget(self.page["timer_log_page"]["has_log"])
         if self.ac.get_attribute(element, "name") == set_time_date:
             self.logger.info(u"[APP_INFO]存在定时记录%s" % set_time_date)
@@ -127,7 +129,7 @@ class JDAppAppFunction1(LaunchAppJD):
                 elements = self.wait_widget(self.page["normal_timer_page"]["out_date_timer"])
                 new_value = copy.copy(self.page["normal_timer_page"]["out_date_timer_edit"])
                 for index, element in elements.items():
-                    if element is not None and str(self.ac.get_attribute(element, "name")) == set_time:
+                    if element is not None and str(self.ac.get_attribute(element, "name")) == set_time_1:
                         new_value[0] = new_value[0][index]
                         while True:
                             try:
@@ -144,8 +146,8 @@ class JDAppAppFunction1(LaunchAppJD):
 
         elements = self.wait_widget(self.page["normal_timer_page"]["out_date_timer"])
         for index, element in elements.items():
-            if element is not None and self.ac.get_attribute(element, "name") == set_time:
+            if element is not None and self.ac.get_attribute(element, "name") == set_time_1:
                 self.logger.error(u"[APP_ERROR]定时未删除成功")
-                raise TimeoutException(u"timer delete error")
+                raise TimeoutException("timer delete error")
 
         self.case_over(True)

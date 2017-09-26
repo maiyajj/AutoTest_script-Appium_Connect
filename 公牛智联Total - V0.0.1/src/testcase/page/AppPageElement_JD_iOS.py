@@ -300,6 +300,29 @@ class MainPageWidgetIosJD(object):
         # 启动
         d["launch"] = ["com.jd.smart:id/button4", "id", u"启动"]
         return d
+
+    # 充电保护模式定时页面
+    def piocc_mode_timer_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='充电保护模式']", "xpath", u"充电保护模式定时页面"]
+        # 关闭时间
+        d["end_time"] = [u"//android.view.View[@content-desc='插座延时关闭时长']", "xpath", u"插座延时关闭时长"]
+        # 关闭时间滚轮,时
+        d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
+                      "/android.widget.ListView", "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
+        # 关闭时间滚轮,分
+        d["end_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]//android.view.View[2]"
+                      "/android.widget.ListView[2]", "xpath", u"关闭时间滚轮,分", {"px": [0.51, 0.5]}]
+        # 模式名称
+        d["mode_name"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"模式名称"]
+        # 执行结果
+        d["result"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]", "xpath", u"执行结果"]
+        # 取消
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"取消"]
+        # 启动
+        d["launch"] = ["com.jd.smart:id/button4", "id", u"启动"]
+    
     # 普通定时页面
     def normal_timer_page(self):
         d = {}
@@ -462,4 +485,15 @@ class PopupWidgetIosJD(object):
         d["delete"] = [u"//android.widget.Button[@content-desc='删除']", "xpath", u"删除", {"pxw": [0.5, 0.87]}]
         # 取消
         d["cancel"] = [u"//android.widget.Button[@content-desc='取消']", "xpath", u"取消", {"pxw": [0.5, 0.95]}]
+        return d
+
+    # 模式定时冲突弹窗
+    def mode_timer_conflict_popup(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[@content-desc='开启新定时，将会自动关闭其他定时，是否确认开启？']", "xpath", u"编辑"]
+        # 确定
+        d["confirm"] = [u"//android.widget.Button[@content-desc='是']", "xpath", u"确定"]
+        # 取消
+        d["cancel"] = [u"//android.widget.Button[@content-desc='否']", "xpath", u"取消"]
         return d

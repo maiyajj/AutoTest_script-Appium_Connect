@@ -294,7 +294,7 @@ class MainPageWidgetAndroidJD(object):
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='热水器模式']", "xpath", u"热水器模式定时页面"]
         # 开启时间
-        d["start_time"] = [u"//android.view.View[@content-desc='插座开启时间']", "xpath", u"插座开启时间"]
+        d["start_time"] = [u"//android.view.View[@content-desc='插座开启时间']", "xpath", u"插座开启时间控件"]
         # 开启时间滚轮,时
         d["start_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
                         "/android.widget.ListView", "xpath", u"开启时间滚轮,时", {"px": [0.51, 0.5]}]
@@ -305,7 +305,7 @@ class MainPageWidgetAndroidJD(object):
         d["start_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
                                 u"插座开启时间"]
         # 关闭时间
-        d["end_time"] = [u"//android.view.View[@content-desc='插座关闭时间']", "xpath", u"插座关闭时间"]
+        d["end_time"] = [u"//android.view.View[@content-desc='插座关闭时间']", "xpath", u"插座关闭时间控件"]
         # 关闭时间滚轮,时
         d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]/android.view.View[2]"
                       "/android.widget.ListView", "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
@@ -333,19 +333,63 @@ class MainPageWidgetAndroidJD(object):
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='鱼缸模式']", "xpath", u"鱼缸模式定时页面"]
         # 开启时间
-        d["start_time"] = [u"//android.view.View[@content-desc='插座开启时间']", "xpath", u"插座开启时间"]
+        d["start_time"] = [u"//android.view.View[@content-desc='插座开启时长']", "xpath", u"插座开启时间控件"]
+        # 开启时间滚轮,时
+        d["start_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
+                        "/android.widget.ListView", "xpath", u"开启时间滚轮,时", {"px": [0.51, 0.5]}]
+        # 开启时间滚轮,分
+        d["start_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
+                        "/android.widget.ListView[2]", "xpath", u"开启时间滚轮,分", {"px": [0.51, 0.5]}]
+        # 开启时间
+        d["start_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
+                                u"插座开启时间"]
         # 关闭时间
-        d["end_time"] = [u"//android.view.View[@content-desc='插座关闭时间']", "xpath", u"插座关闭时间"]
+        d["end_time"] = [u"//android.view.View[@content-desc='插座关闭时长']", "xpath", u"插座关闭时间控件"]
+        # 关闭时间滚轮,时
+        d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]/android.view.View[2]"
+                      "/android.widget.ListView", "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
+        # 关闭时间滚轮,分
+        d["end_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]//android.view.View[2]"
+                      "/android.widget.ListView[2]", "xpath", u"关闭时间滚轮,分", {"px": [0.51, 0.5]}]
+        # 关闭时间
+        d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText[2]", "xpath",
+                              u"插座关闭时间"]
         # 重复
-        d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[5]", "xpath", u"重复"]
+        d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]", "xpath", u"重复"]
         # 模式名称
-        d["mode_name"] = ["//android.webkit.WebView/android.view.View/android.view.View[6]", "xpath", u"模式名称"]
+        d["mode_name"] = ["//android.webkit.WebView/android.view.View/android.view.View[4]", "xpath", u"模式名称"]
         # 取消
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"取消"]
         # 启动
         d["launch"] = ["com.jd.smart:id/button4", "id", u"启动"]
         return d
 
+    # 充电保护模式定时页面
+    def piocc_mode_timer_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='充电保护模式']", "xpath", u"充电保护模式定时页面"]
+        # 关闭时间
+        d["end_time"] = [u"//android.view.View[@content-desc='插座延时关闭时长']", "xpath", u"插座延时关闭时长控件"]
+        # 关闭时间滚轮,时
+        d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
+                      "/android.widget.ListView", "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
+        # 关闭时间滚轮,分
+        d["end_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]//android.view.View[2]"
+                      "/android.widget.ListView[2]", "xpath", u"关闭时间滚轮,分", {"px": [0.51, 0.5]}]
+        # 关闭时间
+        d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
+                              u"插座延时关闭时长"]
+        # 模式名称
+        d["mode_name"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"模式名称"]
+        # 执行结果
+        d["result"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]", "xpath", u"执行结果"]
+        # 取消
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"取消"]
+        # 启动
+        d["launch"] = ["com.jd.smart:id/button4", "id", u"启动"]
+        return d
+    
     # 普通定时页面
     def normal_timer_page(self):
         d = {}
@@ -403,7 +447,8 @@ class MainPageWidgetAndroidJD(object):
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='重复']", "xpath", u"普通定时重复页面"]
         # 重复按钮
-        d["repeat_button"] = [u"//android.view.View[@text='重复']", "xpath", u"重复按钮", {"px": [0.95, 0.5]}]
+        d["repeat_button"] = [u"//android.view.View[@content-desc='重复 ']", "xpath", u"重复按钮",
+                              {"px": [0.95, 0.5]}]
         # 执行一次
         d["once"] = [u"//android.view.View[@content-desc='执行一次']", "xpath", u"执行一次"]
         # 每天
@@ -428,6 +473,13 @@ class MainPageWidgetAndroidJD(object):
         d["weekday"] = [u"//android.view.View[@content-desc='周日']", "xpath", u"周日"]
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        # 鱼缸模式循环按钮
+        d["fish_repeat_button"] = [u"//android.view.View[@content-desc='永久循环 ']", "xpath",
+                                   u"鱼缸模式循环按钮", {"px": [0.95, 0.5]}]
+        # 永久循环
+        d["forever"] = [u"//android.view.View[@content-desc='永久循环 ']", "xpath", u"永久循环"]
+        # 执行次数
+        d["cycle_index"] = [u"//android.view.View[@content-desc='执行次数设置(次)']", "xpath", u"执行次数"]
         return d
 
     # 定时执行记录页面
@@ -528,4 +580,15 @@ class PopupWidgetAndroidJD(object):
         d["delete"] = [u"//android.widget.Button[@content-desc='删除']", "xpath", u"删除", {"pxw": [0.5, 0.87]}]
         # 取消
         d["cancel"] = [u"//android.widget.Button[@content-desc='取消']", "xpath", u"取消", {"pxw": [0.5, 0.95]}]
+        return d
+
+    # 模式定时冲突弹窗
+    def mode_timer_conflict_popup(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[@content-desc='开启新定时，将会自动关闭其他定时，是否确认开启？']", "xpath", u"模式定时冲突弹窗"]
+        # 确定
+        d["confirm"] = [u"//android.widget.Button[@content-desc='是']", "xpath", u"确定"]
+        # 取消
+        d["cancel"] = [u"//android.widget.Button[@content-desc='否']", "xpath", u"取消"]
         return d

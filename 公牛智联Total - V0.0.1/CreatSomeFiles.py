@@ -143,13 +143,33 @@ class CreateFunc(object):
         result = list(set(result))
         print result
 
+    def create_WaitCase(self):
+        rootdir = r"./"
+        for parents, dirnames, filenames in os.walk(rootdir):
+            for filename in filenames:
+                if ".DS_Store" in filename:
+                    os.remove(os.path.join(parents, filename))
+        # 写INPUT_CASE文件夹内容
+        rootdir = r"./src/testcase/case/"  # 指明被遍历的文件夹
+        for parents, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
+            for filename in [i for i in filenames if "WaitCase_" in i and "pyc" not in i]:
+                with open(os.path.join(parents, filename), "r") as files:
+                    print files.readlines()
+                    # for dirname in [i for i in dirnames if "_" not in i and "APP" in i]:
+                    #     name = dirname[:2]
+                    #     app_name = name + "APP"
+                    #     file_list = []
+                    #     files_list = {}
+                    #     print app_name
+
 
 CF = CreateFunc()
-CF.create_INPUT_CASE()
-CF.create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
-CF.create_AppPageElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
-CF.create_AppPageElement(MainPageWidgetAndroidAL, PopupWidgetAndroidAL)
-CF.create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
-CF.create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
-CF.create_ReadAPPElement(MainPageWidgetAndroidAL, PopupWidgetAndroidAL)
-CF.correct_func_name()
+# CF.create_INPUT_CASE()
+# CF.create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
+# CF.create_AppPageElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
+# CF.create_AppPageElement(MainPageWidgetAndroidAL, PopupWidgetAndroidAL)
+# CF.create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
+# CF.create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
+# CF.create_ReadAPPElement(MainPageWidgetAndroidAL, PopupWidgetAndroidAL)
+# CF.correct_func_name()
+CF.create_WaitCase()

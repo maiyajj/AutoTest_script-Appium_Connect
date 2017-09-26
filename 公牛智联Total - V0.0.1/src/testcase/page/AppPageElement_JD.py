@@ -81,6 +81,9 @@ class MainPageWidgetJD(object):
     def normal_timer_page(self):
         return self.wrapper(self.mpwa.normal_timer_page(), self.mpwi.normal_timer_page())
 
+    def piocc_mode_timer_page(self):
+        return self.wrapper(self.mpwa.piocc_mode_timer_page(), self.mpwi.piocc_mode_timer_page())
+
     def search_device_fail_page(self):
         return self.wrapper(self.mpwa.search_device_fail_page(), self.mpwi.search_device_fail_page())
 
@@ -110,6 +113,9 @@ class MainPageWidgetJD(object):
 
     def logout_popup(self):
         return self.wrapper(self.pwa.logout_popup(), self.pwi.logout_popup())
+
+    def mode_timer_conflict_popup(self):
+        return self.wrapper(self.pwa.mode_timer_conflict_popup(), self.pwi.mode_timer_conflict_popup())
 
     def out_date_timer_delete_popup(self):
         return self.wrapper(self.pwa.out_date_timer_delete_popup(), self.pwi.out_date_timer_delete_popup())

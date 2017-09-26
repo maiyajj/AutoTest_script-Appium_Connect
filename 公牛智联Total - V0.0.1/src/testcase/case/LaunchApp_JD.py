@@ -324,9 +324,27 @@ class LaunchAppJD(object):
                 except BaseException:
                     self.debug.error(traceback.format_exc())
 
+    def case_over(self, success):
+        self.success = success
+        database[self.device_name][self.zentao_id]["test_count"] += 1
+
+    # 记录运行结果
+    def result(self):
+        d_result = {True: ["success", "test_pass"],
+                    False: ["failed", "test_fail"],
+                    "unknown": ["unknown", "test_error"],
+                    "screen": ["wait", "test_wait"]}
+        result = d_result[self.success]
+        self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
+        database[self.device_name][self.zentao_id][result[1]] += 1
+        return "%s" % result[0], self.zentao_id, self.case_title, self.start_time
+    
     def set_timer_roll(self, elem_h, elem_m, elem_t, et):
         if isinstance(et, int):
-            time_seg = True
+            if et >= 0:
+                time_seg = True
+            else:
+                time_seg = "minus"
         else:
             time_seg = False
         # 时滚轮
@@ -344,33 +362,31 @@ class LaunchAppJD(object):
         aszh_m = int(szh_m / 5)
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_m + pxy_m * szh_m)
 
-        now_h, now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
-        now_h, now_m = int(now_h), int(now_m)
-        tnow_h, tnow_m = time.strftime("%H:%M").split(":")
-        tnow_h, tnow_m = int(tnow_h), int(tnow_m)
-        if now_h != tnow_h or now_m != tnow_m:
-            time_seg = "un_same"
+        roll_now_h, roll_now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
+        roll_now_h, roll_now_m = int(roll_now_h), int(roll_now_m)
 
-        aet = abs(et)
-        sign_aet = et / aet
+        now_h, now_m = time.strftime("%H:%M").split(":")
+        now_h, now_m = int(now_h), int(now_m)
+
         if time_seg is True:
+            aet = abs(et)
+            sign_aet = et / aet
             set_h, set_m = now_h + sign_aet * (aet / 60), now_m + 1 + sign_aet * (aet % 60)
             set_h, set_m = (set_h + (set_m) / 60) % 24, (set_m) % 60
-        elif time_seg == "un_same":
-            set_h, set_m = tnow_h + sign_aet * (aet / 60), tnow_m + 1 + sign_aet * (aet % 60)
+        elif time_seg == "minus":
+            aet = abs(et)
+            sign_aet = et / aet
+            set_h, set_m = now_h + sign_aet * (aet / 60), now_m + sign_aet * (aet % 60)
             set_h, set_m = (set_h + (set_m) / 60) % 24, (set_m) % 60
         else:
             set_h, set_m = et.split(":")
             set_h, set_m = int(set_h), int(set_m)
 
-        if now_m + 1 == 60:
-            start_time = "%02d:%02d" % (now_h + 1, 0)
-        else:
-            start_time = "%02d:%02d" % (now_h, now_m + 1)
+        start_time = "%02d:%02d" % (now_h, now_m + 1)
         set_time = "%02d:%02d" % (set_h, set_m)
 
-        self.et_h = set_h - now_h
-        self.et_m = set_m - now_m
+        self.et_h = set_h - roll_now_h
+        self.et_m = set_m - roll_now_m
         et_h = abs(self.et_h)
         et_m = abs(self.et_m)
         try:
@@ -381,32 +397,65 @@ class LaunchAppJD(object):
             end_y_m = start_y_m - self.et_m / et_m * aszh_m
         except ZeroDivisionError:
             end_y_m = start_y_m
-        while et_h > 0:
-            self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
-            time.sleep(0.05)
-            et_h -= 1
+        # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
         while et_m > 0:
             self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 0)
-            time.sleep(0.05)
             et_m -= 1
-
+        while et_h > 0:
+            self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
+            et_h -= 1
+        
         self.logger.info(start_time, set_time)
         if self.ac.get_attribute(self.wait_widget(elem_t), "name") == set_time:
             return start_time, set_time
         else:
             raise TimeoutException("timer set error")
 
-    def case_over(self, success):
-        self.success = success
-        database[self.device_name][self.zentao_id]["test_count"] += 1
-
-    # 记录运行结果
-    def result(self):
-        d_result = {True: ["success", "test_pass"],
-                    False: ["failed", "test_fail"],
-                    "unknown": ["unknown", "test_error"],
-                    "screen": ["wait", "test_wait"]}
-        result = d_result[self.success]
-        self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
-        database[self.device_name][self.zentao_id][result[1]] += 1
-        return "%s" % result[0], self.zentao_id, self.case_title, self.start_time
+    # 定时检查模板，用时删减
+    def check_timer_template(self, time_delay, power_state, attribute, power_state_same_as_prev=False, times=""):
+        if power_state_same_as_prev is False:
+            now = time.time()
+            # element = self.wait_widget(self.page["control_device_page"]["power_state"])
+            while True:
+                # attribute = self.ac.get_attribute(element, "name")
+                if attribute == power_state:
+                    self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - now))
+                    self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
+                    break
+                else:
+                    if time.time() < now + time_delay * 60 + 30:
+                        time.sleep(1)
+                    else:
+                        raise TimeoutException("Device state Error, time out")
+        else:
+            if isinstance(time_delay, int):
+                if time_delay >= 0:
+                    delay_times = time_delay
+                else:
+                    delay_times = 24 * 60 + time_delay
+            else:
+                nh, nm = time.strftime("%H:%M").split(":")
+                sh, sm = time_delay.split(":")
+                time_tmp_1 = int(nh) * 60 + int(nm)
+                time_tmp_2 = int(sh) * 60 + int(sm)
+                if time_tmp_1 < time_tmp_2:
+                    delay_times = time_tmp_2 - time_tmp_1
+                else:
+                    delay_times = 24 * 60 + time_tmp_2 - time_tmp_1
+            self.now = time.time()
+            element = self.wait_widget(self.page["control_device_page"]["power_state"])
+            while True:
+                attribute = self.ac.get_attribute(element, "name")
+                if time.strftime("%H:%M") == times:
+                    time.sleep(10)
+                    if attribute == power_state:
+                        self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - self.now - 10))
+                        self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
+                        break
+                    else:
+                        raise TimeoutException("Device state Error")
+                else:
+                    if time.time() < self.now + delay_times * 60 + 30:
+                        time.sleep(1)
+                    else:
+                        raise TimeoutException("Device state Error, time out")

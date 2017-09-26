@@ -1,9 +1,33 @@
 # coding=utf-8
-from ReadAPPElement import *
+from src.testcase.case.LaunchApp_JD import *
 
 
-class b(a):
+class JDAppOverDay4(LaunchAppJD):
+    @case_run_jd(False)
+    def run(self):
+        self.case_module = u"模式定时"  # 用例所属模块
+        self.case_title = u'隔天普通定时'  # 用例名称
+        self.zentao_id = 1302  # 禅道ID
+    
+    # 用例动作
     def case(self):
+        try:
+            while True:
+                elements = self.wait_widget(self.page["app_home_page"]["device"])
+                new_value = copy.copy(self.page["app_home_page"]["device"])
+                for index, element in elements.items():
+                    if element is not None and str(self.ac.get_attribute(element, "name")) == conf["MAC"][0]:
+                        new_value[0] = new_value[0][index]
+                        while True:
+                            try:
+                                self.widget_click(new_value, self.page["control_device_page"]["title"])
+                                raise ValueError()
+                            except TimeoutException:
+                                self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                time.sleep(1)
+        except ValueError:
+            pass
+        
         try:
             self.wait_widget(self.page["control_device_page"]["power_off"])
         except TimeoutException:
@@ -13,16 +37,18 @@ class b(a):
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
         
-        start_time_1, set_time_1 = self.create_normal_timer(2, "power_on")
-        start_time_2, set_time_2 = self.create_normal_timer(4, "power_off")
+        delay_time_1 = "23:59"
+        delay_time_2 = "00:01"
+        start_time_1, set_time_1 = self.create_normal_timer(delay_time_1, "power_on")
+        start_time_2, set_time_2 = self.create_normal_timer(delay_time_2, "power_off")
         
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
         
         self.wait_widget(self.page["control_device_page"]["power_off"])
         
-        self.check_timer(2, u"设备已开启", set_time_1)
-        self.check_timer(4, u"设备已关闭", set_time_2)
+        self.check_timer(delay_time_1, u"设备已开启", set_time_1)
+        self.check_timer(delay_time_2, u"设备已关闭", set_time_2)
     
     def create_normal_timer(self, delay_time, power):
         self.widget_click(self.page["normal_timer_page"]["add_timer"],
@@ -37,7 +63,7 @@ class b(a):
                           self.page["add_normal_timer_page"]["title"])
         
         attribute = self.ac.get_attribute(self.wait_widget(self.page["add_normal_timer_page"]["repeat"]), "name")
-        if u"每天" not in attribute:
+        if u"执行一次" not in attribute:
             self.widget_click(self.page["add_normal_timer_page"]["repeat"],
                               self.page["timer_repeat_page"]["title"])
             
@@ -51,7 +77,7 @@ class b(a):
                               self.page["add_normal_timer_page"]["title"])
             
             attribute = self.ac.get_attribute(self.wait_widget(self.page["add_normal_timer_page"]["repeat"]), "name")
-            if u"每天" not in attribute:
+            if u"执行一次" not in attribute:
                 raise TimeoutException("Cycle set error")
         
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
@@ -59,6 +85,20 @@ class b(a):
         return start_time, set_time
     
     def check_timer(self, time_delay, power_state, times):
+        if isinstance(time_delay, int):
+            if time_delay >= 0:
+                delay_times = time_delay
+            else:
+                delay_times = 24 * 60 + time_delay
+        else:
+            nh, nm = time.strftime("%H:%M").split(":")
+            sh, sm = time_delay.split(":")
+            time_tmp_1 = int(nh) * 60 + int(nm)
+            time_tmp_2 = int(sh) * 60 + int(sm)
+            if time_tmp_1 < time_tmp_2:
+                delay_times = time_tmp_2 - time_tmp_1
+            else:
+                delay_times = 24 * 60 + time_tmp_2 - time_tmp_1
         self.now = time.time()
         element = self.wait_widget(self.page["control_device_page"]["power_state"])
         while True:
@@ -66,26 +106,13 @@ class b(a):
             if time.strftime("%H:%M") == times:
                 time.sleep(10)
                 if attribute == power_state:
+                    self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - self.now - 10))
+                    self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
                     break
                 else:
                     raise TimeoutException("Device state Error")
             else:
-                if time.time() < self.now + time_delay * 60 + 30:
+                if time.time() < self.now + delay_times * 60 + 30:
                     time.sleep(1)
                 else:
                     raise TimeoutException("Device state Error, time out")
-
-
-b().case()
-
-
-class c(b):
-    def case(self):
-        delay_time_1 = "00:01"
-        start_time_1, set_time_1 = self.set_timer_roll(self.page["piocc_mode_timer_page"]["end_h"],
-                                                       self.page["piocc_mode_timer_page"]["end_m"],
-                                                       self.page["piocc_mode_timer_page"]["end_time_text"],
-                                                       delay_time_1)
-
-
-c().case()
