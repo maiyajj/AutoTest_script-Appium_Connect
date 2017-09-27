@@ -25,7 +25,7 @@ class WidgetCheckUnit(Exception):
     def copy(self):
         copy.copy("init for copy")
 
-    def wait_widget(self, main_widget, timeout=3.0, interval=1.0):
+    def wait_widget(self, main_widget, timeout=3.0, interval=1.0, log_record=1):
         self.px = plural = False
         if not isinstance(main_widget, list):
             raise TypeError("main_widget must be list! [widget, locate method...]")
@@ -93,6 +93,8 @@ class WidgetCheckUnit(Exception):
                         pass
                     else:
                         raise TimeoutException()
+                if log_record != 0:
+                    self.logger.info('[APP_INFO] wait_widget ["%s"] success' % main_widget[2])
                 return element
             except NoSuchElementException:
                 time.sleep(interval)
@@ -131,7 +133,7 @@ class WidgetCheckUnit(Exception):
         while True:
             try:
                 flag = 0
-                widget = self.wait_widget(operate_widget, wait_time1, interval)
+                widget = self.wait_widget(operate_widget, wait_time1, interval, 0)
                 if self.px is False:
                     widget.click()
                 elif self.px[1] == "px":
@@ -161,7 +163,7 @@ class WidgetCheckUnit(Exception):
                     self.logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
                 time.sleep(0.1)
                 flag = 1
-                self.wait_widget(wait_page, wait_time2, interval)
+                self.wait_widget(wait_page, wait_time2, interval, 0)
                 return widget
             except TimeoutException:
                 time.sleep(interval)

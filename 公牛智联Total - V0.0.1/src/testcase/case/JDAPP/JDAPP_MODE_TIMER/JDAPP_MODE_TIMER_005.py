@@ -55,26 +55,26 @@ class JDAppModeTimer5(LaunchAppJD):
         delay_time_2 = "01:00"
         self.widget_click(self.page["fish_mode_timer_page"]["end_time"],
                           self.page["fish_mode_timer_page"]["end_h"])
-        
-        start_time_2, set_time_2 = self.set_timer_roll(self.page["fish_mode_timer_page"]["end_h"],
-                                                       self.page["fish_mode_timer_page"]["end_m"],
-                                                       self.page["fish_mode_timer_page"]["end_time_text"],
-                                                       delay_time_2)
+
+        self.set_timer_roll(self.page["fish_mode_timer_page"]["end_h"],
+                            self.page["fish_mode_timer_page"]["end_m"],
+                            self.page["fish_mode_timer_page"]["end_time_text"],
+                            delay_time_2)
         
         self.widget_click(self.page["fish_mode_timer_page"]["end_time"],
                           self.page["fish_mode_timer_page"]["title"])
-        
+
         attribute = self.ac.get_attribute(self.wait_widget(self.page["fish_mode_timer_page"]["repeat"]), "name")
         if u"永久循环" not in attribute:
             self.widget_click(self.page["fish_mode_timer_page"]["repeat"],
                               self.page["timer_repeat_page"]["title"])
-            
+
             self.widget_click(self.page["timer_repeat_page"]["fish_repeat_button"],
                               self.page["timer_repeat_page"]["forever"])
-            
+
             self.widget_click(self.page["timer_repeat_page"]["to_return"],
                               self.page["fish_mode_timer_page"]["title"])
-            
+
             attribute = self.ac.get_attribute(self.wait_widget(self.page["fish_mode_timer_page"]["repeat"]), "name")
             if u"永久循环" not in attribute:
                 raise TimeoutException("Cycle set error")
@@ -94,30 +94,16 @@ class JDAppModeTimer5(LaunchAppJD):
                 if time.time() < self.now + 1 * 60 + 30:
                     time.sleep(1)
                 else:
-                    raise TimeoutException("Timer Saved Error, time:%s" % set_time_2)
+                    raise TimeoutException("Timer Saved Error, time:%s" % start_time_1)
         
         self.widget_click(self.page["mode_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
         
         self.wait_widget(self.page["control_device_page"]["power_on"])
-        
-        self.check_timer(60, u"设备已关闭")
-        
-        self.check_timer(60, u"设备已开启")
+
+        self.check_timer(delay_time_1, u"设备已关闭")
+
+        self.check_timer(delay_time_2, u"设备已开启")
         
         self.case_over(True)
     
-    def check_timer(self, time_delay, power_state):
-        now = time.time()
-        element = self.wait_widget(self.page["control_device_page"]["power_state"])
-        while True:
-            attribute = self.ac.get_attribute(element, "name")
-            if attribute == power_state:
-                self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - now))
-                self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                break
-            else:
-                if time.time() < now + time_delay * 60 + 30:
-                    time.sleep(1)
-                else:
-                    raise TimeoutException("Device state Error")

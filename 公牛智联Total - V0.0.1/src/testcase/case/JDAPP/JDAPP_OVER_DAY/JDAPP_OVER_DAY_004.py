@@ -33,22 +33,26 @@ class JDAppOverDay4(LaunchAppJD):
         except TimeoutException:
             self.widget_click(self.page["control_device_page"]["power_button"],
                               self.page["control_device_page"]["power_off"])
-        
+
+        self.close_mode_timer()
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
+        self.delete_normal_timer()
         
         delay_time_1 = "23:59"
         delay_time_2 = "00:01"
-        start_time_1, set_time_1 = self.create_normal_timer(delay_time_1, "power_on")
-        start_time_2, set_time_2 = self.create_normal_timer(delay_time_2, "power_off")
+        self.create_normal_timer(delay_time_1, "power_on")
+        self.create_normal_timer(delay_time_2, "power_off")
         
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
         
         self.wait_widget(self.page["control_device_page"]["power_off"])
-        
-        self.check_timer(delay_time_1, u"设备已开启", set_time_1)
-        self.check_timer(delay_time_2, u"设备已关闭", set_time_2)
+
+        self.check_timer(delay_time_1, u"设备已开启", False)
+        self.check_timer(delay_time_2, u"设备已关闭", False)
+
+        self.case_over(True)
     
     def create_normal_timer(self, delay_time, power):
         self.widget_click(self.page["normal_timer_page"]["add_timer"],
@@ -84,35 +88,3 @@ class JDAppOverDay4(LaunchAppJD):
                           self.page["normal_timer_page"]["title"])
         return start_time, set_time
     
-    def check_timer(self, time_delay, power_state, times):
-        if isinstance(time_delay, int):
-            if time_delay >= 0:
-                delay_times = time_delay
-            else:
-                delay_times = 24 * 60 + time_delay
-        else:
-            nh, nm = time.strftime("%H:%M").split(":")
-            sh, sm = time_delay.split(":")
-            time_tmp_1 = int(nh) * 60 + int(nm)
-            time_tmp_2 = int(sh) * 60 + int(sm)
-            if time_tmp_1 < time_tmp_2:
-                delay_times = time_tmp_2 - time_tmp_1
-            else:
-                delay_times = 24 * 60 + time_tmp_2 - time_tmp_1
-        self.now = time.time()
-        element = self.wait_widget(self.page["control_device_page"]["power_state"])
-        while True:
-            attribute = self.ac.get_attribute(element, "name")
-            if time.strftime("%H:%M") == times:
-                time.sleep(10)
-                if attribute == power_state:
-                    self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - self.now - 10))
-                    self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                    break
-                else:
-                    raise TimeoutException("Device state Error")
-            else:
-                if time.time() < self.now + delay_times * 60 + 30:
-                    time.sleep(1)
-                else:
-                    raise TimeoutException("Device state Error, time out")

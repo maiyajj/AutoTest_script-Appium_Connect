@@ -33,20 +33,26 @@ class JDAppOverDay5(LaunchAppJD):
         except TimeoutException:
             self.widget_click(self.page["control_device_page"]["power_button"],
                               self.page["control_device_page"]["power_off"])
-        
+
+        self.close_mode_timer()
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
-        
-        self.create_normal_timer(2, "power_on")
-        self.create_normal_timer(4, "power_off")
+        self.delete_normal_timer()
+
+        delay_time_1 = 2
+        delay_time_2 = 4
+        self.create_normal_timer(delay_time_1, "power_on")
+        self.create_normal_timer(delay_time_2, "power_off")
         
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
         
         self.wait_widget(self.page["control_device_page"]["power_off"])
-        
-        self.check_timer(2, u"设备已开启")
-        self.check_timer(4, u"设备已关闭")
+
+        self.check_timer(delay_time_1, u"设备已开启")
+        self.check_timer(delay_time_2 - delay_time_1, u"设备已关闭")
+
+        self.case_over(True)
     
     def create_normal_timer(self, delay_time, power):
         self.widget_click(self.page["normal_timer_page"]["add_timer"],
@@ -81,18 +87,3 @@ class JDAppOverDay5(LaunchAppJD):
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
         return start_time, set_time
-    
-    def check_timer(self, time_delay, power_state):
-        now = time.time()
-        element = self.wait_widget(self.page["control_device_page"]["power_state"])
-        while True:
-            attribute = self.ac.get_attribute(element, "name")
-            if attribute == power_state:
-                self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - now))
-                self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                break
-            else:
-                if time.time() < now + time_delay * 60 + 30:
-                    time.sleep(1)
-                else:
-                    raise TimeoutException("Device state Error")

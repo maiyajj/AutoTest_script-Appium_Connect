@@ -270,19 +270,19 @@ class MainPageWidgetAndroidJD(object):
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='自定义模式']", "xpath", u"模式定时页面"]
         # 热水器模式
-        d["water_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"热水器模式开关"]
+        d["water_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"热水器模式"]
         # 热水器模式开关
-        d["water_button"] = [u"//android.view.View[@content-desc='热水器模式']", "xpath", u"热水器模式开关",
+        d["water_button"] = [u"//android.view.View[@content-desc='热水器模式 ']", "xpath", u"热水器模式开关",
                              {"px": [0.95, 0.5]}]
         # 鱼缸模式
-        d["fish_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[5]", "xpath", u"鱼缸模式开关"]
+        d["fish_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[5]", "xpath", u"鱼缸模式"]
         # 鱼缸模式开关
-        d["fish_button"] = [u"//android.view.View[@content-desc='鱼缸模式']", "xpath", u"鱼缸模式开关",
+        d["fish_button"] = [u"//android.view.View[@content-desc='鱼缸模式 ']", "xpath", u"鱼缸模式开关",
                             {"px": [0.95, 0.5]}]
         # 充电保护模式
-        d["piocc_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[8]", "xpath", u"鱼缸模式开关"]
+        d["piocc_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[8]", "xpath", u"充电保护模式"]
         # 充电保护模式开关
-        d["piocc_button"] = [u"//android.view.View[@content-desc='充电保护模式']", "xpath", u"充电保护模式开关",
+        d["piocc_button"] = [u"//android.view.View[@content-desc='充电保护模式 ']", "xpath", u"充电保护模式开关",
                              {"px": [0.95, 0.5]}]
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
@@ -400,16 +400,12 @@ class MainPageWidgetAndroidJD(object):
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         # 执行记录
-        d["timer_log"] = [u"//android.view.View[@content-desc='执行记录']", "xpath", u"执行记录"]
-        # 过期定时
-        out_date_timer = {}
-        out_date_timer_edit = {}
-        for i in xrange(3, 48, 4):
-            out_date_timer[i] = "//android.webkit.WebView/android.view.View/android.view.View[%s]" % i
-            out_date_timer_edit[i] = "//android.webkit.WebView/android.view.View/android.view.View[%s]" % (i - 1)
-        d["out_date_timer"] = [out_date_timer, "xpath", u"过期定时"]
-        # 编辑过期定时
-        d["out_date_timer_edit"] = [out_date_timer_edit, "xpath", u"编辑过期定时", {"px": [0.9975, 0.5]}]
+        d["timer_log"] = [u"//android.view.View[@content-desc='执行记录 ']", "xpath", u"执行记录"]
+        # 编辑定时
+        d["timer_edit"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath",
+                           u"编辑定时", {"px": [0.9975, 0.5]}]
+        # 无定时
+        d["no_timer"] = [u"//android.view.View[@content-desc='暂无设置定时']", "xpath", u"无定时"]
         return d
 
     # 新建普通定时页面
@@ -570,7 +566,7 @@ class PopupWidgetAndroidJD(object):
         return d
 
     # 过期定时删除弹窗
-    def out_date_timer_delete_popup(self):
+    def timer_edit_popup(self):
         d = {}
         # 标题
         d["title"] = [u"//android.widget.Button[@content-desc='编辑']", "xpath", u"编辑"]

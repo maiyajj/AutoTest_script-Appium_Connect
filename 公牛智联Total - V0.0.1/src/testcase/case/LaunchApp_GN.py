@@ -37,11 +37,11 @@ def launch_fail_fix_gn(func):
             except URLError:
                 self.debug.error("launch_app driver(URLError):%s times" % ii)
                 ii += 1
-                self.http_run_app()
+                self.http_run_app(True)
                 break
             except BadStatusLine:
                 self.debug.error("launch_app driver(BadStatusLine)")
-                self.http_run_app()
+                self.http_run_app(True)
                 break
 
     return wrapper
@@ -124,6 +124,7 @@ def case_run_gn(bool):
                     self.case()
                 except TimeoutException:
                     self.case_over(False)
+                    self.debug.error("case_over:%s" % traceback.format_exc())
                 database["unknown"] = 0
             except BaseException:
                 self.debug.error(traceback.format_exc())  # Message: ***

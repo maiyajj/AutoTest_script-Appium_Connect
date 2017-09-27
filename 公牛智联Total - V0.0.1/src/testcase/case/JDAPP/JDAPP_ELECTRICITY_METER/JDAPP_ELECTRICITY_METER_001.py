@@ -6,7 +6,7 @@ class JDAppElectricityMeter1(LaunchAppJD):
     @case_run_jd(False)
     def run(self):
         self.case_module = u"电量计量"  # 用例所属模块
-        self.case_title = u'电量统计2H功能及精度检查"'  # 用例名称
+        self.case_title = u'电量统计2H功能及精度检查'  # 用例名称
         self.zentao_id = 1117  # 禅道ID
 
     # 用例动作

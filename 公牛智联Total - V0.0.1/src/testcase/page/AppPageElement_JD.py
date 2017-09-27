@@ -117,8 +117,8 @@ class MainPageWidgetJD(object):
     def mode_timer_conflict_popup(self):
         return self.wrapper(self.pwa.mode_timer_conflict_popup(), self.pwi.mode_timer_conflict_popup())
 
-    def out_date_timer_delete_popup(self):
-        return self.wrapper(self.pwa.out_date_timer_delete_popup(), self.pwi.out_date_timer_delete_popup())
+    def timer_edit_popup(self):
+        return self.wrapper(self.pwa.timer_edit_popup(), self.pwi.timer_edit_popup())
 
     def timer_log_clear_popup(self):
         return self.wrapper(self.pwa.timer_log_clear_popup(), self.pwi.timer_log_clear_popup())

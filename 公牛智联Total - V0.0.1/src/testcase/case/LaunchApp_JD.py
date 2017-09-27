@@ -37,11 +37,11 @@ def launch_fail_fix_jd(func):
             except URLError:
                 self.debug.error("launch_app driver(URLError):%s times" % ii)
                 ii += 1
-                self.http_run_app()
+                self.http_run_app(True)
                 break
             except BadStatusLine:
                 self.debug.error("launch_app driver(BadStatusLine)")
-                self.http_run_app()
+                self.http_run_app(True)
                 break
 
     return wrapper
@@ -125,6 +125,7 @@ def case_run_jd(bool):
                     self.case()
                 except TimeoutException:
                     self.case_over(False)
+                    self.debug.error("case_over:%s" % traceback.format_exc())
                 database["unknown"] = 0
             except BaseException:
                 self.debug.error(traceback.format_exc())  # Message: ***
@@ -338,8 +339,8 @@ class LaunchAppJD(object):
         self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
         database[self.device_name][self.zentao_id][result[1]] += 1
         return "%s" % result[0], self.zentao_id, self.case_title, self.start_time
-    
-    def set_timer_roll(self, elem_h, elem_m, elem_t, et):
+
+    def set_timer_roll(self, elem_h, elem_m, elem_t, et, leave_time=1):
         if isinstance(et, int):
             if et >= 0:
                 time_seg = True
@@ -371,30 +372,28 @@ class LaunchAppJD(object):
         if time_seg is True:
             aet = abs(et)
             sign_aet = et / aet
-            set_h, set_m = now_h + sign_aet * (aet / 60), now_m + 1 + sign_aet * (aet % 60)
-            set_h, set_m = (set_h + (set_m) / 60) % 24, (set_m) % 60
+            set_h, set_m = now_h + sign_aet * (aet / 60), now_m + leave_time + sign_aet * (aet % 60)
+            set_h, set_m = (set_h + set_m / 60) % 24, set_m % 60
         elif time_seg == "minus":
             aet = abs(et)
             sign_aet = et / aet
             set_h, set_m = now_h + sign_aet * (aet / 60), now_m + sign_aet * (aet % 60)
-            set_h, set_m = (set_h + (set_m) / 60) % 24, (set_m) % 60
+            set_h, set_m = (set_h + set_m / 60) % 24, set_m % 60
         else:
             set_h, set_m = et.split(":")
             set_h, set_m = int(set_h), int(set_m)
 
-        start_time = "%02d:%02d" % (now_h, now_m + 1)
+        start_time = "%02d:%02d" % (now_h, now_m + leave_time)
         set_time = "%02d:%02d" % (set_h, set_m)
 
-        self.et_h = set_h - roll_now_h
-        self.et_m = set_m - roll_now_m
-        et_h = abs(self.et_h)
-        et_m = abs(self.et_m)
+        et_h = abs(set_h - roll_now_h)
+        et_m = abs(set_m - roll_now_m)
         try:
-            end_y_h = start_y_h - self.et_h / et_h * aszh_h
+            end_y_h = start_y_h - (set_h - roll_now_h) / et_h * aszh_h
         except ZeroDivisionError:
             end_y_h = start_y_h
         try:
-            end_y_m = start_y_m - self.et_m / et_m * aszh_m
+            end_y_m = start_y_m - (set_m - roll_now_m) / et_m * aszh_m
         except ZeroDivisionError:
             end_y_m = start_y_m
         # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
@@ -404,35 +403,25 @@ class LaunchAppJD(object):
         while et_h > 0:
             self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
             et_h -= 1
-        
-        self.logger.info(start_time, set_time)
+
+        self.logger.info("start_time: %s, set_time: %s" % (start_time, set_time))
         if self.ac.get_attribute(self.wait_widget(elem_t), "name") == set_time:
             return start_time, set_time
         else:
             raise TimeoutException("timer set error")
 
     # 定时检查模板，用时删减
-    def check_timer_template(self, time_delay, power_state, attribute, power_state_same_as_prev=False, times=""):
-        if power_state_same_as_prev is False:
-            now = time.time()
-            # element = self.wait_widget(self.page["control_device_page"]["power_state"])
-            while True:
-                # attribute = self.ac.get_attribute(element, "name")
-                if attribute == power_state:
-                    self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - now))
-                    self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                    break
-                else:
-                    if time.time() < now + time_delay * 60 + 30:
-                        time.sleep(1)
-                    else:
-                        raise TimeoutException("Device state Error, time out")
-        else:
-            if isinstance(time_delay, int):
-                if time_delay >= 0:
-                    delay_times = time_delay
-                else:
-                    delay_times = 24 * 60 + time_delay
+    def check_timer(self, time_delay, power_state, delay_timer=True, power_same_prev=False, times=""):
+        if isinstance(time_delay, int):  # 如果延时是整数，时间点执行定时（热水器，普通定时几分钟后执行）
+            if time_delay >= 0:  # 执行时间在当前时间后
+                delay_times = time_delay
+            else:  # 执行时间在当前时间之前
+                delay_times = 24 * 60 + time_delay
+        else:  # 如果延时是字符串
+            if delay_timer is True:  # 时间段（鱼缸，延时定时几分钟时长后执行）
+                sh, sm = time_delay.split(":")
+                delay_times = int(sh) * 60 + int(sm)
+            # 时间点（热水器，普通几点执行）
             else:
                 nh, nm = time.strftime("%H:%M").split(":")
                 sh, sm = time_delay.split(":")
@@ -442,20 +431,77 @@ class LaunchAppJD(object):
                     delay_times = time_tmp_2 - time_tmp_1
                 else:
                     delay_times = 24 * 60 + time_tmp_2 - time_tmp_1
-            self.now = time.time()
+    
+        if power_same_prev is False:
+            now = time.time()
             element = self.wait_widget(self.page["control_device_page"]["power_state"])
             while True:
-                attribute = self.ac.get_attribute(element, "name")
+                if self.ac.get_attribute(element, "name") == power_state:
+                    self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - now))
+                    self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
+                    break
+                else:
+                    if time.time() < now + delay_times * 60 + 30:
+                        time.sleep(1)
+                    else:
+                        raise TimeoutException("Device state Error")
+        else:
+            now = time.time()
+            element = self.wait_widget(self.page["control_device_page"]["power_state"])
+            while True:
                 if time.strftime("%H:%M") == times:
                     time.sleep(10)
-                    if attribute == power_state:
-                        self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - self.now - 10))
+                    if self.ac.get_attribute(element, "name") == power_state:
+                        self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - now - 10))
                         self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
                         break
                     else:
                         raise TimeoutException("Device state Error")
                 else:
-                    if time.time() < self.now + delay_times * 60 + 30:
+                    if time.time() < now + delay_times * 60 + 30:
                         time.sleep(1)
                     else:
                         raise TimeoutException("Device state Error, time out")
+
+    # 删除普通定时
+    def delete_normal_timer(self):
+        while True:
+            try:
+                self.wait_widget(self.page["normal_timer_page"]["no_timer"])
+                self.logger.info("It has no timer~")
+                break
+            except TimeoutException:
+                self.logger.info("It has normal timer.")
+                self.widget_click(self.page["normal_timer_page"]["timer_edit"],
+                                  self.page["timer_edit_popup"]["title"])
+            
+                self.widget_click(self.page["timer_edit_popup"]["delete"],
+                                  self.page["normal_timer_page"]["title"])
+
+    # 关闭模式定时
+    def close_mode_timer(self):
+        element = self.wait_widget(self.page["control_device_page"]["mode_timer"])
+        while True:
+            attribute = self.ac.get_attribute(element, "name")
+            if u"未启用" not in attribute:
+                self.logger.info("[APP_INFO]Mode timer is run")
+                self.widget_click(self.page["control_device_page"]["mode_timer"],
+                                  self.page["mode_timer_page"]["title"])
+            
+                if u"热水器模式" in attribute:
+                    self.widget_click(self.page["mode_timer_page"]["water_button"],
+                                      self.page["mode_timer_page"]["title"])
+                elif u"鱼缸模式" in attribute:
+                    self.widget_click(self.page["mode_timer_page"]["fish_button"],
+                                      self.page["mode_timer_page"]["title"])
+                else:
+                    self.widget_click(self.page["mode_timer_page"]["piocc_button"],
+                                      self.page["mode_timer_page"]["title"])
+            
+                time.sleep(5)
+            
+                self.widget_click(self.page["mode_timer_page"]["to_return"],
+                                  self.page["control_device_page"]["title"])
+            else:
+                self.logger.info("[APP_INFO]Mode timer don't run")
+                break

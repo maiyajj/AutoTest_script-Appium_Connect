@@ -36,49 +36,21 @@ class JDAppModeTimer3(LaunchAppJD):
         
         self.widget_click(self.page["control_device_page"]["mode_timer"],
                           self.page["mode_timer_page"]["title"])
-        
-        self.widget_click(self.page["mode_timer_page"]["water_mode"],
-                          self.page["water_mode_timer_page"]["title"])
-        
-        delay_time_1 = -1
-        self.widget_click(self.page["water_mode_timer_page"]["start_time"],
-                          self.page["water_mode_timer_page"]["start_h"])
-        
-        self.set_timer_roll(self.page["water_mode_timer_page"]["start_h"],
-                            self.page["water_mode_timer_page"]["start_m"],
-                            self.page["water_mode_timer_page"]["start_time_text"], delay_time_1)
-        
-        self.widget_click(self.page["water_mode_timer_page"]["start_time"],
-                          self.page["water_mode_timer_page"]["title"])
-        
-        delay_time_2 = 3
-        self.widget_click(self.page["water_mode_timer_page"]["end_time"],
-                          self.page["water_mode_timer_page"]["end_h"])
-        
-        self.set_timer_roll(self.page["water_mode_timer_page"]["end_h"],
-                            self.page["water_mode_timer_page"]["end_m"],
-                            self.page["water_mode_timer_page"]["end_time_text"], delay_time_2)
-        
-        self.widget_click(self.page["water_mode_timer_page"]["end_time"],
-                          self.page["water_mode_timer_page"]["title"])
-        
-        attribute = self.ac.get_attribute(self.wait_widget(self.page["water_mode_timer_page"]["repeat"]), "name")
-        if u"执行一次" not in attribute:
-            self.widget_click(self.page["water_mode_timer_page"]["repeat"],
-                              self.page["timer_repeat_page"]["title"])
-            
-            self.widget_click(self.page["timer_repeat_page"]["repeat_button"],
-                              self.page["timer_repeat_page"]["once"])
-            
-            self.widget_click(self.page["timer_repeat_page"]["to_return"],
-                              self.page["water_mode_timer_page"]["title"])
-            
-            attribute = self.ac.get_attribute(self.wait_widget(self.page["water_mode_timer_page"]["repeat"]), "name")
-            if u"执行一次" not in attribute:
-                raise TimeoutException("Cycle set error")
+
+        self.widget_click(self.page["mode_timer_page"]["piocc_mode"],
+                          self.page["piocc_mode_timer_page"]["title"])
+
+        delay_time_1 = "00:01"
+        self.set_timer_roll(self.page["piocc_mode_timer_page"]["end_h"],
+                            self.page["piocc_mode_timer_page"]["end_m"],
+                            self.page["piocc_mode_timer_page"]["end_time_text"],
+                            delay_time_1)
+
+        self.widget_click(self.page["piocc_mode_timer_page"]["end_time"],
+                          self.page["piocc_mode_timer_page"]["title"])
         
         try:
-            self.widget_click(self.page["water_mode_timer_page"]["launch"],
+            self.widget_click(self.page["piocc_mode_timer_page"]["launch"],
                               self.page["mode_timer_page"]["title"])
         except TimeoutException:
             self.wait_widget(self.page["mode_timer_conflict_popup"]["title"])
@@ -87,24 +59,9 @@ class JDAppModeTimer3(LaunchAppJD):
         
         self.widget_click(self.page["mode_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
-        
-        self.wait_widget(self.page["control_device_page"]["power_off"])
-        
-        self.check_timer(3, u"设备已开启")
+
+        self.wait_widget(self.page["control_device_page"]["power_on"])
+
+        self.check_timer(delay_time_1, u"设备已关闭")
         
         self.case_over(True)
-    
-    def check_timer(self, time_delay, power_state):
-        now = time.time()
-        element = self.wait_widget(self.page["control_device_page"]["power_state"])
-        while True:
-            attribute = self.ac.get_attribute(element, "name")
-            if attribute == power_state:
-                self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - now))
-                self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                break
-            else:
-                if time.time() < now + time_delay * 60 + 30:
-                    time.sleep(1)
-                else:
-                    raise TimeoutException("Device state Error")

@@ -89,22 +89,8 @@ class JDAppModeTimer2(LaunchAppJD):
                           self.page["control_device_page"]["title"])
         
         self.wait_widget(self.page["control_device_page"]["power_off"])
-        
-        self.check_timer(2, u"设备已开启")
+
+        self.check_timer(delay_time_2, u"设备已开启")
         
         self.case_over(True)
     
-    def check_timer(self, time_delay, power_state):
-        now = time.time()
-        element = self.wait_widget(self.page["control_device_page"]["power_state"])
-        while True:
-            attribute = self.ac.get_attribute(element, "name")
-            if attribute == power_state:
-                self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - now))
-                self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                break
-            else:
-                if time.time() < now + time_delay * 60 + 30:
-                    time.sleep(1)
-                else:
-                    raise TimeoutException("Device state Error")

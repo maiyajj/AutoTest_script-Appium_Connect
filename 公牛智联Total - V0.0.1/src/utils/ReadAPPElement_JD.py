@@ -44,7 +44,7 @@ class PageElementJD(object):
         self.device["page"]["loading_popup"] = self.mpw.loading_popup()
         self.device["page"]["logout_popup"] = self.mpw.logout_popup()
         self.device["page"]["mode_timer_conflict_popup"] = self.mpw.mode_timer_conflict_popup()
-        self.device["page"]["out_date_timer_delete_popup"] = self.mpw.out_date_timer_delete_popup()
+        self.device["page"]["timer_edit_popup"] = self.mpw.timer_edit_popup()
         self.device["page"]["timer_log_clear_popup"] = self.mpw.timer_log_clear_popup()
         self.device["page"]["unbind_device_popup"] = self.mpw.unbind_device_popup()
         self.device["page"]["update_popup"] = self.mpw.update_popup()

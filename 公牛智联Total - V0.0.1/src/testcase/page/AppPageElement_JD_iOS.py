@@ -475,7 +475,7 @@ class PopupWidgetIosJD(object):
         return d
 
     # 过期定时删除弹窗
-    def out_date_timer_delete_popup(self):
+    def timer_edit_popup(self):
         d = {}
         # 标题
         d["title"] = [u"//android.widget.Button[@content-desc='编辑']", "xpath", u"编辑"]

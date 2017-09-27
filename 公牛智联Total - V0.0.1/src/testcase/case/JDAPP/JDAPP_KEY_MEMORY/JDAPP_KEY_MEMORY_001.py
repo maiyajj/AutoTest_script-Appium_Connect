@@ -37,9 +37,11 @@ class JDAppKeyMemory1(LaunchAppJD):
         while tmp > 0:
             self.widget_click(self.page["control_device_page"]["power_button"],
                               self.page["control_device_page"]["power_on"])
+            self.logger.info(u"[APP_INFO]Device info: power on")
 
             self.widget_click(self.page["control_device_page"]["power_button"],
                               self.page["control_device_page"]["power_off"])
+            self.logger.info(u"[APP_INFO]Device info: power off")
             tmp -= 1
 
         self.case_over(True)

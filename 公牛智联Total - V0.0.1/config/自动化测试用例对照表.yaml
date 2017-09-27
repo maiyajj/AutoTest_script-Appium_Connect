@@ -113,7 +113,7 @@ case_table:
   1907:
     'CASE_MODULE': ['忘记密码']
     'CODE_ID': ['GNAppForgetPassword3']
-    'CASE_NAME': ['忘记密码页面-点击返回登入界面"按钮，页面检查"']
+    'CASE_NAME': ['忘记密码页面-点击返回登入界面按钮，页面检查']
     'CODE_PATH': ['./src/testcase/case/GNAPP/GNAPP_FORGET_PASSWORD/GNAPP_FORGET_PASSWORD_003.py']
   1889:
     'CASE_MODULE': ['登录']
