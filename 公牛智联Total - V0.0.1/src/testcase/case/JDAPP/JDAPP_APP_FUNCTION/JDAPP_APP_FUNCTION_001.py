@@ -11,22 +11,19 @@ class JDAppAppFunction1(LaunchAppJD):
 
     # 用例动作
     def case(self):
-        try:
-            while True:
-                elements = self.wait_widget(self.page["app_home_page"]["device"])
-                new_value = copy.copy(self.page["app_home_page"]["device"])
-                for index, element in elements.items():
-                    if element is not None and str(self.ac.get_attribute(element, "name")) == conf["MAC"][0]:
-                        new_value[0] = new_value[0][index]
-                        while True:
-                            try:
-                                self.widget_click(new_value, self.page["control_device_page"]["title"])
-                                raise ValueError()
-                            except TimeoutException:
-                                self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
-                time.sleep(1)
-        except ValueError:
-            pass
+        elements = self.wait_widget(self.page["app_home_page"]["device"])
+        new_value = copy.copy(self.page["app_home_page"]["device"])
+        for index, element in elements.items():
+            if element is not None and str(self.ac.get_attribute(element, "name")) == conf["MAC"][0]:
+                new_value[0] = new_value[0][index]
+                while True:
+                    try:
+                        self.widget_click(new_value, self.page["control_device_page"]["title"])
+                        break
+                    except TimeoutException:
+                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                        time.sleep(1)
+            break
 
         try:
             self.wait_widget(self.page["control_device_page"]["power_on"])
@@ -56,11 +53,14 @@ class JDAppAppFunction1(LaunchAppJD):
 
         self.widget_click(self.page["normal_timer_page"]["add_timer"],
                           self.page["add_normal_timer_page"]["title"])
-
-        delay_time = 1
-        start_time_1, set_time_1 = self.set_timer_roll(self.page["add_normal_timer_page"]["timer_h"],
-                                                       self.page["add_normal_timer_page"]["timer_m"],
-                                                       self.page["add_normal_timer_page"]["set_timer"], delay_time)
+    
+        self.now = time.strftime("%H:%M")
+    
+        delay_time_1 = 1
+        start_time_1, set_time_1 = self.set_timer_roll(self.page["add_normal_timer_page"]["roll_h"],
+                                                       self.page["add_normal_timer_page"]["roll_m"],
+                                                       self.page["add_normal_timer_page"]["set_timer"],
+                                                       delay_time_1, self.now)
 
         if power_state == "power_on":
             self.widget_click(self.page["add_normal_timer_page"]["power_off"],
@@ -68,19 +68,10 @@ class JDAppAppFunction1(LaunchAppJD):
         elif power_state == "power_off":
             self.widget_click(self.page["add_normal_timer_page"]["power_on"],
                               self.page["add_normal_timer_page"]["title"])
-
-        now = time.time()
-        while True:
-            if time.strftime("%H:%M") == start_time_1:
-                self.widget_click(self.page["add_normal_timer_page"]["saved"],
-                                  self.page["normal_timer_page"]["title"])
-                self.logger.info(u"[APP_INFO]Timer Run:%s" % (time.time() - now))
-                break
-            else:
-                if time.time() < now + 1 * 60 + 30:
-                    time.sleep(1)
-                else:
-                    raise TimeoutException("Timer Saved Error, time:%s" % set_time_1)
+    
+        self.widget_click(self.page["add_normal_timer_page"]["saved"],
+                          self.page["normal_timer_page"]["title"])
+        self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -89,11 +80,12 @@ class JDAppAppFunction1(LaunchAppJD):
             power_state = u"设备已关闭"
         elif power_state == "power_off":
             power_state = u"设备已开启"
-
-        self.check_timer(delay_time, power_state)
+    
+        self.check_timer(start_time_1, set_time_1, power_state)
         
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
+    
         time.sleep(3)
         self.widget_click(self.page["normal_timer_page"]["timer_log"],
                           self.page["timer_log_page"]["title"])

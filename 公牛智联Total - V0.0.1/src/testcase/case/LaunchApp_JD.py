@@ -340,14 +340,19 @@ class LaunchAppJD(object):
         database[self.device_name][self.zentao_id][result[1]] += 1
         return "%s" % result[0], self.zentao_id, self.case_title, self.start_time
 
-    def set_timer_roll(self, elem_h, elem_m, elem_t, et, leave_time=1):
+    def set_timer_roll(self, elem_h, elem_m, elem_t, et, now_time, same_fish_mode=False, leave_time=2):
         if isinstance(et, int):
             if et >= 0:
-                time_seg = True
+                time_seg = "int"
             else:
                 time_seg = "minus"
         else:
-            time_seg = False
+            if et[0] == "point":
+                time_seg = "point"
+            elif et[0] == "delay":
+                time_seg = "delay"
+            else:
+                time_seg = None
         # 时滚轮
         element_h = self.wait_widget(elem_h)
         pxx_h, pxy_h = elem_h[3]["px"]
@@ -365,27 +370,49 @@ class LaunchAppJD(object):
 
         roll_now_h, roll_now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
         roll_now_h, roll_now_m = int(roll_now_h), int(roll_now_m)
+        if roll_now_h == 0 and roll_now_m == 1:
+            self.driver.swipe(start_x_h, start_y_h, start_x_h, start_y_h - aszh_h, 0)
+            roll_now_h, roll_now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
+            roll_now_h, roll_now_m = int(roll_now_h), int(roll_now_m)
 
-        now_h, now_m = time.strftime("%H:%M").split(":")
-        now_h, now_m = int(now_h), int(now_m)
+        if same_fish_mode is False:
+            now_h, now_m = now_time.split(":")
+            now_h, now_m = int(now_h), int(now_m)
+        else:
+            now_h, now_m = now_time.split(":")
+            now_h, now_m = int(now_h), int(now_m) - leave_time
+            now_h, now_m = (now_h + now_m / 60) % 24, now_m % 60
 
-        if time_seg is True:
+        if time_seg == "int":
             aet = abs(et)
             sign_aet = et / aet
             set_h, set_m = now_h + sign_aet * (aet / 60), now_m + leave_time + sign_aet * (aet % 60)
             set_h, set_m = (set_h + set_m / 60) % 24, set_m % 60
+            true_h, true_m = set_h, set_m
         elif time_seg == "minus":
             aet = abs(et)
             sign_aet = et / aet
             set_h, set_m = now_h + sign_aet * (aet / 60), now_m + sign_aet * (aet % 60)
             set_h, set_m = (set_h + set_m / 60) % 24, set_m % 60
-        else:
-            set_h, set_m = et.split(":")
+            true_h, true_m = set_h, set_m
+        elif time_seg == "point":
+            set_h, set_m = et[1].split(":")
             set_h, set_m = int(set_h), int(set_m)
+            true_h, true_m = set_h, set_m
+        elif time_seg == "delay":
+            set_h, set_m = et[1].split(":")
+            set_h, set_m = int(set_h), int(set_m)
+            true_h, true_m = int(set_h) + now_h, int(set_m) + leave_time + now_m
+            true_h, true_m = (true_h + true_m / 60) % 24, true_m % 60
+        else:
+            set_h, set_m = "error", "error"
+            true_h, true_m = set_h, set_m
 
-        start_time = "%02d:%02d" % (now_h, now_m + leave_time)
+        start_h, start_m = (now_h + (now_m + leave_time) / 60) % 24, (now_m + leave_time) % 60
+        start_time = "%02d:%02d" % (start_h, start_m)
         set_time = "%02d:%02d" % (set_h, set_m)
-
+        true_time = "%02d:%02d" % (true_h, true_m)
+        
         et_h = abs(set_h - roll_now_h)
         et_m = abs(set_m - roll_now_m)
         try:
@@ -404,65 +431,58 @@ class LaunchAppJD(object):
             self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
             et_h -= 1
 
-        self.logger.info("start_time: %s, set_time: %s" % (start_time, set_time))
+        self.logger.info("start_time: %s, set_time: %s, true_time: %s" % (start_time, set_time, true_time))
         if self.ac.get_attribute(self.wait_widget(elem_t), "name") == set_time:
-            return start_time, set_time
+            return start_time, true_time
         else:
             raise TimeoutException("timer set error")
 
     # 定时检查模板，用时删减
-    def check_timer(self, time_delay, power_state, delay_timer=True, power_same_prev=False, times=""):
-        if isinstance(time_delay, int):  # 如果延时是整数，时间点执行定时（热水器，普通定时几分钟后执行）
-            if time_delay >= 0:  # 执行时间在当前时间后
-                delay_times = time_delay
-            else:  # 执行时间在当前时间之前
-                delay_times = 24 * 60 + time_delay
-        else:  # 如果延时是字符串
-            if delay_timer is True:  # 时间段（鱼缸，延时定时几分钟时长后执行）
-                sh, sm = time_delay.split(":")
-                delay_times = int(sh) * 60 + int(sm)
-            # 时间点（热水器，普通几点执行）
-            else:
-                nh, nm = time.strftime("%H:%M").split(":")
-                sh, sm = time_delay.split(":")
-                time_tmp_1 = int(nh) * 60 + int(nm)
-                time_tmp_2 = int(sh) * 60 + int(sm)
-                if time_tmp_1 < time_tmp_2:
-                    delay_times = time_tmp_2 - time_tmp_1
-                else:
-                    delay_times = 24 * 60 + time_tmp_2 - time_tmp_1
-    
-        if power_same_prev is False:
-            now = time.time()
-            element = self.wait_widget(self.page["control_device_page"]["power_state"])
-            while True:
-                if self.ac.get_attribute(element, "name") == power_state:
-                    self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - now))
-                    self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                    break
-                else:
-                    if time.time() < now + delay_times * 60 + 30:
-                        time.sleep(1)
-                    else:
-                        raise TimeoutException("Device state Error")
+    def check_timer(self, start_time, set_time, power_state, power_same_prev=False):
+        start_h, start_m = start_time.split(":")
+        start_times = int(start_h) * 60 + int(start_m)
+        set_h, set_m = set_time.split(":")
+        set_times = int(set_h) * 60 + int(set_m)
+        if start_times < set_times:
+            delay_times = (set_times - start_times) * 60
         else:
-            now = time.time()
-            element = self.wait_widget(self.page["control_device_page"]["power_state"])
-            while True:
-                if time.strftime("%H:%M") == times:
-                    time.sleep(10)
-                    if self.ac.get_attribute(element, "name") == power_state:
-                        self.logger.info("[APP_INFO]Timer Run:%s" % (time.time() - now - 10))
-                        self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                        break
-                    else:
-                        raise TimeoutException("Device state Error")
+            delay_times = 24 * 60 * 60 + (set_times - start_times) * 60
+        self.logger.info("[APP_TIMER]Delay Time:%s" % (delay_times + 30))
+        while True:
+            if time.strftime("%H:%M") == start_time:
+                now = time.time()
+                break
+            else:
+                time.sleep(1)
+        self.logger.info("[APP_TIMER]Now Time:%s" % time.strftime("%H:%M:%S"))
+        element = self.wait_widget(self.page["control_device_page"]["power_state"])
+        while True:
+            if time.strftime("%H:%M") == set_time:
+                if power_same_prev is False:
+                    while True:
+                        if self.ac.get_attribute(element, "name") == power_state:
+                            self.logger.info("[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+                            self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
+                            break
+                        else:
+                            time.sleep(1)
                 else:
-                    if time.time() < now + delay_times * 60 + 30:
-                        time.sleep(1)
-                    else:
-                        raise TimeoutException("Device state Error, time out")
-
+                    while True:
+                        time.sleep(10)
+                        if self.ac.get_attribute(element, "name") == power_state:
+                            self.logger.info(
+                                "[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), (time.time() - 10)))
+                            self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
+                            break
+                        else:
+                            time.sleep(1)
+                break
+            else:
+                if time.time() < now + delay_times + 30:
+                    time.sleep(1)
+                else:
+                    raise TimeoutException("Device state Error")
+    
     # 删除普通定时
     def delete_normal_timer(self):
         while True:
@@ -474,7 +494,7 @@ class LaunchAppJD(object):
                 self.logger.info("It has normal timer.")
                 self.widget_click(self.page["normal_timer_page"]["timer_edit"],
                                   self.page["timer_edit_popup"]["title"])
-            
+
                 self.widget_click(self.page["timer_edit_popup"]["delete"],
                                   self.page["normal_timer_page"]["title"])
 
@@ -487,7 +507,7 @@ class LaunchAppJD(object):
                 self.logger.info("[APP_INFO]Mode timer is run")
                 self.widget_click(self.page["control_device_page"]["mode_timer"],
                                   self.page["mode_timer_page"]["title"])
-            
+
                 if u"热水器模式" in attribute:
                     self.widget_click(self.page["mode_timer_page"]["water_button"],
                                       self.page["mode_timer_page"]["title"])
@@ -497,9 +517,9 @@ class LaunchAppJD(object):
                 else:
                     self.widget_click(self.page["mode_timer_page"]["piocc_button"],
                                       self.page["mode_timer_page"]["title"])
-            
+
                 time.sleep(5)
-            
+
                 self.widget_click(self.page["mode_timer_page"]["to_return"],
                                   self.page["control_device_page"]["title"])
             else:

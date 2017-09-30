@@ -233,7 +233,13 @@ class MainPageWidgetAndroidJD(object):
                              {"px": [0.95, 0.5]}]
         # 指示灯
         d["led"] = ["//android.webkit.WebView/android.view.View/android.view.View[9]/android.widget.Button", "xpath",
-                    u"设备安全模式"]
+                    u"指示灯"]
+        # 用电量
+        d["elec"] = [u"//android.view.View[@content-desc='用电量']", "xpath", u"用电量"]
+        # 电价设置
+        d["set_elec"] = [u"//android.view.View[@content-desc='电价设置']", "xpath", u"电价设置"]
+        # 电费
+        d["elec_bill"] = [u"//android.view.View[@content-desc='电费']", "xpath", u"电费"]
         # 返回
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
@@ -295,26 +301,20 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='热水器模式']", "xpath", u"热水器模式定时页面"]
         # 开启时间
         d["start_time"] = [u"//android.view.View[@content-desc='插座开启时间']", "xpath", u"插座开启时间控件"]
-        # 开启时间滚轮,时
-        d["start_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
-                        "/android.widget.ListView", "xpath", u"开启时间滚轮,时", {"px": [0.51, 0.5]}]
-        # 开启时间滚轮,分
-        d["start_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
-                        "/android.widget.ListView[2]", "xpath", u"开启时间滚轮,分", {"px": [0.51, 0.5]}]
         # 开启时间
         d["start_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
                                 u"插座开启时间"]
         # 关闭时间
         d["end_time"] = [u"//android.view.View[@content-desc='插座关闭时间']", "xpath", u"插座关闭时间控件"]
-        # 关闭时间滚轮,时
-        d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]/android.view.View[2]"
-                      "/android.widget.ListView", "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
-        # 关闭时间滚轮,分
-        d["end_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]//android.view.View[2]"
-                      "/android.widget.ListView[2]", "xpath", u"关闭时间滚轮,分", {"px": [0.51, 0.5]}]
         # 关闭时间
         d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText[2]", "xpath",
                               u"插座关闭时间"]
+        # 时间滚轮,时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时间滚轮,时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"时间滚轮,分",
+                       {"px": [0.51, 0.5]}]
         # 重复
         d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]", "xpath", u"重复"]
         # 模式名称
@@ -334,26 +334,20 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='鱼缸模式']", "xpath", u"鱼缸模式定时页面"]
         # 开启时间
         d["start_time"] = [u"//android.view.View[@content-desc='插座开启时长']", "xpath", u"插座开启时间控件"]
-        # 开启时间滚轮,时
-        d["start_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
-                        "/android.widget.ListView", "xpath", u"开启时间滚轮,时", {"px": [0.51, 0.5]}]
-        # 开启时间滚轮,分
-        d["start_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
-                        "/android.widget.ListView[2]", "xpath", u"开启时间滚轮,分", {"px": [0.51, 0.5]}]
         # 开启时间
         d["start_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
                                 u"插座开启时间"]
         # 关闭时间
         d["end_time"] = [u"//android.view.View[@content-desc='插座关闭时长']", "xpath", u"插座关闭时间控件"]
-        # 关闭时间滚轮,时
-        d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]/android.view.View[2]"
-                      "/android.widget.ListView", "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
-        # 关闭时间滚轮,分
-        d["end_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]//android.view.View[2]"
-                      "/android.widget.ListView[2]", "xpath", u"关闭时间滚轮,分", {"px": [0.51, 0.5]}]
         # 关闭时间
         d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText[2]", "xpath",
                               u"插座关闭时间"]
+        # 时间滚轮,小时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='小时']", "xpath", u"时间滚轮,小时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分钟
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分钟']", "xpath", u"时间滚轮,分钟",
+                       {"px": [0.51, 0.5]}]
         # 重复
         d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]", "xpath", u"重复"]
         # 模式名称
@@ -371,15 +365,15 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='充电保护模式']", "xpath", u"充电保护模式定时页面"]
         # 关闭时间
         d["end_time"] = [u"//android.view.View[@content-desc='插座延时关闭时长']", "xpath", u"插座延时关闭时长控件"]
-        # 关闭时间滚轮,时
-        d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
-                      "/android.widget.ListView", "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
-        # 关闭时间滚轮,分
-        d["end_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]//android.view.View[2]"
-                      "/android.widget.ListView[2]", "xpath", u"关闭时间滚轮,分", {"px": [0.51, 0.5]}]
         # 关闭时间
         d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
                               u"插座延时关闭时长"]
+        # 时间滚轮,小时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='小时']", "xpath", u"时间滚轮,小时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分钟
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分钟']", "xpath", u"时间滚轮,分钟",
+                       {"px": [0.51, 0.5]}]
         # 模式名称
         d["mode_name"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"模式名称"]
         # 执行结果
@@ -415,12 +409,12 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='新建定时']", "xpath", u"新建普通定时页面"]
         # 设定时间
         d["set_timer"] = ["//android.view.View/android.widget.EditText", "xpath", u"设定时间"]
-        # 时
-        d["timer_h"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时",
-                        {"px": [0.51, 0.5]}]
-        # 分，往下翻
-        d["timer_m"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"分",
-                        {"px": [0.51, 0.5]}]
+        # 时间滚轮,时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时间滚轮,时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"时间滚轮,分",
+                       {"px": [0.51, 0.5]}]
         # 重复
         d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"重复"]
         # 定时开机
@@ -496,6 +490,105 @@ class MainPageWidgetAndroidJD(object):
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
 
+    # 设置电价页面
+    def set_elec_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='电价设置']", "xpath", u"电价设置页面"]
+        # 单一电价设置
+        d["single_price"] = [u"//android.view.View[@content-desc='单一电价 ']", "xpath", u"单一电价设置"]
+        # 峰谷电价设置
+        d["peak_valley_price"] = [u"//android.view.View[@content-desc='峰谷时间段电价 ']",
+                                  "xpath", u"峰谷电价设置"]
+        # 单一电价设置按钮
+        d["single_button"] = [u"//android.view.View[@content-desc='单一电价 ']", "xpath",
+                              u"单一电价设置按钮", {"px": [0.07, 0.5]}]
+        # 峰谷电价设置按钮
+        d["peak_valley_button"] = [u"//android.view.View[@content-desc='峰谷时间段电价 ']", "xpath",
+                                   u"峰谷电价设置按钮", {"px": [0.07, 0.5]}]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
+    # 单一电价设置页面
+    def single_price_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='单一电价设置']", "xpath", u"电价设置页面"]
+        # 设置电价
+        d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
+    # 峰谷电价设置页面
+    def peak_valley_price_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='单一电价设置']", "xpath", u"电价设置页面"]
+        # 设置电价
+        d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
+        # 开启时间
+        d["start_time"] = [u"//android.view.View[@content-desc='峰电开始时间']", "xpath", u"峰电开始时间控件"]
+        # 开启时间
+        d["start_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
+                                u"峰电开始时间"]
+        # 关闭时间
+        d["end_time"] = [u"//android.view.View[@content-desc='峰电结束时间']", "xpath", u"峰电结束时间控件"]
+        # 关闭时间
+        d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText[2]", "xpath",
+                              u"峰电结束时间"]
+        # 时间滚轮,时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u" 时间滚轮,时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"时间滚轮,分",
+                       {"px": [0.51, 0.5]}]
+        # 设置峰电电价
+        d["set_peak_price"] = ["//android.webkit.WebView/android.view.View/android.view.View[4]/android.view.View[2]/"
+                               "android.widget.EditText", "xpath", u"设置电价"]
+        # 设置谷电电价
+        d["set_valley_price"] = ["//android.webkit.WebView/android.view.View/android.view.View[8]/android.view.View[2]/"
+                                 "android.widget.EditText", "xpath", u"设置电价"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
+    # 用电量页面
+    def elec_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='用电量']", "xpath", u"电价设置页面"]
+        price_time = {}
+        price_value = {}
+        for i in xrange(2, 26):
+            price_time[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View" % i
+            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % i
+        # 电量时间
+        d["elec_time"] = [price_time, "xpath", u"电量时间"]
+        # 电量值
+        d["elec_value"] = [price_value, "xpath", u"电量值"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
+    # 电费页面
+    def elec_bill_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='电费']", "xpath", u"电费页面"]
+        price_time = {}
+        price_value = {}
+        for i in xrange(2, 26):
+            price_time[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View" % i
+            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % i
+        # 电费时间
+        d["price_time"] = [price_time, "xpath", u"电费时间"]
+        # 电费值
+        d["price_value"] = [price_value, "xpath", u"电费值"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
 
 class PopupWidgetAndroidJD(object):
     # 设备升级确认弹窗

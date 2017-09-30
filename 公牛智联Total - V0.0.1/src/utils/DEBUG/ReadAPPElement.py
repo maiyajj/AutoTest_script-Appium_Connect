@@ -13,9 +13,9 @@ driver = webdriver.Remote('http://localhost:4725/wd/hub',
                            'resetKeyboard': 'True', 'driver': '85GABMN9UDD2', 'browserName': '',
                            'newCommandTimeout': '999999', 'platformVersion': '5.1', 'appPackage': 'com.jd.smart',
                            'platformName': 'Android', 'appActivity': 'com.jd.smart.activity.LoadingActivity'})
+conf = {"MAC": ['C4-11-E0-00-BE-F6']}
 
 
-# coding=utf-8
 class MainPageWidgetAndroidJD(object):
     # 万能页面
     def god_page(self):
@@ -250,7 +250,13 @@ class MainPageWidgetAndroidJD(object):
                              {"px": [0.95, 0.5]}]
         # 指示灯
         d["led"] = ["//android.webkit.WebView/android.view.View/android.view.View[9]/android.widget.Button", "xpath",
-                    u"设备安全模式"]
+                    u"指示灯"]
+        # 用电量
+        d["elec"] = [u"//android.view.View[@content-desc='用电量']", "xpath", u"用电量"]
+        # 电价设置
+        d["set_elec"] = [u"//android.view.View[@content-desc='电价设置']", "xpath", u"电价设置"]
+        # 电费
+        d["elec_bill"] = [u"//android.view.View[@content-desc='电费']", "xpath", u"电费"]
         # 返回
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
@@ -287,19 +293,19 @@ class MainPageWidgetAndroidJD(object):
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='自定义模式']", "xpath", u"模式定时页面"]
         # 热水器模式
-        d["water_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"热水器模式开关"]
+        d["water_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"热水器模式"]
         # 热水器模式开关
-        d["water_button"] = [u"//android.view.View[@content-desc='热水器模式']", "xpath", u"热水器模式开关",
+        d["water_button"] = [u"//android.view.View[@content-desc='热水器模式 ']", "xpath", u"热水器模式开关",
                              {"px": [0.95, 0.5]}]
         # 鱼缸模式
-        d["fish_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[5]", "xpath", u"鱼缸模式开关"]
+        d["fish_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[5]", "xpath", u"鱼缸模式"]
         # 鱼缸模式开关
-        d["fish_button"] = [u"//android.view.View[@content-desc='鱼缸模式']", "xpath", u"鱼缸模式开关",
+        d["fish_button"] = [u"//android.view.View[@content-desc='鱼缸模式 ']", "xpath", u"鱼缸模式开关",
                             {"px": [0.95, 0.5]}]
         # 充电保护模式
-        d["piocc_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[8]", "xpath", u"鱼缸模式开关"]
+        d["piocc_mode"] = ["//android.webkit.WebView/android.view.View/android.view.View[8]", "xpath", u"充电保护模式"]
         # 充电保护模式开关
-        d["piocc_button"] = [u"//android.view.View[@content-desc='充电保护模式']", "xpath", u"充电保护模式开关",
+        d["piocc_button"] = [u"//android.view.View[@content-desc='充电保护模式 ']", "xpath", u"充电保护模式开关",
                              {"px": [0.95, 0.5]}]
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
@@ -312,26 +318,20 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='热水器模式']", "xpath", u"热水器模式定时页面"]
         # 开启时间
         d["start_time"] = [u"//android.view.View[@content-desc='插座开启时间']", "xpath", u"插座开启时间控件"]
-        # 开启时间滚轮,时
-        d["start_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
-                        "/android.widget.ListView", "xpath", u"开启时间滚轮,时", {"px": [0.51, 0.5]}]
-        # 开启时间滚轮,分
-        d["start_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
-                        "/android.widget.ListView[2]", "xpath", u"开启时间滚轮,分", {"px": [0.51, 0.5]}]
         # 开启时间
         d["start_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
                                 u"插座开启时间"]
         # 关闭时间
         d["end_time"] = [u"//android.view.View[@content-desc='插座关闭时间']", "xpath", u"插座关闭时间控件"]
-        # 关闭时间滚轮,时
-        d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]/android.view.View[2]"
-                      "/android.widget.ListView", "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
-        # 关闭时间滚轮,分
-        d["end_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]//android.view.View[2]"
-                      "/android.widget.ListView[2]", "xpath", u"关闭时间滚轮,分", {"px": [0.51, 0.5]}]
         # 关闭时间
         d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText[2]", "xpath",
                               u"插座关闭时间"]
+        # 时间滚轮,时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时间滚轮,时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"时间滚轮,分",
+                       {"px": [0.51, 0.5]}]
         # 重复
         d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]", "xpath", u"重复"]
         # 模式名称
@@ -351,26 +351,20 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='鱼缸模式']", "xpath", u"鱼缸模式定时页面"]
         # 开启时间
         d["start_time"] = [u"//android.view.View[@content-desc='插座开启时长']", "xpath", u"插座开启时间控件"]
-        # 开启时间滚轮,时
-        d["start_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
-                        "/android.widget.ListView", "xpath", u"开启时间滚轮,时", {"px": [0.51, 0.5]}]
-        # 开启时间滚轮,分
-        d["start_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
-                        "/android.widget.ListView[2]", "xpath", u"开启时间滚轮,分", {"px": [0.51, 0.5]}]
         # 开启时间
         d["start_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
                                 u"插座开启时间"]
         # 关闭时间
         d["end_time"] = [u"//android.view.View[@content-desc='插座关闭时长']", "xpath", u"插座关闭时间控件"]
-        # 关闭时间滚轮,时
-        d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]/android.view.View[2]"
-                      "/android.widget.ListView", "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
-        # 关闭时间滚轮,分
-        d["end_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]//android.view.View[2]"
-                      "/android.widget.ListView[2]", "xpath", u"关闭时间滚轮,分", {"px": [0.51, 0.5]}]
         # 关闭时间
         d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText[2]", "xpath",
                               u"插座关闭时间"]
+        # 时间滚轮,小时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='小时']", "xpath", u"时间滚轮,小时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分钟
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分钟']", "xpath", u"时间滚轮,分钟",
+                       {"px": [0.51, 0.5]}]
         # 重复
         d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]", "xpath", u"重复"]
         # 模式名称
@@ -387,16 +381,16 @@ class MainPageWidgetAndroidJD(object):
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='充电保护模式']", "xpath", u"充电保护模式定时页面"]
         # 关闭时间
-        d["end_time"] = [u"//android.view.View[@content-desc='插座延时关闭时长']", "xpath", u"插座延时关闭时长"]
-        # 关闭时间滚轮,时
-        d["end_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[2]"
-                      "/android.widget.ListView", "xpath", u"关闭时间滚轮,时", {"px": [0.51, 0.5]}]
-        # 关闭时间滚轮,分
-        d["end_m"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]//android.view.View[2]"
-                      "/android.widget.ListView[2]", "xpath", u"关闭时间滚轮,分", {"px": [0.51, 0.5]}]
+        d["end_time"] = [u"//android.view.View[@content-desc='插座延时关闭时长']", "xpath", u"插座延时关闭时长控件"]
         # 关闭时间
         d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
                               u"插座延时关闭时长"]
+        # 时间滚轮,小时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='小时']", "xpath", u"时间滚轮,小时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分钟
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分钟']", "xpath", u"时间滚轮,分钟",
+                       {"px": [0.51, 0.5]}]
         # 模式名称
         d["mode_name"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"模式名称"]
         # 执行结果
@@ -417,16 +411,12 @@ class MainPageWidgetAndroidJD(object):
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         # 执行记录
-        d["timer_log"] = [u"//android.view.View[@content-desc='执行记录']", "xpath", u"执行记录"]
-        # 过期定时
-        out_date_timer = {}
-        out_date_timer_edit = {}
-        for i in xrange(3, 48, 4):
-            out_date_timer[i] = "//android.webkit.WebView/android.view.View/android.view.View[%s]" % i
-            out_date_timer_edit[i] = "//android.webkit.WebView/android.view.View/android.view.View[%s]" % (i - 1)
-        d["out_date_timer"] = [out_date_timer, "xpath", u"过期定时"]
-        # 编辑过期定时
-        d["out_date_timer_edit"] = [out_date_timer_edit, "xpath", u"编辑过期定时", {"px": [0.9975, 0.5]}]
+        d["timer_log"] = [u"//android.view.View[@content-desc='执行记录 ']", "xpath", u"执行记录"]
+        # 编辑定时
+        d["timer_edit"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath",
+                           u"编辑定时", {"px": [0.9975, 0.5]}]
+        # 无定时
+        d["no_timer"] = [u"//android.view.View[@content-desc='暂无设置定时']", "xpath", u"无定时"]
         return d
 
     # 新建普通定时页面
@@ -436,12 +426,12 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='新建定时']", "xpath", u"新建普通定时页面"]
         # 设定时间
         d["set_timer"] = ["//android.view.View/android.widget.EditText", "xpath", u"设定时间"]
-        # 时
-        d["timer_h"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时",
-                        {"px": [0.51, 0.5]}]
-        # 分，往下翻
-        d["timer_m"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"分",
-                        {"px": [0.51, 0.5]}]
+        # 时间滚轮,时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u"时间滚轮,时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"时间滚轮,分",
+                       {"px": [0.51, 0.5]}]
         # 重复
         d["repeat"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"重复"]
         # 定时开机
@@ -517,6 +507,106 @@ class MainPageWidgetAndroidJD(object):
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
 
+    # 设置电价页面
+    def set_elec_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='电价设置']", "xpath", u"电价设置页面"]
+        # 单一电价设置
+        d["single_price"] = [u"//android.view.View[@content-desc='单一电价 ']", "xpath", u"单一电价设置"]
+        # 峰谷电价设置
+        d["peak_valley_price"] = [u"//android.view.View[@content-desc='峰谷时间段电价 ']",
+                                  "xpath", u"峰谷电价设置"]
+        # 单一电价设置按钮
+        d["single_button"] = [u"//android.view.View[@content-desc='单一电价 ']", "xpath",
+                              u"单一电价设置按钮", {"px": [0.07, 0.5]}]
+        # 峰谷电价设置按钮
+        d["peak_valley_button"] = [u"//android.view.View[@content-desc='峰谷时间段电价 ']", "xpath",
+                                   u"峰谷电价设置按钮", {"px": [0.07, 0.5]}]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
+    # 单一电价设置页面
+    def single_price_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='单一电价设置']", "xpath", u"电价设置页面"]
+        # 设置电价
+        d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
+    # 峰谷电价设置页面
+    def peak_valley_price_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='单一电价设置']", "xpath", u"电价设置页面"]
+        # 设置电价
+        d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
+        # 开启时间
+        d["start_time"] = [u"//android.view.View[@content-desc='峰电开始时间']", "xpath", u"峰电开始时间控件"]
+        # 开启时间
+        d["start_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
+                                u"峰电开始时间"]
+        # 关闭时间
+        d["end_time"] = [u"//android.view.View[@content-desc='峰电结束时间']", "xpath", u"峰电结束时间控件"]
+        # 关闭时间
+        d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText[2]", "xpath",
+                              u"峰电结束时间"]
+        # 时间滚轮,时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u" 时间滚轮,时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"时间滚轮,分",
+                       {"px": [0.51, 0.5]}]
+        # 设置峰电电价
+        d["set_peak_price"] = ["//android.webkit.WebView/android.view.View/android.view.View[4]/android.view.View[2]/"
+                               "android.widget.EditText", "xpath", u"设置电价"]
+        # 设置谷电电价
+        d["set_valley_price"] = ["//android.webkit.WebView/android.view.View/android.view.View[8]/android.view.View[2]/"
+                                 "android.widget.EditText", "xpath", u"设置电价"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
+    # 用电量页面
+    def elec_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='用电量']", "xpath", u"电价设置页面"]
+        price_time = {}
+        price_value = {}
+        for i in xrange(2, 26):
+            price_time[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View" % i
+            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % i
+        # 电量时间
+        d["elec_time"] = [price_time, "xpath", u"电量时间"]
+        # 电量值
+        d["elec_value"] = [price_value, "xpath", u"电量值"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
+    # 电费页面
+    def elec_bill_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='电费']", "xpath", u"电费页面"]
+        price_time = {}
+        price_value = {}
+        for i in xrange(2, 26):
+            price_time[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View" % i
+            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % i
+        # 电费时间
+        d["price_time"] = [price_time, "xpath", u"电费时间"]
+        # 电费值
+        d["price_value"] = [price_value, "xpath", u"电费值"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
 
 class PopupWidgetAndroidJD(object):
     # 设备升级确认弹窗
@@ -587,7 +677,7 @@ class PopupWidgetAndroidJD(object):
         return d
 
     # 过期定时删除弹窗
-    def out_date_timer_delete_popup(self):
+    def timer_edit_popup(self):
         d = {}
         # 标题
         d["title"] = [u"//android.widget.Button[@content-desc='编辑']", "xpath", u"编辑"]
@@ -603,7 +693,7 @@ class PopupWidgetAndroidJD(object):
     def mode_timer_conflict_popup(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.view.View[@content-desc='开启新定时，将会自动关闭其他定时，是否确认开启？']", "xpath", u"编辑"]
+        d["title"] = [u"//android.view.View[@content-desc='开启新定时，将会自动关闭其他定时，是否确认开启？']", "xpath", u"模式定时冲突弹窗"]
         # 确定
         d["confirm"] = [u"//android.widget.Button[@content-desc='是']", "xpath", u"确定"]
         # 取消
@@ -633,6 +723,8 @@ class PageElement(object):
         self.page["change_nickname_page"] = self.mpw.change_nickname_page()
         self.page["control_device_page"] = self.mpw.control_device_page()
         self.page["device_info_page"] = self.mpw.device_info_page()
+        self.page["elec_bill_page"] = self.mpw.elec_bill_page()
+        self.page["elec_page"] = self.mpw.elec_page()
         self.page["fish_mode_timer_page"] = self.mpw.fish_mode_timer_page()
         self.page["god_page"] = self.mpw.god_page()
         self.page["help_setting_page"] = self.mpw.help_setting_page()
@@ -640,20 +732,23 @@ class PageElement(object):
         self.page["login_page"] = self.mpw.login_page()
         self.page["mode_timer_page"] = self.mpw.mode_timer_page()
         self.page["normal_timer_page"] = self.mpw.normal_timer_page()
+        self.page["peak_valley_price_page"] = self.mpw.peak_valley_price_page()
+        self.page["piocc_mode_timer_page"] = self.mpw.piocc_mode_timer_page()
         self.page["search_device_fail_page"] = self.mpw.search_device_fail_page()
         self.page["search_device_loading_page"] = self.mpw.search_device_loading_page()
         self.page["search_device_success_page"] = self.mpw.search_device_success_page()
+        self.page["set_elec_page"] = self.mpw.set_elec_page()
+        self.page["single_price_page"] = self.mpw.single_price_page()
         self.page["timer_log_page"] = self.mpw.timer_log_page()
         self.page["timer_repeat_page"] = self.mpw.timer_repeat_page()
         self.page["water_mode_timer_page"] = self.mpw.water_mode_timer_page()
-        self.page["piocc_mode_timer_page"] = self.mpw.piocc_mode_timer_page()
-        
+
         self.page["bind_device_fail_popup"] = self.pw.bind_device_fail_popup()
         self.page["close_ad_popup"] = self.pw.close_ad_popup()
         self.page["loading_popup"] = self.pw.loading_popup()
         self.page["logout_popup"] = self.pw.logout_popup()
-        self.page["out_date_timer_delete_popup"] = self.pw.out_date_timer_delete_popup()
         self.page["mode_timer_conflict_popup"] = self.pw.mode_timer_conflict_popup()
+        self.page["timer_edit_popup"] = self.pw.timer_edit_popup()
         self.page["timer_log_clear_popup"] = self.pw.timer_log_clear_popup()
         self.page["unbind_device_popup"] = self.pw.unbind_device_popup()
         self.page["update_popup"] = self.pw.update_popup()
@@ -807,21 +902,28 @@ class ac(object):
         driver.swipe(int(width * x1), int(height * y1), int(width * x2), int(height * y2), step)
 
 
-class SetTimerRoll(object):
-    def __init__(self, driver, ac, wait_widget, widget_click):
+class a(object):
+    def __init__(self):
         self.driver = driver
-        self.ac = ac
-        self.wait_widget = wait_widget
-        self.widget_click = widget_click
+        self.ac = ac()
+        self.page = PageElement().page
+        widget_check_unit = WidgetCheckUnit(self.driver, self.page)
+        self.widget_click = widget_check_unit.widget_click
+        self.wait_widget = widget_check_unit.wait_widget
     
-    def set_timer_roll(self, elem_h, elem_m, elem_t, et):
+    def set_timer_roll(self, elem_h, elem_m, elem_t, et, now_time, same_fish_mode=False, leave_time=2):
         if isinstance(et, int):
             if et >= 0:
-                time_seg = True
+                time_seg = "int"
             else:
                 time_seg = "minus"
         else:
-            time_seg = False
+            if et[0] == "point":
+                time_seg = "point"
+            elif et[0] == "delay":
+                time_seg = "delay"
+            else:
+                time_seg = None
         # 时滚轮
         element_h = self.wait_widget(elem_h)
         pxx_h, pxy_h = elem_h[3]["px"]
@@ -839,39 +941,60 @@ class SetTimerRoll(object):
 
         roll_now_h, roll_now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
         roll_now_h, roll_now_m = int(roll_now_h), int(roll_now_m)
+        if roll_now_h == 0:
+            self.driver.swipe(start_x_h, start_y_h, start_x_h, start_y_h - aszh_h, 0)
+            roll_now_h, roll_now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
+            roll_now_h, roll_now_m = int(roll_now_h), int(roll_now_m)
 
-        now_h, now_m = time.strftime("%H:%M").split(":")
-        now_h, now_m = int(now_h), int(now_m)
+        if same_fish_mode is False:
+            now_h, now_m = now_time.split(":")
+            now_h, now_m = int(now_h), int(now_m)
+        else:
+            now_h, now_m = now_time.split(":")
+            now_h, now_m = int(now_h), int(now_m) - leave_time
+            now_h, now_m = (now_h + now_m / 60) % 24, now_m % 60
 
-        if time_seg is True:
+        if time_seg == "int":
             aet = abs(et)
             sign_aet = et / aet
-            set_h, set_m = now_h + sign_aet * (aet / 60), now_m + 1 + sign_aet * (aet % 60)
-            set_h, set_m = (set_h + (set_m) / 60) % 24, (set_m) % 60
+            set_h, set_m = now_h + sign_aet * (aet / 60), now_m + leave_time + sign_aet * (aet % 60)
+            set_h, set_m = (set_h + set_m / 60) % 24, set_m % 60
+            true_h, true_m = set_h, set_m
         elif time_seg == "minus":
             aet = abs(et)
             sign_aet = et / aet
             set_h, set_m = now_h + sign_aet * (aet / 60), now_m + sign_aet * (aet % 60)
-            set_h, set_m = (set_h + (set_m) / 60) % 24, (set_m) % 60
-        else:
-            set_h, set_m = et.split(":")
+            set_h, set_m = (set_h + set_m / 60) % 24, set_m % 60
+            true_h, true_m = set_h, set_m
+        elif time_seg == "point":
+            set_h, set_m = et[1].split(":")
             set_h, set_m = int(set_h), int(set_m)
+            true_h, true_m = set_h, set_m
+        elif time_seg == "delay":
+            set_h, set_m = et[1].split(":")
+            set_h, set_m = int(set_h), int(set_m)
+            true_h, true_m = int(set_h) + now_h, int(set_m) + leave_time + now_m
+            true_h, true_m = (true_h + true_m / 60) % 24, true_m % 60
+        else:
+            set_h, set_m = "error", "error"
+            true_h, true_m = set_h, set_m
 
-        start_time = "%02d:%02d" % (now_h, now_m + 1)
+        start_h, start_m = (now_h + (now_m + leave_time) / 60) % 24, (now_m + leave_time) % 60
+        start_time = "%02d:%02d" % (start_h, start_m)
         set_time = "%02d:%02d" % (set_h, set_m)
+        true_time = "%02d:%02d" % (true_h, true_m)
 
-        self.et_h = set_h - roll_now_h
-        self.et_m = set_m - roll_now_m
-        et_h = abs(self.et_h)
-        et_m = abs(self.et_m)
+        et_h = abs(set_h - roll_now_h)
+        et_m = abs(set_m - roll_now_m)
         try:
-            end_y_h = start_y_h - self.et_h / et_h * aszh_h
+            end_y_h = start_y_h - (set_h - roll_now_h) / et_h * aszh_h
         except ZeroDivisionError:
             end_y_h = start_y_h
         try:
-            end_y_m = start_y_m - self.et_m / et_m * aszh_m
+            end_y_m = start_y_m - (set_m - roll_now_m) / et_m * aszh_m
         except ZeroDivisionError:
             end_y_m = start_y_m
+        # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
         while et_m > 0:
             self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 0)
             et_m -= 1
@@ -879,18 +1002,96 @@ class SetTimerRoll(object):
             self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
             et_h -= 1
 
+        print "start_time: %s, set_time: %s, true_time: %s" % (start_time, set_time, true_time)
         if self.ac.get_attribute(self.wait_widget(elem_t), "name") == set_time:
-            return start_time, set_time
+            return start_time, true_time
         else:
             raise TimeoutException("timer set error")
-
-
-class a(object):
-    def __init__(self):
-        self.driver = driver
-        self.ac = ac()
-        self.page = PageElement().page
-        widget_check_unit = WidgetCheckUnit(self.driver, self.page)
-        self.widget_click = widget_check_unit.widget_click
-        self.wait_widget = widget_check_unit.wait_widget
-        self.set_timer_roll = SetTimerRoll(self.driver, self.ac, self.wait_widget, self.widget_click).set_timer_roll
+    
+    # 定时检查模板，用时删减
+    def check_timer(self, start_time, set_time, power_state, power_same_prev=False):
+        start_h, start_m = start_time.split(":")
+        start_times = int(start_h) * 60 + int(start_m)
+        set_h, set_m = set_time.split(":")
+        set_times = int(set_h) * 60 + int(set_m)
+        if start_times < set_times:
+            delay_times = (set_times - start_times) * 60
+        else:
+            delay_times = 24 * 60 * 60 + (set_times - start_times) * 60
+        print "[APP_TIMER]Delay Time:%s" % (delay_times + 30)
+        while True:
+            if time.strftime("%H:%M") == start_time:
+                now = time.time()
+                break
+            else:
+                time.sleep(1)
+        print "[APP_TIMER]Now Time:%s" % time.strftime("%H:%M:%S")
+        element = self.wait_widget(self.page["control_device_page"]["power_state"])
+        while True:
+            if time.strftime("%H:%M") == set_time:
+                if power_same_prev is False:
+                    while True:
+                        if self.ac.get_attribute(element, "name") == power_state:
+                            print "[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time())
+                            print u"[APP_INFO]Device Info:%s" % power_state
+                            break
+                        else:
+                            time.sleep(1)
+                else:
+                    while True:
+                        time.sleep(10)
+                        if self.ac.get_attribute(element, "name") == power_state:
+                            print "[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), (time.time() - 10))
+                            print u"[APP_INFO]Device Info:%s" % power_state
+                            break
+                        else:
+                            time.sleep(1)
+                break
+            else:
+                if time.time() < now + delay_times + 30:
+                    time.sleep(1)
+                else:
+                    raise TimeoutException("Device state Error")
+    
+    # 删除普通定时
+    def delete_normal_timer(self):
+        while True:
+            try:
+                self.wait_widget(self.page["normal_timer_page"]["no_timer"])
+                print "It has no timer~"
+                break
+            except TimeoutException:
+                print "It has normal timer."
+                self.widget_click(self.page["normal_timer_page"]["timer_edit"],
+                                  self.page["timer_edit_popup"]["title"])
+                
+                self.widget_click(self.page["timer_edit_popup"]["delete"],
+                                  self.page["normal_timer_page"]["title"])
+    
+    # 关闭模式定时
+    def close_mode_timer(self):
+        element = self.wait_widget(self.page["control_device_page"]["mode_timer"])
+        while True:
+            attribute = self.ac.get_attribute(element, "name")
+            if u"未启用" not in attribute:
+                print "[APP_INFO]Mode timer is run"
+                self.widget_click(self.page["control_device_page"]["mode_timer"],
+                                  self.page["mode_timer_page"]["title"])
+                
+                if u"热水器模式" in attribute:
+                    self.widget_click(self.page["mode_timer_page"]["water_button"],
+                                      self.page["mode_timer_page"]["title"])
+                elif u"鱼缸模式" in attribute:
+                    self.widget_click(self.page["mode_timer_page"]["fish_button"],
+                                      self.page["mode_timer_page"]["title"])
+                else:
+                    self.widget_click(self.page["mode_timer_page"]["piocc_button"],
+                                      self.page["mode_timer_page"]["title"])
+                
+                time.sleep(5)
+                
+                self.widget_click(self.page["mode_timer_page"]["to_return"],
+                                  self.page["control_device_page"]["title"])
+            else:
+                print "[APP_INFO]Mode timer don't run"
+                break

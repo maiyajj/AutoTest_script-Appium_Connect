@@ -60,6 +60,12 @@ class MainPageWidgetJD(object):
     def device_info_page(self):
         return self.wrapper(self.mpwa.device_info_page(), self.mpwi.device_info_page())
 
+    def elec_bill_page(self):
+        return self.wrapper(self.mpwa.elec_bill_page(), self.mpwi.elec_bill_page())
+
+    def elec_page(self):
+        return self.wrapper(self.mpwa.elec_page(), self.mpwi.elec_page())
+
     def fish_mode_timer_page(self):
         return self.wrapper(self.mpwa.fish_mode_timer_page(), self.mpwi.fish_mode_timer_page())
 
@@ -81,6 +87,9 @@ class MainPageWidgetJD(object):
     def normal_timer_page(self):
         return self.wrapper(self.mpwa.normal_timer_page(), self.mpwi.normal_timer_page())
 
+    def peak_valley_price_page(self):
+        return self.wrapper(self.mpwa.peak_valley_price_page(), self.mpwi.peak_valley_price_page())
+
     def piocc_mode_timer_page(self):
         return self.wrapper(self.mpwa.piocc_mode_timer_page(), self.mpwi.piocc_mode_timer_page())
 
@@ -92,6 +101,12 @@ class MainPageWidgetJD(object):
 
     def search_device_success_page(self):
         return self.wrapper(self.mpwa.search_device_success_page(), self.mpwi.search_device_success_page())
+
+    def set_elec_page(self):
+        return self.wrapper(self.mpwa.set_elec_page(), self.mpwi.set_elec_page())
+
+    def single_price_page(self):
+        return self.wrapper(self.mpwa.single_price_page(), self.mpwi.single_price_page())
 
     def timer_log_page(self):
         return self.wrapper(self.mpwa.timer_log_page(), self.mpwi.timer_log_page())

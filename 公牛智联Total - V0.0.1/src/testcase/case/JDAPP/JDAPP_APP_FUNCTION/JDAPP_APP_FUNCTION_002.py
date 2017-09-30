@@ -11,22 +11,19 @@ class JDAppAppFunction2(LaunchAppJD):
 
     # 用例动作
     def case(self):
-        try:
-            while True:
-                elements = self.wait_widget(self.page["app_home_page"]["device"])
-                new_value = copy.copy(self.page["app_home_page"]["device"])
-                for index, element in elements.items():
-                    if element is not None and str(self.ac.get_attribute(element, "name")) == conf["MAC"][0]:
-                        new_value[0] = new_value[0][index]
-                        while True:
-                            try:
-                                self.widget_click(new_value, self.page["control_device_page"]["title"])
-                                raise ValueError()
-                            except TimeoutException:
-                                self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
-                time.sleep(1)
-        except ValueError:
-            pass
+        elements = self.wait_widget(self.page["app_home_page"]["device"])
+        new_value = copy.copy(self.page["app_home_page"]["device"])
+        for index, element in elements.items():
+            if element is not None and str(self.ac.get_attribute(element, "name")) == conf["MAC"][0]:
+                new_value[0] = new_value[0][index]
+                while True:
+                    try:
+                        self.widget_click(new_value, self.page["control_device_page"]["title"])
+                        break
+                    except TimeoutException:
+                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                        time.sleep(1)
+            break
 
         try:
             self.wait_widget(self.page["control_device_page"]["power_off"])

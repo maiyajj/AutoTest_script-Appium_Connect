@@ -250,10 +250,10 @@ class MainPageWidgetIosJD(object):
         # 开启时间
         d["start_time"] = [u"//android.view.View[@content-desc='插座开启时间']", "xpath", u"插座开启时间"]
         # 开启时间滚轮,时
-        d["start_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.widget.ListView",
-                        "xpath", u"开启时间滚轮,时", {"px": [0.51, 0.5]}]
+        d["roll_h"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.widget.ListView",
+                       "xpath", u"开启时间滚轮,时", {"px": [0.51, 0.5]}]
         # 开启时间滚轮,分
-        d["start_m"] = [
+        d["roll_m"] = [
             "//android.webkit.WebView/android.view.View/android.view.View[2]/android.widget.ListView"[2],
             "xpath", u"开启时间滚轮,分", {"px": [0.51, 0.5]}]
         # 开启时间
@@ -403,6 +403,70 @@ class MainPageWidgetIosJD(object):
         d["has_log"] = [u"定时开机删除", "name", u"返回"]
         # 无执行记录
         d["no_log"] = [u"暂无执行纪录！", "name", u"返回"]
+        return d
+
+    # 设置电价页面
+    def set_elec_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='电价设置']", "xpath", u"电价设置页面"]
+        # 单一电价设置
+        d["single_price"] = [u"//android.view.View[@content-desc='单一电价 ']", "xpath", u"单一电价设置"]
+        # 峰谷电价设置
+        d["peak_valley_price"] = [u"//android.view.View[@content-desc='峰谷时间段电价 ']",
+                                  "xpath", u"峰谷电价设置"]
+        # 单一电价设置按钮
+        d["single_button"] = [u"//android.view.View[@content-desc='单一电价 ']", "xpath",
+                              u"单一电价设置按钮", {"px": [0.07, 0.5]}]
+        # 峰谷电价设置按钮
+        d["peak_valley_button"] = [u"//android.view.View[@content-desc='峰谷时间段电价 ']", "xpath",
+                                   u"峰谷电价设置按钮", {"px": [0.07, 0.5]}]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
+    # 单一电价设置页面
+    def single_price_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='单一电价设置']", "xpath", u"电价设置页面"]
+        # 设置电价
+        d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+        # 单一电价设置页面
+
+    def peak_valley_price_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='单一电价设置']", "xpath", u"电价设置页面"]
+        # 设置电价
+        d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
+        # 开启时间
+        d["start_time"] = [u"//android.view.View[@content-desc='峰电开始时间']", "xpath", u"峰电开始时间控件"]
+        # 开启时间
+        d["start_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText", "xpath",
+                                u"峰电开始时间"]
+        # 关闭时间
+        d["end_time"] = [u"//android.view.View[@content-desc='峰电结束时间']", "xpath", u"峰电结束时间控件"]
+        # 关闭时间
+        d["end_time_text"] = ["//android.webkit.WebView/android.view.View/android.widget.EditText[2]", "xpath",
+                              u"峰电结束时间"]
+        # 时间滚轮,时
+        d["roll_h"] = [u"//android.widget.ListView[@content-desc='时']", "xpath", u" 时间滚轮,时",
+                       {"px": [0.51, 0.5]}]
+        # 时间滚轮,分
+        d["roll_m"] = [u"//android.widget.ListView[@content-desc='分']", "xpath", u"时间滚轮,分",
+                       {"px": [0.51, 0.5]}]
+        # 设置峰电电价
+        d["set_peak_price"] = ["//android.webkit.WebView/android.view.View/android.view.View[4]/android.view.View[2]/"
+                               "android.widget.EditText", "xpath", u"设置电价"]
+        # 设置谷电电价
+        d["set_valley_price"] = ["//android.webkit.WebView/android.view.View/android.view.View[8]/android.view.View[2]/"
+                                 "android.widget.EditText", "xpath", u"设置电价"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
 
 
