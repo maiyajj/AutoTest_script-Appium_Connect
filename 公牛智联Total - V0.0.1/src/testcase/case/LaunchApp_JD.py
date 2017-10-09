@@ -375,11 +375,10 @@ class LaunchAppJD(object):
             roll_now_h, roll_now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
             roll_now_h, roll_now_m = int(roll_now_h), int(roll_now_m)
 
+        now_h, now_m = now_time.split(":")
         if same_fish_mode is False:
-            now_h, now_m = now_time.split(":")
             now_h, now_m = int(now_h), int(now_m)
         else:
-            now_h, now_m = now_time.split(":")
             now_h, now_m = int(now_h), int(now_m) - leave_time
             now_h, now_m = (now_h + now_m / 60) % 24, now_m % 60
 

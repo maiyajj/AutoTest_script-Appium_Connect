@@ -526,8 +526,6 @@ class MainPageWidgetAndroidJD(object):
         d = {}
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='单一电价设置']", "xpath", u"电价设置页面"]
-        # 设置电价
-        d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
         # 开启时间
         d["start_time"] = [u"//android.view.View[@content-desc='峰电开始时间']", "xpath", u"峰电开始时间控件"]
         # 开启时间
