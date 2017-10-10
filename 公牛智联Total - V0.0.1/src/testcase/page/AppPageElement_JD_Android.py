@@ -218,6 +218,8 @@ class MainPageWidgetAndroidJD(object):
         # 电源状态
         d["power_state"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View",
                             "xpath", u"电源状态"]
+        # 功率
+        d["power"] = ["//android.widget.ListView/android.view.View[2]", "xpath", u"功率"]
         # 电源开启
         d["power_on"] = [u"//android.view.View[@content-desc='设备已开启']", "xpath", u"电源开启"]
         # 电源关闭
@@ -559,13 +561,21 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='用电量']", "xpath", u"电价设置页面"]
         price_time = {}
         price_value = {}
-        for i in xrange(2, 26):
-            price_time[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View" % i
-            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % i
+        for i in xrange(24):
+            price_time[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View" % (i + 2)
+            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % (i + 2)
         # 电量时间
         d["elec_time"] = [price_time, "xpath", u"电量时间"]
         # 电量值
         d["elec_value"] = [price_value, "xpath", u"电量值"]
+        # 日
+        d["day"] = [u"//android.view.View[@content-desc='日']", "xpath", u"日"]
+        # 周
+        d["week"] = [u"//android.view.View[@content-desc='周']", "xpath", u"周"]
+        # 月
+        d["month"] = [u"//android.view.View[@content-desc='月']", "xpath", u"月"]
+        # 年
+        d["year"] = [u"//android.view.View[@content-desc='年']", "xpath", u"年"]
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
@@ -577,9 +587,9 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [u"//android.widget.TextView[@text='电费']", "xpath", u"电费页面"]
         price_time = {}
         price_value = {}
-        for i in xrange(2, 26):
-            price_time[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View" % i
-            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % i
+        for i in xrange(24):
+            price_time[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View" % (i + 2)
+            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % (i + 2)
         # 电费时间
         d["price_time"] = [price_time, "xpath", u"电费时间"]
         # 电费值

@@ -6,8 +6,8 @@ class JDAppNormalTimer3(LaunchAppJD):
     @case_run_jd(False)
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
-        self.case_title = u'单次定时关_2分钟'  # 用例名称
-        self.zentao_id = 1185  # 禅道ID
+        self.case_title = u'普通定时最大组数设定_设置12组'  # 用例名称
+        self.zentao_id = 1164  # 禅道ID
     
     # 用例动作
     def case(self):
@@ -27,26 +27,70 @@ class JDAppNormalTimer3(LaunchAppJD):
     
         self.close_mode_timer()
         try:
-            self.wait_widget(self.page["control_device_page"]["power_on"])
+            self.wait_widget(self.page["control_device_page"]["power_off"])
         except TimeoutException:
             self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["power_on"])
+                              self.page["control_device_page"]["power_off"])
     
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
         self.delete_normal_timer()
     
         self.now = time.strftime("%H:%M")
-    
-        delay_time_1 = 2
-        start_time_1, set_time_1 = self.create_timer(delay_time_1, "power_off")
+
+        delay_time_1 = 1
+        start_time_1, set_time_1 = self.create_timer(delay_time_1, "power_on")
+
+        delay_time_2 = 2
+        start_time_2, set_time_2 = self.create_timer(delay_time_2, "power_off")
+
+        delay_time_3 = 3
+        start_time_3, set_time_3 = self.create_timer(delay_time_3, "power_on")
+
+        delay_time_4 = 4
+        start_time_4, set_time_4 = self.create_timer(delay_time_4, "power_off")
+
+        delay_time_5 = 5
+        start_time_5, set_time_5 = self.create_timer(delay_time_5, "power_on")
+
+        delay_time_6 = 6
+        start_time_6, set_time_6 = self.create_timer(delay_time_6, "power_off")
+
+        delay_time_7 = 7
+        start_time_7, set_time_7 = self.create_timer(delay_time_7, "power_on")
+
+        delay_time_8 = 8
+        start_time_8, set_time_8 = self.create_timer(delay_time_8, "power_off")
+
+        delay_time_9 = 9
+        start_time_9, set_time_9 = self.create_timer(delay_time_9, "power_on")
+
+        delay_time_10 = 10
+        start_time_10, set_time_10 = self.create_timer(delay_time_10, "power_off")
+
+        delay_time_11 = 11
+        start_time_11, set_time_11 = self.create_timer(delay_time_11, "power_on")
+
+        delay_time_12 = 12
+        start_time_12, set_time_12 = self.create_timer(delay_time_12, "power_off")
         
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
-        
-        self.wait_widget(self.page["control_device_page"]["power_on"])
-    
-        self.check_timer(start_time_1, set_time_1, u"设备已关闭")
+
+        self.wait_widget(self.page["control_device_page"]["power_off"])
+
+        self.check_timer(start_time_1, set_time_1, u"设备已开启")
+        self.check_timer(start_time_2, set_time_2, u"设备已关闭")
+        self.check_timer(start_time_3, set_time_3, u"设备已开启")
+        self.check_timer(start_time_4, set_time_4, u"设备已关闭")
+        self.check_timer(start_time_5, set_time_5, u"设备已开启")
+        self.check_timer(start_time_6, set_time_6, u"设备已关闭")
+        self.check_timer(start_time_7, set_time_7, u"设备已开启")
+        self.check_timer(start_time_8, set_time_8, u"设备已关闭")
+        self.check_timer(start_time_9, set_time_9, u"设备已开启")
+        self.check_timer(start_time_10, set_time_10, u"设备已关闭")
+        self.check_timer(start_time_11, set_time_11, u"设备已开启")
+        self.check_timer(start_time_12, set_time_12, u"设备已关闭")
         
         self.case_over(True)
     

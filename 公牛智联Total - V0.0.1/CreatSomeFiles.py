@@ -1,6 +1,7 @@
 # coding=utf-8
 try:
     from src.testcase.case.WaitCase import *
+    import linecache
 except ImportError:
     pass
 from src.utils.LaunchAppiumServices import *
@@ -129,19 +130,25 @@ class CreateFunc(object):
                         files.write("{0} = {0}".format(i) + "\n")
 
     def correct_func_name(self):
-        result = []
         rootdir = r"./src/testcase/case/"  # 指明被遍历的文件夹
         for parents, dirnamess, filenamess in os.walk(rootdir):
             for dirnames in dirnamess:
                 for parent, dirnames, filenames in os.walk(os.path.join(parents, dirnames)):
                     for filename in [i for i in filenames if "APP" in i and "pyc" not in i]:
-                        with open(os.path.join(parent, filename), "r") as files:
-                            filename = "%s%s%s" % (filename[:2],
-                                                   "".join([i.capitalize() for i in filename[2:-7].split("_")]),
+                        filepath = os.path.join(parent, filename)
+                        file_name = "%s%s%s" % (filename[:2],
+                                                "".join([i.capitalize() for i in filename[2:-7].split("_")]),
                                                    str(int(filename[-6:-3])))
-                            result.append(filename == re.findall("class (.+?)\(", files.read())[0])
-        result = list(set(result))
-        print result
+
+                        lines = len(linecache.getlines(filepath))
+                        with open(filepath, "w") as files:
+                            import_name = re.findall("class .+\((.+?)\):", files.read())[0]
+                            write_mess = "class %s(%s):\n" % (file_name, import_name)
+                            for i in range(1, lines + 1):
+                                if '''class ''' in linecache.getline(filepath, i):
+                                    files.write(write_mess)
+                                else:
+                                    files.write(linecache.getline(filepath, i))
 
     def create_WaitCase(self):
         rootdir = r"./src/testcase/case"

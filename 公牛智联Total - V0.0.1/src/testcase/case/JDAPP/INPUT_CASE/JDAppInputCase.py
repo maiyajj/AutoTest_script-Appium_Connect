@@ -7,7 +7,6 @@ from src.testcase.case.JDAPP.INPUT_CASE.JDAppLogin import *
 from src.testcase.case.JDAPP.INPUT_CASE.JDAppModeTimer import *
 from src.testcase.case.JDAPP.INPUT_CASE.JDAppNormalTimer import *
 from src.testcase.case.JDAPP.INPUT_CASE.JDAppOverDay import *
-from src.testcase.case.JDAPP.INPUT_CASE.JDAppSmartLink import *
 
 JDAppAppFunction1 = JDAppAppFunction1
 JDAppCompatibility1 = JDAppCompatibility1
@@ -17,4 +16,3 @@ JDAppLogin1 = JDAppLogin1
 JDAppModeTimer1 = JDAppModeTimer1
 JDAppNormalTimer1 = JDAppNormalTimer1
 JDAppOverDay1 = JDAppOverDay1
-JDAppSmartLink1 = JDAppSmartLink1

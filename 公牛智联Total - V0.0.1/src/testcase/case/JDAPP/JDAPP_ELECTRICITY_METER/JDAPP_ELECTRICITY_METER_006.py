@@ -26,10 +26,10 @@ class JDAppElectricityMeter6(LaunchAppJD):
             break
 
         try:
-            self.wait_widget(self.page["control_device_page"]["power_off"])
+            self.wait_widget(self.page["control_device_page"]["power_on"])
         except TimeoutException:
             self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["power_off"])
+                              self.page["control_device_page"]["power_on"])
 
         self.ac.swipe(0.5, 0.9, 0.5, 0.7, 0, self.driver)
 
@@ -83,8 +83,8 @@ class JDAppElectricityMeter6(LaunchAppJD):
         for index, element in elec_bill_elements.items():
             if element is not None:
                 elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
-                # if index - 2 >= now_h + 2:
-                elec_bill[index - 2] = self.ac.get_attribute(elec_bill_value, "name")
+                # if index >= now_h + 2:
+                elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
                 self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (now_h + 2, str(elec_bill)))
 
         self.widget_click(self.page["elec_bill_page"]["to_return"],
@@ -98,8 +98,8 @@ class JDAppElectricityMeter6(LaunchAppJD):
         for index, element in elec_elements.items():
             if element is not None:
                 elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
-                # if index - 2 >= now_h + 2:
-                elec[index - 2] = self.ac.get_attribute(elec_value, "name")
+                # if index >= now_h + 2:
+                elec[index] = self.ac.get_attribute(elec_value, "name")
                 self.logger.info("[APP_INFO]%02d:01_elec:%s" % (now_h + 2, str(elec)))
 
         self.widget_click(self.page["elec_page"]["to_return"],

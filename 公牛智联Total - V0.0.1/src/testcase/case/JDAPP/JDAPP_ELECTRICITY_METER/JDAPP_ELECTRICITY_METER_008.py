@@ -2,12 +2,12 @@
 from src.testcase.case.LaunchApp_JD import *
 
 
-class JDAppElectricityMeter4(LaunchAppJD):
+class JDAppElectricityMeter8(LaunchAppJD):
     @case_run_jd(False)
     def run(self):
-        self.case_module = u"电量计量"  # 用例所属模块
-        self.case_title = u'电价模式转换'  # 用例名称
-        self.zentao_id = 1150  # 禅道ID
+        self.case_module = u"APP功能测试"  # 用例所属模块
+        self.case_title = u'电价设置验证'  # 用例名称
+        self.zentao_id = 1155  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -69,7 +69,7 @@ class JDAppElectricityMeter4(LaunchAppJD):
         elec_bill = {}
 
         while True:
-            if time.strftime("%H:%M") == "%02d:01" % (now_h + 2):
+            if time.strftime("%H:%M") == "23:01":
                 break
             else:
                 self.driver.tap([(10, 10)])
@@ -85,7 +85,7 @@ class JDAppElectricityMeter4(LaunchAppJD):
                 elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                 # if index >= now_h + 2:
                 elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-                self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (now_h + 2, str(elec_bill)))
+                self.logger.info("[APP_INFO]23:01_elec_bill:%s" % str(elec_bill))
 
         self.widget_click(self.page["elec_bill_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -104,6 +104,43 @@ class JDAppElectricityMeter4(LaunchAppJD):
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])
+
+        while True:
+            if int(time.strftime("%H")) == now_h + 1:
+                time.sleep(60)
+                break
+            else:
+                self.driver.tap([(10, 10)])
+                time.sleep(60)
+
+        self.widget_click(self.page["control_device_page"]["elec_bill"],
+                          self.page["elec_bill_page"]["title"])
+
+        for index, element in elec_bill_elements.items():
+            if element is not None:
+                elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
+                # if index <= now_h + 1:
+                elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
+                self.logger.info("[APP_INFO]%s:01_elec_bill:%s" % (time.strftime("%H"), str(elec_bill)))
+
+        self.widget_click(self.page["elec_bill_page"]["to_return"],
+                          self.page["control_device_page"]["title"])
+
+        self.widget_click(self.page["control_device_page"]["elec"],
+                          self.page["elec_page"]["title"])
+
+        for index, element in elec_elements.items():
+            if element is not None:
+                elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
+                # if index <= now_h + 1:
+                elec[index] = self.ac.get_attribute(elec_value, "name")
+                self.logger.info("[APP_INFO]%s:01_elec:%s" % (time.strftime("%H"), str(elec)))
+
+        self.widget_click(self.page["elec_page"]["to_return"],
+                          self.page["control_device_page"]["title"])
+
+        if sum(elec_bill.values()) != sum(elec.values()) * int(signal_price_data):
+            raise TimeoutException()
 
         self.widget_click(self.page["control_device_page"]["set_elec"],
                           self.page["set_elec_page"]["title"])

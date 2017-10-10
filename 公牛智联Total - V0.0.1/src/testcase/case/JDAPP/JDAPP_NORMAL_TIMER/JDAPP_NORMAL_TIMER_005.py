@@ -2,13 +2,13 @@
 from src.testcase.case.LaunchApp_JD import *
 
 
-class JDAppNormalTimer1(LaunchAppJD):
+class JDAppNormalTimer5(LaunchAppJD):
     @case_run_jd(False)
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
-        self.case_title = u'普通定时设置后手动改变设备状态为开启'  # 用例名称
-        self.zentao_id = 1161  # 禅道ID
-    
+        self.case_title = u'单次定时开_2分钟'  # 用例名称
+        self.zentao_id = 1184  # 禅道ID
+
     # 用例动作
     def case(self):
         elements = self.wait_widget(self.page["app_home_page"]["device"])
@@ -24,7 +24,7 @@ class JDAppNormalTimer1(LaunchAppJD):
                         self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
                         time.sleep(1)
             break
-    
+
         self.close_mode_timer()
         try:
             self.wait_widget(self.page["control_device_page"]["power_off"])
@@ -35,22 +35,19 @@ class JDAppNormalTimer1(LaunchAppJD):
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
         self.delete_normal_timer()
-    
+
         self.now = time.strftime("%H:%M")
 
-        delay_time_1 = 3
+        delay_time_1 = 2
         start_time_1, set_time_1 = self.create_timer(delay_time_1, "power_on")
-        
+
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
 
         self.wait_widget(self.page["control_device_page"]["power_off"])
 
-        self.widget_click(self.page["normal_timer_page"]["power_off"],
-                          self.page["control_device_page"]["power_on"])
+        self.check_timer(start_time_1, set_time_1, u"设备已开启")
 
-        self.check_timer(start_time_1, set_time_1, u"设备已开启", True)
-        
         self.case_over(True)
 
     def create_timer(self, delay_time, power):
@@ -61,7 +58,7 @@ class JDAppNormalTimer1(LaunchAppJD):
                                                    self.page["add_normal_timer_page"]["roll_m"],
                                                    self.page["add_normal_timer_page"]["set_timer"],
                                                    delay_time, self.now)
-        
+
         self.widget_click(self.page["add_normal_timer_page"][power],
                           self.page["add_normal_timer_page"]["title"])
 
@@ -69,15 +66,15 @@ class JDAppNormalTimer1(LaunchAppJD):
                                                 "name"):
             self.widget_click(self.page["add_normal_timer_page"]["repeat"],
                               self.page["timer_repeat_page"]["title"])
-            
+
             self.widget_click(self.page["timer_repeat_page"]["repeat_button"],
                               self.page["timer_repeat_page"]["once"])
-            
+
             self.widget_click(self.page["timer_repeat_page"]["to_return"],
                               self.page["add_normal_timer_page"]["title"])
-        
+
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
         self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
-        
+
         return start_time, set_time

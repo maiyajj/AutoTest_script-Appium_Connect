@@ -112,11 +112,17 @@ class WaitCaseJD(object):
             # self.write_report(JDAppCompatibility1)  # 1272, 在TP-link品牌的路由器下添加设备检查
             # self.write_report(JDAppElectricityMeter1)  # 1117, 电量统计2H功能及精度检查
             # self.write_report(JDAppElectricityMeter2)  # 1138, 单一电价验证
-            # self.write_report(JDAppElectricityMeter3)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
-            # self.write_report(JDAppElectricityMeter4)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
-            # self.write_report(JDAppElectricityMeter5)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
-            # self.write_report(JDAppElectricityMeter6)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
-            # self.write_report(JDAppElectricityMeter7)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
+            # self.write_report(JDAppElectricityMeter3)  # 1139, 峰谷电价验证
+            # self.write_report(JDAppElectricityMeter4)  # 1150, 电价模式转换
+            # self.write_report(JDAppElectricityMeter5)  # 1149, 用电图表显示周期设置
+            # self.write_report(JDAppElectricityMeter6)  # 1151, 单一电价设置
+            # self.write_report(JDAppElectricityMeter7)  # 1152, 设置峰谷电价
+            # self.write_report(JDAppElectricityMeter8)  # 1155, 电价设置验证
+            # self.write_report(JDAppElectricityMeter9)  # 1136, 实时功率检查_2000W
+            # self.write_report(JDAppElectricityMeter10)  # 1135, 实时功率检查_1500W
+            # self.write_report(JDAppElectricityMeter11)  # 1133, 实时功率检查_500W
+            # self.write_report(JDAppElectricityMeter12)  # 1132, 实时功率检查_200W
+            # self.write_report(JDAppElectricityMeter13)  # 1130, 实时功率检查_50W
             # self.write_report(JDAppAppFunction1)  # 1170, 定时记录删除是否成功
             # self.write_report(JDAppAppFunction2)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
             # self.write_report(JDAppKeyMemory1)  # 1216, 开关操作及记忆功能
@@ -126,9 +132,12 @@ class WaitCaseJD(object):
             # self.write_report(JDAppModeTimer4)  # 1103, 鱼缸模式开启1分钟，关闭1分钟定时是否正确执行
             # self.write_report(JDAppModeTimer5)  # 1105, 鱼缸模式开启1小时，关闭1小时定时是否正确执行
             self.write_report(JDAppModeTimer6)  # 1108, 鱼缸模式开启2分钟，关闭2分钟定时是否正确执行
-            self.write_report(JDAppNormalTimer1)  # 1181, 普通交叉定时_8分钟
-            self.write_report(JDAppNormalTimer2)  # 1184, 单次定时开_2分钟
-            self.write_report(JDAppNormalTimer3)  # 1185, 单次定时关_2分钟
+            self.write_report(JDAppNormalTimer1)  # 1161, 普通定时设置后手动改变设备状态为开启
+            self.write_report(JDAppNormalTimer2)  # 1162, 普通定时设置后手动改变设备状态为关闭
+            self.write_report(JDAppNormalTimer3)  # 1164, 普通定时最大组数设定_设置12组
+            self.write_report(JDAppNormalTimer4)  # 1181, 普通交叉定时_8分钟
+            self.write_report(JDAppNormalTimer5)  # 1184, 单次定时开_2分钟
+            self.write_report(JDAppNormalTimer6)  # 1185, 单次定时关_2分钟
             self.write_report(JDAppOverDay1)  # 1299, 热水器模式设置每日循环
             # self.write_report(JDAppOverDay2)  # 1300, 热水器模式在跨天循环下的跨天执行
             # self.write_report(JDAppOverDay3)  # 1301, 定时时间早于当前时间的永不循环定时设置
