@@ -2,12 +2,12 @@
 from src.testcase.case.LaunchApp_JD import *
 
 
-class JDAppNormalTimer5(LaunchAppJD):
+class JDAppNormalTimer7(LaunchAppJD):
     @case_run_jd(False)
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
-        self.case_title = u'普通交叉定时_8分钟'  # 用例名称
-        self.zentao_id = 1181  # 禅道ID
+        self.case_title = u'单次定时关_2分钟'  # 用例名称
+        self.zentao_id = 1185  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -27,10 +27,10 @@ class JDAppNormalTimer5(LaunchAppJD):
 
         self.close_mode_timer()
         try:
-            self.wait_widget(self.page["control_device_page"]["power_off"])
+            self.wait_widget(self.page["control_device_page"]["power_on"])
         except TimeoutException:
             self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["power_off"])
+                              self.page["control_device_page"]["power_on"])
 
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
@@ -39,30 +39,18 @@ class JDAppNormalTimer5(LaunchAppJD):
         self.now = time.strftime("%H:%M")
 
         delay_time_1 = 2
-        start_time_1, set_time_1 = self.create_normal_timer(delay_time_1, "power_on")
-
-        delay_time_2 = 4
-        start_time_2, set_time_2 = self.create_normal_timer(delay_time_2, "power_on")
-
-        delay_time_3 = 6
-        start_time_3, set_time_3 = self.create_normal_timer(delay_time_3, "power_off")
-
-        delay_time_4 = 8
-        start_time_4, set_time_4 = self.create_normal_timer(delay_time_4, "power_off")
+        start_time_1, set_time_1 = self.create_timer(delay_time_1, "power_off")
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
 
-        self.wait_widget(self.page["control_device_page"]["power_off"])
+        self.wait_widget(self.page["control_device_page"]["power_on"])
 
-        self.check_timer(start_time_1, set_time_1, u"设备已开启")
-        self.check_timer(start_time_2, set_time_2, u"设备已开启", True)
-        self.check_timer(start_time_3, set_time_3, u"设备已关闭")
-        self.check_timer(start_time_4, set_time_4, u"设备已关闭", True)
+        self.check_timer(start_time_1, set_time_1, u"设备已关闭")
 
         self.case_over(True)
 
-    def create_normal_timer(self, delay_time, power):
+    def create_timer(self, delay_time, power):
         self.widget_click(self.page["normal_timer_page"]["add_timer"],
                           self.page["add_normal_timer_page"]["title"])
 
@@ -74,8 +62,8 @@ class JDAppNormalTimer5(LaunchAppJD):
         self.widget_click(self.page["add_normal_timer_page"][power],
                           self.page["add_normal_timer_page"]["title"])
 
-        attribute = self.ac.get_attribute(self.wait_widget(self.page["add_normal_timer_page"]["repeat"]), "name")
-        if u"执行一次" not in attribute:
+        if u"执行一次" not in self.ac.get_attribute(self.wait_widget(self.page["add_normal_timer_page"]["repeat"]),
+                                                "name"):
             self.widget_click(self.page["add_normal_timer_page"]["repeat"],
                               self.page["timer_repeat_page"]["title"])
 
