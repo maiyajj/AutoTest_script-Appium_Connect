@@ -42,15 +42,6 @@ class MainPageWidgetJD(object):
     def app_home_page(self):
         return self.wrapper(self.mpwa.app_home_page(), self.mpwi.app_home_page())
 
-    def batch_add_device_page(self):
-        return self.wrapper(self.mpwa.batch_add_device_page(), self.mpwi.batch_add_device_page())
-
-    def bind_device_page(self):
-        return self.wrapper(self.mpwa.bind_device_page(), self.mpwi.bind_device_page())
-
-    def bind_device_success_page(self):
-        return self.wrapper(self.mpwa.bind_device_success_page(), self.mpwi.bind_device_success_page())
-
     def change_nickname_page(self):
         return self.wrapper(self.mpwa.change_nickname_page(), self.mpwi.change_nickname_page())
 

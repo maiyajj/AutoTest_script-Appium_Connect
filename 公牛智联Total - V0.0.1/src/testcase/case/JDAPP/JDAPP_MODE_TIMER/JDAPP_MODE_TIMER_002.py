@@ -32,7 +32,6 @@ class JDAppModeTimer2(LaunchAppJD):
             self.widget_click(self.page["control_device_page"]["power_button"],
                               self.page["control_device_page"]["power_off"])
 
-        
         self.widget_click(self.page["control_device_page"]["mode_timer"],
                           self.page["mode_timer_page"]["title"])
         

@@ -33,14 +33,23 @@ class JDAppElectricityMeter11(LaunchAppJD):
 
         power = []
 
+        i = 10
         end_time = time.time() + 60
-        while True:
-            if time.time() <= end_time:
-                power.append(self.ac.get_attribute(self.page["control_device_page"]["power"], "name"))
+        while i > 0:
+            if time.time() < end_time:
+                try:
+                    tmp = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["power"]), "name")
+                    if isinstance(tmp, unicode):
+                        power.append(tmp)
+                        if len(power) >= 60:
+                            break
+                except TimeoutException:
+                    pass
             else:
-                break
+                end_time = time.time() + 60
+                i -= 1
 
-        power = map(lambda x: float(x.split(" ")[0]), power)
+        power = map(lambda x: float(x.replace(" W", "")), power)
 
         aver_power = sum(power) / len(power)
 

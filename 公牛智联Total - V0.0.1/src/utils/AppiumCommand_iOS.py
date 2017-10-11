@@ -40,7 +40,9 @@ class AppiumCommandIos(object):
             else:
                 attribute_value = 'true'
         elif name == "name":
-            attribute_value = element.get_attribute("value")
+            attribute_value = element.get_attribute("name")
+            if attribute_value == "" or None:
+                attribute_value = element.get_attribute("value")
         elif name == "enabled":
             attribute_value = str(element.is_enabled()).lower()
         elif name == "is_displayed":

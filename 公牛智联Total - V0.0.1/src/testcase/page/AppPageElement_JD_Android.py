@@ -57,9 +57,10 @@ class MainPageWidgetAndroidJD(object):
         d["no_device"] = ["com.jd.smart:id/layout_no_device", "id", u"没有设备/未登录"]
         # 设备
         device = {}
-        for i in xrange(1, 6):
+        for i in xrange(5):
             device[
-                i] = "//android.widget.ListView/android.view.View[%s]//android.widget.LinearLayout/android.widget.TextView" % i
+                i] = "//android.widget.ListView/android.view.View[%s]//android.widget.LinearLayout/android.widget.TextView" % (
+            i + 1)
         d["device"] = [device, "xpath", u"待控设备"]
         return d
 
@@ -69,18 +70,18 @@ class MainPageWidgetAndroidJD(object):
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='添加设备']", "xpath", u"添加设备页面"]
         # 通过设备品类添加
-        d["variety"] = [u"通过设备品类添加", "name", u"通过设备品类添加"]
+        d["variety"] = [u"//android.widget.TextView[@text='通过设备品类添加']", "xpath", u"通过设备品类添加"]
         # 添加历史
         d["history"] = ["com.jd.smart:id/iv_history", "id", u"添加历史"]
         return d
 
-    # 添加设备页面
+    # 添加设备品类页面
     def add_device_list_page(self):
         d = {}
         # 标题
-        d["title"] = [u"设备品类", "name", u"添加设备页面"]
+        d["title"] = [u"//android.widget.TextView[@text='设备品类']", "xpath", u"添加设备品类页面"]
         # 插座列表选项
-        d["option"] = [u"插座", "name", u"插座列表选项"]
+        d["option"] = [u"//android.widget.TextView[@text='插座']", "xpath", u"插座列表选项"]
         return d
 
     # 进入设备添加历史页面
@@ -89,8 +90,6 @@ class MainPageWidgetAndroidJD(object):
         d = {}
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='已添加设备']", "xpath", u"进入设备添加历史页面"]
-        # 设备列表
-        d["device_list"] = ["com.jd.smart:id/tv_dev_name", "id", u"设备列表"]
         # 公牛Wi-Fi智能转换器2代电量计量版
         d["y201J"] = [u"//android.widget.TextView[@text='公牛WiFi智能电量统计版转换器2代']", "xpath", u"公牛Wi-Fi智能转换器2代电量计量版"]
         # 公牛Wi-Fi智能转换器2代
@@ -103,13 +102,15 @@ class MainPageWidgetAndroidJD(object):
     def add_outlet_list_page(self):
         d = {}
         # 标题
-        d["title"] = [u"插座", "name", u"插座列表页面"]
+        d["title"] = [u"//android.widget.TextView[@text='插座']", "xpath", u"插座列表页面"]
         # 公牛Wi-Fi智能插座2代
-        d["y2011"] = [u"公牛Wi-Fi智能插座2代", "name", u"公牛Wi-Fi智能插座2代"]
+        d["y2011"] = [u"//android.widget.TextView[@text='公牛Wi-Fi智能插座2代']", "xpath", u"公牛Wi-Fi智能插座2代"]
         # 公牛Wi-Fi智能转换器2代电量计量版
-        d["y201J"] = [u"公牛WiFi智能电量统计版转换器2代", "name", u"公牛WiFi智能电量统计版转换器2代"]
+        d["y201J"] = [u"//android.widget.TextView[@text='公牛WiFi智能电量统计版转换器2代']", "xpath",
+                      u"公牛WiFi智能电量统计版转换器2代"]
         # 公牛Wi-Fi智能插座2代加强版
-        d["y2011dl"] = [u"公牛Wi-Fi智能插座2代加强版", "name", u"公牛Wi-Fi智能插座2代加强版"]
+        d["y2011dl"] = [u"//android.widget.TextView[@text='公牛Wi-Fi智能插座2代加强版']", "xpath",
+                        u"公牛Wi-Fi智能插座2代加强版"]
         return d
 
     # 搜索设备页
@@ -151,13 +152,6 @@ class MainPageWidgetAndroidJD(object):
         d["title"] = [self.search_device_loading, "xpath", u"搜索设备等待页面"]
         return d
 
-    # 设备等待添加
-    def batch_add_device_page(self):
-        d = {}
-        # 标题
-        d["title"] = [u"批量添加", "name", u"设备等待添加"]
-        return d
-
     # 搜索到设备
     def search_device_success_page(self):
         # 搜索到设备MAC
@@ -167,10 +161,12 @@ class MainPageWidgetAndroidJD(object):
         # 设备元素路径
         device_box = {}
         confirm_box = {}
-        for i in xrange(1, 5):
-            device_box[i] = "//android.widget.ListView/android.widget.LinearLayout[%s]//android.widget.TextView[2]" % i
+        for i in xrange(4):
+            device_box[i] = "//android.widget.ListView/android.widget.LinearLayout[%s]//android.widget.TextView[2]" % (
+            i + 1)
             confirm_box[
-                i] = "//android.widget.ListView/android.widget.LinearLayout[%s]/android.widget.LinearLayout/android.widget.TextView" % i
+                i] = "//android.widget.ListView/android.widget.LinearLayout[%s]/android.widget.LinearLayout/android.widget.TextView" % (
+            i + 1)
         # 设备路径
         d["device_box"] = [device_box, "xpath", u"设备等待添加"]
         # 使用
@@ -184,24 +180,6 @@ class MainPageWidgetAndroidJD(object):
         d = {}
         # 标题
         d["title"] = [self.search_device_fail, "xpath", u"搜索设备超时"]
-        return d
-
-    # 绑定成功页面
-    def bind_device_success_page(self):
-        d = {}
-        # 标题
-        d["title"] = ["com.jd.smart:id/btn_config", "id", u"绑定成功页面"]
-        # 确定绑定按钮
-        d["confirm"] = ["com.jd.smart:id/btn_config", "id", u"确定"]
-        # 输入设备备注名
-        d["notes"] = ["com.jd.smart:id/edittext_layout", "id", u"绑定成功页面标志"]
-        return d
-
-    # 设备已被绑定
-    def bind_device_page(self):
-        d = {}
-        # 标题
-        d["title"] = [u"该设备已被绑定", "name", u"该设备已被绑定"]
         return d
 
     # 设备控制页面
@@ -437,7 +415,7 @@ class MainPageWidgetAndroidJD(object):
     def timer_repeat_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='重复']", "xpath", u"普通定时重复页面"]
+        d["title"] = [u"//android.widget.TextView[@text='重复']", "xpath", u"定时重复页面"]
         # 重复按钮
         d["repeat_button"] = [u"//android.view.View[@content-desc='重复 ']", "xpath", u"重复按钮",
                               {"px": [0.95, 0.5]}]
@@ -463,8 +441,6 @@ class MainPageWidgetAndroidJD(object):
         d["saturday"] = [u"//android.view.View[@content-desc='周六']", "xpath", u"周六"]
         # 周日
         d["weekday"] = [u"//android.view.View[@content-desc='周日']", "xpath", u"周日"]
-        # 返回按钮
-        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         # 鱼缸模式循环按钮
         d["fish_repeat_button"] = [u"//android.view.View[@content-desc='永久循环 ']", "xpath",
                                    u"鱼缸模式循环按钮", {"px": [0.95, 0.5]}]
@@ -472,6 +448,8 @@ class MainPageWidgetAndroidJD(object):
         d["forever"] = [u"//android.view.View[@content-desc='永久循环 ']", "xpath", u"永久循环"]
         # 执行次数
         d["cycle_index"] = [u"//android.view.View[@content-desc='执行次数设置(次)']", "xpath", u"执行次数"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
 
     # 定时执行记录页面
@@ -482,12 +460,9 @@ class MainPageWidgetAndroidJD(object):
         # 清空定时记录
         d["clear"] = [u"//android.widget.TextView[@text='清空']", "xpath", u"清空定时记录"]
         # 有执行记录
-        # has_log = {}
-        # for i in xrange(2, 13, 3):
-        #     has_log[i] = "//android.webkit.WebView/android.view.View/android.view.View[%s]" % i
-        d["has_log"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"返回"]
+        d["has_log"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath", u"有执行记录"]
         # 无执行记录
-        d["no_log"] = [u"//android.view.View[@content-desc='暂无执行纪录！']", "xpath", u"返回"]
+        d["no_log"] = [u"//android.view.View[@content-desc='暂无执行纪录！']", "xpath", u"无执行记录"]
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
@@ -516,7 +491,7 @@ class MainPageWidgetAndroidJD(object):
     def single_price_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='单一电价设置']", "xpath", u"电价设置页面"]
+        d["title"] = [u"//android.widget.TextView[@text='单一电价设置']", "xpath", u"单一电价设置页面"]
         # 设置电价
         d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
         # 返回按钮
@@ -527,7 +502,7 @@ class MainPageWidgetAndroidJD(object):
     def peak_valley_price_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='单一电价设置']", "xpath", u"电价设置页面"]
+        d["title"] = [u"//android.widget.TextView[@text='峰谷电设置']", "xpath", u"峰谷电价设置页面"]
         # 开启时间
         d["start_time"] = [u"//android.view.View[@content-desc='峰电开始时间']", "xpath", u"峰电开始时间控件"]
         # 开启时间
@@ -599,7 +574,7 @@ class MainPageWidgetAndroidJD(object):
         return d
 
 class PopupWidgetAndroidJD(object):
-    # 设备升级确认弹窗
+    # app升级确认弹窗
     def update_popup(self):
         d = {}
         d["title"] = ["com.jd.smart:id/title", "id", u"有更新", {"text": u"更新提示"}]
