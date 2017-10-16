@@ -1,8 +1,8 @@
 # coding=utf-8
-from src.testcase.case.LaunchApp_JD import *
+from src.testcase.common.WidgetOperation_JD import *
 
 
-class JDAppElectricityMeter6(LaunchAppJD):
+class JDAppElectricityMeter6(WidgetOperationJD):
     @case_run_jd(False)
     def run(self):
         self.case_module = u"电量计量"  # 用例所属模块
@@ -11,25 +11,9 @@ class JDAppElectricityMeter6(LaunchAppJD):
 
     # 用例动作
     def case(self):
-        elements = self.wait_widget(self.page["app_home_page"]["device"])
-        new_value = copy.copy(self.page["app_home_page"]["device"])
-        for index, element in elements.items():
-            if element is not None and str(self.ac.get_attribute(element, "name")) == conf["MAC"][0]:
-                new_value[0] = new_value[0][index]
-                while True:
-                    try:
-                        self.widget_click(new_value, self.page["control_device_page"]["title"])
-                        break
-                    except TimeoutException:
-                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
-                        time.sleep(1)
-            break
+        self.choose_home_device(conf["MAC"][0])
 
-        try:
-            self.wait_widget(self.page["control_device_page"]["power_on"])
-        except TimeoutException:
-            self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["power_on"])
+        self.set_power("power_on")
 
         self.ac.swipe(0.5, 0.9, 0.5, 0.7, 0, self.driver)
 
@@ -65,45 +49,7 @@ class JDAppElectricityMeter6(LaunchAppJD):
 
 
         now_h = int(time.strftime("%H"))
-        elec = {}
-        elec_bill = {}
-
-        while True:
-            if time.strftime("%H:%M") == "%02d:01" % (now_h + 2):
-                break
-            else:
-                self.driver.tap([(10, 10)])
-                time.sleep(30)
-
-        self.widget_click(self.page["control_device_page"]["elec_bill"],
-                          self.page["elec_bill_page"]["title"])
-
-        elec_bill_elements = self.wait_widget(self.page["elec_bill_page"]["price_time"])
-        elec_bill_value = copy.copy(self.page["elec_bill_page"]["price_value"])
-        for index, element in elec_bill_elements.items():
-            if element is not None:
-                elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
-                # if index >= now_h + 2:
-                elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-                self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (now_h + 2, str(elec_bill)))
-
-        self.widget_click(self.page["elec_bill_page"]["to_return"],
-                          self.page["control_device_page"]["title"])
-
-        self.widget_click(self.page["control_device_page"]["elec"],
-                          self.page["elec_page"]["title"])
-
-        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
-        elec_value = copy.copy(self.page["elec_page"]["elec_value"])
-        for index, element in elec_elements.items():
-            if element is not None:
-                elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
-                # if index >= now_h + 2:
-                elec[index] = self.ac.get_attribute(elec_value, "name")
-                self.logger.info("[APP_INFO]%02d:01_elec:%s" % (now_h + 2, str(elec)))
-
-        self.widget_click(self.page["elec_page"]["to_return"],
-                          self.page["control_device_page"]["title"])
+        elec, elec_bill = self.get_device_elect(now_h + 2, False)
 
         if sum(elec_bill[now_h + 1]) != sum(elec[now_h + 1]) * int(elec_price_data):
             raise TimeoutException()

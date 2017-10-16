@@ -1,8 +1,8 @@
 # coding=utf-8
-from src.testcase.case.LaunchApp_JD import *
+from src.testcase.common.WidgetOperation_JD import *
 
 
-class JDAppCompatibility1(LaunchAppJD):
+class JDAppCompatibility1(WidgetOperationJD):
     @case_run_jd(False)
     def run(self):
         self.case_module = u"兼容性测试"  # 用例所属模块
@@ -53,21 +53,11 @@ class JDAppCompatibility1(LaunchAppJD):
                 time.sleep(1)
             try:
                 self.wait_widget(self.page["search_device_success_page"]["title"])
-                try:
-                    while True:
-                        elements = self.wait_widget(self.page["search_device_success_page"]["device_box"])
-                        new_value = copy.copy(self.page["search_device_success_page"]["confirm"])
-                        for index, element in elements.items():
-                            if element is not None and self.ac.get_attribute(element, "name") == conf["MAC"][0]:
-                                new_value[0] = new_value[0][index]
-
-                                self.widget_click(new_value, self.page["control_device_page"]["title"])
-                                raise ValueError()
-                            else:
-                                self.ac.swipe(0.6, 0.9, 0.6, 0.4, 0, self.driver)
-                                time.sleep(1)
-                except ValueError:
-                    break
+                self.choose_device(conf["MAC"][0],
+                                   self.page["search_device_success_page"]["device_box"],
+                                   self.page["search_device_success_page"]["confirm"],
+                                   self.page["control_device_page"]["title"])
+                break
             except TimeoutException:
                 if time.time() > end_time:
                     raise TimeoutException()

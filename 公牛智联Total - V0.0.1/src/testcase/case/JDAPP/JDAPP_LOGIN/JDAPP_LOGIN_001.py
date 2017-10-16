@@ -1,8 +1,8 @@
 # coding=utf-8
-from src.testcase.case.LaunchApp_JD import *
+from src.testcase.common.WidgetOperation_JD import *
 
 
-class JDAppLogin1(LaunchAppJD):
+class JDAppLogin1(WidgetOperationJD):
     @case_run_jd(True)
     def run(self):
         self.case_module = u"登录"  # 用例所属模块
