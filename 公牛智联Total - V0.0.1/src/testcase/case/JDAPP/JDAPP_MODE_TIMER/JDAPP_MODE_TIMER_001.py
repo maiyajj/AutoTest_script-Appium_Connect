@@ -1,8 +1,8 @@
 # coding=utf-8
-from src.testcase.case.LaunchApp_JD import *
+from src.testcase.common.WidgetOperation_JD import *
 
 
-class JDAppModeTimer1(LaunchAppJD):
+class JDAppModeTimer1(WidgetOperationJD):
     @case_run_jd(False)
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块

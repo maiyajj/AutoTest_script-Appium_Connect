@@ -518,32 +518,31 @@ def add_notes():
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
                 # print filename[:-3]
-                a = -100
-                with open(filepath, "r") as files:
-                    print linecache.getline(filepath, lines + 1 - 2)
-                    for i in range(1, lines + 1 - 2):
-                        if i == a:
-                            pass
+                # a = -100
+                # with open(filepath, "r") as files:
+                #     print linecache.getline(filepath, lines + 1 - 2)
+                #     for i in range(1, lines + 1 - 2):
+                #         if i == a:
+                #             pass
+                #         else:
+                #             if '''def case(self):''' in linecache.getline(filepath, i):
+                #                 a = i + 1
+                #                 print "*" * 40
+                #                 print filename, i
+                #                 print linecache.getline(filepath, i)
+                #                 files.write(linecache.getline(filepath, i))
+                #             else:
+                #                 files.write(linecache.getline(filepath, i))
+                with open(filepath, "w") as files:
+                    for i in xrange(1, lines + 1):
+                        if '''from src.testcase.case.LaunchApp_JD import *''' in linecache.getline(filepath, i):
+                            files.write(
+                                linecache.getline(filepath, i).replace("from src.testcase.case.LaunchApp_JD import *)",
+                                                                       'from src.testcase.common.WidgetOperation_JD import *'))
+                        # files.write('''                # 截屏获取设备toast消息\n''')
+                        # files.write('''                raise WebDriverException()\n''')
                         else:
-                            if '''def case(self):''' in linecache.getline(filepath, i):
-                                a = i + 1
-                                print "*" * 40
-                                print filename, i
-                                print linecache.getline(filepath, i)
-                                files.write(linecache.getline(filepath, i))
-                            else:
-                                files.write(linecache.getline(filepath, i))
-                            # # for i in a:
-                            #     filepath = os.path.join(parent,filename)
-                            #     with open(filepath, "w") as files:
-                            #         for i in range(1, lines + 1):
-                            #             if '''self.case_over(True)''' in linecache.getline(filepath, i):
-                            #                 print linecache.getline(filepath, i).replace("self.case_over(True)", 'self.case_over("screen")'), filename
-                            #                 files.write(linecache.getline(filepath, i).replace("self.case_over(True)", 'self.case_over("screen")'))
-                            #             # files.write('''                # 截屏获取设备toast消息\n''')
-                            #             # files.write('''                raise WebDriverException()\n''')
-                            #             else:
-                            #                 files.write(linecache.getline(filepath, i))
+                            files.write(linecache.getline(filepath, i))
 
 
 def src_line():
@@ -556,7 +555,7 @@ def src_line():
     print line
 
 
-src_line()
+# src_line()
 
 # create_ReadConf()  # 创建ReadConf.py 必须
 # create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
@@ -571,7 +570,7 @@ src_line()
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
-# add_notes()
+add_notes()
 # check_AppPageElement()
 # a = []
 # b = []

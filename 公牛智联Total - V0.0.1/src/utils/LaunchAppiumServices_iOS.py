@@ -41,7 +41,7 @@ class LaunchAppiumServicesIos(object):
                 print command
                 with open("appium command %s.txt" % self.device_info["udid"], "a") as filess:
                     filess.write(time.strftime("%Y-%m-%d %H-%M") + "\n")
-                    filess.write(command + "\n")
+                    filess.write(command.replace(' -g "%s"' % log, "") + "\n")
                     filess.write("from appium import webdriver" + "\n")
 
                 appium_proc = Popen(command, shell=True)

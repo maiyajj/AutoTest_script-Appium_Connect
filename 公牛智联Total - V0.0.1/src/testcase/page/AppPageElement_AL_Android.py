@@ -7,72 +7,45 @@ class MainPageWidgetAndroidAL(object):
                       {"px": {"width": 0, "height": 0}}]
         return d
 
+    # “我的”页面
+    def my_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='我的家']", "xpath", u"“我的”页面"]
+        # 设置
+        d["setting"] = ["com.aliyun.alink:id/layout_container_item_setting", "id", u"设置"]
+        return d
+
     # 设置页面
     def setting_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='设备管理']", "xpath", u"设备管理"]
-        # 关闭按钮
-        d["close"] = ["com.aliyun.alink:id/home3_settings_layout_close", "id", u"关闭按钮"]
-        # 用户头像
-        d["user_logo"] = ["com.aliyun.alink:id/home3_settings_imageview_userlogo", "id", u"用户头像"]
-        # 用户昵称
-        d["user_nick"] = ["com.aliyun.alink:id/home3_settings_textview_usernick", "id", u"用户昵称"]
-        # 设备管理
-        d["device_manage"] = [u"//android.widget.TextView[text='设备管理']", "xpath", u"设备管理"]
-        # 场景管理
-        d["scene_manage"] = [u"//android.widget.TextView[text='场景管理']", "xpath", u"场景管理"]
-        # 家庭成员
-        d["family_member"] = [u"//android.widget.TextView[text='家庭成员']", "xpath", u"家庭成员"]
-        # 能源管理
-        d["energy_manage"] = [u"//android.widget.TextView[text='能源管理']", "xpath", u"能源管理"]
-        # 意见反馈
-        d["feedback"] = [u"//android.widget.TextView[text='意见反馈']", "xpath", u"意见反馈"]
-        # 关于小智
-        d["about"] = [u"//android.widget.TextView[text='关于小智']", "xpath", u"关于小智"]
-        # 登出
-        d["logout"] = ["com.aliyun.alink:id/home3_settings_button_login", "id", u"退出登录"]
-        return d
-
-    # 登录页面
-    def login_page(self):
-        d = {}
-        # 标题
-        d["title"] = ["com.aliyun.alink:id/title_bar_title", "id", u"登录页面", {"text": u"账户登录"}]
-        # 帮助
-        d["help"] = ["com.aliyun.alink:id/title_bar_right_button", "id", u"帮助"]
-        # 用户名
-        d["username"] = ["com.aliyun.alink:id/accountCompleteTextView", "id", u"用户名输入框"]
-        # 密码
-        d["password"] = ["com.aliyun.alink:id/content", "id", u"密码输入框"]
-        # 显示/关闭密码
-        d["check_box"] = ["com.aliyun.alink:id/hidePwd", "id", u"显示/关闭密码"]
-        # 登录
-        d["login_button"] = ["com.aliyun.alink:id/loginButton", "id", u"登录按钮"]
+        d["title"] = [u"//android.widget.TextView[@text='设置']", "xpath", u"设置页面"]
+        # 帮助与反馈
+        d["feedback"] = [u"//android.widget.TextView[text='帮助与反馈']", "xpath", u"帮助与反馈"]
+        # 关于阿里智能
+        d["about"] = [u"//android.widget.TextView[text='关于阿里智能']", "xpath", u"关于阿里智能"]
         # 返回
-        d["to_return"] = ["com.aliyun.alink:id/title_bar_back_button", "id", u"返回"]
+        d["to_return"] = ["//android.widget.TextView[@text='']", "xpath", u"返回"]
+        # 登出
+        d["logout"] = [u"//android.widget.TextView[text='退出当前账号']", "id", u"退出当前账号"]
         return d
 
     # APP主页面
     def app_home_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='商城']", "xpath", u"App主页面"]
+        d["title"] = ["com.aliyun.alink:id/home_page_topbar_home_name", "id", u"App主页面"]
         # +号
-        d["add_device"] = ["com.aliyun.alink:id/home3_device_image_menu", "id", u"+号"]
-        # 设置
-        d["setting"] = ["com.aliyun.alink:id/home3_device_layout_settings", "id", u"设置"]
-        # 用户名称
-        d["username"] = ["com.aliyun.alink:id/home3_device_textview_greeting", "id", u"用户名称"]
+        d["add_device"] = ["com.aliyun.alink:id/homepage_topbar_menu_btn", "id", u"+号"]
         # 没有设备
-        d["no_device"] = [u"//android.widget.TextView[@text='你还没有设备']", "xpath", u"没有设备"]
-        # 未登录
-        d["no_login"] = [u"//android.widget.TextView[@text='上午好，请登录']", "xpath", u"未登录"]
+        d["no_device"] = [u"//android.widget.TextView[@text='添加设备开启智能生活']", "xpath", u"没有设备"]
         # 设备
         device = {}
-        for i in xrange(1, 5):
-            device[i] = "//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]//" \
-                        "android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.TextView" % i
+        for i in xrange(7):
+            device[
+                i] = "//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]//android.widget.TextView" % (
+            i + 1)
         d["device"] = [device, "xpath", u"待控设备"]
         return d
 
@@ -161,7 +134,7 @@ class MainPageWidgetAndroidAL(object):
     def bind_device_page(self):
         d = {}
         # 标题
-        d["title"] = [u"该设备已被绑定", "name", u"该设备已被绑定"]
+        d["title"] = [u"//android.widget.TextView[text='该设备已被绑定']", "xpath", u"该设备已被绑定"]
         return d
 
     # 设备控制页面
@@ -172,13 +145,13 @@ class MainPageWidgetAndroidAL(object):
         '''
         d = {}
         # 标题
-        d["title"] = ["//android.webkit.WebView/android.webkit.WebView", "xpath", u"设备控制页面", {"text": u"设备控制面板"}]
+        d["title"] = ["//android.webkit.WebView[@content-desc='设备控制面板']", "xpath", u"设备控制页面", ]
         # 设备信息进入按钮
-        d["device_info"] = ["com.jd.smart:id/i_more", "id", u"设备信息进入按钮"]
+        d["device_info"] = ["com.aliyun.alink:id/textview_atopbar_right_1", "id", u"设备信息进入按钮"]
         # 设备离线标志
-        d["offline"] = [u"设备不在线", "name", u"设备离线标志"]
+        d["offline"] = [u"//android.view.View[@text='content-desc='该设备已断开连接！']", "xpath", u"设备离线标志"]
         # 电源开关
-        d["power_button"] = ["//android.webkit.WebView/android.view.View/android.view.View[3]", "xpath", u"电源开关"]
+        d["power_button"] = [u"//android.view.View[@content-desc='开关按钮']", "xpath", u"电源开关"]
         # 电源开启
         d["power_on"] = [u"//android.widget.TextView[@text='设备已开启']", "xpath", u"电源开启"]
         # 电源关闭
@@ -192,7 +165,7 @@ class MainPageWidgetAndroidAL(object):
         # 模式定时
         d["normal_timer"] = [u"定时设置", "name", u"普通定时"]
         # 返回
-        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        d["to_return"] = ["com.aliyun.alink:id/textview_atopbar_left_1", "id", u"返回"]
         return d
 
     # 设备信息页面
@@ -263,80 +236,84 @@ class MainPageWidgetAndroidAL(object):
 
 class PopupWidgetAndroidAL(object):
     # 设备升级确认弹窗
-    def update_popup(self):
-        d = {}
-        d["title"] = ["com.jd.smart:id/title", "id", u"有更新", {"text": u"更新提示"}]
-        # 更新
-        d["confirm"] = ["com.jd.smart:id/confirm", "id", u"更新"]
-        # 检查更新
-        d["cancel"] = ["com.jd.smart:id/cancel", "id", u"稍后提醒"]
-        return d
-
-    def close_ad_popup(self):
-        d = {}
-        # 广告关闭键
-        # d["title"] = [u"操作失败，账号在其他手机登录，请确认是否本人使用。", "name", u"提示 - 重新登录"]
-        d["title"] = ["com.jd.smart:id/close_pop_for_top_news", "id", u"发现广告"]
-        # 确认
-        d["confirm"] = ["com.jd.smart:id/close_pop_for_top_news", "id", u"确认"]
-        return d
-
+    # def update_popup(self):
+    #     d = {}
+    #     d["title"] = ["com.jd.smart:id/title", "id", u"有更新", {"text": u"更新提示"}]
+    #     # 更新
+    #     d["confirm"] = ["com.jd.smart:id/confirm", "id", u"更新"]
+    #     # 检查更新
+    #     d["cancel"] = ["com.jd.smart:id/cancel", "id", u"稍后提醒"]
+    #     return d
+    #
+    # def close_ad_popup(self):
+    #     d = {}
+    #     # 广告关闭键
+    #     # d["title"] = [u"操作失败，账号在其他手机登录，请确认是否本人使用。", "name", u"提示 - 重新登录"]
+    #     d["title"] = ["com.jd.smart:id/close_pop_for_top_news", "id", u"发现广告"]
+    #     # 确认
+    #     d["confirm"] = ["com.jd.smart:id/close_pop_for_top_news", "id", u"确认"]
+    #     return d
+    #
     def add_device_popup(self):
         d = {}
         # 添加设备弹窗
-        d["title"] = ["com.aliyun.alink:id/textview_home3_entrance_adddevice", "id", u"添加设备弹窗"]
+        d["title"] = [u"//android.widget.TextView[@text='添加家庭成员']", "xpath", u"添加设备弹窗"]
         # 添加设备
-        d["add_device"] = ["com.aliyun.alink:id/textview_home3_entrance_adddevice", "id", u"添加设备"]
-        # 添加智能场景
-        d["add_smart_scene"] = [u"//android.widget.TextView[text='添加智能场景']", "xpath", u"添加智能场景"]
+        d["add_device"] = [u"//android.widget.TextView[@text='添加设备']", "xpath", u"添加设备"]
+        # 添加场景
+        d["add_scene"] = [u"//android.widget.TextView[@text='添加场景']", "xpath", u"添加场景"]
+        # 添加家庭成员
+        d["add_home_member"] = [u"//android.widget.TextView[@text='添加家庭成员']", "xpath", u"添加家庭成员"]
         # 关闭按钮
-        d["close"] = ["com.aliyun.alink:id/home3_dialog_entrance_close", "id", u"关闭按钮"]
+        d["close"] = ["com.aliyun.alink:id/homepage_topbar_menu_btn", "id", u"关闭按钮"]
         return d
 
-    def unbind_device_popup(self):
-        d = {}
-        # 删除设备弹窗
-        d["title"] = ["com.jd.smart:id/cancel", "id", u"删除设备按钮"]
-        # 确认
-        d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
-        # 取消
-        d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
-        return d
-
-    def bind_device_fail_popup(self):
-        d = {}
-        # 绑定失败
-        d["title"] = ["com.jd.smart:id/confirm", "id", u"绑定失败"]
-        # 确认
-        d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
-        # 取消
-        d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
-        return d
-
-    def loading_popup(self):
-        d = {}
-        # 标题
-        # d["title"] = ["loading...", "name", u"正在加载中loading..."]
-        d["title"] = ["android:id/message", "id", u"正在加载中loading..."]
-        return d
-
+    #
+    # def unbind_device_popup(self):
+    #     d = {}
+    #     # 删除设备弹窗
+    #     d["title"] = ["com.jd.smart:id/cancel", "id", u"删除设备按钮"]
+    #     # 确认
+    #     d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
+    #     # 取消
+    #     d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
+    #     return d
+    #
+    # def bind_device_fail_popup(self):
+    #     d = {}
+    #     # 绑定失败
+    #     d["title"] = ["com.jd.smart:id/confirm", "id", u"绑定失败"]
+    #     # 确认
+    #     d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
+    #     # 取消
+    #     d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
+    #     return d
+    #
+    # def loading_popup(self):
+    #     d = {}
+    #     # 标题
+    #     # d["title"] = ["loading...", "name", u"正在加载中loading..."]
+    #     d["title"] = ["android:id/message", "id", u"正在加载中loading..."]
+    #     return d
+    #
     def logout_popup(self):
         d = {}
         # 退出登录弹窗
-        d["title"] = ["com.jd.smart:id/title", "id", u"退出登录弹窗", {"text": u"确定要退出当前账户吗？"}]
+        d["title"] = [u"//android.widget.TextView[@text='退出后不会删除历史纪录，下次登录仍可以使用本账号']", "xpath",
+                      u"退出登录弹窗"]
         # 确认
-        d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
+        d["confirm"] = [u"//android.widget.TextView[@text='退出登录']", "xpath", u"退出登录"]
         # 取消
-        d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
+        d["cancel"] = [u"//android.widget.TextView[@text='取消']", "xpath", u"取消"]
         return d
-
-    # 定时执行记录清除弹窗
-    def timer_log_clear_popup(self):
-        d = {}
-        # 标题
-        d["title"] = [u"是否清空记录", "name", u"是否清空记录"]
-        # 确认
-        d["confirm"] = [u"是", "name", u"确认"]
-        # 取消
-        d["cancel"] = [u"否", "name", u"取消"]
-        return d
+        #
+        # # 定时执行记录清除弹窗
+        # def timer_log_clear_popup(self):
+        #     d = {}
+        #     # 标题
+        #     d["title"] = [u"是否清空记录", "name", u"是否清空记录"]
+        #     # 确认
+        #     d["confirm"] = [u"是", "name", u"确认"]
+        #     # 取消
+        #     d["cancel"] = [u"否", "name", u"取消"]
+        #     return d
