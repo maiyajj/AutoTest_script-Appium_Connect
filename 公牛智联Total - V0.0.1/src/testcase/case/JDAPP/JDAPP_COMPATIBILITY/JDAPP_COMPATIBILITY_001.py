@@ -43,24 +43,24 @@ class JDAppCompatibility1(WidgetOperationJD):
         while True:
             try:
                 self.wait_widget(self.page["search_device_fail_page"]["title"])
-                raise TimeoutException()
+                raise TimeoutException("current page is search_device_fail_page")
             except TimeoutException:
                 time.sleep(1)
             try:
                 self.wait_widget(self.page["bind_device_page"]["title"])
-                raise TimeoutException()
+                raise TimeoutException("current page is bind_device_page")
             except TimeoutException:
                 time.sleep(1)
             try:
                 self.wait_widget(self.page["search_device_success_page"]["title"])
-                self.choose_device(conf["MAC"][0],
+                self.choose_device(conf["MAC"]["JD"][0],
                                    self.page["search_device_success_page"]["device_box"],
                                    self.page["search_device_success_page"]["confirm"],
                                    self.page["control_device_page"]["title"])
                 break
             except TimeoutException:
                 if time.time() > end_time:
-                    raise TimeoutException()
+                    raise TimeoutException("search device timeout!")
                 time.sleep(1)
 
         i = 3
@@ -85,7 +85,7 @@ class JDAppCompatibility1(WidgetOperationJD):
 
         nickname = self.widget_click(self.page["change_nickname_page"]["nickname"],
                                      self.page["change_nickname_page"]["title"])
-        data = conf["MAC"][0]
+        data = conf["MAC"]["JD"][0]
         nickname.clear()
         self.ac.send_keys(nickname, data, self.driver)
         self.logger.info(u'[APP_INPUT] ["设备备注"] input success')

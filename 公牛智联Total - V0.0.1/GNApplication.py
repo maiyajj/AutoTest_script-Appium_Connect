@@ -18,44 +18,13 @@ class MainFunc(object):
         case = Process(target=WaitCase, args=(device_list, device_name,))
         case.start()
 
-    def check_port(self, device_list):
-        port = {}
-        for k, v in device_list.items():
-            port[k] = []
-            port[k].append(v['port'])
-            port[k].append(v['bp_port'])
-            port[k].append(v['wda_port'])
-        with open(r"./node_mem_%s.log" % time.strftime("%Y-%m-%d %H:%M:%S"), "w") as files:
-            while True:
-                try:
-                    for k, v in port.items():
-                        for i in v:
-                            command = 'lsof -i:%s' % i
-                            find_pid = re.findall(r"(.+?) .+?(\d+).+LISTEN.+?", os.popen(command).read())
-                            if find_pid != []:
-                                proc = find_pid[0][0]
-                                pid = int(find_pid[0][1])
-                                mem = psutil.Process(pid).memory_info().rss / 1024 / 1024
-                                p = psutil.virtual_memory()
-                                rest = (p.total * (100 - p.percent) / 100) / 1024 / 1024
-                                print "\n***************[%s]|[%s][%s]:[%sM][all_remain:%sM]-----------------[%s]***********************\n" % (
-                                    i, time.strftime("%Y-%m-%d %H:%M:%S"), proc, mem, rest, k)
-                                files.write("[%s]|[%s][%s]:[%sM][all_remain:%sM]-----------------[%s]\n" % (
-                                    i, time.strftime("%Y-%m-%d %H:%M:%S"), proc, mem, rest, k))
-                    time.sleep(1)
-                except BaseException:
-                    files.write(traceback.format_exc())
-
-    def check_proc(self):
-        with open(r"./2.log", "w") as files:
-            while True:
-                print len(psutil.pids())
-                time.sleep(1)
-                files.write("\n************%s***************" % len(psutil.pids()))
-
     def scan_files(self, parent_path):
         file_list = []
-        mail_list = ["chenghao@gongniu.cn", "zhulei@gongniu.cn", "fanrt@gongniu.cn", "sunsy@gongniu.cn"]
+        mail_list = ["chenghao@gongniu.cn",
+                     "zhulei@gongniu.cn",
+                     "fanrt@gongniu.cn",
+                     "sunsy@gongniu.cn",
+                     "dongjz@gongniu.cn"]
         # mail_list = ["1045373828@qq.com"]
         mail_title = 'Hey subject'
         mail_content = 'Hey this is content'
@@ -82,7 +51,6 @@ class MainFunc(object):
                 time.sleep(1)
         while True:
             now_time = str(time.strftime("%Y-%m-%d %H:%M:%S"))
-            print now_time
             if "07:00:00" in now_time:
                 Mailer(**self.scan_files(parent_path)).send_mail()
             time.sleep(1)
@@ -92,13 +60,11 @@ if __name__ == '__main__':
     device_list = AppInit().app_init()
     print device_list
     mf = MainFunc()
-    port = Process(target=mf.check_port, args=(device_list,))
-    # port.start()
-    proc = Process(target=mf.check_proc)
-    # proc.start()
+    
     scan_case = Process(target=scan_case_name)
     scan_case.start()
     scan_case.join()
+
     mail = Process(target=mf.send_mail)
     mail.start()
 

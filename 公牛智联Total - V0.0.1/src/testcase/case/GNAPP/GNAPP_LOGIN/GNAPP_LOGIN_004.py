@@ -69,7 +69,7 @@ class GNAppLogin4(LaunchAppGN):
             except TimeoutException:
                 pass
             except NoSuchElementException:
-                raise TimeoutException()
+                raise TimeoutException("current page is login page, is wrong!")
 
             try:
                 self.wait_widget(self.page["device_page"]["title"])

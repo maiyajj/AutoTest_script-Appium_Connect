@@ -248,9 +248,9 @@ class LaunchAppAL(object):
                     login_pwd = self.widget_click(self.page["login_page"]["password"],
                                                   self.page["login_page"]["title"])
 
-                    data = str(precise_pwd[x]).decode('hex').replace(" ", "")
+                    pwd_data = str(precise_pwd[x]).decode('hex').replace(" ", "")
                     login_pwd.clear()
-                    self.ac.send_keys(login_pwd, data, self.driver)
+                    self.ac.send_keys(login_pwd, pwd_data, self.driver)
                     try:
                         self.widget_click(self.page["login_page"]["login_button"],
                                           self.page["account_setting_page"]["title"])
@@ -265,7 +265,7 @@ class LaunchAppAL(object):
                         if x != len(precise_pwd) - 1:
                             pass
                         else:
-                            raise TimeoutException()
+                            raise TimeoutException("login app error,[username:%s, pwd:%s]" % (data, pwd_data))
                 modified_conf(conf)
                 break
             except TimeoutException:

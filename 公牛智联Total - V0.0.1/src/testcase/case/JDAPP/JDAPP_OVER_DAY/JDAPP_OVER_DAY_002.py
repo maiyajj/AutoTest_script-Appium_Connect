@@ -11,7 +11,7 @@ class JDAppOverDay2(WidgetOperationJD):
     
     # 用例动作
     def case(self):
-        self.choose_home_device(conf["MAC"][0])
+        self.choose_home_device(conf["MAC"]["JD"][0])
     
         self.close_mode_timer()
 
@@ -22,8 +22,8 @@ class JDAppOverDay2(WidgetOperationJD):
         
         self.widget_click(self.page["mode_timer_page"]["water_mode"],
                           self.page["water_mode_timer_page"]["title"])
-    
-        self.now = time.strftime("%H:%M")
+
+        now = time.strftime("%H:%M")
     
         delay_time_1 = ["point", "17:00"]
         self.widget_click(self.page["water_mode_timer_page"]["start_time"],
@@ -32,7 +32,7 @@ class JDAppOverDay2(WidgetOperationJD):
         start_time_1, set_time_1 = self.set_timer_roll(self.page["water_mode_timer_page"]["roll_h"],
                                                        self.page["water_mode_timer_page"]["roll_m"],
                                                        self.page["water_mode_timer_page"]["start_time_text"],
-                                                       delay_time_1, self.now)
+                                                       delay_time_1, now)
         
         self.widget_click(self.page["water_mode_timer_page"]["start_time"],
                           self.page["water_mode_timer_page"]["title"])
@@ -44,7 +44,7 @@ class JDAppOverDay2(WidgetOperationJD):
         start_time_2, set_time_2 = self.set_timer_roll(self.page["water_mode_timer_page"]["end_h"],
                                                        self.page["water_mode_timer_page"]["end_m"],
                                                        self.page["water_mode_timer_page"]["end_time_text"],
-                                                       delay_time_2, self.now)
+                                                       delay_time_2, now)
         
         self.widget_click(self.page["water_mode_timer_page"]["end_time"],
                           self.page["water_mode_timer_page"]["title"])

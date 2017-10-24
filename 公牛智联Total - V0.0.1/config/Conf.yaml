@@ -8,8 +8,15 @@ request_timeout: 30
 offline_recovery_timeout: 10
 # 程序操作等待时间
 operate_wait_time: 0.1
-# 待添加的设备Mac
-MAC: ['C4-11-E0-00-BE-F6']
+# 待添加的设备
+MAC:
+  JD:
+    0:
+      'C4-11-E0-00-BE-F6'
+  AL:
+    0:
+      'C4:11:E0:00:00:00'
+
 # 电量计量设备备注名
 Elec_stat_mac: ['Elec_test_1', 'Elec_test_2', 'Elec_test_3', 'Elec_test_4', 'Elec_test_5', 'Elec_test_6', 'Elec_test_7', 'Elec_test_8', 'Elec_test_9', 'Elec_test_10']
 # 错误密码
@@ -75,7 +82,7 @@ user_and_pwd:
       login_pwd: '3132333435363738'
       new_pwd: '3837363534333231'
       precise_pwd: ['3132333435363738', '3837363534333231']
-  name08:
+  ZTEC880U:
     app: 'GN'
     GN: 
       user_name: '31373020303030302030303038'
@@ -110,7 +117,7 @@ user_and_pwd:
       new_pwd: '3837363534333231'
       precise_pwd: ['3132333435363738', '3837363534333231']
   85GABMN9UDD2:
-    app: 'AL'
+    app: 'JD'
     GN: 
       user_name: '31373020303030302030303031'
       login_pwd: '3132333435363738'
@@ -168,7 +175,7 @@ user_and_pwd:
       new_pwd: '3132333435363738'
       precise_pwd: ['3837363534333231', '3132333435363738']
     JD: 
-      user_name: '31373020303030302030303035'
+      user_name: '3138303432303738393237'
       login_pwd: '7b302e3837334139373653303831213f'
       new_pwd: '3132333435363738'
       precise_pwd: ['7b302e3837334139373653303831213f', '3132333435363738']

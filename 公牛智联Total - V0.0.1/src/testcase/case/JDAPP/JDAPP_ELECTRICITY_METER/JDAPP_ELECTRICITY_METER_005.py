@@ -11,7 +11,7 @@ class JDAppElectricityMeter5(WidgetOperationJD):
 
     # 用例动作
     def case(self):
-        self.choose_home_device(conf["MAC"][0])
+        self.choose_home_device(conf["MAC"]["JD"][0])
 
         self.set_power("power_on")
 
@@ -20,29 +20,29 @@ class JDAppElectricityMeter5(WidgetOperationJD):
 
         elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])[0]
         if re.findall("\d+:\d+", self.ac.get_attribute(elec_elements, "name")) == []:
-            raise TimeoutException()
+            raise TimeoutException("elec time is wrong, current is %s" % elec_elements)
 
         self.widget_click(self.page["elec_page"]["week"],
                           self.page["elec_page"]["title"])
 
         elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])[0]
         if re.findall(u"\d+月\d+日", self.ac.get_attribute(elec_elements, "name")) == []:
-            raise TimeoutException()
+            raise TimeoutException("elec time is wrong, current is %s" % elec_elements)
 
         self.widget_click(self.page["elec_page"]["month"],
                           self.page["elec_page"]["title"])
 
         elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])[0]
         if re.findall("\d+-\d+-\d+", self.ac.get_attribute(elec_elements, "name")) == []:
-            raise TimeoutException()
+            raise TimeoutException("elec time is wrong, current is %s" % elec_elements)
 
         self.widget_click(self.page["elec_page"]["year"],
                           self.page["elec_page"]["title"])
 
         elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])[0]
         if re.findall(u".+月", self.ac.get_attribute(elec_elements, "name")) == []:
-            raise TimeoutException()
+            raise TimeoutException("elec time1 is wrong, current is %s" % elec_elements)
         if re.findall(u"月.+", self.ac.get_attribute(elec_elements, "name")) != []:
-            raise TimeoutException()
+            raise TimeoutException("elec time2 is wrong, current is %s" % elec_elements)
 
         self.case_over(True)

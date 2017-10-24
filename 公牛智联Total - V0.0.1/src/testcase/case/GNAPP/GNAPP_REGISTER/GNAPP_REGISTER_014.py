@@ -29,6 +29,6 @@ class GNAppRegister14(LaunchAppGN):
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (user_name, len(user_name)))
         user_name = user_name.replace(element[3]["default_text"], "")
         if len(user_name) != 0:
-            raise TimeoutException()
+            raise TimeoutException("user name len is not 0, current is %s" % len(user_name))
 
         self.case_over(True)

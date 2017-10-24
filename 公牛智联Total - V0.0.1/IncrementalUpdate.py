@@ -101,6 +101,7 @@ def create_AppPageElement():
             files.write("    def %s(self):\n" % i)
             files.write("        return self.wrapper(self.pwa.{0}(), self.pwi.{0}())\n\n".format(i))
 
+
 def create_INPUT_CASE():
     # 写INPUT_CASE文件夹内容
     rootdir = r"./src/testcase/case/GNAPP"  # 指明被遍历的文件夹
@@ -510,6 +511,7 @@ def check_AppPageElement():
             print re.findall(r".+def %s.+" % i, app)
             print sys._getframe().f_lineno
 
+
 def add_notes():
     rootdir = r"./src/testcase/case"
     for parent, dirnames, filenames in os.walk(rootdir):
@@ -533,16 +535,17 @@ def add_notes():
                 #                 files.write(linecache.getline(filepath, i))
                 #             else:
                 #                 files.write(linecache.getline(filepath, i))
-                with open(filepath, "w") as files:
+                with open(filepath, "r") as files:
                     for i in xrange(1, lines + 1):
-                        if '''from src.testcase.case.LaunchApp_JD import *''' in linecache.getline(filepath, i):
-                            files.write(
-                                linecache.getline(filepath, i).replace("from src.testcase.case.LaunchApp_JD import *)",
-                                                                       'from src.testcase.common.WidgetOperation_JD import *'))
+                        if '''raise TimeoutException()''' in linecache.getline(filepath, i):
+                            print filename
+                            # files.write(linecache.getline(filepath, i).
+                            #             replace("(WidgetOperationJD)",
+                            #                     '(WidgetOperationJD):'))
                         # files.write('''                # 截屏获取设备toast消息\n''')
                         # files.write('''                raise WebDriverException()\n''')
-                        else:
-                            files.write(linecache.getline(filepath, i))
+                            # else:
+                            #     files.write(linecache.getline(filepath, i))
 
 
 def src_line():

@@ -31,6 +31,6 @@ class GNAppAccountSettings7(LaunchAppGN):
         state = self.ac.get_attribute(element, "enabled")
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (state, len(state)))
         if state != "false":
-            raise TimeoutException()
+            raise TimeoutException("nickname commit state is not false, current state is %s" % state)
 
         self.case_over(True)

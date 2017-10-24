@@ -35,6 +35,6 @@ class GNAppAccountSettings13(LaunchAppGN):
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (nick_name, len(nick_name)))
         nick_name = nick_name.replace(element[3]["default_text"], "")
         if len(nick_name) != 16:
-            raise TimeoutException()
+            raise TimeoutException("nick name len is not 16, current len is %s" % len(nick_name))
 
         self.case_over(True)

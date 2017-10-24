@@ -11,7 +11,7 @@ class JDAppElectricityMeter6(WidgetOperationJD):
 
     # 用例动作
     def case(self):
-        self.choose_home_device(conf["MAC"][0])
+        self.choose_home_device(conf["MAC"]["JD"][0])
 
         self.set_power("power_on")
 
@@ -43,7 +43,7 @@ class JDAppElectricityMeter6(WidgetOperationJD):
 
         attribute = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["set_elec"]), "name")
         if u"单一电价" not in attribute:
-            raise TimeoutException()
+            raise TimeoutException("set signal price is wrong, current mode is %s" % attribute)
 
         # self.ac.swipe(0.5, 0.7, 0.5, 0.9, 0, self.driver)
 
@@ -51,7 +51,11 @@ class JDAppElectricityMeter6(WidgetOperationJD):
         now_h = int(time.strftime("%H"))
         elec, elec_bill = self.get_device_elect(now_h + 2, False)
 
+        elec_bill_info = "elec bill is wrong, current [elec_bill:%s, elec:%s, elec_price:%s]" \
+                         % (sum(elec_bill[now_h + 1]), sum(elec[now_h + 1]), elec_price_data)
+        self.logger.info(elec_bill_info)
+
         if sum(elec_bill[now_h + 1]) != sum(elec[now_h + 1]) * int(elec_price_data):
-            raise TimeoutException()
+            raise TimeoutException(elec_bill_info)
 
         self.case_over(True)

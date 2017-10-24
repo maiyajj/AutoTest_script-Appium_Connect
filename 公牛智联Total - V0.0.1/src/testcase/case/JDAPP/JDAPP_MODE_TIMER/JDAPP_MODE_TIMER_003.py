@@ -11,7 +11,7 @@ class JDAppModeTimer3(WidgetOperationJD):
     
     # 用例动作
     def case(self):
-        self.choose_home_device(conf["MAC"][0])
+        self.choose_home_device(conf["MAC"]["JD"][0])
 
         self.close_mode_timer()
 
@@ -23,13 +23,13 @@ class JDAppModeTimer3(WidgetOperationJD):
         self.widget_click(self.page["mode_timer_page"]["piocc_mode"],
                           self.page["piocc_mode_timer_page"]["title"])
 
-        self.now = time.strftime("%H:%M")
+        now = time.strftime("%H:%M")
 
         delay_time_1 = ["delay", "00:05"]
         start_time_1, set_time_1 = self.set_timer_roll(self.page["piocc_mode_timer_page"]["end_h"],
                                                        self.page["piocc_mode_timer_page"]["end_m"],
                                                        self.page["piocc_mode_timer_page"]["end_time_text"],
-                                                       delay_time_1, self.now)
+                                                       delay_time_1, now)
 
         self.widget_click(self.page["piocc_mode_timer_page"]["end_time"],
                           self.page["piocc_mode_timer_page"]["title"])

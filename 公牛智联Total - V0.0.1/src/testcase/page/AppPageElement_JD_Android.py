@@ -447,7 +447,7 @@ class MainPageWidgetAndroidJD(object):
         # 永久循环
         d["forever"] = [u"//android.view.View[@content-desc='永久循环 ']", "xpath", u"永久循环"]
         # 执行次数
-        d["cycle_index"] = [u"//android.view.View[@content-desc='执行次数设置(次)']", "xpath", u"执行次数"]
+        d["cycle_count"] = [u"//android.view.View[@content-desc='执行次数设置(次)']", "xpath", u"执行次数"]
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d

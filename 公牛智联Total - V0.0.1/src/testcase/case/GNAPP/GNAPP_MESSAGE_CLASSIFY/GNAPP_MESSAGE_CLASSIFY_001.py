@@ -27,7 +27,7 @@ class GNAppMessageClassify1(LaunchAppGN):
         result = self.ac.get_attribute(element, "checked")
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
-            raise TimeoutException()
+            raise TimeoutException("all device state is not true, current is %s" % result)
 
         self.widget_click(self.page["message_classify_page"]["experience_data"],
                           self.page["home_message_page"]["title"])
@@ -39,7 +39,7 @@ class GNAppMessageClassify1(LaunchAppGN):
         result = self.ac.get_attribute(element, "checked")
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
-            raise TimeoutException()
+            raise TimeoutException("experience data state is not true, current is %s" % result)
 
         self.widget_click(self.page["message_classify_page"]["A2"],
                           self.page["home_message_page"]["title"])
@@ -51,7 +51,7 @@ class GNAppMessageClassify1(LaunchAppGN):
         result = self.ac.get_attribute(element, "checked")
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
-            raise TimeoutException()
+            raise TimeoutException("A2 state is not true, current is %s" % result)
 
         self.widget_click(self.page["message_classify_page"]["A3"],
                           self.page["home_message_page"]["title"])
@@ -63,7 +63,7 @@ class GNAppMessageClassify1(LaunchAppGN):
         result = self.ac.get_attribute(element, "checked")
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
-            raise TimeoutException()
+            raise TimeoutException("A3 state is not true, current is %s" % result)
 
         self.widget_click(self.page["message_classify_page"]["A4"],
                           self.page["home_message_page"]["title"])
@@ -75,7 +75,7 @@ class GNAppMessageClassify1(LaunchAppGN):
         result = self.ac.get_attribute(element, "checked")
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
-            raise TimeoutException()
+            raise TimeoutException("A4 state is not true, current is %s" % result)
 
         self.widget_click(self.page["message_classify_page"]["A5"],
                           self.page["home_message_page"]["title"])
@@ -87,6 +87,6 @@ class GNAppMessageClassify1(LaunchAppGN):
         result = self.ac.get_attribute(element, "checked")
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
-            raise TimeoutException()
+            raise TimeoutException("A5 state is not true, current is %s" % result)
 
         self.case_over(True)

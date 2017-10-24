@@ -30,6 +30,6 @@ class GNAppVersion1(LaunchAppGN):
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (btn_state, len(btn_state)))
 
         if current_version == new_version and btn_state != "false":
-            raise TimeoutException()
+            raise TimeoutException("btn state state is not false, current is %s" % btn_state)
 
         self.case_over(True)

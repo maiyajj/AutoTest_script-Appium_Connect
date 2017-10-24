@@ -102,7 +102,7 @@ class WidgetCheckUnit(Exception):
                     raise TimeoutException()
 
     def widget_click(self, operate_widget=None, wait_page=None, wait_time1=3, wait_time2=3,
-                     timeout=6, interval=1, log_record=1):
+                     times=1, interval=1, log_record=1):
         """
             Using click operation widgets - 使用点击方式操作控件
             widget_click(self, operate_widget=None, wait_page=None, wait_time1=1, wait_time2=1, timeout=6, interval=1,
@@ -128,7 +128,7 @@ class WidgetCheckUnit(Exception):
             raise TypeError("operate_widget must be list! [widget_id, type(widget_id)]")
         elif not isinstance(wait_page, list):
             raise TypeError("wait_page must be list! [widget_id, type(widget_id)]")
-        end_time = time.time() + timeout
+        run_times = times
         flag = 0
         while True:
             try:
@@ -156,7 +156,8 @@ class WidgetCheckUnit(Exception):
                         raise TimeoutException()
                 while True:
                     try:
-                        self.wait_widget(self.page["loading_popup"]["title"], 0.2, 0.1)
+                        for k in self.page["loading_popup"].keys():
+                            self.wait_widget(self.page["loading_popup"][k], 0.2, 0.1)
                     except TimeoutException:
                         break
                 if log_record != 0:
@@ -166,20 +167,22 @@ class WidgetCheckUnit(Exception):
                 self.wait_widget(wait_page, wait_time2, interval, 0)
                 return widget
             except TimeoutException:
-                time.sleep(interval)
-                if time.time() > end_time:
-                    if flag == 0 and log_record != 0:
-                        self.logger.info('[APP_CLICK] operate_widget ["%s"] error' % operate_widget[2])
-                    elif flag == 1 and log_record != 0:
-                        self.logger.info('[APP_CLICK] wait_page ["%s"] error' % wait_page[2])
-                    database["err_request_timeout_count"] += 1
+                run_times -= 1
+                if run_times <= 0:
+                    if flag == 0:
+                        error_info = "[ERROR]Failed to operate element.UiSelector[INSTANCE=0, RESOURCE_ID=%s," \
+                                     " RUN_TIMES=%sS]" % (operate_widget[0], run_times)
+                        logger_info = '[APP_CLICK] operate_widget ["%s"] error' % operate_widget[2]
+                    else:
+                        error_info = "[ERROR]Failed to wait element.UiSelector[INSTANCE=0, RESOURCE_ID=%s," \
+                                     " RUN_TIMES=%sS]" % (wait_page[0], run_times)
+                        logger_info = '[APP_CLICK] wait_page ["%s"] error' % wait_page[2]
+
                     if log_record != 0:
-                        self.logger.error("[ERROR]Failed to operate element.UiSelector"
-                                          "[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
-                                          % (operate_widget[0], timeout))
-                    raise TimeoutException("[ERROR]Failed to operate element.UiSelector"
-                                           "[INSTANCE=0, RESOURCE_ID=%s, TIMING_OUT=%sS]"
-                                           % (operate_widget[0], timeout))
+                        self.logger.info(logger_info)
+                        database["err_request_timeout_count"] += 1
+
+                    raise TimeoutException(error_info)
             except TypeError:
                 self.logger.error(traceback.format_exc())
                 return traceback.format_exc()

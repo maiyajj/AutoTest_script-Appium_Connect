@@ -1,9 +1,11 @@
 # coding=utf-8
 import linecache
+import os
 import re
 
 filepath = "page.html"
-with open("page1.html", "w") as files:
+tmp_path = "tmp.html"
+with open(tmp_path, "w") as files:
     for i in range(1, len(linecache.getlines(filepath))):
         tmp = linecache.getline(filepath, i)
         if "\u" in tmp:
@@ -17,3 +19,5 @@ with open("page1.html", "w") as files:
                 files.write(linecache.getline(filepath, i))
         else:
             files.write(linecache.getline(filepath, i))
+
+os.renames(tmp_path, filepath)

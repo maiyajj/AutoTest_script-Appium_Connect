@@ -11,7 +11,7 @@ class JDAppNormalTimer1(WidgetOperationJD):
     
     # 用例动作
     def case(self):
-        self.choose_home_device(conf["MAC"][0])
+        self.choose_home_device(conf["MAC"]["JD"][0])
     
         self.close_mode_timer()
 

@@ -11,7 +11,7 @@ class JDAppElectricityMeter7(WidgetOperationJD):
 
     # 用例动作
     def case(self):
-        self.choose_home_device(conf["MAC"][0])
+        self.choose_home_device(conf["MAC"]["JD"][0])
 
         self.set_power("power_on")
 
@@ -44,7 +44,7 @@ class JDAppElectricityMeter7(WidgetOperationJD):
         self.logger.info(u'[APP_INPUT] ["谷电价"] input success')
         time.sleep(0.5)
 
-        self.now = time.strftime("%H:%M")
+        now = time.strftime("%H:%M")
 
         delay_time_1 = ["06:00", "point"]
         self.widget_click(self.page["peak_valley_price_page"]["start_time"],
@@ -53,7 +53,7 @@ class JDAppElectricityMeter7(WidgetOperationJD):
         self.set_timer_roll(self.page["peak_valley_price_page"]["roll_h"],
                             self.page["peak_valley_price_page"]["roll_m"],
                             self.page["peak_valley_price_page"]["start_time_text"],
-                            delay_time_1, self.now)
+                            delay_time_1, now)
 
         self.widget_click(self.page["peak_valley_price_page"]["start_time"],
                           self.page["peak_valley_price_page"]["title"])
@@ -65,7 +65,7 @@ class JDAppElectricityMeter7(WidgetOperationJD):
         self.set_timer_roll(self.page["peak_valley_price_page"]["end_h"],
                             self.page["peak_valley_price_page"]["end_m"],
                             self.page["peak_valley_price_page"]["end_time_text"],
-                            delay_time_2, self.now)
+                            delay_time_2, now)
 
         self.widget_click(self.page["peak_valley_price_page"]["end_time"],
                           self.page["peak_valley_price_page"]["title"])
@@ -78,7 +78,7 @@ class JDAppElectricityMeter7(WidgetOperationJD):
 
         attribute = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["set_elec"]), "name")
         if u"峰谷时间段电价" not in attribute:
-            raise TimeoutException()
+            raise TimeoutException("set peak valley price is wrong, current mode is %s" % attribute)
 
         # self.ac.swipe(0.5, 0.7, 0.5, 0.9, 0, self.driver)
 
@@ -87,8 +87,14 @@ class JDAppElectricityMeter7(WidgetOperationJD):
 
         peak_price = [v for k, v in elec.items() if 6 <= k <= 22]
         valley_price = [v for k, v in elec.items() if k < 6 and k > 22]
+
+        elec_bill_info = "elec bill is wrong, current [elec_bill:%s, peak_price:%s, peak_data:%s, valley_price:%s," \
+                         " valley_data:%s]" \
+                         % (sum(elec_bill.values()), sum(peak_price), peak_data, sum(valley_price), valley_data)
+        self.logger.info(elec_bill_info)
+
         if sum(elec_bill.values()) != sum(peak_price) * int(peak_data) + sum(valley_price) * int(valley_data):
-            raise TimeoutException()
+            raise TimeoutException(elec_bill_info)
 
         self.case_over(True)
 

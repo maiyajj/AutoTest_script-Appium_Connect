@@ -25,7 +25,7 @@ class CreateFunc(object):
                 b.append(i)
         with open(r"./src/utils/ReadAPPElement_%s.py" % app, "w") as files:
             files.write("# coding=utf-8\n")
-            files.write("# 由IncrementalUpdate.py生成\n")
+            files.write("# 由CreateSomeFiles.py生成\n")
             files.write("from src.testcase.page.AppPageElement import *\n\n\n")
             files.write("class PageElement%s(object):\n" % app)
             files.write("    def __init__(self, device, phone_os, app):\n")
@@ -143,6 +143,19 @@ class CreateFunc(object):
         result = list(set(result))
         print result
 
+    def create_WaitCase(self):
+        rootdir = r"./src/testcase/case"
+        CaseList = []
+        for parent, dirnames, filenames in os.walk(rootdir):
+            for filename in [i for i in filenames if "APP" in i and "pyc" not in i]:
+                with open(os.path.join(parent, filename), "r") as files:
+                    file = files.read()
+                    class_name = re.findall(r"class (.+)\(", file)[0]
+                    case_name = re.findall(r"self.case_title = u(.+) +\#", file)[0][1:-2]
+                    ZenTao_id = re.findall(r"self.zentao_id = (.+) +\#", file)[0][:-1]
+                    CaseList.append(["self.write_report(%s)" % class_name, " # %s," % ZenTao_id, case_name])
+        for x, y, z in CaseList:
+            print x, y, z
 
 CF = CreateFunc()
 CF.create_INPUT_CASE()
@@ -153,3 +166,4 @@ CF.create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
 CF.create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
 CF.create_ReadAPPElement(MainPageWidgetAndroidAL, PopupWidgetAndroidAL)
 CF.correct_func_name()
+CF.create_WaitCase()

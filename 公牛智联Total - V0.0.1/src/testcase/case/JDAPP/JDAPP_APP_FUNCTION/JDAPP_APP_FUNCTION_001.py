@@ -11,7 +11,7 @@ class JDAppAppFunction1(WidgetOperationJD):
 
     # 用例动作
     def case(self):
-        self.choose_home_device(conf["MAC"][0])
+        self.choose_home_device(conf["MAC"]["JD"][0])
 
         self.set_power("power_off")
 
@@ -36,14 +36,14 @@ class JDAppAppFunction1(WidgetOperationJD):
 
         self.widget_click(self.page["normal_timer_page"]["add_timer"],
                           self.page["add_normal_timer_page"]["title"])
-    
-        self.now = time.strftime("%H:%M")
+
+        now = time.strftime("%H:%M")
     
         delay_time_1 = 1
         start_time_1, set_time_1 = self.set_timer_roll(self.page["add_normal_timer_page"]["roll_h"],
                                                        self.page["add_normal_timer_page"]["roll_m"],
                                                        self.page["add_normal_timer_page"]["set_timer"],
-                                                       delay_time_1, self.now)
+                                                       delay_time_1, now)
 
         self.widget_click(self.page["add_normal_timer_page"]["power_on"],
                           self.page["add_normal_timer_page"]["title"])
@@ -70,7 +70,7 @@ class JDAppAppFunction1(WidgetOperationJD):
         if self.ac.get_attribute(element, "name") == set_time_date:
             self.logger.info(u"[APP_INFO]存在定时记录%s" % set_time_date)
         else:
-            raise TimeoutException()
+            raise TimeoutException("don`t have timing records :%s" % set_time_date)
 
         self.widget_click(self.page["timer_log_page"]["clear"],
                           self.page["timer_log_clear_popup"]["title"])

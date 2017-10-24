@@ -49,6 +49,6 @@ class GNAppRegister9(LaunchAppGN):
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (pwd, len(pwd)))
         pwd = pwd.replace(element[3]["default_text"], "")
         if len(pwd) != 0:
-            raise TimeoutException()
+            raise TimeoutException("pwd len is not 0, current is %s" % len(pwd))
 
         self.case_over(True)

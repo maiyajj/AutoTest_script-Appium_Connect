@@ -29,6 +29,6 @@ class GNAppRegister8(LaunchAppGN):
         self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (check_code, len(check_code)))
         check_code = check_code.replace(element[3]["default_text"], "")
         if len(check_code) != 0:
-            raise TimeoutException()
+            raise TimeoutException("check code len is not 0, current is %s" % len(check_code))
 
         self.case_over(True)

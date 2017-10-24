@@ -11,7 +11,7 @@ class JDAppElectricityMeter12(WidgetOperationJD):
 
     # 用例动作
     def case(self):
-        self.choose_home_device(conf["MAC"][0])
+        self.choose_home_device(conf["MAC"]["JD"][0])
 
         self.set_power("power_on")
 
@@ -20,24 +20,25 @@ class JDAppElectricityMeter12(WidgetOperationJD):
         i = 10
         end_time = time.time() + 60
         while i > 0:
-            if time.time() < end_time:
-                try:
-                    tmp = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["power"]), "name")
-                    if isinstance(tmp, unicode):
-                        power.append(tmp)
-                        if len(power) >= 60:
-                            break
-                except TimeoutException:
-                    pass
-            else:
+            try:
+                tmp = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["power"]), "name")
+                if isinstance(tmp, unicode):
+                    power.append(tmp)
+                    if len(power) >= 60:
+                        break
+            except TimeoutException:
+                pass
+
+            if time.time() > end_time:
                 end_time = time.time() + 60
                 i -= 1
 
         power = map(lambda x: float(x.replace(" W", "")), power)
 
-        aver_power = sum(power) / len(power)
+        power_error = sum(power) / len(power) / 200
+        self.logger.info("[ELEC_INFO]power_error is %s" % power_error)
 
-        if aver_power / 200 > 0.01:
-            raise TimeoutException()
+        if power_error > 0.01:
+            raise TimeoutException("the battery error is over 0.01, current is %s" % power_error)
 
         self.case_over(True)

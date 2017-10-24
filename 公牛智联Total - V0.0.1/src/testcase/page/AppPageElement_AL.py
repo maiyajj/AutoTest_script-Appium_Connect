@@ -51,11 +51,8 @@ class MainPageWidgetAL(object):
     def input_wifi_password_page(self):
         return self.wrapper(self.mpwa.input_wifi_password_page(), self.mpwi.input_wifi_password_page())
 
-    def login_page(self):
-        return self.wrapper(self.mpwa.login_page(), self.mpwi.login_page())
-
-    def mode_timer_page(self):
-        return self.wrapper(self.mpwa.mode_timer_page(), self.mpwi.mode_timer_page())
+    def my_page(self):
+        return self.wrapper(self.mpwa.my_page(), self.mpwi.my_page())
 
     def normal_timer_page(self):
         return self.wrapper(self.mpwa.normal_timer_page(), self.mpwi.normal_timer_page())
@@ -72,26 +69,11 @@ class MainPageWidgetAL(object):
     def timer_log_page(self):
         return self.wrapper(self.mpwa.timer_log_page(), self.mpwi.timer_log_page())
 
+    def water_mode_timer_page(self):
+        return self.wrapper(self.mpwa.water_mode_timer_page(), self.mpwi.water_mode_timer_page())
+
     def add_device_popup(self):
         return self.wrapper(self.pwa.add_device_popup(), self.pwi.add_device_popup())
 
-    def bind_device_fail_popup(self):
-        return self.wrapper(self.pwa.bind_device_fail_popup(), self.pwi.bind_device_fail_popup())
-
-    def close_ad_popup(self):
-        return self.wrapper(self.pwa.close_ad_popup(), self.pwi.close_ad_popup())
-
-    def loading_popup(self):
-        return self.wrapper(self.pwa.loading_popup(), self.pwi.loading_popup())
-
     def logout_popup(self):
         return self.wrapper(self.pwa.logout_popup(), self.pwi.logout_popup())
-
-    def timer_log_clear_popup(self):
-        return self.wrapper(self.pwa.timer_log_clear_popup(), self.pwi.timer_log_clear_popup())
-
-    def unbind_device_popup(self):
-        return self.wrapper(self.pwa.unbind_device_popup(), self.pwi.unbind_device_popup())
-
-    def update_popup(self):
-        return self.wrapper(self.pwa.update_popup(), self.pwi.update_popup())
