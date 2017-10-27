@@ -111,6 +111,7 @@ class ToDevicePageAL(object):
         except TimeoutException:
             pass
 
+    # 显示密码
     def show_pwd(self):
         try:
             element = self.wait_widget(self.page["login_page"]["check_box"])

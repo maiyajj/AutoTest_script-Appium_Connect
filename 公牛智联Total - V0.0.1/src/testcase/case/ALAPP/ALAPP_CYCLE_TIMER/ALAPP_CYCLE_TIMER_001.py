@@ -1,0 +1,59 @@
+# coding=utf-8
+from src.testcase.common.WidgetOperation_AL import *
+
+
+class ALAppCycleTimer1(WidgetOperationAL):
+    @case_run_al(True)
+    def run(self):
+        self.case_module = u"FUT_CYCLETIMER_循环定时(#50)"  # 用例所属模块
+        self.case_title = u'FUT_CYCLETIMER_循环定时设置永久循环执行（1分钟开1分钟关）'  # 用例名称
+        self.zentao_id = 470  # 禅道ID
+
+    # 用例动作
+    def case(self):
+        device = conf["MAC"]["AL"][0]
+        self.set_power(device, "power_off")
+
+        self.choose_home_device(device)
+
+        self.close_mode_timer()
+
+        self.close_general_timer()
+
+        self.ac.swipe(0.5, 0.6, 0.5, 0.4, 0, self.driver)
+        self.widget_click(self.page["control_device_page"]["cycle_timer"],
+                          self.page["cycle_timer_page"]["title"])
+
+        now = time.strftime("%H:%M")
+
+        delay_time_1, delay_time_2 = 1, 1
+        tmp = self.create_cycle_timer("cycle_timer_page", now, delay_time_1, delay_time_2, u"永久循环", loops=5)
+        start_time_1, set_time_1, start_time_2, set_time_2 = tmp[0]
+        start_time_3, set_time_3, start_time_4, set_time_4 = tmp[1]
+        start_time_5, set_time_5, start_time_6, set_time_6 = tmp[2]
+        start_time_7, set_time_7, start_time_8, set_time_8 = tmp[3]
+        start_time_9, set_time_9, start_time_10, set_time_10 = tmp[4]
+
+        self.widget_click(self.page["cycle_timer_page"]["to_return"],
+                          self.page["control_device_page"]["title"])
+
+        self.ac.swipe(0.5, 0.4, 0.5, 0.6, 0, self.driver)
+        attribute = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["launch_mode"]), "name")
+        if attribute != u"循环任务开":
+            raise TimeoutException("mode launch failed, current:%s" % str([attribute]))
+
+        self.widget_click(self.page["control_device_page"]["to_return"],
+                          self.page["app_home_page"]["title"])
+
+        self.check_timer(device, start_time_1, set_time_1, u"设备已关闭")
+        self.check_timer(device, start_time_2, set_time_2, u"设备已开启")
+        self.check_timer(device, start_time_3, set_time_3, u"设备已关闭")
+        self.check_timer(device, start_time_4, set_time_4, u"设备已开启")
+        self.check_timer(device, start_time_5, set_time_5, u"设备已关闭")
+        self.check_timer(device, start_time_6, set_time_6, u"设备已开启")
+        self.check_timer(device, start_time_7, set_time_7, u"设备已关闭")
+        self.check_timer(device, start_time_8, set_time_8, u"设备已开启")
+        self.check_timer(device, start_time_9, set_time_9, u"设备已关闭")
+        self.check_timer(device, start_time_10, set_time_10, u"设备已关闭", True)
+
+        self.case_over(True)

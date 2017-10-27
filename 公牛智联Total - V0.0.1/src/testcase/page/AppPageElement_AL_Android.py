@@ -81,7 +81,7 @@ class MainPageWidgetAndroidAL(object):
         return d
 
     # 插座排插页面
-    def add_history_list_page(self):
+    def add_outlet_list_page(self):
         d = {}
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='插座排插']", "xpath", u"插座排插页面"]
@@ -339,7 +339,7 @@ class MainPageWidgetAndroidAL(object):
         # 标题
         d["title"] = [u"//android.view.View[@content-desc='预约定时']", "xpath", u"普通定时页面"]
         # 添加定时
-        d["add_timer"] = [u"//android.view.View[@content-desc='添加一个']", "xpath", u"添加定时按钮"]
+        d["add_normal_timer"] = [u"//android.view.View[@content-desc='添加一个']", "xpath", u"添加定时按钮"]
         # 编辑
         d["timer_edit"] = [u"//android.view.View[@content-desc='编辑']", "xpath", u"编辑按钮"]
         # 无设备
@@ -350,6 +350,11 @@ class MainPageWidgetAndroidAL(object):
         d["delete"] = [u"//android.view.View[@content-desc='删除']", "xpath", u"删除"]
         # 完成
         d["saved"] = [u"//android.view.View[@content-desc='完成']", "xpath", u"完成"]
+        # 定时循环信息
+        timer_loop = {}
+        for i in xrange(20):
+            timer_loop[i] = "//android.webkit.WebView/android.view.View[4]/android.view.View[%s]" % (i * 3 + 2)
+        d["timer_loop"] = [timer_loop, "xpath", u"定时循环信息"]
         # 返回按钮
         d["to_return"] = ["//android.webkit.WebView/android.view.View", "xpath", u"返回"]
         return d
@@ -460,6 +465,115 @@ class MainPageWidgetAndroidAL(object):
         d["to_return"] = [u"//android.view.View[@content-desc='取消']", "xpath", u"取消"]
         return d
 
+    # 电价设置页面
+    def set_elec_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[contains(@content-desc, '单一电价')]", "xpath", u"电价设置页面"]
+        # 单一电价设置
+        d["single_price"] = [u"//android.view.View[contains(@content-desc, '单一电价')]", "xpath", u"单一电价设置"]
+        # 峰谷电价设置
+        d["peak_valley_price"] = [u"//android.view.View[contains(@content-desc, '峰谷时间')]", "xpath", u"峰谷电价设置"]
+        # 单一电价设置按钮
+        d["single_button"] = [u"//android.view.View[contains(@content-desc, '单一电价')]", "xpath",
+                              u"单一电价设置按钮", {"px": [0.09, 0.5]}]
+        # 峰谷电价设置按钮
+        d["peak_valley_button"] = [u"//android.view.View[contains(@content-desc, '峰谷时间')]", "xpath",
+                                   u"峰谷电价设置按钮", {"px": [0.09, 0.5]}]
+        # 返回按钮
+        d["to_return"] = [u"//android.view.View[@content-desc='取消']", "xpath", u"返回"]
+        return d
+
+    # 单一电价设置页面
+    def single_price_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[@content-desc='单一电价设置']", "xpath", u"单一电价设置页面"]
+        # 设置电价
+        d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
+        # 确定
+        d["confirm"] = [u"//android.view.View[@content-desc='确定']", "xpath", u"确定"]
+        # 取消
+        d["cancel"] = [u"//android.view.View[@content-desc='取消']", "xpath", u"取消"]
+        # 返回按钮
+        d["to_return"] = ["//android.webkit.WebView/android.view.View", "xpath", u"返回"]
+        return d
+
+    # 峰谷电价设置页面
+    def peak_valley_price_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[@content-desc='峰谷电设置']", "xpath", u"峰谷电价设置页面"]
+        # 开启时间
+        d["start_time"] = [u"//android.view.View[contains(@content-desc, '峰电开始时间')]", "xpath", u"峰电开始时间"]
+        # 关闭时间
+        d["end_time"] = [u"//android.view.View[contains(@content-desc, '峰电结束时间')]", "xpath", u"峰电结束时间"]
+        # 设置峰电电价
+        d["set_peak_price"] = ["//android.widget.ListView/android.view.View[3]/android.view.View", "xpath",
+                               u"设置峰电电价"]
+        # 设置谷电电价
+        d["set_valley_price"] = ["//android.widget.ListView[2]/android.view.View[3]/android.view.View", "xpath",
+                                 u"设置谷电电价"]
+        # 返回按钮
+        d["to_return"] = ["//android.webkit.WebView/android.view.View", "xpath", u"返回"]
+        return d
+
+    # 设置峰电电价
+    def set_peak_price_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[@content-desc='峰电电价设置']", "xpath", u"峰电电价设置页面"]
+        # 设置电价
+        d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
+        # 确定
+        d["confirm"] = [u"//android.view.View[@content-desc='确定']", "xpath", u"确定"]
+        # 取消
+        d["cancel"] = [u"//android.view.View[@content-desc='取消']", "xpath", u"取消"]
+        # 返回按钮
+        d["to_return"] = ["//android.webkit.WebView/android.view.View", "xpath", u"返回"]
+        return d
+
+    # 设置谷电电价
+    def set_valley_price_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[@content-desc='谷电电价设置']", "xpath", u"谷电电价设置页面"]
+        # 设置电价
+        d["set_price"] = [u"//android.widget.EditText", "xpath", u"设置电价"]
+        # 确定
+        d["confirm"] = [u"//android.view.View[@content-desc='确定']", "xpath", u"确定"]
+        # 取消
+        d["cancel"] = [u"//android.view.View[@content-desc='取消']", "xpath", u"取消"]
+        # 返回按钮
+        d["to_return"] = ["//android.webkit.WebView/android.view.View", "xpath", u"返回"]
+        return d
+
+    # 用电数据页面
+    def elec_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[@content-desc='用电数据']", "xpath", u"用电数据页面"]
+        price_time = {}
+        price_value = {}
+        for i in xrange(24):
+            price_time[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View" % (i + 2)
+            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % (i + 2)
+        # 电量时间
+        d["elec_time"] = [price_time, "xpath", u"电量时间"]
+        # 电量值
+        d["elec_value"] = [price_value, "xpath", u"电量值"]
+        # 日
+        d["day"] = [u"//android.view.View[@content-desc='日']", "xpath", u"日"]
+        # 周
+        d["week"] = [u"//android.view.View[@content-desc='周']", "xpath", u"周"]
+        # 月
+        d["month"] = [u"//android.view.View[@content-desc='月']", "xpath", u"月"]
+        # 年
+        d["year"] = [u"//android.view.View[@content-desc='年']", "xpath", u"年"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        return d
+
 
 class PopupWidgetAndroidAL(object):
     # 设备升级确认弹窗
@@ -480,7 +594,7 @@ class PopupWidgetAndroidAL(object):
     #     # 确认
     #     d["confirm"] = ["com.jd.smart:id/close_pop_for_top_news", "id", u"确认"]
     #     return d
-    #
+    # 添加设备弹窗
     def add_device_popup(self):
         d = {}
         # 添加设备弹窗
@@ -495,21 +609,22 @@ class PopupWidgetAndroidAL(object):
         d["close"] = ["com.aliyun.alink:id/homepage_topbar_menu_btn", "id", u"关闭按钮"]
         return d
 
-    #
-    # def unbind_device_popup(self):
-    #     d = {}
-    #     # 删除设备弹窗
-    #     d["title"] = ["com.jd.smart:id/cancel", "id", u"删除设备按钮"]
-    #     # 确认
-    #     d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
-    #     # 取消
-    #     d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
-    #     return d
-    #
+    # 解绑设备弹窗
+    def unbind_device_popup(self):
+        d = {}
+        # 删除设备弹窗
+        d["title"] = [u"//android.widget.TextView[@text='确认解除绑定？']", "xpath", u"删除设备按钮"]
+        # 确定
+        d["confirm"] = [u"//android.widget.Button[@text='解绑']", "xpath", u"确定"]
+        # 取消
+        d["cancel"] = [u"//android.widget.Button[@text='取消']", "xpath", u"取消"]
+        return d
+
+    # 模式冲突提示弹窗
     def mode_timer_conflict_popup(self):
         d = {}
-        # 绑定失败
-        d["title"] = [u"//android.view.View[contains(@content-desc, '之前的定时模式将失效')]", "xpath", u"绑定失败"]
+        # 模式冲突提示
+        d["title"] = [u"//android.view.View[contains(@content-desc, '之前的定时模式将失效')]", "xpath", u"模式冲突提示弹窗"]
         # 确定
         d["confirm"] = [u"//android.view.View[@content-desc='确定']", "xpath", u"确定"]
         # 取消
@@ -524,12 +639,12 @@ class PopupWidgetAndroidAL(object):
         # 设备状态上传
         d["upload"] = [u"//android.view.View[@content-desc='正在同步设备状态，请稍候...']", "xpath", u"设备状态上传"]
         return d
-    #
+
+    # 登出弹窗
     def logout_popup(self):
         d = {}
         # 退出登录弹窗
-        d["title"] = [u"//android.widget.TextView[@text='退出后不会删除历史纪录，下次登录仍可以使用本账号']", "xpath",
-                      u"退出登录弹窗"]
+        d["title"] = [u"//android.widget.TextView[@text='退出登录']", "xpath", u"退出登录弹窗"]
         # 确认
         d["confirm"] = [u"//android.widget.TextView[@text='退出登录']", "xpath", u"退出登录"]
         # 取消

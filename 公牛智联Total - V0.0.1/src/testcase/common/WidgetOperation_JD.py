@@ -266,10 +266,10 @@ class WidgetOperationJD(LaunchAppJD):
                             time.sleep(1)
                 break
             else:
-                if time.time() < now + delay_times + 30:
-                    time.sleep(1)
-                else:
+                if time.time() > now + delay_times + 30:
                     raise TimeoutException("Device state Error")
+                time.sleep(1)
+
 
     # 删除普通定时
     def delete_normal_timer(self):
@@ -330,7 +330,7 @@ class WidgetOperationJD(LaunchAppJD):
         else:
             if start_time is None:
                 raise KeyError("if start_now is False, start_time can`t be None type")
-            self.now = time.time()
+            end_time = time.time() + 1 * 60 + 30
             while True:
                 if time.strftime("%H:%M") == start_time:
                     try:
@@ -343,10 +343,9 @@ class WidgetOperationJD(LaunchAppJD):
                                           self.page["mode_timer_page"]["title"])
                     break
                 else:
-                    if time.time() < self.now + 1 * 60 + 30:
-                        time.sleep(1)
-                    else:
+                    if time.time() > end_time:
                         raise TimeoutException("Timer Saved Error, time:%s" % start_time)
+                    time.sleep(1)
 
     # 统计电量
     def get_device_elect(self, check_time, across=False):

@@ -326,50 +326,18 @@ class LaunchAppAL(object):
         time.sleep(0.5)
         self.debug.info("launch_app driver(launch_app success)")
 
-    def show_pwd(self, element, element1=None, param="name", display=True):
-        if display:
-            while True:
-                try:
-                    if param == "name":
-                        if self.ac.get_attribute(element, param) != "":
-                            break
-                        else:
-                            if element1 is None:
-                                element.click()
-                            else:
-                                element1.click()
+    def show_pwd(self, element, element1=None, param="name", state="false"):
+        while True:
+            try:
+                if self.ac.get_attribute(element, param) == state:
+                    break
+                else:
+                    if element1 is None:
+                        element.click()
                     else:
-                        if self.ac.get_attribute(element, param) == "true":
-                            break
-                        else:
-                            if element1 is None:
-                                element.click()
-                            else:
-                                element1.click()
-
-                except BaseException:
-                    self.debug.error(traceback.format_exc())
-        else:
-            while True:
-                try:
-                    if param == "name":
-                        if self.ac.get_attribute(element, param) == "":
-                            break
-                        else:
-                            if element1 is None:
-                                element.click()
-                            else:
-                                element1.click()
-                    else:
-                        if self.ac.get_attribute(element, param) == "false":
-                            break
-                        else:
-                            if element1 is None:
-                                element.click()
-                            else:
-                                element1.click()
-                except BaseException:
-                    self.debug.error(traceback.format_exc())
+                        element1.click()
+            except BaseException:
+                self.debug.error(traceback.format_exc())
 
     def case_over(self, success):
         self.success = success

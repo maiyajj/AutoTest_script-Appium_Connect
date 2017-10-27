@@ -38,8 +38,7 @@ class JDAppCompatibility1(WidgetOperationJD):
         self.widget_click(self.page["input_wifi_password_page"]["confirm"],
                           self.page["search_device_loading_page"]["title"])
 
-        start_time = time.time()
-        end_time = start_time + 60
+        end_time = time.time() + 60
         while True:
             try:
                 self.wait_widget(self.page["search_device_fail_page"]["title"])

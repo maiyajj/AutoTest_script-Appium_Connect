@@ -110,32 +110,33 @@ class WidgetOperationAL(LaunchAppAL):
         return lcx, lcy, szw, szh
 
     # 设置定时滚轮
-    def set_timer_roll(self, elem_e, elem_h, elem_m, elem_t, et, now_time, same_fish_mode=False, leave_time=2):
-        '''
+    def set_timer_roll(self, elem_e, elem_h, elem_m, elem_t, now_time, set_timer, cycle=False, delay_s=120):
+        """
+        :param elem_e:
         :param elem_h:
         :param elem_m:
-        :param elem_e:
         :param elem_t:
-        :param et:
-        :param now_time:
-        :param same_fish_mode:
-        :param leave_time:
+        :param now_timer:
+        :param set_timer:
+        :param cycle:
+        :param delay_m:
+        :param delay_s:
         :return:
-        '''
-        if isinstance(et, int):
-            if et >= 0:
+        """
+        if isinstance(set_timer, int):
+            if set_timer >= 0:
                 time_seg = "int"
             else:
                 time_seg = "minus"
         else:
-            if et[0] == "point":
+            if set_timer[0] == "point":
                 time_seg = "point"
-            elif et[0] == "delay":
+            elif set_timer[0] == "delay":
                 time_seg = "delay"
             else:
                 time_seg = None
-        if not isinstance(now_time, float):
-            raise KeyError("now time must be time.time(), current: %s" % str(now_time))
+        if not isinstance(now_time, str):
+            raise KeyError("now time must be time.strftime, current: %s" % str(now_time))
         # 滚轮
         lcx_e, lcy_e, szw_e, szh_e = self.set_roll(elem_e)
         # 时滚轮
@@ -149,36 +150,39 @@ class WidgetOperationAL(LaunchAppAL):
         aszh_m = int(szh_e / 5)
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_e + szh_e / 2)
 
-        time_roll = time.strftime("%Y-%m-%d r:%S").replace("r", elem_t)
+        time_roll = time.strftime("%Y-%m-%d r:00").replace("r", elem_t)
         time_roll = time.mktime(time.strptime(time_roll, "%Y-%m-%d %H:%M:%S"))
 
-        if same_fish_mode is False:
-            time_now = now_time
-        else:
-            time_now = now_time - leave_time * 60
+        try:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+        time_now = time.mktime(time_now)
+        if cycle is True:
+            time_now = time_now - delay_s
 
         if time_seg == "int":
-            time_set = time_now + (et + leave_time) * 60
+            time_set = time_now + set_timer * 60 + delay_s
             time_true = time_set
         elif time_seg == "minus":
-            time_set = time_now + et * 60
+            time_set = time_now + set_timer * 60
             time_true = time_set
         elif time_seg == "point":
-            time_set = time.strftime("%Y-%m-%d r:%S").replace("r", et[1])
+            time_set = time.strftime("%Y-%m-%d r:00").replace("r", set_timer[1])
             time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %H:%M:%S"))
             time_true = time_set
         elif time_seg == "delay":
-            time_set = time.strftime("%Y-%m-%d r:%S").replace("r", et[1])
+            time_set = time.strftime("%Y-%m-%d r:00").replace("r", set_timer[1])
             time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %H:%M:%S"))
-            time_true = time_set + leave_time * 60
+            time_true = time_set + delay_s
         else:
             time_set = "error"
             time_true = time_set
 
-        time_start = time_now + leave_time * 60
-        start_time = time.strftime("%H:%M", time.localtime(time_start))
-        set_time = time.strftime("%H:%M", time.localtime(time_set))
-        true_time = time.strftime("%H:%M", time.localtime(time_true))
+        time_start = time_now + delay_s
+        start_time = time.strftime("%H:%M:%S", time.localtime(time_start))
+        set_time = time.strftime("%H:%M:%S", time.localtime(time_set))
+        true_time = time.strftime("%H:%M:%S", time.localtime(time_true))
 
         time_et = time_set - time_roll
         time_et_a = abs(time_et)
@@ -229,23 +233,22 @@ class WidgetOperationAL(LaunchAppAL):
         time.sleep(2)
 
     # 创建普通定时
-    def create_normal_timer(self, now_time, delay_time, power, loop, leave_time=2):
-        '''
-
+    def create_normal_timer(self, now_time, set_timer, power, loop, delay_s=120):
+        """
         :param now_time:
-        :param delay_time:
+        :param set_timer:
         :param power:
         :param loop:
-        :param leave_time:
+        :param delay_s:
         :return:
-        '''
-        self.widget_click(self.page["normal_timer_page"]["add_timer"],
+        """
+        self.widget_click(self.page["normal_timer_page"]["add_normal_timer"],
                           self.page["add_normal_timer_page"]["title"])
 
         start_time, set_time = self.set_timer_roll(self.page["add_normal_timer_page"]["roll"],
                                                    self.page["add_normal_timer_page"]["roll_h"],
                                                    self.page["add_normal_timer_page"]["roll_m"],
-                                                   "14:30", delay_time, now_time, leave_time=leave_time)
+                                                   "14:30", now_time, set_timer, delay_s=delay_s)
 
         self.widget_click(self.page["add_normal_timer_page"][power],
                           self.page["add_normal_timer_page"]["title"])
@@ -259,65 +262,62 @@ class WidgetOperationAL(LaunchAppAL):
         return start_time, set_time
 
     # 创建延时定时
-    def create_delay_timer(self, now_time, delay_time, power, start_delay=False, delay=60):
-        '''
-
-        :param now_time: now time
-        :param delay_time: delay time
-        :param power: power state power on/off
-        :param loop: everyday/monday etc
-        :return: start_time, set_time
-        '''
+    def create_delay_timer(self, now_time, set_timer, power, delay_s=120, cycle=False):
+        """
+        :param now_time:
+        :param set_timer:
+        :param power:
+        :param delay_s:
+        :param start_delay:
+        :return:
+        """
         self.widget_click(self.page["delay_timer_page"]["launch"],
                           self.page["delay_timer_page"]["close"])
 
-        elem_t = self.ac.get_attribute(self.wait_widget(self.page["delay_timer_page"]["delay_time"]), "name")
+        time_roll = self.ac.get_attribute(self.wait_widget(self.page["delay_timer_page"]["delay_time"]), "name")
 
         self.widget_click(self.page["delay_timer_page"]["close"],
                           self.page["delay_timer_page"]["launch"])
 
+        try:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+        time_now = time.strftime("%H:%M:%S", time.localtime(time_now))
+
         self.widget_click(self.page["delay_timer_page"][power],
                           self.page["delay_timer_page"]["title"])
-
-        if start_delay is True:
-            now_time1 = time.strftime("%Y-%m-%d r").replace("r", now_time)
-            now_time_value = time.mktime(time.strptime(now_time1, "%Y-%m-%d %H:%M")) + delay
-            now_time_value = time.strftime("%H:%M", time.localtime(now_time_value))
-        else:
-            now_time_value = now_time
 
         start_time, set_time = self.set_timer_roll(self.page["delay_timer_page"]["roll"],
                                                    self.page["delay_timer_page"]["roll_h"],
                                                    self.page["delay_timer_page"]["roll_m"],
-                                                   elem_t, delay_time, now_time_value)
+                                                   time_roll, time_now, set_timer, cycle, delay_s)
 
-        now = time.time()
+        end_time = time.time() + 1 * 60 + 30
         while True:
-            if time.strftime("%H:%M") == start_time:
+            if time.strftime("%H:%M:%S") == start_time:
                 self.widget_click(self.page["delay_timer_page"]["launch"],
                                   self.page["delay_timer_page"]["close"], times=2)
                 self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
                 break
             else:
-                if time.time() < now + 1 * 60 + 30:
-                    time.sleep(1)
-                else:
+                if time.time() > end_time:
                     raise TimeoutException("Timer Saved Error, time:%s" % start_time)
-
-        return start_time, set_time
+                time.sleep(1)
 
     # 创建循环定时
-    def create_cycle_timer(self, now_time, delay_time, loop, start_delay=False, delay=60):
-        '''
-
-        :param now_time: now time
-        :param delay_time: delay time
-        :param power: power state power on/off
-        :param loop: everyday/monday etc
-        :return: start_time, set_time
-        '''
-        start_roll = self.ac.get_attribute(self.wait_widget(self.page["cycle_timer_page"]["start_time"]), "name")
-        end_roll = self.ac.get_attribute(self.wait_widget(self.page["cycle_timer_page"]["end_time"]), "name")
+    def create_cycle_timer(self, page, now_time, set_start_time, set_end_time, loop, delay_s=120, cycle=False, loops=0):
+        """
+        :param now_time:
+        :param set_start_time:
+        :param set_end_time:
+        :param loop:
+        :param delay_s:
+        :param start_delay:
+        :return:
+        """
+        start_roll = self.ac.get_attribute(self.wait_widget(self.page[page]["start_time"]), "name")
+        end_roll = self.ac.get_attribute(self.wait_widget(self.page[page]["end_time"]), "name")
 
         tmp = re.findall(u"(\d+)小时", start_roll)
         if tmp == []:
@@ -335,77 +335,164 @@ class WidgetOperationAL(LaunchAppAL):
         end_roll_m = int(re.findall(u"(\d+)分钟", end_roll)[0])
         end_roll = "%02d:%02d" % (end_roll_h, end_roll_m)
 
-        self.widget_click(self.page["cycle_timer_page"]["start_time"],
+        try:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+        time_now = time.strftime("%H:%M:%S", time.localtime(time_now))
+
+        self.widget_click(self.page[page]["start_time"],
                           self.page["timer_roll_popup"]["title"])
 
-        if start_delay is True:
-            now_time1 = time.strftime("%Y-%m-%d r").replace("r", now_time)
-            now_time_value = time.mktime(time.strptime(now_time1, "%Y-%m-%d %H:%M")) + delay
-            now_time_value = time.strftime("%H:%M", time.localtime(now_time_value))
-        else:
-            now_time_value = now_time
-
-        start_time, set_start_time = self.set_timer_roll(self.page["timer_roll_popup"]["roll"],
+        start_time, start_set_time = self.set_timer_roll(self.page["timer_roll_popup"]["roll"],
                                                          self.page["timer_roll_popup"]["roll_h"],
                                                          self.page["timer_roll_popup"]["roll_m"],
-                                                         start_roll, delay_time, now_time_value)
+                                                         start_roll, time_now, set_start_time, cycle, delay_s)
 
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
-                          self.page["cycle_timer_page"]["launch"])
+                          self.page[page]["launch"])
 
-        self.widget_click(self.page["cycle_timer_page"]["end_time"],
+        self.widget_click(self.page[page]["end_time"],
                           self.page["timer_roll_popup"]["title"])
 
-        end_time, set_end_time = self.set_timer_roll(self.page["timer_roll_popup"]["roll"],
+        end_time, end_set_time = self.set_timer_roll(self.page["timer_roll_popup"]["roll"],
                                                      self.page["timer_roll_popup"]["roll_h"],
                                                      self.page["timer_roll_popup"]["roll_m"],
-                                                     end_roll, delay_time, set_start_time, True)
+                                                     end_roll, start_set_time, set_end_time, True)
 
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
-                          self.page["cycle_timer_page"]["launch"])
+                          self.page[page]["launch"])
 
-        attribute = self.ac.get_attribute(self.wait_widget(self.page["cycle_timer_page"]["repeat"]), "name")
-        roll = re.findall(u"(\d+)次", attribute)
-        if roll == []:
-            roll = 0
-        else:
-            roll = int(roll[0])
+        sr_h, sr_m = start_roll.split(":")
+        sr = int(sr_h) * 3600 + int(sr_m) * 60
+        er_h, er_m = end_roll.split(":")
+        er = int(er_h) * 3600 + int(er_m) * 60
         if loop == u"永久循环":
-            set = 0
+            loop_count = loops
         else:
-            set = int(re.findall(u"(\d+)次", loop)[0])
-        if set != roll:
-            self.widget_click(self.page["cycle_timer_page"]["repeat"],
-                              self.page["timer_repeat_page"]["title"])
+            loop_count = int(re.findall(u"(\d+)次", self.set_timer_loop(page, loop))[0])
 
-            self.set_count_roll(self.page["timer_repeat_page"]["cycle_count"], roll, set)
+        loop_list = [[start_time, start_set_time, end_time, end_set_time]]
+        es_time = time.strftime("%Y-%m-%d r").replace("r", end_set_time)
+        tmp = time.mktime(time.strptime(es_time, "%Y-%m-%d %H:%M:%S"))
+        tmp_s = time.strftime("%H:%M:%S", time.localtime(tmp))
+        for i in xrange(loop_count):
+            tmp = tmp + sr
+            s_time = time.strftime("%H:%M:%S", time.localtime(tmp))
+            tmp_e = s_time
+            tmp = tmp + er
+            e_time = time.strftime("%H:%M:%S", time.localtime(tmp))
+            loop_list.append([tmp_s, s_time, tmp_e, e_time])
+            tmp_s = e_time
 
-            self.widget_click(self.page["timer_repeat_page"]["saved"],
-                              self.page["cycle_timer_page"]["title"])
-
-            attribute = self.ac.get_attribute(self.wait_widget(self.page["cycle_timer_page"]["repeat"]), "name")
-            roll = re.findall(u"(\d+)次", attribute)
-            if roll == []:
-                roll = 0
-            else:
-                roll = int(roll[0])
-            if set != roll:
-                raise TimeoutException("Cycle set error")
-
-        now = time.time()
+        end_time = time.time() + 1 * 60 + 30
         while True:
-            if time.strftime("%H:%M") == start_time:
-                self.widget_click(self.page["cycle_timer_page"]["launch"],
-                                  self.page["cycle_timer_page"]["close"], times=2)
+            if time.strftime("%H:%M:%S") == start_time:
+                self.widget_click(self.page[page]["launch"],
+                                  self.page[page]["close"], times=2)
                 self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
                 break
             else:
-                if time.time() < now + 1 * 60 + 30:
-                    time.sleep(1)
-                else:
+                if time.time() > end_time:
                     raise TimeoutException("Timer Saved Error, time:%s" % start_time)
+                time.sleep(1)
 
-        return start_time, set_start_time, end_time, set_end_time
+        return loop_list
+
+    # 创建热水器类型模式
+    def create_point_mode_timer(self, page, now_time, set_start_time, set_end_time, loop, delay_s=120, exchange=False):
+        """
+        :param now_time:
+        :param set_timer:
+        :param power:
+        :param loop:
+        :param delay_s:
+        :return:
+        """
+        start_roll = self.ac.get_attribute(self.wait_widget(self.page[page]["start_time"]), "name")
+        end_roll = self.ac.get_attribute(self.wait_widget(self.page[page]["end_time"]), "name")
+
+        try:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+        time_now = time.strftime("%H:%M:%S", time.localtime(time_now))
+
+        if exchange is True:
+            self.widget_click(self.page[page]["time_exchange"],
+                              self.page[page]["title"])
+
+        self.widget_click(self.page[page]["start_time"],
+                          self.page["timer_roll_popup"]["title"])
+
+        start_time, start_set_time = self.set_timer_roll(self.page["timer_roll_popup"]["roll"],
+                                                         self.page["timer_roll_popup"]["roll_h"],
+                                                         self.page["timer_roll_popup"]["roll_m"],
+                                                         start_roll, time_now, set_start_time, delay_s=delay_s)
+
+        self.widget_click(self.page["timer_roll_popup"]["confirm"],
+                          self.page[page]["launch"])
+
+        self.widget_click(self.page[page]["end_time"],
+                          self.page["timer_roll_popup"]["title"])
+
+        end_time, end_set_time = self.set_timer_roll(self.page["timer_roll_popup"]["roll"],
+                                                     self.page["timer_roll_popup"]["roll_h"],
+                                                     self.page["timer_roll_popup"]["roll_m"],
+                                                     end_roll, time_now, set_end_time, delay_s=delay_s)
+
+        self.widget_click(self.page["timer_roll_popup"]["confirm"],
+                          self.page[page]["launch"])
+
+        self.set_timer_loop(page, loop)
+
+        self.widget_click(self.page[page]["launch"],
+                          self.page[page]["close"])
+
+        return [start_time, start_set_time], [end_time, end_set_time]
+
+    # 创建充电保护类型模式
+    def create_delay_mode_timer(self, page, now_time, set_timer, delay_s=120, cycle=False):
+        """
+        :param now_time:
+        :param set_timer:
+        :param power:
+        :param delay_s:
+        :param start_delay:
+        :return:
+        """
+        time_roll = self.ac.get_attribute(self.wait_widget(self.page[page]["end_time"]), "name")
+
+        tmp = re.findall(u"(\d+)小时", time_roll)
+        if tmp == []:
+            time_roll_h = 0
+        else:
+            time_roll_h = int(tmp[0])
+        time_roll_m = int(re.findall(u"(\d+)分钟", time_roll)[0])
+        time_roll = "%02d:%02d" % (time_roll_h, time_roll_m)
+
+        try:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+        time_now = time.strftime("%H:%M:%S", time.localtime(time_now))
+
+        start_time, set_time = self.set_timer_roll(self.page["timer_roll_popup"]["roll"],
+                                                   self.page["timer_roll_popup"]["roll_h"],
+                                                   self.page["timer_roll_popup"]["roll_m"],
+                                                   time_roll, time_now, set_timer, cycle, delay_s)
+
+        end_time = time.time() + 1 * 60 + 30
+        while True:
+            if time.strftime("%H:%M:%S") == start_time:
+                self.widget_click(self.page[page]["launch"],
+                                  self.page[page]["close"], times=2)
+                self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+                break
+            else:
+                if time.time() > end_time:
+                    raise TimeoutException("Timer Saved Error, time:%s" % start_time)
+                time.sleep(1)
 
     # 设置普通/模式定时循环模式
     def set_timer_loop(self, page, loop):
@@ -418,8 +505,7 @@ class WidgetOperationAL(LaunchAppAL):
                      u"周四": "thursday",
                      u"周五": "friday",
                      u"周六": "saturday",
-                     u"周日": "weekday",
-                     u"执行次数": "cycle_count"}
+                     u"周日": "weekday"}
 
         attribute = self.ac.get_attribute(self.wait_widget(self.page[page]["repeat"]), "name")
         if isinstance(loop, list):
@@ -438,7 +524,11 @@ class WidgetOperationAL(LaunchAppAL):
                 else:
                     roll = int(re.findall(u"(\d+)次", attribute)[0])
                 self.set_count_roll(self.page["timer_repeat_page"]["cycle_count"], roll, 0)
-            elif u"每周" in loop:
+            elif u"周" in loop or u"每天" in loop or u"工作日" in loop:
+                if u"每天" in loop:
+                    attribute = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
+                elif u"工作日" in loop:
+                    attribute = [u"周一", u"周二", u"周三", u"周四", u"周五"]
                 if u"永不" in attribute:
                     cycle = ["once"]
                 else:
@@ -446,14 +536,23 @@ class WidgetOperationAL(LaunchAppAL):
 
                 if isinstance(loop, list):
                     loop_tmp = (set(cycle) | set(loop)) - (set(cycle) & set(loop))
-                    for i in loop_tmp:
-                        self.widget_click(self.page["timer_repeat_page"][loop_mode[i]],
-                                          self.page["timer_repeat_page"]["title"])
                 else:
                     loop_tmp = [loop]
                     loop_tmp = (set(cycle) | set(loop_tmp)) - (set(cycle) & set(loop_tmp))
-                    self.widget_click(self.page["timer_repeat_page"][loop_mode[loop]],
+                try:
+                    loop_tmp.remove("once")
+                except KeyError:
+                    pass
+                for i in loop_tmp:
+                    self.widget_click(self.page["timer_repeat_page"][loop_mode[i]],
                                       self.page["timer_repeat_page"]["title"])
+            else:
+                if u"永久循环" in attribute:
+                    roll = 0
+                else:
+                    roll = int(re.findall(u"(\d+)次", attribute)[0])
+                loop_tmp = int(re.findall(u"(\d+)次", loop)[0])
+                self.set_count_roll(self.page["timer_repeat_page"]["cycle_count"], roll, loop_tmp)
 
             self.widget_click(self.page["timer_repeat_page"]["saved"],
                               self.page[page]["title"])
@@ -461,51 +560,89 @@ class WidgetOperationAL(LaunchAppAL):
             if tmp not in attribute:
                 raise TimeoutException("Cycle set error")
 
+        return loop
+
     # 定时检查模板
-    def check_timer(self, start_time, set_time, power_state, power_same_prev=False):
-        start_h, start_m = start_time.split(":")
+    def check_timer(self, device, start_time, set_time, power_state, power_same_prev=False, sec=True):
+        start_h, start_m, start_s = start_time.split(":")
         start_times = int(start_h) * 60 + int(start_m)
-        set_h, set_m = set_time.split(":")
+        now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r").replace("r", start_time), "%Y-%m-%d %H:%M:%S"))
+        self.logger.info("[APP_TIMER]Now Time:%s. Start Time:%s" % (time.strftime("%H:%M:%S"), now))
+
+        set_h, set_m, set_s = set_time.split(":")
         set_times = int(set_h) * 60 + int(set_m)
+
         if start_times < set_times:
             delay_times = (set_times - start_times) * 60
         else:
             delay_times = 24 * 60 * 60 + (set_times - start_times) * 60
         self.logger.info("[APP_TIMER]Delay Time:%s" % (delay_times + 30))
+
+        index = self.get_index(device, self.page["app_home_page"]["device"])
+        element = copy.copy(self.page["app_home_page"]["power_state"])
+        element[0] = element[0][index]
+        element = self.wait_widget(element)
+        end_time = now + delay_times + 30
+        flag = False
         while True:
-            if time.strftime("%H:%M") == start_time:
+            if sec is True:
+                if time.strftime("%H:%M:%S") == set_time:
+                    flag = True
+            else:
+                if time.strftime("%H:%M") == set_time[:5]:
+                    flag = True
+            if flag is True:
                 now = time.time()
+                if power_same_prev is True:
+                    time.sleep(10)
+                while True:
+                    if self.ac.get_attribute(element, "name") == power_state:
+                        self.logger.info("[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), now))
+                        self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
+                        break
                 break
             else:
-                time.sleep(1)
-        self.logger.info("[APP_TIMER]Now Time:%s" % time.strftime("%H:%M:%S"))
-        element = self.wait_widget(self.page["control_device_page"]["power_state"])
-        while True:
-            if time.strftime("%H:%M") == set_time:
-                if power_same_prev is False:
-                    while True:
-                        if self.ac.get_attribute(element, "name") == power_state:
-                            self.logger.info("[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
-                            self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                            break
-                        else:
-                            time.sleep(1)
-                else:
-                    while True:
-                        time.sleep(10)
-                        if self.ac.get_attribute(element, "name") == power_state:
-                            self.logger.info(
-                                "[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), (time.time() - 10)))
-                            self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                            break
-                        else:
-                            time.sleep(1)
-                break
-            else:
-                if time.time() < now + delay_times + 30:
-                    time.sleep(1)
-                else:
+                if time.time() > end_time:
                     raise TimeoutException("Device state Error")
+                time.sleep(1)
+                # if not isinstance(args, list):
+                #     raise KeyError("args must list! Current %s" % str(args))
+                # time_list = []
+                # for start_time, set_time, power_state in args:
+                #     start_h, start_m = start_time.split(":")
+                #     start_times = int(start_h) * 60 + int(start_m)
+                #     set_h, set_m = set_time.split(":")
+                #     set_times = int(set_h) * 60 + int(set_m)
+                #     if start_times < set_times:
+                #         delay_times = (set_times - start_times) * 60
+                #     else:
+                #         delay_times = 24 * 60 * 60 + (set_times - start_times) * 60
+                #     time_list.append([start_time, set_time, delay_times, power_state])
+                # self.logger.info("[APP_TIMER]Time List:%s" % str(time_list))
+                # while True:
+                #     if time.strftime("%H:%M") == start_time:
+                #         now = time.time()
+                #         break
+                #     else:
+                #         time.sleep(1)
+                # self.logger.info("[APP_TIMER]Now Time:%s" % time.strftime("%H:%M:%S"))
+                # element = self.wait_widget(self.page["control_device_page"]["power_state"])
+                # while True:
+                #     if time.strftime("%H:%M") == set_time:
+                #         while True:
+                #             if self.ac.get_attribute(element, "name") == power_state:
+                #                 self.logger.info(
+                #                     "[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+                #                 self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
+                #                 break
+                #             else:
+                #                 time.sleep(1)
+                #         break
+                #     else:
+                #         if time.time() < now + delay_times + 30:
+                #             time.sleep(1)
+                #         else:
+                #             raise TimeoutException("Device state Error")
 
     # 删除普通定时
     def delete_normal_timer(self):
@@ -633,7 +770,7 @@ class WidgetOperationAL(LaunchAppAL):
     def launch_mode_timer(self, page, start_now, start_time=None):
         if not isinstance(start_now, bool):
             raise KeyError("start_now must be bool type")
-        if start_now == True:
+        if start_now is True:
             try:
                 self.widget_click(self.page[page]["launch"],
                                   self.page["mode_timer_page"]["title"])
@@ -645,7 +782,7 @@ class WidgetOperationAL(LaunchAppAL):
         else:
             if start_time is None:
                 raise KeyError("if start_now is False, start_time can`t be None type")
-            self.now = time.time()
+            end_time = time.time() + 1 * 60 + 30
             while True:
                 if time.strftime("%H:%M") == start_time:
                     try:
@@ -658,10 +795,9 @@ class WidgetOperationAL(LaunchAppAL):
                                           self.page["mode_timer_page"]["title"])
                     break
                 else:
-                    if time.time() < self.now + 1 * 60 + 30:
-                        time.sleep(1)
-                    else:
+                    if time.time() > end_time:
                         raise TimeoutException("Timer Saved Error, time:%s" % start_time)
+                    time.sleep(1)
 
     # 统计电量
     def get_device_elect(self, check_time, across=False):
