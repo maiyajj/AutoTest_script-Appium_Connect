@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_AL import *
 
 
 class ALAppSmartLink1(WidgetOperationAL):
-    @case_run_al(True)
+    @case_run_al(False)
     def run(self):
         self.case_module = u"FUT_SMTLNK_一键配网(#52)"  # 用例所属模块
         self.case_title = u'FUT_SMTLNK_app能正常添加设备_按分类查找'  # 用例名称

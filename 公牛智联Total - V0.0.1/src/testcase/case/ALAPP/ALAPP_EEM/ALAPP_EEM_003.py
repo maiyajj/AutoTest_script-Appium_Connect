@@ -2,12 +2,12 @@
 from src.testcase.common.WidgetOperation_AL import *
 
 
-class ALAppEem1(WidgetOperationAL):
+class ALAppEem3(WidgetOperationAL):
     @case_run_al(False)
     def run(self):
-        self.case_module = u"FUT_EEM_电量计量(#61)"  # 用例所属模块
-        self.case_title = u'FUT_EEM_峰谷电价设置'  # 用例名称
-        self.zentao_id = 559  # 禅道ID
+        self.case_module = u"电量计量"  # 用例所属模块
+        self.case_title = u'FUT_EEM_电价设置验证（待定）'  # 用例名称
+        self.zentao_id = 551  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -106,5 +106,19 @@ class ALAppEem1(WidgetOperationAL):
 
         self.widget_click(self.page["set_elec_page"]["confirm"],
                           self.page["control_device_page"]["title"])
+
+        now_h = int(time.strftime("%H"))
+        elec, elec_bill = self.get_device_elect(now_h + 2, True)
+
+        peak_price = [v for k, v in elec.items() if 6 <= k <= 22]
+        valley_price = [v for k, v in elec.items() if k < 6 and k > 22]
+
+        elec_bill_info = "elec bill is wrong, current [elec_bill:%s, peak_price:%s, peak_data:%s, valley_price:%s," \
+                         " valley_data:%s]" \
+                         % (sum(elec_bill.values()), sum(peak_price), peak_data, sum(valley_price), valley_data)
+        self.logger.info(elec_bill_info)
+
+        if sum(elec_bill.values()) != sum(peak_price) * int(peak_data) + sum(valley_price) * int(valley_data):
+            raise TimeoutException(elec_bill_info)
 
         self.case_over(True)

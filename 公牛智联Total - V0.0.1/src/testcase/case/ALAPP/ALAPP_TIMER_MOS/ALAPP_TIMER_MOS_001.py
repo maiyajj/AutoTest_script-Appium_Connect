@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_AL import *
 
 
 class ALAppTimerMos1(WidgetOperationAL):
-    @case_run_al(True)
+    @case_run_al(False)
     def run(self):
         self.case_module = u"FUT_MTIMER_MOS_电蚊香模式(#62)"  # 用例所属模块
         self.case_title = u'FUT_MTIMER_MOS_电蚊香模式_延时功能（1min，2min，1h，23h59min，断电恢复）是否正常'  # 用例名称

@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_AL import *
 
 
 class ALAppTimerOvp1(WidgetOperationAL):
-    @case_run_al(True)
+    @case_run_al(False)
     def run(self):
         self.case_module = u"FUT_MTIMER_OVP_充电保护模式(#47)"  # 用例所属模块
         self.case_title = u'FUT_MTIMER_OVP_充电保护模式_延时功能（1min，2min，1h，23h59min，断电恢复）是否正常'  # 用例名称

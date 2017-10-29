@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_AL import *
 
 
 class ALAppDelayTimer1(WidgetOperationAL):
-    @case_run_al(True)
+    @case_run_al(False)
     def run(self):
         self.case_module = u"FUT_DELAYTIMER_延迟定时(#51)"  # 用例所属模块
         self.case_title = u'FUT_DELAYTIMER_延时定时一分钟开关'  # 用例名称

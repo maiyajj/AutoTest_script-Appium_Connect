@@ -20,4 +20,5 @@ with open(tmp_path, "w") as files:
         else:
             files.write(linecache.getline(filepath, i))
 
+os.remove(filepath)
 os.renames(tmp_path, filepath)

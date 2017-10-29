@@ -139,7 +139,10 @@ class CreateFunc(object):
                             filename = "%s%s%s" % (filename[:2],
                                                    "".join([i.capitalize() for i in filename[2:-7].split("_")]),
                                                    str(int(filename[-6:-3])))
-                            result.append(filename == re.findall("class (.+?)\(", files.read())[0])
+                            tmp = filename == re.findall("class (.+?)\(", files.read())[0]
+                            result.append(tmp)
+                            if not tmp:
+                                print filename
         result = list(set(result))
         print result
 

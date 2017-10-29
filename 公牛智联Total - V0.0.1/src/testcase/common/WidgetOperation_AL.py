@@ -562,6 +562,24 @@ class WidgetOperationAL(LaunchAppAL):
 
         return loop
 
+    # 设置峰谷电时间
+    def set_peak_valley_time(self, elem, now_time, set_timer, peak):
+        attribute = self.ac.get_attribute(elem, "name")
+        if u"未设置" in attribute:
+            if peak is True:
+                time_roll = "08:00"
+            else:
+                time_roll = "22:00"
+        else:
+            time_roll = re.findall("(\d+:\d+)", attribute)[0]
+
+        start_time, set_time = self.set_timer_roll(self.page["delay_timer_page"]["roll"],
+                                                   self.page["delay_timer_page"]["roll_h"],
+                                                   self.page["delay_timer_page"]["roll_m"],
+                                                   time_roll, now_time, set_timer, False, 120)
+
+        return start_time, set_time
+
     # 定时检查模板
     def check_timer(self, device, start_time, set_time, power_state, power_same_prev=False, sec=True):
         start_h, start_m, start_s = start_time.split(":")
@@ -821,32 +839,42 @@ class WidgetOperationAL(LaunchAppAL):
                     self.driver.tap([(10, 10)])
                     time.sleep(30)
 
-            self.widget_click(self.page["control_device_page"]["elec_bill"],
-                              self.page["elec_bill_page"]["title"])
-
-            elec_bill_elements = self.wait_widget(self.page["elec_bill_page"]["price_time"])
-            elec_bill_value = copy.copy(self.page["elec_bill_page"]["price_value"])
-            for index, element in elec_bill_elements.items():
-                if element is not None:
-                    elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
-                    # if index >= now_h + 2:
-                    elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-                    self.logger.info("[APP_INFO]23:01_elec_bill:%s" % str(elec_bill))
-
-            self.widget_click(self.page["elec_bill_page"]["to_return"],
-                              self.page["control_device_page"]["title"])
-
             self.widget_click(self.page["control_device_page"]["elec"],
                               self.page["elec_page"]["title"])
 
-            elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
-            elec_value = copy.copy(self.page["elec_page"]["elec_value"])
-            for index, element in elec_elements.items():
+            self.ac.swipe(0.5, 0.7, 0.5, 0.4, 0, self.driver)
+
+            self.widget_click(self.page["elec_page"]["more_elec_history"],
+                              self.page["more_elec_history_page"]["title"])
+
+            today = time.strftime("%m月%d日").decode("utf")
+            day_list = self.wait_widget(self.page["more_elec_history_page"]["day_elec"])
+            new_value = copy.copy(self.page["more_elec_history_page"]["day_elec"])
+            for index, element in day_list.items():
+                if element is not None and str(self.ac.get_attribute(element, "name")) == today:
+                    new_value[0] = new_value[0][index]
+                    while True:
+                        try:
+                            self.widget_click(new_value, self.page["day_elec_page"]["title"])
+                            break
+                        except TimeoutException:
+                            self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                            time.sleep(1)
+                break
+
+            elec_bill_elements = self.wait_widget(self.page["day_elec_page"]["elec_time"])
+            elec_bill_value = copy.copy(self.page["day_elec_page"]["elec_value"])
+            for index, element in elec_bill_elements.items():
                 if element is not None:
-                    elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
-                    # if index >= now_h + 2:
-                    elec[index] = self.ac.get_attribute(elec_value, "name")
-                    self.logger.info("[APP_INFO]23:01_elec:%s" % str(elec))
+                    elec_bill_value[0] = self.page["day_elec_page"]["elec_value"][0][index]
+                    elec_bill[index] = int(re.findall("(\d+)W", self.ac.get_attribute(elec_bill_value, "name"))[0])
+                    self.logger.info("[APP_INFO]23:01_elec_bill:%s" % str(elec_bill))
+
+            self.widget_click(self.page["day_elec_page"]["to_return"],
+                              self.page["more_elec_history_page"]["title"])
+
+            self.widget_click(self.page["more_elec_history_page"]["to_return"],
+                              self.page["elec_page"]["title"])
 
             self.widget_click(self.page["elec_page"]["to_return"],
                               self.page["control_device_page"]["title"])
@@ -875,14 +903,6 @@ class WidgetOperationAL(LaunchAppAL):
 
         self.widget_click(self.page["control_device_page"]["elec"],
                           self.page["elec_page"]["title"])
-
-        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
-        for index, element in elec_elements.items():
-            if element is not None:
-                elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
-                # if index <= now_h + 1:
-                elec[index] = self.ac.get_attribute(elec_value, "name")
-                self.logger.info("[APP_INFO]%02d:01_elec:%s" % (check_time, str(elec)))
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])

@@ -3,7 +3,7 @@ from src.testcase.case.LaunchApp_AL import *
 
 
 class ALAppLogin1(LaunchAppAL):
-    @case_run_al(True)
+    @case_run_al(False)
     def run(self):
         self.case_module = u"登录"  # 用例所属模块
         self.case_title = u'阿里智能APP账号登录'  # 用例名称

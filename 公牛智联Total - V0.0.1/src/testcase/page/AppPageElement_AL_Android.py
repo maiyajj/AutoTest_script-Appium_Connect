@@ -148,10 +148,6 @@ class MainPageWidgetAndroidAL(object):
 
     # 设备控制页面
     def control_device_page(self):
-        '''
-        webview！！！！！！！！！！！
-        :return:
-        '''
         d = {}
         # 标题
         d["title"] = [u"//android.view.View[contains(@content-desc, '实时功率')]", "xpath", u"设备控制页面"]
@@ -161,6 +157,8 @@ class MainPageWidgetAndroidAL(object):
         d["launch_mode"] = ["//android.webkit.WebView/android.view.View[2]", "xpath", u"设备已启动模式定时"]
         # 设备离线标志
         d["offline"] = [u"//android.view.View[@text='content-desc='该设备已断开连接！']", "xpath", u"设备离线标志"]
+        # 功率
+        d["power"] = ["//android.webkit.WebView/android.view.View[3]", "xpath", u"功率"]
         # 电源开关
         d["power_button"] = [u"//android.view.View[@content-desc='开关按钮']", "xpath", u"电源开关"]
         # 热水器模式
@@ -480,6 +478,10 @@ class MainPageWidgetAndroidAL(object):
         # 峰谷电价设置按钮
         d["peak_valley_button"] = [u"//android.view.View[contains(@content-desc, '峰谷时间')]", "xpath",
                                    u"峰谷电价设置按钮", {"px": [0.09, 0.5]}]
+        # 确定
+        d["confirm"] = [u"//android.view.View[@content-desc='确定']", "xpath", u"确定"]
+        # 取消
+        d["cancel"] = [u"//android.view.View[@content-desc='取消']", "xpath", u"取消"]
         # 返回按钮
         d["to_return"] = [u"//android.view.View[@content-desc='取消']", "xpath", u"返回"]
         return d
@@ -553,15 +555,6 @@ class MainPageWidgetAndroidAL(object):
         d = {}
         # 标题
         d["title"] = [u"//android.view.View[@content-desc='用电数据']", "xpath", u"用电数据页面"]
-        price_time = {}
-        price_value = {}
-        for i in xrange(24):
-            price_time[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View" % (i + 2)
-            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % (i + 2)
-        # 电量时间
-        d["elec_time"] = [price_time, "xpath", u"电量时间"]
-        # 电量值
-        d["elec_value"] = [price_value, "xpath", u"电量值"]
         # 日
         d["day"] = [u"//android.view.View[@content-desc='日']", "xpath", u"日"]
         # 周
@@ -570,30 +563,49 @@ class MainPageWidgetAndroidAL(object):
         d["month"] = [u"//android.view.View[@content-desc='月']", "xpath", u"月"]
         # 年
         d["year"] = [u"//android.view.View[@content-desc='年']", "xpath", u"年"]
+        # 电费电量统计周期
+        d["elec_time"] = ["//android.view.View[3]/android.view.View[7]", "xpath", u"电费电量统计周期"]
+        # 当前年月
+        d["now_year_month"] = ["//android.view.View[11]/android.view.View", "xpath", u"当前年月"]
+        # 更多用电历史
+        d["more_elec_history"] = [u"//android.view.View[@content-desc='更多']", "xpath", u"更多"]
         # 返回按钮
-        d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
+        d["to_return"] = ["//android.webkit.WebView/android.view.View", "xpath", u"返回"]
         return d
 
+    # 更多用电历史页面
+    def more_elec_history_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[contains(@content-desc, '月用电历史')]", "xpath", u"更多用电历史页面"]
+        day_elec = {}
+        for i in xrange(31):
+            day_elec[i] = "//android.view.View[3]/android.view.View[%s]/android.view.View" % (i + 3)
+        # 电量日期
+        d["day_elec"] = [day_elec, "xpath", u"电量日期"]
+        # 返回按钮
+        d["to_return"] = ["//android.webkit.WebView/android.view.View", "xpath", u"返回"]
+        return d
+
+    # 日用电历史页面
+    def day_elec_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[contains(@content-desc, '日用电历史')]", "xpath", u"更多用电历史页面"]
+        price_time = {}
+        price_value = {}
+        for i in xrange(24):
+            price_time[i] = "//android.view.View[3]/android.view.View[%s]/android.view.View" % (i + 2)
+            price_value[i] = "//android.webkit.WebView/android.widget.ListView[%s]/android.view.View[2]" % (i + 2)
+        # 电量时间
+        d["elec_time"] = [price_time, "xpath", u"电量时间"]
+        # 电量值
+        d["elec_value"] = [price_value, "xpath", u"电量值"]
+        # 返回按钮
+        d["to_return"] = ["//android.webkit.WebView/android.view.View", "xpath", u"返回"]
+        return d
 
 class PopupWidgetAndroidAL(object):
-    # 设备升级确认弹窗
-    # def update_popup(self):
-    #     d = {}
-    #     d["title"] = ["com.jd.smart:id/title", "id", u"有更新", {"text": u"更新提示"}]
-    #     # 更新
-    #     d["confirm"] = ["com.jd.smart:id/confirm", "id", u"更新"]
-    #     # 检查更新
-    #     d["cancel"] = ["com.jd.smart:id/cancel", "id", u"稍后提醒"]
-    #     return d
-    #
-    # def close_ad_popup(self):
-    #     d = {}
-    #     # 广告关闭键
-    #     # d["title"] = [u"操作失败，账号在其他手机登录，请确认是否本人使用。", "name", u"提示 - 重新登录"]
-    #     d["title"] = ["com.jd.smart:id/close_pop_for_top_news", "id", u"发现广告"]
-    #     # 确认
-    #     d["confirm"] = ["com.jd.smart:id/close_pop_for_top_news", "id", u"确认"]
-    #     return d
     # 添加设备弹窗
     def add_device_popup(self):
         d = {}

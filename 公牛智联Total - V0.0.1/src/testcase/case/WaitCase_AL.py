@@ -108,9 +108,49 @@ class WaitCaseAL(object):
         database["case_location"] = self.No
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])
-            # self.write_report(JDAppLogin1)  # 0000, 京东微联APP账号登录
-            self.write_report(JDAppCompatibility1)  # 1272, 在TP-link品牌的路由器下添加设备检查
-            self.write_report(JDAppElectricityMeter1)  # 1117, 电量统计2H功能及精度检查
+            self.write_report(ALAppCmp1)  # 431, FUT_CMP_不同型号手机是否能正常添加设备
+            self.write_report(ALAppCrossTimer1)  # 519, FUT_CROSSTIMER_普通定时、循环定时、延时定时交叉设置后定时执行
+            self.write_report(ALAppCycleTimer1)  # 470, FUT_CYCLETIMER_循环定时设置永久循环执行（1分钟开1分钟关）
+            self.write_report(ALAppCycleTimer2)  # 471, FUT_CYCLETIMER_循环定时执行过程中手动切换设备状态
+            self.write_report(ALAppCycleTimer3)  # 482, FUT_CYCLETIMER_循环定时5次
+            self.write_report(ALAppCycleTimer4)  # 483, FUT_CYCLETIMER_循环定时1次
+            self.write_report(ALAppDelayTimer1)  # 469, FUT_DELAYTIMER_延时定时一分钟开关
+            self.write_report(ALAppDelayTimer2)  # 468, FUT_DELAYTIMER_延迟定时一小时开
+            self.write_report(ALAppDelayTimer3)  # 466, FUT_DELAYTIMER_延迟定时5分钟开
+            self.write_report(ALAppDelayTimer4)  # 465, FUT_DELAYTIMER_延时定时23小时59分钟开
+            self.write_report(ALAppEem1)  # 559, FUT_EEM_峰谷电价设置
+            self.write_report(ALAppEem2)  # 558, FUT_EEM_用电图表显示周期设置
+            self.write_report(ALAppEem3)  # 551, FUT_EEM_电价设置验证（待定）
+            self.write_report(ALAppEem4)  # 550, FUT_EEM_实时功率显示及精度检查
+            self.write_report(ALAppLogin1)  # 0000, 阿里智能APP账号登录
+            self.write_report(ALAppNormalTimer1)  # 517, FUT_NTIMER_冲突定时设置
+            self.write_report(ALAppNormalTimer2)  # 515, FUT_NTIMER_单次定时关
+            self.write_report(ALAppNormalTimer3)  # 513, FUT_NTIMER_单次定时开
+            self.write_report(ALAppNormalTimer4)  # 512, FUT_NTIMER_单日循环定时
+            self.write_report(ALAppNormalTimer5)  # 510, FUT_NTIMER_定时时间早于当前时间的永不循环定时设置
+            self.write_report(ALAppNormalTimer6)  # 508, FUT_NTIMER_隔天普通定时
+            self.write_report(ALAppNormalTimer7)  # 505, FUT_NTIMER_普通交叉定时
+            self.write_report(ALAppNormalTimer8)  # 497, FUT_NTIMER_每日循环普通定时
+            self.write_report(ALAppNormalTimer9)  # 494, FUT_NTIMER_普通定时最大组数设定
+            self.write_report(ALAppNormalTimer10)  # 488, FUT_NTIMER_普通定时设置后手动改变设备状态
+            self.write_report(ALAppNormalTimer11)  # 417, FUT_NTIMER_普通定时循环信息检查
+            self.write_report(ALAppSmartLink1)  # 498, FUT_SMTLNK_app能正常添加设备_按分类查找
+            self.write_report(ALAppSwitch1)  # 517, FUT_NTIMER_冲突定时设置
+            self.write_report(ALAppTimerFish1)  # 442, FUT_MTIMER_FISH_鱼缸模式开启1分钟，关闭1分钟功能是否正常
+            self.write_report(ALAppTimerFish2)  # 441, FUT_MTIMER_FISH_鱼缸模式开启1小时，关闭1小时功能是否正常
+            self.write_report(ALAppTimerFish3)  # 440, FUT_MTIMER_FISH_鱼缸模式开启2分钟，关闭2分钟功能是否正常
+            self.write_report(ALAppTimerFish4)  # 438, FUT_MTIMER_FISH_鱼缸模式开启23小时59分钟，关闭23小时59分钟功能是否正常
+            self.write_report(ALAppTimerFish5)  # 436, FUT_MTIMER_FISH_鱼缸模式_循环1次
+            self.write_report(ALAppTimerFish6)  # 435, FUT_MTIMER_FISH_鱼缸模式_循环2次
+            self.write_report(ALAppTimerMos1)  # 461, FUT_MTIMER_MOS_电蚊香模式_延时功能（1min，2min，1h，23h59min，断电恢复）是否正常
+            self.write_report(ALAppTimerOvp1)  # 459, FUT_MTIMER_OVP_充电保护模式_延时功能（1min，2min，1h，23h59min，断电恢复）是否正常
+            self.write_report(ALAppTimerTime1)  # 450, FUT_MTIMER_TIME_当前时间在设定时间内模式时间执行
+            self.write_report(ALAppTimerTime2)  # 446, FUT_MTIMER_TIME_模式定时每日循环
+            self.write_report(ALAppTimerTime3)  # 445, FUT_MTIMER_TIME_模式定时每周日循环
+            self.write_report(ALAppTimerTime4)  # 444, FUT_MTIMER_TIME_循环定时每周一循环
+            self.write_report(ALAppTimerTime5)  # 443, FUT_MTIMER_TIME_模式定时状态下手动改变设备状态
+            self.write_report(ALAppTimerTime6)  # 434, FUT_MTIMER_TIME_设定关闭时间早于开启时间的模式定时执行
+            self.write_report(ALAppTimerTime7)  # 433, FUT_MTIMER_TIME_正常状态下模式定时
 
             database["program_loop_time"] += 1
             ports = [self.device_info["port"], self.device_info["bp_port"], self.device_info["wda_port"]]

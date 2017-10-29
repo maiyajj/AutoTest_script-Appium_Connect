@@ -1,5 +1,5 @@
 # coding=utf-8
-# 由IncrementalUpdate.py生成
+# 由CreateSomeFiles.py生成
 from src.testcase.page.AppPageElement import *
 
 
