@@ -4,6 +4,10 @@ from AppiumCommand_iOS import *
 
 
 class AppiumCommand(object):
+    """
+    API.
+    Re encapsulate the android & ios appium command.
+    """
     def __init__(self, phone_os):
         self.phone_os = phone_os
 

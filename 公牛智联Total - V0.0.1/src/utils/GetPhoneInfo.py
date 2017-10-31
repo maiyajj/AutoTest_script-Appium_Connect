@@ -9,9 +9,8 @@ class GetPhoneInfo(ShellCommand):
         print u"***            测试安卓手机可选择Windows或Mac OS            ***"
         print u"***  测试iPhone暂不支持Windows，请务必在Mac OS上进行测试！  ***"
         print u"***************************************************************"
-        pass
 
-    def selecte_port(self, selected_port):
+    def select_port(self, selected_port):
         while True:
             if self.find_proc_and_pid_by_port(selected_port) == []:
                 break
@@ -44,7 +43,7 @@ class GetPhoneInfo(ShellCommand):
         for k in device.keys():
             need_port = ["port", "bp_port", "wda_port"]
             for ports in need_port:
-                selected_port = self.selecte_port(selected_port)
+                selected_port = self.select_port(selected_port)
                 device[k][ports] = selected_port
                 selected_port += 1
         '''

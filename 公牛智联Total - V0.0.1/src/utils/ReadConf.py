@@ -7,10 +7,10 @@ import yaml
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-conf = yaml.load(file(r"config/Conf.yaml"))
+conf = dict(yaml.load(file(r"config/Conf.yaml")), **yaml.load(file(r"config/pwd.yaml")))
 
 
-def modified_conf(config):
+def modified_conf(config, pwd=False):
     with open(r"config/Conf.yaml", "w") as conf_yaml:
         conf_yaml.write("# 打开APP超时时间\n")
         conf_yaml.write("open_app_timeout: %s\n" % config["search_device_timeout"])
@@ -61,23 +61,22 @@ def modified_conf(config):
         conf_yaml.write("# Toast消息\n")
         conf_yaml.write("Toast:\n")
         conf_yaml.write("  login_password_mistake: [40, 1570, 1040, 1750]\n")
-        conf_yaml.write("# 用户名，（登录密码/旧密码）， 新密码\n")
-        conf_yaml.write("user_and_pwd:\n")
-        for k, v in config["user_and_pwd"].items():
-            conf_yaml.write("  %s:\n" % k)
-            conf_yaml.write("    app: '%s'\n" % v['app'].upper())
-            conf_yaml.write("    GN: \n")
-            conf_yaml.write("      user_name: '%s'\n" % v['GN']['user_name'])
-            conf_yaml.write("      login_pwd: '%s'\n" % v['GN']['login_pwd'])
-            conf_yaml.write("      new_pwd: '%s'\n" % v['GN']['new_pwd'])
-            conf_yaml.write("      precise_pwd: ['%s', '%s']\n" % (v['GN']['login_pwd'], v['GN']['new_pwd']))
-            conf_yaml.write("    JD: \n")
-            conf_yaml.write("      user_name: '%s'\n" % v['JD']['user_name'])
-            conf_yaml.write("      login_pwd: '%s'\n" % v['JD']['login_pwd'])
-            conf_yaml.write("      new_pwd: '%s'\n" % v['JD']['new_pwd'])
-            conf_yaml.write("      precise_pwd: ['%s', '%s']\n" % (v['JD']['login_pwd'], v['JD']['new_pwd']))
-            conf_yaml.write("    AL: \n")
-            conf_yaml.write("      user_name: '%s'\n" % v['AL']['user_name'])
-            conf_yaml.write("      login_pwd: '%s'\n" % v['AL']['login_pwd'])
-            conf_yaml.write("      new_pwd: '%s'\n" % v['AL']['new_pwd'])
-            conf_yaml.write("      precise_pwd: ['%s', '%s']\n" % (v['AL']['login_pwd'], v['AL']['new_pwd']))
+        if pwd is True:
+            with open(r"config/pwd.yaml", "w") as conf_yaml:
+                conf_yaml.write("# 邮箱用户名密码\n")
+                conf_yaml.write("mail_pwd:\n")
+                for k, v in config["mail_pwd"].items():
+                    conf_yaml.write("  %s:\n" % k)
+                    conf_yaml.write("    user_name: '%s'\n" % v['user_name'])
+                    conf_yaml.write("    pwd: '%s'\n" % v['pwd'])
+                conf_yaml.write("# 用户名，（登录密码/旧密码）， 新密码\n")
+                conf_yaml.write("user_and_pwd:\n")
+                for k, v in config["user_and_pwd"].items():
+                    conf_yaml.write("  %s:\n" % k)
+                    conf_yaml.write("    app: '%s'\n" % v['app'].upper())
+                    for v1, v2 in v.items():
+                        conf_yaml.write("  %s:\n" % v1)
+                        conf_yaml.write("      user_name: '%s'\n" % v[v2]['user_name'])
+                        conf_yaml.write("      login_pwd: '%s'\n" % v[v2]['login_pwd'])
+                        conf_yaml.write("      new_pwd: '%s'\n" % v[v2]['new_pwd'])
+                        conf_yaml.write("      precise_pwd: ['%s', '%s']\n" % (v[v2]['login_pwd'], v[v2]['new_pwd']))

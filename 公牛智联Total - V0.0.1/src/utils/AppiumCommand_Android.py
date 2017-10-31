@@ -4,6 +4,9 @@ import time
 
 
 class AppiumCommandAndroid(object):
+    """
+    Re encapsulate the android appium command.
+    """
     def send_keys(self, element, keys, driver):
         time.sleep(0.1)
         element.send_keys(keys)
@@ -34,6 +37,9 @@ class AppiumCommandAndroid(object):
         driver.hide_keyboard()
 
     def get_location(self, element):
+        """
+        Get the centre location of element.
+        """
         location = element.location
         size = element.size
         location = dict(location, **size)

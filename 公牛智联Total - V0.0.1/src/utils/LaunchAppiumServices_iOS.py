@@ -8,6 +8,9 @@ from ShellCommand import *
 
 
 class LaunchAppiumServicesIos(object):
+    """
+    Start appium service for ios system.
+    """
     def __init__(self, device_info):
         self.device_info = device_info
         self.port = self.device_info["port"]

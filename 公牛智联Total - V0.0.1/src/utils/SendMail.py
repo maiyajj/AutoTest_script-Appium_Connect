@@ -11,18 +11,17 @@ from email.utils import parseaddr, formataddr
 class Mailer(object):
     def __init__(self, **kwargs):
         self.mail_list = kwargs["mail_list"]
-        self.mail_title = kwargs["mail_title"]
-        self.mail_content = kwargs["mail_content"]
         self.file_path = kwargs["file_path"]
+        self.mail_pwd = kwargs["mail_pwd"]
 
         self.mail_host = "smtp.163.com"
-        self.mail_user = "chenghao961012@163.com"
-        self.mail_pass = "{0.873A976S081!?"
-        self.mail_postfix = "163.com"
+        self.mail_user = self.mail_pwd["163"]["user_name"].decode("hex")
+        self.mail_pass = self.mail_pwd["163"]["pwd"].decode("hex")
+        self.mail_postfix = self.mail_user.split("@")[1]
 
     def send_mail(self):
 
-        me = self.mail_user + "<" + self.mail_user + "@" + self.mail_postfix + ">"
+        me = "%s<%s@%s>" % (self.mail_user, self.mail_user, self.mail_postfix)
         msg = MIMEMultipart()
         msg['Subject'] = u'自动化测试结果输出'
         msg['From'] = self.format_addr(u'自动化测试 <%s>' % me)

@@ -4,6 +4,10 @@ from LaunchAppiumServices_iOS import *
 
 
 class LaunchAppiumServices(object):
+    """
+    Start the corresponding appium service according to the phone system.
+    """
+
     def __init__(self, device_list, device_name):
         self.device_info = device_list[device_name]
         self.phone_os = self.device_info["platformName"]

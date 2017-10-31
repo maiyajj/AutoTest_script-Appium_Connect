@@ -4,6 +4,9 @@ import time
 
 
 class AppiumCommandIos(object):
+    """
+    Re encapsulate the ios appium command.
+    """
     def send_keys(self, element, value, driver):
         element.set_value(value)
         time.sleep(0.1)
@@ -63,6 +66,10 @@ class AppiumCommandIos(object):
         return attribute_value
 
     def hide_keyboard(self, element, driver):
+        """
+        hide_keyboard doesn`t work in ios.
+        So click on the top left corner of the keyboard.
+        """
         location = element.location
         x = location["x"] - 1
         y = location["y"] - 1
@@ -70,6 +77,9 @@ class AppiumCommandIos(object):
         driver.hide_keyboard()
 
     def get_location(self, element):
+        """
+        Get the centre location of element.
+        """
         location = element.location
         size = element.size
         location = dict(location, **size)
