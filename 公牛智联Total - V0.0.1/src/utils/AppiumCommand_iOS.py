@@ -7,6 +7,7 @@ class AppiumCommandIos(object):
     """
     Re encapsulate the ios appium command.
     """
+
     def send_keys(self, element, value, driver):
         element.set_value(value)
         time.sleep(0.1)

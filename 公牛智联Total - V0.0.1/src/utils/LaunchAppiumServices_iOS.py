@@ -11,6 +11,7 @@ class LaunchAppiumServicesIos(object):
     """
     Start appium service for ios system.
     """
+
     def __init__(self, device_info):
         self.device_info = device_info
         self.port = self.device_info["port"]
@@ -91,4 +92,3 @@ class LaunchAppiumServicesIos(object):
             shutil.rmtree("./screenshots/%s" % self.folder, True)
             if os.path.isdir("./screenshots/%s" % self.folder) is False:
                 os.makedirs("./screenshots/%s" % self.folder)
-

@@ -7,6 +7,7 @@ class AppiumCommandAndroid(object):
     """
     Re encapsulate the android appium command.
     """
+
     def send_keys(self, element, keys, driver):
         time.sleep(0.1)
         element.send_keys(keys)
