@@ -379,7 +379,7 @@ class WidgetOperationJD(LaunchAppJD):
                     elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                     # if index >= now_h + 2:
                     elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-                    self.logger.info("[APP_INFO]23:01_elec_bill:%s" % str(elec_bill))
+                    self.logger.info("[APP_INFO]23:01_elec_bill:%s" % elec_bill)
 
             self.widget_click(self.page["elec_bill_page"]["to_return"],
                               self.page["control_device_page"]["title"])
@@ -394,7 +394,7 @@ class WidgetOperationJD(LaunchAppJD):
                     elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                     # if index >= now_h + 2:
                     elec[index] = self.ac.get_attribute(elec_value, "name")
-                    self.logger.info("[APP_INFO]23:01_elec:%s" % str(elec))
+                    self.logger.info("[APP_INFO]23:01_elec:%s" % elec)
 
             self.widget_click(self.page["elec_page"]["to_return"],
                               self.page["control_device_page"]["title"])
@@ -416,7 +416,7 @@ class WidgetOperationJD(LaunchAppJD):
                 elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                 # if index <= now_h + 1:
                 elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-                self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (check_time, str(elec_bill)))
+                self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (check_time, elec_bill))
 
         self.widget_click(self.page["elec_bill_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -430,7 +430,7 @@ class WidgetOperationJD(LaunchAppJD):
                 elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                 # if index <= now_h + 1:
                 elec[index] = self.ac.get_attribute(elec_value, "name")
-                self.logger.info("[APP_INFO]%02d:01_elec:%s" % (check_time, str(elec)))
+                self.logger.info("[APP_INFO]%02d:01_elec:%s" % (check_time, elec))
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])

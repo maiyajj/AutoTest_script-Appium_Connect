@@ -3,7 +3,6 @@ try:
     from src.testcase.case.WaitCase import *
 except ImportError:
     pass
-from src.utils.LaunchAppiumServices import *
 from src.utils.SendMail import *
 
 _main_version = ""
@@ -12,6 +11,9 @@ _build_version = ""
 
 class CreateFunc(object):
     def create_ReadAPPElement(self, func1, func2):
+        app_list = {"AL": "阿里智能",
+                    "GN": "公牛智联",
+                    "JD": "京东微联"}
         app = str(func1.__name__)[-2:].upper()
         a = []
         b = []
@@ -28,14 +30,19 @@ class CreateFunc(object):
             files.write("# 由CreateSomeFiles.py生成\n")
             files.write("from src.testcase.page.AppPageElement import *\n\n\n")
             files.write("class PageElement%s(object):\n" % app)
+            files.write('    """\n')
+            files.write('    %sApp all page element\n' % app_list[app])
+            files.write('    """\n')
+            files.write('    \n')
             files.write("    def __init__(self, device, phone_os, app):\n")
             files.write("        self.mpw = MainPageWidget(phone_os, app).wrapper()\n")
-            files.write("        self.device = device\n\n")
+            files.write("        self.device = device\n")
+            files.write("    \n")
             files.write("    def get_page_element(self):\n")
             files.write('''        self.device["page"] = {}\n''')
             for i in a:
                 files.write('''        self.device["page"]["{0}"] = self.mpw.{0}()\n'''.format(i))
-            files.write('''\n''')
+            files.write('''        \n''')
             for i in b:
                 files.write('''        self.device["page"]["{0}"] = self.mpw.{0}()\n'''.format(i))
 

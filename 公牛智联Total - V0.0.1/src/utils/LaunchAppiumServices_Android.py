@@ -44,7 +44,7 @@ class LaunchAppiumServicesAndroid(object):
 
         # appium服务调用进程链的pid，name等信息，每次运行程序前会清空，而运行时追加，所以写在while True外面.
         with open(os.path.join(self.sc.set_appium_log_addr(), "appium_port_%s.txt" % self.log_name), "w") as files:
-            # Popen(command, shell=True)语句是阻塞式，如果appium服务崩溃则会继续往下执行然后回到while True.
+            # Popen(command, shell=True)语句是非阻塞式，如果appium服务崩溃则会继续往下执行然后回到while True.
             while True:
                 # appium服务日志存放目录
                 log = os.path.join(log_tmp, "%s-[%s].log" % (self.log_name, time.strftime("%Y-%m-%d %H-%M-%S")))
@@ -59,9 +59,11 @@ class LaunchAppiumServicesAndroid(object):
                     filess.write(command.replace(' -g "%s"' % log, "") + "\n")
                     filess.write("from appium import webdriver" + "\n")
 
-                # Start appium services.
+                # 启动Appium服务，非阻塞式服务.
                 appium_proc = Popen(command, shell=True)
                 appium_pid = [appium_proc.pid]
+                # 获取所有Appium调用的进程pid
+                # appium_proc是非阻塞式，命令启动后轮询检测指定端口，检测端口已开启则判断Appium服务已开启。
                 while True:
                     port = self.sc.find_proc_and_pid_by_port(self.port)
                     bp_port = self.sc.find_proc_and_pid_by_port(self.bp_port)
@@ -71,33 +73,36 @@ class LaunchAppiumServicesAndroid(object):
                             if child_proc != []:
                                 for x in child_proc:
                                     appium_pid.append(x.pid)
-                                    print x.pid, x.name(), x.parent()
-                                    files.write(str(x.pid) + x.name() + str(x.parent()) + "\n")
-                        files.write(str(appium_pid) + "\n")
+                                    files.write("pid:%s; name:%s parent:%s\n" % (x.pid, x.name(), x.parent()))
+                        files.write("%s\n" % appium_pid)
                         break
                     else:
                         time.sleep(3)
 
+                # 轮询检测端口占用，若端口已关闭则重启Appium服务。
+                # 优先关闭子进程，关闭所有子进程后再关闭主进程。
+                appium_pid = list(reversed(appium_pid))  # 将主进程pid换至表尾
                 while True:
-                    if self.sc.find_proc_and_pid_by_port(self.port) == []:
-                        for i in appium_pid[1:]:
-                            try:
-                                psutil.Process(i).kill()
-                            except psutil.NoSuchProcess:
-                                pass
-                        appium_proc.kill()
+                    port = self.sc.find_proc_and_pid_by_port(self.port)
+                    bp_port = self.sc.find_proc_and_pid_by_port(self.bp_port)
+                    if port == [] or bp_port == []:
+                        for i in appium_pid:
+                            self.sc.kill_proc_by_pid(i)
                         break
                     else:
                         time.sleep(3)
-                        files.write(time.strftime("%Y-%m-%d %H-%M-%S") + ":" + str(self.port) + "," + str(port) + "\n")
-
+                        files.write("%s:%s,%s\n" % (time.strftime("%Y-%m-%d %H-%M-%S"), self.port, port))
+    
     def create_adb_folder(self):
+        """
+        Create screenshot folder in phone.
+        """
         command = "adb -s %s shell mkdir /sdcard/Appium" % self.udid
         os.popen(command)
-
+    
         command = "adb -s %s shell mkdir /sdcard/Appium/%s" % (self.udid, self.folder)
         os.popen(command)
-
+    
         try:
             os.makedirs("./screenshots/%s" % self.folder)
         except WindowsError:

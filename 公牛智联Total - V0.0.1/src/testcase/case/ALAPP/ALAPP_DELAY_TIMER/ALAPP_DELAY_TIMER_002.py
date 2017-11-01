@@ -33,7 +33,7 @@ class ALAppDelayTimer2(WidgetOperationAL):
 
         attribute = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["launch_mode"]), "name")
         if attribute != u"延时任务开":
-            raise TimeoutException("mode launch failed, current:%s" % str([attribute]))
+            raise TimeoutException("mode launch failed, current:%s" % [attribute])
 
         self.widget_click(self.page["control_device_page"]["to_return"],
                           self.page["app_home_page"]["title"])

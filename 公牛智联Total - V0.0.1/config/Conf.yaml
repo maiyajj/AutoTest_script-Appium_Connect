@@ -8,15 +8,12 @@ request_timeout: 30
 offline_recovery_timeout: 10
 # 程序操作等待时间
 operate_wait_time: 0.1
-# 待添加的设备
+# 待添加的设备Mac
 MAC:
   JD:
-    0:
-      'C4-11-E0-00-BE-F6'
+    0: 'C4-11-E0-00-BE-F6'
   AL:
-    0:
-      'C4:11:E0:00:00:00'
-
+    0: 'C4:11:E0:00:00:00'
 # 电量计量设备备注名
 Elec_stat_mac: ['Elec_test_1', 'Elec_test_2', 'Elec_test_3', 'Elec_test_4', 'Elec_test_5', 'Elec_test_6', 'Elec_test_7', 'Elec_test_8', 'Elec_test_9', 'Elec_test_10']
 # 错误密码
@@ -27,22 +24,22 @@ wifi_pwd: '696f74313233343536'
 App:
   GN_Android:
     appPackage: 'com.iotbull.android.superapp'
-    appActivity: 'com.iotbull.android.superapp.activitys.regist_login.SplashActivity'
     waitActivity: 'com.iotbull.android.superapp/.activitys.regist_login.LoginActivity'
-  GN_iOS:
-    bundleId: 'com.eamon.gongniu'
-  JD_Android:
-    appPackage: 'com.jd.smart'
-    appActivity: 'com.jd.smart.activity.LoadingActivity'
-    waitActivity: 'com.jd.smart.activity.LoadingActivity'
-  JD_iOS:
-    bundleId: 'com.jd.smart'
-  AL_Android:
-    appPackage: 'com.aliyun.alink'
-    appActivity: 'com.aliyun.alink.page.main.MainActivity'
-    waitActivity: 'com.aliyun.alink.page.main.MainActivity'
+    appActivity: 'com.iotbull.android.superapp.activitys.regist_login.SplashActivity'
   AL_iOS:
     bundleId: 'com.aliyun.alink'
+  JD_Android:
+    appPackage: 'com.jd.smart'
+    waitActivity: 'com.jd.smart.activity.LoadingActivity'
+    appActivity: 'com.jd.smart.activity.LoadingActivity'
+  JD_iOS:
+    bundleId: 'com.jd.smart'
+  GN_iOS:
+    bundleId: 'com.eamon.gongniu'
+  AL_Android:
+    appPackage: 'com.aliyun.alink'
+    waitActivity: 'com.aliyun.alink.page.main.MainActivity'
+    appActivity: 'com.aliyun.alink.page.main.MainActivity'
 # Toast消息
 Toast:
   login_password_mistake: [40, 1570, 1040, 1750]

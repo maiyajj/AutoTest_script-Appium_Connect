@@ -1,5 +1,4 @@
 # coding=utf-8
-import os
 import smtplib
 from email.header import Header
 from email.mime.application import MIMEApplication
@@ -7,20 +6,30 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import parseaddr, formataddr
 
+from ShellCommand import *
+
 
 class Mailer(object):
+    """
+    The function of sending an email.
+    """
+    
     def __init__(self, **kwargs):
         self.mail_list = kwargs["mail_list"]
         self.file_path = kwargs["file_path"]
         self.mail_pwd = kwargs["mail_pwd"]
 
         self.mail_host = "smtp.163.com"
-        self.mail_user = self.mail_pwd["163"]["user_name"].decode("hex")
-        self.mail_pass = self.mail_pwd["163"]["pwd"].decode("hex")
+        self.mail_user = self.mail_pwd[163]["user_name"].decode("hex")
+        self.mail_pass = self.mail_pwd[163]["pwd"].decode("hex")
         self.mail_postfix = self.mail_user.split("@")[1]
 
-    def send_mail(self):
+        self.sc = ShellCommand()
 
+        log_tmp = os.path.join(self.sc.set_appium_log_addr(), "AutoTestGNApp/%s" % time.strftime("%Y-%m-%d %H-%M"))
+        self.mail_error = os.path.join(log_tmp, "mail_error.log")
+    
+    def send_mail(self):
         me = "%s<%s@%s>" % (self.mail_user, self.mail_user, self.mail_postfix)
         msg = MIMEMultipart()
         msg['Subject'] = u'自动化测试结果输出'
@@ -67,9 +76,10 @@ class Mailer(object):
             s.close()
             return True
         except Exception, e:
-            print str(e)
+            with open(self.mail_error, "a") as files:
+                files.write(str(e))
             return False
-
+    
     def format_addr(self, s):
         name, addr = parseaddr(s)
         return formataddr(

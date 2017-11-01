@@ -38,6 +38,6 @@ class GNAppAccountSettings8(LaunchAppGN):
         element = self.wait_widget(self.page["personal_settings_page"]["nickname"])
         modified_nickname = self.ac.get_attribute(element, "name")
         if modified_nickname != u"被修改的昵称":
-            raise TimeoutException("nickname is different from modified_nickname,current %s" % str([modified_nickname]))
+            raise TimeoutException("nickname is different from modified_nickname,current %s" % [modified_nickname])
 
         self.case_over(True)

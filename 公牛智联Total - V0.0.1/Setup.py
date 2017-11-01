@@ -15,6 +15,7 @@ __build_version__ = ""
 class MainFunc(object):
     """
     """
+
     def run(self, device_list, device_name):
         """
         One process launch appium services.
@@ -40,20 +41,9 @@ class MainFunc(object):
         kwargs = {"mail_list": mail_list,
                   "mail_pwd": conf["mail_pwd"]}
 
-        # The main process cannot get data from the child process.
-        # Writes the child process data to the local file and is read by the main process.
-        # It seems to work.
-        # TODO: One way to achieve the main process to get the child process data.
-        file_path = os.path.join(ShellCommand().set_appium_log_addr(), "temp.log")
-        while True:
-            try:
-                with open(file_path, "r") as files:
-                    parent_path = files.read()
-                    os.remove(file_path)
-                    break
-            except BaseException:
-                time.sleep(1)
-
+        # Get report xls from child process, is blocking!
+        parent_path = database["multi_queue"].get()
+        
         # Scan the root directory to get the files you want to send by mail.
         file_list = []
         for parent, dirnames, filenames in os.walk(parent_path):
@@ -77,6 +67,11 @@ if __name__ == '__main__':
     device_list = AppInit().app_init()
     print device_list
     mf = MainFunc()
+
+    # Create a multi-process communication channel
+    # multiprocess.Queue()
+    # main process can get data from child process
+    database["multi_queue"] = Queue()
     
     scan_case = Process(target=scan_case_name)
     scan_case.start()

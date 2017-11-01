@@ -5,6 +5,8 @@ import os
 import time
 
 
+# Create report file.
+# Record the result of launch case.
 def init_report(file_name, report1):
     logging.basicConfig(level=logging.INFO)  # 设置打印级别
     formatter = logging.Formatter("%(message)s")  # log文件写入内容，此处为正文
@@ -24,9 +26,8 @@ def check_report(device_list, device_name):
         try:
             os.makedirs(log_report)
         except OSError:
-            import traceback
-            print traceback.format_exc()
-
+            pass
+    
     if os.path.exists(r"./screenshots/") is False:
         os.makedirs(r"./screenshots/")
 

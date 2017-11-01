@@ -6,11 +6,16 @@ from ReadAPPElement_JD import *
 
 
 class PageElement(object):
+    """
+    All app page element..
+    :return page element dict
+    """
+    
     def __init__(self, device, phone_os, app):
         self.phone_os = phone_os
         self.device = device
         self.app = app
-
+    
     def wrapper(self):
         if self.app == "GN":
             return PageElementGN(self.device, self.phone_os, self.app).get_page_element()

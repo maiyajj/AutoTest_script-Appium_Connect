@@ -3,6 +3,7 @@ import datetime
 
 from xlwt import *
 
+from data.Database import *
 from src.utils.ShellCommand import *
 
 '''
@@ -27,6 +28,9 @@ style.alignment = alignment
 '''
 
 
+# For write excel report.
+# report format is .xls
+# need some other functions, you can modified by yourself.
 class WriteXls(object):
     def __init__(self, device_list, device_name):
         self.device_list = device_list
@@ -35,6 +39,7 @@ class WriteXls(object):
         self.debug = self.device_info["debug"]
         self.run()
 
+    # 单元格格式
     def easy_xf(self):
         self.easyxf1 = easyxf(
             u'font: height 320, name 宋体, colour_index 70, bold on; align: wrap on, vert top, horiz left; borders: top thin, left thin, right thin;')
@@ -76,22 +81,21 @@ class WriteXls(object):
             u'font: height 220, name 宋体; align: wrap on, horiz centre; borders: top thin, bottom thin, left thin, right thin;',
             num_format_str="0%")
 
+    # 检查设备报告路径是否存在
     def check_path(self):
         current_time = time.strftime("%Y-%m-%d_%H.%M")
         parent_path = r"./report/xls_report/%s" % current_time
-        file_path = ShellCommand().set_appium_log_addr()
-        with open(os.path.join(file_path, "temp.log"), "w") as files:
-            files.write(str(parent_path))
+        database["multi_queue"].put(parent_path)
         if os.path.exists(parent_path) is False:
             try:
                 os.makedirs(parent_path)
             except OSError:
-                import traceback
-                print traceback.format_exc()
+                pass
 
-        self.sheet_name = self.device_info["log_name"]
-        self.xls_file = r"%s/%s.xls" % (parent_path, self.sheet_name)
+        self.sheet_name = self.device_info["log_name"]  # sheet名称
+        self.xls_file = r"%s/%s.xls" % (parent_path, self.sheet_name)  # 文件路径及名称
 
+    # 启动脚本首先运行此函数，会生成报告雏形待填充数据
     def run(self):
         self.easy_xf()
         self.check_path()
@@ -104,6 +108,7 @@ class WriteXls(object):
         self.book.save(self.xls_file)
         return self.book
 
+    # 报告雏形设计，根据手动设计报告模板，使用函数实现
     def write_title(self):
         self.sheet.col(0).width = 256 * 15
         self.sheet.col(1).width = 256 * 70
@@ -140,6 +145,7 @@ class WriteXls(object):
         for i in write_list:
             self.sheet.write(row, write_list.index(i), i, self.easyxf5)
 
+    # 用例执行完毕调用此函数，写入测试报告数据。
     def write_data(self, row, Zentao, Name, end_time, Count=0, Pass=0, Fail=0, Error=0, Wait=0):
         '''
         'font: height 240, name Arial, colour_index black, bold on, italic on;'
@@ -172,6 +178,7 @@ class WriteXls(object):
         self.book.save(self.xls_file)
         self.write_total(row + 1, end_time)
 
+    # 根据用例执行结果，写入统计数据
     def write_total(self, row, end_times):
         self.total_row.append(row)
         self.total_row = list(set(self.total_row))

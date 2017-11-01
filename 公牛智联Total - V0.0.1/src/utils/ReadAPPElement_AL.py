@@ -4,10 +4,14 @@ from src.testcase.page.AppPageElement import *
 
 
 class PageElementAL(object):
+    """
+    阿里智能App all page element
+    """
+    
     def __init__(self, device, phone_os, app):
         self.mpw = MainPageWidget(phone_os, app).wrapper()
         self.device = device
-
+    
     def get_page_element(self):
         self.device["page"] = {}
         self.device["page"]["add_device_class_page"] = self.mpw.add_device_class_page()

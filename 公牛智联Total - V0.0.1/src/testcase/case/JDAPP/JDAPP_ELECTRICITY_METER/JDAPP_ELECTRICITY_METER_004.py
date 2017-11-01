@@ -43,7 +43,7 @@ class JDAppElectricityMeter4(WidgetOperationJD):
 
         attribute = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["set_elec"]), "name")
         if u"单一电价" not in attribute:
-            raise TimeoutException("set signal price is wrong, current mode is %s" % str([attribute]))
+            raise TimeoutException("set signal price is wrong, current mode is %s" % [attribute])
 
         # self.ac.swipe(0.5, 0.7, 0.5, 0.9, 0, self.driver)
 
@@ -69,7 +69,7 @@ class JDAppElectricityMeter4(WidgetOperationJD):
                 elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                 # if index >= now_h + 2:
                 elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-                self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (now_h + 2, str(elec_bill)))
+                self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (now_h + 2, elec_bill))
 
         self.widget_click(self.page["elec_bill_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -84,7 +84,7 @@ class JDAppElectricityMeter4(WidgetOperationJD):
                 elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                 # if index >= now_h + 2:
                 elec[index] = self.ac.get_attribute(elec_value, "name")
-                self.logger.info("[APP_INFO]23:01_elec:%s" % str(elec))
+                self.logger.info("[APP_INFO]23:01_elec:%s" % elec)
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -150,7 +150,7 @@ class JDAppElectricityMeter4(WidgetOperationJD):
 
         attribute = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["set_elec"]), "name")
         if u"峰谷时间段电价" not in attribute:
-            raise TimeoutException("set peak valley price is wrong, current mode is %s" % str([attribute]))
+            raise TimeoutException("set peak valley price is wrong, current mode is %s" % [attribute])
 
         # self.ac.swipe(0.5, 0.7, 0.5, 0.9, 0, self.driver)
 

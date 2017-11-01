@@ -4,10 +4,14 @@ from src.testcase.page.AppPageElement import *
 
 
 class PageElementJD(object):
+    """
+    京东微联App all page element
+    """
+    
     def __init__(self, device, phone_os, app):
         self.mpw = MainPageWidget(phone_os, app).wrapper()
         self.device = device
-
+    
     def get_page_element(self):
         self.device["page"] = {}
         self.device["page"]["account_setting_page"] = self.mpw.account_setting_page()
