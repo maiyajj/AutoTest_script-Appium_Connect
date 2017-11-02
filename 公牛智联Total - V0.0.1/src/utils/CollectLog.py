@@ -20,14 +20,15 @@ def check_log(device_list, device_name):
     log_name = device_list[device_name]["log_name"]
     udid = device_list[device_name]["udid"]
     current_time = time.strftime("%Y-%m-%d_%H.%M")
-    if os.path.exists(r"./log/%s" % current_time) is False:
+    log_path = r"./log/%s" % current_time
+    if os.path.exists(log_path) is False:
         # 多进程打印可能存在冲突，忽略即可
         try:
-            os.makedirs(r"./log/%s" % current_time)
+            os.makedirs(log_path)
         except OSError:
             pass
 
-    logger_name = r"./log/%s/Log_%s - [%s].log" % (current_time, log_name, udid)
+    logger_name = r"%s/Log_%s - [%s].log" % (log_path, log_name, udid)
     device_list[device_name]["logger"] = init_log(logger_name, logging.getLogger("Log_%s" % udid))
 
     logging.shutdown()

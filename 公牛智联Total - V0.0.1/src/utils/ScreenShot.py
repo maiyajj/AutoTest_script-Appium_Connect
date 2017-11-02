@@ -6,6 +6,7 @@ import time
 from data.Database import *
 
 
+# FIXME：This module is not currently used. This module used for android toast.
 class ScreenShot(object):
     def __init__(self, device_info, zentao_id, basename, logger):
         self.device_info = device_info
@@ -16,9 +17,9 @@ class ScreenShot(object):
 
     def run(self):
         folder = "%s{%s}" % (self.device_info["model"], self.device_info["udid"])
-        screen_shot = r"%s/%s - %s - %s - [%s]-[%s].png" \
-                      % (folder, database["program_loop_time"], database["case_location"],
-                         self.zentao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S"))
+        screen_shot = (r"%s/%s - %s - %s - [%s]-[%s].png"
+                       % (folder, database["program_loop_time"], database["case_location"],
+                          self.zentao_id, self.basename, time.strftime("%Y-%m-%d %H_%M_%S")))
         adb_screen = "%s/%s{%s}.png" % (folder, self.zentao_id, time.strftime("%Y-%m-%d.%H_%M_%S"))
         print screen_shot, adb_screen
         command = "adb -s %s shell /system/bin/screencap -p /sdcard/Appium/%s" % (self.device_info["udid"], adb_screen)

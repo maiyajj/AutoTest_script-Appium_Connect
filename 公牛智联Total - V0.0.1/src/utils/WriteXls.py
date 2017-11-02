@@ -113,13 +113,13 @@ class WriteXls(object):
         self.sheet.col(0).width = 256 * 15
         self.sheet.col(1).width = 256 * 70
         for i in xrange(2, 8):
-            self.sheet.col(i).width = 256 * 11
+            self.sheet.col(i).width = 256 * 11  # 设置单元格宽度
 
-        self.sheet.write_merge(0, 1, 0, 7, u"测试报告", self.easyxf1)
+        self.sheet.write_merge(0, 1, 0, 7, u"测试报告", self.easyxf1)  # 写合并单元格(x,x,y,y)
         self.sheet.write_merge(2, 2, 0, 7, "", self.easyxf3)
 
         self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
-        self.sheet.write(3, 0, u"开始时间：", self.easyxf9)
+        self.sheet.write(3, 0, u"开始时间：", self.easyxf9)  # 写单元格(x, y)
         self.sheet.write_merge(3, 3, 1, 7, self.start_time, self.easyxf2)
 
         self.sheet.write(4, 0, u"结束时间：", self.easyxf9)
@@ -171,8 +171,8 @@ class WriteXls(object):
         self.sheet.write(row, 4, Fail, self.easyxf10)
         self.sheet.write(row, 5, Error, self.easyxf10)
         self.sheet.write(row, 6, Wait, self.easyxf10)
-        formula = 'IF({3}{0}>0,"Error",IF({2}{0}>0,"Fail",IF({4}{0}>0,"Wait",IF({1}{0}>0,"Pass",""))))'. \
-            format(row + 1, chr(68), chr(69), chr(70), chr(71))
+        formula = ('IF({3}{0}>0,"Error",IF({2}{0}>0,"Fail",IF({4}{0}>0,"Wait",IF({1}{0}>0,"Pass",""))))'.
+                   format(row + 1, chr(68), chr(69), chr(70), chr(71)))  # 写excel公式，由Excel软件设计好再写入代码, chr(68)="D"
         self.sheet.write(row, 7, Formula(formula), self.easyxf6)
 
         self.book.save(self.xls_file)
@@ -204,8 +204,8 @@ class WriteXls(object):
         continue_time = end_time - start_time
         self.sheet.write_merge(5, 5, 1, 7, str(continue_time), self.easyxf2)
 
-        formula = u'"通过 "&COUNTIF(H13:H{0},"Pass")&"； 失败 "&COUNTIF(H13:H{0},"Fail")&"； 执行错误 "&' \
-                  u'COUNTIF(H13:H{0},"Error")&"； 人工检查 "&COUNTIF(H13:H{0},"Wait")&"；"'.format(total_row)
+        formula = (u'"通过 "&COUNTIF(H13:H{0},"Pass")&"； 失败 "&COUNTIF(H13:H{0},"Fail")&"； 执行错误 "&'
+                   u'COUNTIF(H13:H{0},"Error")&"； 人工检查 "&COUNTIF(H13:H{0},"Wait")&"；"'.format(total_row))
         self.sheet.write_merge(6, 6, 1, 7, Formula(formula), self.easyxf2)
 
         self.sheet.write_merge(7, 7, 1, 7, len(set(self.case_count)), self.easyxf2)

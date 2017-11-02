@@ -166,9 +166,9 @@ class WaitCaseAL(object):
             case = case_name(**self.device_info_list).run()
             end_time = time.strftime("%Y-%m-%d %H:%M:%S")
             zentao_id = case[1]
-            data = u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % \
-                   (zentao_id, case[0], " " * (7 - len(case[0])), case[2], database["program_loop_time"],
-                    self.No, case[3], end_time)
+            data = (u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]'
+                    % (zentao_id, case[0], " " * (7 - len(case[0])), case[2], database["program_loop_time"],
+                       self.No, case[3], end_time))
             self.report.info(data)
             xls_data = database[self.device_name]
             xls_data[zentao_id]["end_time"] = end_time

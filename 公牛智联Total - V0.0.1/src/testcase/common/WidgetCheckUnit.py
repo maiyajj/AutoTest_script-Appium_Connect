@@ -170,12 +170,12 @@ class WidgetCheckUnit(Exception):
                 run_times -= 1
                 if run_times <= 0:
                     if flag == 0:
-                        error_info = "[ERROR]Failed to operate element.UiSelector[INSTANCE=0, RESOURCE_ID=%s," \
-                                     " RUN_TIMES=%sS]" % (operate_widget[0], run_times)
+                        error_info = ("[ERROR]Failed to operate element.UiSelector[INSTANCE=0, RESOURCE_ID=%s,"
+                                      " RUN_TIMES=%sS]" % (operate_widget[0], run_times))
                         logger_info = '[APP_CLICK] operate_widget ["%s"] error' % operate_widget[2]
                     else:
-                        error_info = "[ERROR]Failed to wait element.UiSelector[INSTANCE=0, RESOURCE_ID=%s," \
-                                     " RUN_TIMES=%sS]" % (wait_page[0], run_times)
+                        error_info = ("[ERROR]Failed to wait element.UiSelector[INSTANCE=0, RESOURCE_ID=%s,"
+                                      " RUN_TIMES=%sS]" % (wait_page[0], run_times))
                         logger_info = '[APP_CLICK] wait_page ["%s"] error' % wait_page[2]
 
                     if log_record != 0:

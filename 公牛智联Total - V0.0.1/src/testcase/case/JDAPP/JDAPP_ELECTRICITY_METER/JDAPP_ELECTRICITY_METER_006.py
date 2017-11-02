@@ -51,8 +51,8 @@ class JDAppElectricityMeter6(WidgetOperationJD):
         now_h = int(time.strftime("%H"))
         elec, elec_bill = self.get_device_elect(now_h + 2, False)
 
-        elec_bill_info = "elec bill is wrong, current [elec_bill:%s, elec:%s, elec_price:%s]" \
-                         % (sum(elec_bill[now_h + 1]), sum(elec[now_h + 1]), elec_price_data)
+        elec_bill_info = ("elec bill is wrong, current [elec_bill:%s, elec:%s, elec_price:%s]"
+                          % (sum(elec_bill[now_h + 1]), sum(elec[now_h + 1]), elec_price_data))
         self.logger.info(elec_bill_info)
 
         if sum(elec_bill[now_h + 1]) != sum(elec[now_h + 1]) * int(elec_price_data):

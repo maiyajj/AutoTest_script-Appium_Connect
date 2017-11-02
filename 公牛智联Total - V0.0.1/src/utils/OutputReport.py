@@ -20,18 +20,22 @@ def check_report(device_list, device_name):
     log_name = device_list[device_name]["log_name"]
     udid = device_list[device_name]["udid"]
     current_time = time.strftime("%Y-%m-%d_%H.%M")
-
-    log_report = r"./report/log_report/%s" % current_time
-    if os.path.exists(log_report) is False:
+    report_path = r"./report/log_report/%s" % current_time
+    if os.path.exists(report_path) is False:
+        # 多进程打印可能存在冲突，忽略即可
         try:
-            os.makedirs(log_report)
+            os.makedirs(report_path)
         except OSError:
             pass
-    
-    if os.path.exists(r"./screenshots/") is False:
-        os.makedirs(r"./screenshots/")
 
-    logger_name = r"%s/Report_%s - [%s].log" % (log_report, log_name, udid)
+    # 错误截屏
+    if os.path.exists(r"./screenshots/") is False:
+        try:
+            os.makedirs(r"./screenshots/")
+        except OSError:
+            pass
+
+    logger_name = r"%s/Report_%s - [%s].log" % (report_path, log_name, udid)
     device_list[device_name]["report"] = init_report(logger_name, logging.getLogger("Report_%s" % udid))
 
     logging.shutdown()

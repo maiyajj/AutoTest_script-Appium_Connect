@@ -45,12 +45,12 @@ class MainPageWidgetIosAL(object):
         device_button = {}
         device_state = {}
         for i in xrange(7):
-            device[i] = "//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]//" \
-                        "android.widget.TextView" % (i + 1)
-            device_button[i] = "//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]//" \
-                               "android.widget.RelativeLayout/android.widget.ImageView" % (i + 1)
-            device_state[i] = "//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]/" \
-                              "android.widget.LinearLayout/android.widget.TextView" % (i + 1)
+            device[i] = ("//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]//"
+                         "android.widget.TextView" % (i + 1))
+            device_button[i] = ("//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]//"
+                                "android.widget.RelativeLayout/android.widget.ImageView" % (i + 1))
+            device_state[i] = ("//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]/"
+                               "android.widget.LinearLayout/android.widget.TextView" % (i + 1))
         d["device"] = [device, "xpath", u"待控设备"]
         # 设备开关
         d["device_button"] = [device_button, "xpath", u"待控设备开关"]
@@ -604,6 +604,7 @@ class MainPageWidgetIosAL(object):
         # 返回按钮
         d["to_return"] = ["//android.webkit.WebView/android.view.View", "xpath", u"返回"]
         return d
+
 
 class PopupWidgetIosAL(object):
     # 添加设备弹窗

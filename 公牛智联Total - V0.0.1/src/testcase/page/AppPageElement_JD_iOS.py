@@ -503,10 +503,10 @@ class MainPageWidgetIosJD(object):
         price_time = {}
         price_value = {}
         for i in xrange(24):
-            price_time[i] = "//XCUIElementTypeWebView//XCUIElementTypeOther[%s]/XCUIElementTypeOther/" \
-                            "XCUIElementTypeStaticText" % (i + 4)
-            price_value[i] = "//XCUIElementTypeWebView//XCUIElementTypeOther[%s]/XCUIElementTypeOther[2]/" \
-                             "XCUIElementTypeStaticText" % (i + 4)
+            price_time[i] = ("//XCUIElementTypeWebView//XCUIElementTypeOther[%s]/XCUIElementTypeOther/"
+                             "XCUIElementTypeStaticText" % (i + 4))
+            price_value[i] = ("//XCUIElementTypeWebView//XCUIElementTypeOther[%s]/XCUIElementTypeOther[2]/"
+                              "XCUIElementTypeStaticText" % (i + 4))
         # 电量时间
         d["elec_time"] = [price_time, "xpath", u"电量时间"]
         # 电量值
@@ -531,10 +531,10 @@ class MainPageWidgetIosJD(object):
         price_time = {}
         price_value = {}
         for i in xrange(24):
-            price_time[i] = "//XCUIElementTypeWebView//XCUIElementTypeOther[%s]/XCUIElementTypeOther/" \
-                            "XCUIElementTypeStaticText" % (i + 4)
-            price_value[i] = "//XCUIElementTypeWebView//XCUIElementTypeOther[%s]/XCUIElementTypeOther[2]/" \
-                             "XCUIElementTypeStaticText" % (i + 4)
+            price_time[i] = ("//XCUIElementTypeWebView//XCUIElementTypeOther[%s]/XCUIElementTypeOther/"
+                             "XCUIElementTypeStaticText" % (i + 4))
+            price_value[i] = ("//XCUIElementTypeWebView//XCUIElementTypeOther[%s]/XCUIElementTypeOther[2]/"
+                              "XCUIElementTypeStaticText" % (i + 4))
         # 电费时间
         d["price_time"] = [price_time, "xpath", u"电费时间"]
         # 电费值

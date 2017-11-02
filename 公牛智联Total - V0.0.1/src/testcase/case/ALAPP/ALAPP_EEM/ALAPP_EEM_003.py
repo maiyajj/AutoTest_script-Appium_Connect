@@ -113,9 +113,8 @@ class ALAppEem3(WidgetOperationAL):
         peak_price = [v for k, v in elec.items() if 6 <= k <= 22]
         valley_price = [v for k, v in elec.items() if k < 6 and k > 22]
 
-        elec_bill_info = "elec bill is wrong, current [elec_bill:%s, peak_price:%s, peak_data:%s, valley_price:%s," \
-                         " valley_data:%s]" \
-                         % (sum(elec_bill.values()), sum(peak_price), peak_data, sum(valley_price), valley_data)
+        elec_bill_info = ("current [elec_bill:%s, peak_price:%s, peak_data:%s, valley_price:%s, valley_data:%s]"
+                          % (sum(elec_bill.values()), sum(peak_price), peak_data, sum(valley_price), valley_data))
         self.logger.info(elec_bill_info)
 
         if sum(elec_bill.values()) != sum(peak_price) * int(peak_data) + sum(valley_price) * int(valley_data):
