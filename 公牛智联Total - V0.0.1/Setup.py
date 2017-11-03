@@ -16,7 +16,7 @@ class MainFunc(object):
     """
     """
 
-    def run(self, device_list, device_name):
+    def run(self, device_list, device_name, m_queue):
         """
         One process launch appium services.
         Another process launch test case.
@@ -24,10 +24,10 @@ class MainFunc(object):
         # These two functions cannot run on the same process and can only be run with multiple processes.
         appium = Process(target=LaunchAppiumServices, args=(device_list, device_name,), name=device_name)
         appium.start()
-        case = Process(target=WaitCase, args=(device_list, device_name,))
+        case = Process(target=WaitCase, args=(device_list, device_name, m_queue))
         case.start()
 
-    def send_mail(self):
+    def send_mail(self, m_queue):
         """
         Send mail at 7 o 'clock every day.
         """
@@ -42,8 +42,8 @@ class MainFunc(object):
                   "mail_pwd": conf["mail_pwd"]}
 
         # Get report xls from child process, is blocking!
-        parent_path = database["multi_queue"].get()
-        
+        parent_path = m_queue.get()
+
         # Scan the root directory to get the files you want to send by mail.
         file_list = []
         for parent, dirnames, filenames in os.walk(parent_path):
@@ -68,21 +68,21 @@ if __name__ == '__main__':
     print device_list
     mf = MainFunc()
 
-    # Create a multi-process communication channel
-    # multiprocess.Queue()
-    # main process can get data from child process
-    database["multi_queue"] = Queue()
-    
     scan_case = Process(target=scan_case_name)
     scan_case.start()
     scan_case.join()
 
+    # Create a multi-process communication channel
+    # multiprocess.Queue()
+    # main process can get data from child process
+    m_queue = Queue()
+
     # Start send mail process.
-    mail = Process(target=mf.send_mail)
+    mail = Process(target=mf.send_mail, args=(m_queue,))
     mail.start()
 
     # Start app auto test process.
     # Open an equal number of processes according to the number of mobile phones.
-    process = [Process(target=mf.run, args=(device_list, device_name)) for device_name in device_list.keys()]
+    process = [Process(target=mf.run, args=(device_list, device_name, m_queue)) for device_name in device_list.keys()]
     for i in process:
         i.start()

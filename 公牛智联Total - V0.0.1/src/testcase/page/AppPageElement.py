@@ -1,6 +1,7 @@
 # coding=utf-8
 from AppPageElement_AL import *
 from AppPageElement_GN import *
+from AppPageElement_HW import *
 from AppPageElement_JD import *
 
 
@@ -16,5 +17,7 @@ class MainPageWidget(object):
             return MainPageWidgetJD(self.phone_os)
         elif self.app == "AL":
             return MainPageWidgetAL(self.phone_os)
+        elif self.app == "HW":
+            return MainPageWidgetHW(self.phone_os)
         else:
             raise KeyError("The app does not support")

@@ -40,6 +40,10 @@ App:
     appPackage: 'com.aliyun.alink'
     waitActivity: 'com.aliyun.alink.page.main.MainActivity'
     appActivity: 'com.aliyun.alink.page.main.MainActivity'
+  HW_Android:
+    appPackage: 'com.huawei.smarthome'
+    waitActivity: 'com.huawei.smarthome.login.LauncherActivity'
+    appActivity: 'com.huawei.smarthome.login.LauncherActivity'
 # Toast消息
 Toast:
   login_password_mistake: [40, 1570, 1040, 1750]

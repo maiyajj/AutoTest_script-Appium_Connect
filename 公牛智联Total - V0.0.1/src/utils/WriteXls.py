@@ -85,7 +85,7 @@ class WriteXls(object):
     def check_path(self):
         current_time = time.strftime("%Y-%m-%d_%H.%M")
         parent_path = r"./report/xls_report/%s" % current_time
-        database["multi_queue"].put(parent_path)
+        database["m_queue"].put(parent_path)
         if os.path.exists(parent_path) is False:
             try:
                 os.makedirs(parent_path)

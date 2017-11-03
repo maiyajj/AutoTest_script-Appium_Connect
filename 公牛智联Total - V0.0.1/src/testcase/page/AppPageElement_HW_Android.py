@@ -1,5 +1,5 @@
 # coding=utf-8
-class MainPageWidgetAndroidJD(object):
+class MainPageWidgetAndroidHW(object):
     # 万能页面
     def god_page(self):
         d = {}
@@ -8,57 +8,55 @@ class MainPageWidgetAndroidJD(object):
         return d
 
     # 账户设置页
-    def account_setting_page(self):
-        d = {}
-        # 标题
-        d["title"] = ["com.jd.smart:id/iv_avatar", "id", u"账户设置页"]
-        # 帮助与设置
-        d["help_setting"] = ["com.jd.smart:id/iv_setting", "id", u"帮助与设置"]
-        # 用户名
-        d["username"] = ["com.jd.smart:id/tv_username", "id", u"用户名"]
-        return d
-
-    # 帮助与设置
-    def help_setting_page(self):
-        d = {}
-        # 标题
-        d["title"] = [u"//android.widget.TextView[@text='帮助与设置']", "xpath", u"帮助与设置"]
-        # 帮助与设置
-        d["return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
-        # 登出
-        d["logout"] = ["com.jd.smart:id/button_exit", "id", u"退出登录"]
-        return d
-
-    # 登录页面
-    def login_page(self):
-        d = {}
-        # 标题
-        d["title"] = ["com.jd.smart:id/login_title_icon", "id", u"登录页面"]
-        # 用户名
-        d["username"] = ["com.jd.smart:id/username", "id", u"用户名输入框"]
-        # 密码
-        d["password"] = ["com.jd.smart:id/password", "id", u"密码输入框"]
-        # 显示/关闭密码
-        d["check_box"] = ["com.jd.smart:id/eye", "id", u"显示/关闭密码"]
-        # 登录
-        d["login_button"] = ["com.jd.smart:id/button_login", "id", u"登录按钮"]
-        return d
+    # def account_setting_page(self):
+    #     d = {}
+    #     # 标题
+    #     d["title"] = ["com.jd.smart:id/iv_avatar", "id", u"账户设置页"]
+    #     # 帮助与设置
+    #     d["help_setting"] = ["com.jd.smart:id/iv_setting", "id", u"帮助与设置"]
+    #     # 用户名
+    #     d["username"] = ["com.jd.smart:id/tv_username", "id", u"用户名"]
+    #     return d
+    #
+    # # 帮助与设置
+    # def help_setting_page(self):
+    #     d = {}
+    #     # 标题
+    #     d["title"] = [u"//android.widget.TextView[@text='帮助与设置']", "xpath", u"帮助与设置"]
+    #     # 帮助与设置
+    #     d["return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
+    #     # 登出
+    #     d["logout"] = ["com.jd.smart:id/button_exit", "id", u"退出登录"]
+    #     return d
+    #
+    # # 登录页面
+    # def login_page(self):
+    #     d = {}
+    #     # 标题
+    #     d["title"] = ["com.jd.smart:id/login_title_icon", "id", u"登录页面"]
+    #     # 用户名
+    #     d["username"] = ["com.jd.smart:id/username", "id", u"用户名输入框"]
+    #     # 密码
+    #     d["password"] = ["com.jd.smart:id/password", "id", u"密码输入框"]
+    #     # 显示/关闭密码
+    #     d["check_box"] = ["com.jd.smart:id/eye", "id", u"显示/关闭密码"]
+    #     # 登录
+    #     d["login_button"] = ["com.jd.smart:id/button_login", "id", u"登录按钮"]
+    #     return d
 
     # APP主页面
     def app_home_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='微联']", "xpath", u"App主页面"]
+        d["title"] = [u"//android.widget.TextView[@text='智家']", "xpath", u"App主页面"]
         # +号
-        d["add_device"] = ["com.jd.smart:id/iv_right", "id", u"+号"]
+        d["add_device"] = ["com.huawei.smarthome:id/myhome__tool_bar", "id", u"+号"]
         # 账户管理
-        d["account_setting"] = ["com.jd.smart:id/iv_left", "id", u"账户管理"]
-        # 没有设备/未登录
-        d["no_device"] = ["com.jd.smart:id/layout_no_device", "id", u"没有设备/未登录"]
+        d["account_setting"] = [u"//android.widget.TextView[@text='我的']", "xpath", u"账户管理"]
         # 设备
         device = {}
         for i in xrange(5):
-            device[i] = ("//android.widget.ListView/android.view.View[%s]//android.widget.LinearLayout/"
+            device[i] = ("//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]//"
                          "android.widget.TextView" % (i + 1))
         d["device"] = [device, "xpath", u"待控设备"]
         return d
@@ -67,11 +65,19 @@ class MainPageWidgetAndroidJD(object):
     def add_device_method_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='添加设备']", "xpath", u"添加设备页面"]
-        # 通过设备品类添加
-        d["variety"] = [u"//android.widget.TextView[@text='通过设备品类添加']", "xpath", u"通过设备品类添加"]
-        # 添加历史
-        d["history"] = ["com.jd.smart:id/iv_history", "id", u"添加历史"]
+        d["title"] = ["com.huawei.smarthome:id/hand_device_btn_come", "id", u"添加设备页面"]
+        # 手动添加
+        d["add_hand"] = ["com.huawei.smarthome:id/hand_device_btn_come", "id", u"手动添加"]
+        # 正在添加
+        d["loading"] = [u"//android.widget.TextView[@text='正在扫描…']", "xpath", u"正在添加"]
+        # 重新扫描
+        d["retry"] = ["com.huawei.smarthome:id/add_device_scan_btn", "id", u"重新扫描"]
+        # 未发现设备
+        d["no_device"] = [u"//android.widget.TextView[@text='未发现设备']", "xpath", u"未发现设备"]
+        # 设备
+        d["device"] = ["//android.widget.ListView//android.widget.TextView", "xpath", u"设备"]
+        # 返回
+        d["to_return"] = ["com.huawei.smarthome:id/common_title_back", "id", u"返回"]
         return d
 
     # 添加设备品类页面
@@ -162,10 +168,10 @@ class MainPageWidgetAndroidJD(object):
         confirm_box = {}
         for i in xrange(4):
             device_box[i] = "//android.widget.ListView/android.widget.LinearLayout[%s]//android.widget.TextView[2]" % (
-            i + 1)
+                i + 1)
             confirm_box[
                 i] = "//android.widget.ListView/android.widget.LinearLayout[%s]/android.widget.LinearLayout/android.widget.TextView" % (
-            i + 1)
+                i + 1)
         # 设备路径
         d["device_box"] = [device_box, "xpath", u"设备等待添加"]
         # 使用
@@ -362,7 +368,7 @@ class MainPageWidgetAndroidJD(object):
         # 启动
         d["launch"] = ["com.jd.smart:id/button4", "id", u"启动"]
         return d
-    
+
     # 普通定时页面
     def normal_timer_page(self):
         d = {}
@@ -572,7 +578,8 @@ class MainPageWidgetAndroidJD(object):
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
 
-class PopupWidgetAndroidJD(object):
+
+class PopupWidgetAndroidHW(object):
     # app升级确认弹窗
     def update_popup(self):
         d = {}

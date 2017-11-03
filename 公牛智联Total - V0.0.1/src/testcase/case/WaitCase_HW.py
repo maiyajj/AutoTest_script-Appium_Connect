@@ -1,5 +1,6 @@
 # coding=utf-8
-from src.testcase.case.ALAPP.INPUT_CASE.ALAppInputCase import *
+from src.testcase.case.HWAPP.INPUT_CASE.HWAppInputCase import *
+
 from src.testcase.page.ReadAPPElement import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
@@ -15,7 +16,7 @@ class ScriptInitError(Exception):
         return repr(self.value)
 
 
-class WaitCaseAL(object):
+class WaitCaseHW(object):
     def __init__(self, device_list, device_name, m_queue):
         self.device_list = device_list
         self.device_name = device_name
@@ -78,7 +79,7 @@ class WaitCaseAL(object):
                                  "logger": self.logger,
                                  "app": self.app,
                                  "sc": self.sc}
-        LaunchAppAL(**self.device_info_list).init_app()
+        LaunchAppHW(**self.device_info_list).init_app()
 
     def check_appium(self):
         while True:
@@ -109,49 +110,46 @@ class WaitCaseAL(object):
         database["case_location"] = self.No
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])
-            self.write_report(ALAppCmp1)  # 431, FUT_CMP_不同型号手机是否能正常添加设备
-            self.write_report(ALAppCrossTimer1)  # 519, FUT_CROSSTIMER_普通定时、循环定时、延时定时交叉设置后定时执行
-            self.write_report(ALAppCycleTimer1)  # 470, FUT_CYCLETIMER_循环定时设置永久循环执行（1分钟开1分钟关）
-            self.write_report(ALAppCycleTimer2)  # 471, FUT_CYCLETIMER_循环定时执行过程中手动切换设备状态
-            self.write_report(ALAppCycleTimer3)  # 482, FUT_CYCLETIMER_循环定时5次
-            self.write_report(ALAppCycleTimer4)  # 483, FUT_CYCLETIMER_循环定时1次
-            self.write_report(ALAppDelayTimer1)  # 469, FUT_DELAYTIMER_延时定时一分钟开关
-            self.write_report(ALAppDelayTimer2)  # 468, FUT_DELAYTIMER_延迟定时一小时开
-            self.write_report(ALAppDelayTimer3)  # 466, FUT_DELAYTIMER_延迟定时5分钟开
-            self.write_report(ALAppDelayTimer4)  # 465, FUT_DELAYTIMER_延时定时23小时59分钟开
-            self.write_report(ALAppEem1)  # 559, FUT_EEM_峰谷电价设置
-            self.write_report(ALAppEem2)  # 558, FUT_EEM_用电图表显示周期设置
-            self.write_report(ALAppEem3)  # 551, FUT_EEM_电价设置验证（待定）
-            self.write_report(ALAppEem4)  # 550, FUT_EEM_实时功率显示及精度检查
-            self.write_report(ALAppLogin1)  # 0000, 阿里智能APP账号登录
-            self.write_report(ALAppNormalTimer1)  # 517, FUT_NTIMER_冲突定时设置
-            self.write_report(ALAppNormalTimer2)  # 515, FUT_NTIMER_单次定时关
-            self.write_report(ALAppNormalTimer3)  # 513, FUT_NTIMER_单次定时开
-            self.write_report(ALAppNormalTimer4)  # 512, FUT_NTIMER_单日循环定时
-            self.write_report(ALAppNormalTimer5)  # 510, FUT_NTIMER_定时时间早于当前时间的永不循环定时设置
-            self.write_report(ALAppNormalTimer6)  # 508, FUT_NTIMER_隔天普通定时
-            self.write_report(ALAppNormalTimer7)  # 505, FUT_NTIMER_普通交叉定时
-            self.write_report(ALAppNormalTimer8)  # 497, FUT_NTIMER_每日循环普通定时
-            self.write_report(ALAppNormalTimer9)  # 494, FUT_NTIMER_普通定时最大组数设定
-            self.write_report(ALAppNormalTimer10)  # 488, FUT_NTIMER_普通定时设置后手动改变设备状态
-            self.write_report(ALAppNormalTimer11)  # 417, FUT_NTIMER_普通定时循环信息检查
-            self.write_report(ALAppSmartLink1)  # 498, FUT_SMTLNK_app能正常添加设备_按分类查找
-            self.write_report(ALAppSwitch1)  # 517, FUT_NTIMER_冲突定时设置
-            self.write_report(ALAppTimerFish1)  # 442, FUT_MTIMER_FISH_鱼缸模式开启1分钟，关闭1分钟功能是否正常
-            self.write_report(ALAppTimerFish2)  # 441, FUT_MTIMER_FISH_鱼缸模式开启1小时，关闭1小时功能是否正常
-            self.write_report(ALAppTimerFish3)  # 440, FUT_MTIMER_FISH_鱼缸模式开启2分钟，关闭2分钟功能是否正常
-            self.write_report(ALAppTimerFish4)  # 438, FUT_MTIMER_FISH_鱼缸模式开启23小时59分钟，关闭23小时59分钟功能是否正常
-            self.write_report(ALAppTimerFish5)  # 436, FUT_MTIMER_FISH_鱼缸模式_循环1次
-            self.write_report(ALAppTimerFish6)  # 435, FUT_MTIMER_FISH_鱼缸模式_循环2次
-            self.write_report(ALAppTimerMos1)  # 461, FUT_MTIMER_MOS_电蚊香模式_延时功能（1min，2min，1h，23h59min，断电恢复）是否正常
-            self.write_report(ALAppTimerOvp1)  # 459, FUT_MTIMER_OVP_充电保护模式_延时功能（1min，2min，1h，23h59min，断电恢复）是否正常
-            self.write_report(ALAppTimerTime1)  # 450, FUT_MTIMER_TIME_当前时间在设定时间内模式时间执行
-            self.write_report(ALAppTimerTime2)  # 446, FUT_MTIMER_TIME_模式定时每日循环
-            self.write_report(ALAppTimerTime3)  # 445, FUT_MTIMER_TIME_模式定时每周日循环
-            self.write_report(ALAppTimerTime4)  # 444, FUT_MTIMER_TIME_循环定时每周一循环
-            self.write_report(ALAppTimerTime5)  # 443, FUT_MTIMER_TIME_模式定时状态下手动改变设备状态
-            self.write_report(ALAppTimerTime6)  # 434, FUT_MTIMER_TIME_设定关闭时间早于开启时间的模式定时执行
-            self.write_report(ALAppTimerTime7)  # 433, FUT_MTIMER_TIME_正常状态下模式定时
+            # self.write_report(JDAppLogin1)  # 0000, 京东微联APP账号登录
+            # self.write_report(JDAppCompatibility1)  # 1272, 在TP-link品牌的路由器下添加设备检查
+            # self.write_report(JDAppElectricityMeter1)  # 1117, 电量统计2H功能及精度检查
+            # self.write_report(JDAppElectricityMeter2)  # 1138, 单一电价验证
+            # self.write_report(JDAppElectricityMeter3)  # 1139, 峰谷电价验证
+            # self.write_report(JDAppElectricityMeter4)  # 1150, 电价模式转换
+            # self.write_report(JDAppElectricityMeter5)  # 1149, 用电图表显示周期设置
+            # self.write_report(JDAppElectricityMeter6)  # 1151, 单一电价设置
+            # self.write_report(JDAppElectricityMeter7)  # 1152, 设置峰谷电价
+            # self.write_report(JDAppElectricityMeter8)  # 1155, 电价设置验证
+            # self.write_report(JDAppElectricityMeter9)  # 1136, 实时功率检查_2000W
+            # self.write_report(JDAppElectricityMeter10)  # 1135, 实时功率检查_1500W
+            # self.write_report(JDAppElectricityMeter11)  # 1133, 实时功率检查_500W
+            # self.write_report(JDAppElectricityMeter12)  # 1132, 实时功率检查_200W
+            # self.write_report(JDAppElectricityMeter13)  # 1130, 实时功率检查_50W
+            self.write_report(JDAppAppFunction1)  # 1170, 定时记录删除是否成功
+            self.write_report(JDAppAppFunction2)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
+            self.write_report(JDAppKeyMemory1)  # 1216, 开关操作及记忆功能
+            # self.write_report(JDAppModeTimer1)  # 1061, 热水器模式下设定的关闭时间早于开启时间的定时是否正确执行
+            self.write_report(JDAppModeTimer2)  # 1064, 热水器模式下当前时间在设定时间内的定时是否正确执行
+            self.write_report(JDAppModeTimer3)  # 1081, 充电保护模式下手动改变设备为关闭状态后，定时结束检查设备状态
+            self.write_report(JDAppModeTimer4)  # 1083, 充电保护模式下手动改变设备为开启状态后，定时结束检查设备状态
+            self.write_report(JDAppModeTimer5)  # 1086, 充电保护模式下延时关闭1分钟
+            self.write_report(JDAppModeTimer6)  # 1103, 鱼缸模式开启1分钟，关闭1分钟定时是否正确执行
+            self.write_report(JDAppModeTimer7)  # 1105, 鱼缸模式开启1小时，关闭1小时定时是否正确执行
+            self.write_report(JDAppModeTimer8)  # 1108, 鱼缸模式开启2分钟，关闭2分钟定时是否正确执行
+            self.write_report(JDAppNormalTimer1)  # 1161, 普通定时设置后手动改变设备状态为开启
+            self.write_report(JDAppNormalTimer2)  # 1162, 普通定时设置后手动改变设备状态为关闭
+            self.write_report(JDAppNormalTimer3)  # 1164, 普通定时最大组数设定_设置12组
+            self.write_report(JDAppNormalTimer4)  # 1174, 普通定时_设置13组
+            self.write_report(JDAppNormalTimer5)  # 1181, 普通交叉定时_8分钟
+            self.write_report(JDAppNormalTimer6)  # 1184, 单次定时开_2分钟
+            self.write_report(JDAppNormalTimer7)  # 1185, 单次定时关_2分钟
+            # self.write_report(JDAppOverDay1)  # 1299, 热水器模式设置每日循环
+            # self.write_report(JDAppOverDay2)  # 1300, 热水器模式在跨天循环下的跨天执行
+            # self.write_report(JDAppOverDay3)  # 1301, 定时时间早于当前时间的永不循环定时设置
+            self.write_report(JDAppOverDay4)  # 1302, 隔天普通定时
+            # self.write_report(JDAppOverDay5)  # 1304, 每日循环普通定时
+            # self.write_report(JDAppOverDay6)  # 1305, 鱼缸模式开启23小时59分钟，关闭23小时59分钟定时是否正确执行
+            # self.write_report(JDAppOverDay7)  # 1306, 充电保护模式下延迟23h59min关闭
 
             database["program_loop_time"] += 1
             ports = [self.device_info["port"], self.device_info["bp_port"], self.device_info["wda_port"]]

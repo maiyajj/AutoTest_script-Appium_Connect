@@ -1,9 +1,9 @@
 # coding=utf-8
 from src.testcase.case.JDAPP.INPUT_CASE.JDAppInputCase import *
+from src.testcase.page.ReadAPPElement import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
 from src.utils.OutputReport import *
-from src.utils.ReadAPPElement import *
 from src.utils.WriteXls import *
 
 
@@ -16,11 +16,12 @@ class ScriptInitError(Exception):
 
 
 class WaitCaseJD(object):
-    def __init__(self, device_list, device_name):
+    def __init__(self, device_list, device_name, m_queue):
         self.device_list = device_list
         self.device_name = device_name
         self.device_info = device_list[device_name]
         self.app = self.device_info["app"]
+        database["m_queue"] = m_queue
 
         self.report = None
         self.logger = None

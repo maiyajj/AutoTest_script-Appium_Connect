@@ -13,7 +13,8 @@ class CreateFunc(object):
     def create_ReadAPPElement(self, func1, func2):
         app_list = {"AL": "阿里智能",
                     "GN": "公牛智联",
-                    "JD": "京东微联"}
+                    "JD": "京东微联",
+                    "HW": "智能家居"}
         app = str(func1.__name__)[-2:].upper()
         a = []
         b = []
@@ -25,15 +26,14 @@ class CreateFunc(object):
             tmp = re.findall("__.+", i)
             if tmp == []:
                 b.append(i)
-        with open(r"./src/utils/ReadAPPElement_%s.py" % app, "w") as files:
+        with open(r"./src/testcase/page/ReadAPPElement_%s.py" % app, "w") as files:
             files.write("# coding=utf-8\n")
             files.write("# 由CreateSomeFiles.py生成\n")
             files.write("from src.testcase.page.AppPageElement import *\n\n\n")
             files.write("class PageElement%s(object):\n" % app)
             files.write('    """\n')
             files.write('    %sApp all page element\n' % app_list[app])
-            files.write('    """\n')
-            files.write('    \n')
+            files.write('    """\n\n')
             files.write("    def __init__(self, device, phone_os, app):\n")
             files.write("        self.mpw = MainPageWidget(phone_os, app).wrapper()\n")
             files.write("        self.device = device\n")
@@ -42,7 +42,7 @@ class CreateFunc(object):
             files.write('''        self.device["page"] = {}\n''')
             for i in a:
                 files.write('''        self.device["page"]["{0}"] = self.mpw.{0}()\n'''.format(i))
-            files.write('''        \n''')
+            files.write('''\n''')
             for i in b:
                 files.write('''        self.device["page"]["{0}"] = self.mpw.{0}()\n'''.format(i))
 
@@ -101,7 +101,13 @@ class CreateFunc(object):
                 app_name = name + "APP"
                 file_list = []
                 files_list = {}
+                with open(os.path.join(rootdir, "%s/__init__.py" % app_name), "w") as tmp:
+                    del tmp
                 file_path = os.path.join(rootdir, "%s/INPUT_CASE" % app_name)
+                if not os.path.exists(file_path):
+                    os.makedirs(file_path)
+                with open("%s/__init__.py" % file_path, "w") as tmp:
+                    del tmp
                 for parent, dirnames, filenames in os.walk(os.path.join(parents, dirname)):
                     for dirname in [i for i in dirnames if "INPUT_CASE" not in i]:
                         path_tmp = os.path.join(parent, dirname)
@@ -172,8 +178,10 @@ CF.create_INPUT_CASE()
 CF.create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
 CF.create_AppPageElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
 CF.create_AppPageElement(MainPageWidgetAndroidAL, PopupWidgetAndroidAL)
+CF.create_AppPageElement(MainPageWidgetAndroidHW, PopupWidgetAndroidAL)
 CF.create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
 CF.create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
 CF.create_ReadAPPElement(MainPageWidgetAndroidAL, PopupWidgetAndroidAL)
+CF.create_ReadAPPElement(MainPageWidgetAndroidHW, PopupWidgetAndroidAL)
 CF.correct_func_name()
 CF.create_WaitCase()
