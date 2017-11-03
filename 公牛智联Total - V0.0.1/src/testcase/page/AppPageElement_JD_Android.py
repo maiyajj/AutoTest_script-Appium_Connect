@@ -139,7 +139,7 @@ class MainPageWidgetAndroidJD(object):
         # wifi密码输入框
         d["password"] = ["com.jd.smart:id/tv_pwd", "id", u"wifi密码输入框"]
         # 密码显示关闭
-        d["check_box"] = ["com.jd.smart:id/cb_eye", "id", u"wifi密码输入框"]
+        d["check_box"] = ["com.jd.smart:id/cb_eye", "id", u"密码显示关闭"]
         return d
 
     # 搜索设备等待页面

@@ -607,6 +607,17 @@ class MainPageWidgetAndroidAL(object):
 
 
 class PopupWidgetAndroidAL(object):
+    # 升级弹窗
+    def update_popup(self):
+        d = {}
+        # 升级弹窗
+        d["title"] = [u"//android.widget.TextView[@text='发现新版本']", "xpath", u"升级弹窗"]
+        # 下次再更新
+        d["cancel"] = [u"//android.widget.TextView[@text='下次再提醒']", "xpath", u"下次再更新"]
+        # 立即更新
+        d["confirm"] = [u"//android.widget.Button[@text='立即更新']", "xpath", u"立即更新"]
+        return d
+
     # 添加设备弹窗
     def add_device_popup(self):
         d = {}
