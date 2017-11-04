@@ -137,3 +137,6 @@ class MainPageWidgetAL(object):
 
     def unbind_device_popup(self):
         return self.wrapper(self.pwa.unbind_device_popup(), self.pwi.unbind_device_popup())
+
+    def update_popup(self):
+        return self.wrapper(self.pwa.update_popup(), self.pwi.update_popup())
