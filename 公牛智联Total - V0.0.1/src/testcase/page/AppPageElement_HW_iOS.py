@@ -11,7 +11,7 @@ class MainPageWidgetIosHW(object):
         return d
 
     # 添加设备页面
-    def add_device_method_page(self):
+    def add_device_page(self):
         d = {}
         return d
 
@@ -27,6 +27,11 @@ class MainPageWidgetIosHW(object):
 
     # 设备控制页面
     def control_device_page(self):
+        d = {}
+        return d
+
+    # 设备设置页面
+    def device_setting_page(self):
         d = {}
         return d
 

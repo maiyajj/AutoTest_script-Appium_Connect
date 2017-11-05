@@ -18,8 +18,8 @@ class MainPageWidgetHW(object):
         else:
             raise KeyError("The OS is wrong!")
 
-    def add_device_method_page(self):
-        return self.wrapper(self.mpwa.add_device_method_page(), self.mpwi.add_device_method_page())
+    def add_device_page(self):
+        return self.wrapper(self.mpwa.add_device_page(), self.mpwi.add_device_page())
 
     def add_normal_timer_page(self):
         return self.wrapper(self.mpwa.add_normal_timer_page(), self.mpwi.add_normal_timer_page())
@@ -32,6 +32,9 @@ class MainPageWidgetHW(object):
 
     def device_info_page(self):
         return self.wrapper(self.mpwa.device_info_page(), self.mpwi.device_info_page())
+
+    def device_setting_page(self):
+        return self.wrapper(self.mpwa.device_setting_page(), self.mpwi.device_setting_page())
 
     def god_page(self):
         return self.wrapper(self.mpwa.god_page(), self.mpwi.god_page())

@@ -96,16 +96,19 @@ class WaitCaseGN(object):
         self.logger.info(u"[APP_INF]UDID：...........%s" % self.device_info["udid"])
         self.logger.info(u"[APP_INF]platformName：...%s" % self.device_info["platformName"])
         self.logger.info(u"[APP_INF]platformVersion：%s" % self.device_info["platformVersion"])
-        for i in [["appPackage", 5], ["appActivity", 4], ["waitActivity", 3], ["bundleId", 7]]:
-            try:
-                self.logger.info(u"[APP_INF]%s：%s%s" % (i[0], "." * i[1], self.device_info["desired_caps"][i[0]]))
-            except KeyError:
-                pass
+
         # self.logger.info(u"[APP_INF]appPackage：.....%s" % self.device_info["desired_caps"]["appPackage"])
         # self.logger.info(u"[APP_INF]appActivity：....%s" % self.device_info["desired_caps"]["appActivity"])
         # self.logger.info(u"[APP_INF]waitActivity：...%s" % self.device_info["desired_caps"]["waitActivity"])
         # self.logger.info(u"[APP_INF]bundleId：.......%s" % self.device_info["desired_caps"]["bundleId"])
+        # self.logger.info("******************************")
+        for name, blank in [["appPackage", 5], ["appActivity", 4], ["waitActivity", 3], ["bundleId", 7]]:
+            try:
+                self.logger.info(u"[APP_INF]%s：%s%s" % (name, "." * blank, self.device_info["desired_caps"][name]))
+            except KeyError:
+                pass
         self.logger.info("*" * 30)
+
         database["case_location"] = self.No
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])

@@ -172,6 +172,7 @@ class CreateFunc(object):
         for x, y, z in CaseList:
             print x, y, z
 
+
 CF = CreateFunc()
 CF.create_INPUT_CASE()
 CF.create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)

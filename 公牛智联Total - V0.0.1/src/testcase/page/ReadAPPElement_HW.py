@@ -14,11 +14,12 @@ class PageElementHW(object):
 
     def get_page_element(self):
         self.device["page"] = {}
-        self.device["page"]["add_device_method_page"] = self.mpw.add_device_method_page()
+        self.device["page"]["add_device_page"] = self.mpw.add_device_page()
         self.device["page"]["add_normal_timer_page"] = self.mpw.add_normal_timer_page()
         self.device["page"]["app_home_page"] = self.mpw.app_home_page()
         self.device["page"]["control_device_page"] = self.mpw.control_device_page()
         self.device["page"]["device_info_page"] = self.mpw.device_info_page()
+        self.device["page"]["device_setting_page"] = self.mpw.device_setting_page()
         self.device["page"]["god_page"] = self.mpw.god_page()
         self.device["page"]["input_wifi_password_page"] = self.mpw.input_wifi_password_page()
         self.device["page"]["normal_timer_page"] = self.mpw.normal_timer_page()

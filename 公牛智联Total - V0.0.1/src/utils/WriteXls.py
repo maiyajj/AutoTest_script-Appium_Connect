@@ -41,45 +41,62 @@ class WriteXls(object):
 
     # 单元格格式
     def easy_xf(self):
-        self.easyxf1 = easyxf(
-            u'font: height 320, name 宋体, colour_index 70, bold on; align: wrap on, vert top, horiz left; borders: top thin, left thin, right thin;')
+        self.easyxf1 = easyxf(u'font: height 320, name 宋体, colour_index 70, bold on;'
+                              u'align: wrap on, vert top, horiz left;'
+                              u'borders: top thin, left thin, right thin;')
 
-        self.easyxf2 = easyxf(
-            u'font: height 220, name 宋体; align: wrap on, horiz left; borders: right thin;')
+        self.easyxf2 = easyxf(u'font: height 220, name 宋体;'
+                              u'align: wrap on, horiz left;'
+                              u'borders: right thin;')
 
-        self.easyxf3 = easyxf(
-            u'font: height 220, name 宋体; align: wrap on; borders: left thin, right thin;')
+        self.easyxf3 = easyxf(u'font: height 220, name 宋体;'
+                              u'align: wrap on;'
+                              u'borders: left thin, right thin;')
 
-        self.easyxf4 = easyxf(
-            u'font: height 220, name 宋体; align: wrap on, horiz left; borders: top thin, bottom thin, left thin, right thin; pattern: pattern solid, fore_colour 22')
+        self.easyxf4 = easyxf(u'font: height 220, name 宋体;'
+                              u'align: wrap on, horiz left;'
+                              u'borders: top thin, bottom thin, left thin, right thin;'
+                              u'pattern: pattern solid, fore_colour 22')
 
-        self.easyxf5 = easyxf(
-            u'font: height 220, name 宋体, colour_index white, bold on; align: wrap on, horiz left; borders: left thin, right thin; pattern: pattern solid, fore_colour 23')
+        self.easyxf5 = easyxf(u'font: height 220, name 宋体, colour_index white, bold on;'
+                              u'align: wrap on, horiz left;'
+                              u'borders: left thin, right thin;'
+                              u'pattern: pattern solid, fore_colour 23')
 
-        self.easyxf6 = easyxf(
-            u'font: height 220, name 宋体; align: wrap on, horiz centre; borders: top thin, bottom thin, left thin, right thin; pattern: pattern solid, fore_colour 22')
+        self.easyxf6 = easyxf(u'font: height 220, name 宋体;'
+                              u'align: wrap on, horiz centre;'
+                              u'borders: top thin, bottom thin, left thin, right thin;'
+                              u'pattern: pattern solid, fore_colour 22')
 
-        self.easyxf7 = easyxf(
-            u'font: height 220, name 宋体; align: wrap on, horiz left; borders: left thin, right thin;')
+        self.easyxf7 = easyxf(u'font: height 220, name 宋体;'
+                              u'align: wrap on, horiz left;'
+                              u'borders: left thin, right thin;')
 
-        self.easyxf8 = easyxf(
-            u'font: height 220, name 宋体; align: wrap on; borders: top thin, bottom thin, left thin, right thin;')
+        self.easyxf8 = easyxf(u'font: height 220, name 宋体;'
+                              u'align: wrap on;'
+                              u'borders: top thin, bottom thin, left thin, right thin;')
 
-        self.easyxf9 = easyxf(
-            u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: left thin;')
+        self.easyxf9 = easyxf(u'font: height 220, name 宋体, bold on;'
+                              u'align: wrap on, horiz left;'
+                              u'borders: left thin;')
 
-        self.easyxf10 = easyxf(
-            u'font: height 220, name 宋体; align: wrap on, horiz right; borders: top thin, bottom thin, left thin, right thin; pattern: pattern solid, fore_colour 22')
+        self.easyxf10 = easyxf(u'font: height 220, name 宋体;'
+                               u'align: wrap on, horiz right;'
+                               u'borders: top thin, bottom thin, left thin, right thin;'
+                               u'pattern: pattern solid, fore_colour 22')
 
-        self.easyxf11 = easyxf(
-            u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: top thin, bottom thin, left thin;')
+        self.easyxf11 = easyxf(u'font: height 220, name 宋体, bold on;'
+                               u'align: wrap on, horiz left;'
+                               u'borders: top thin, bottom thin, left thin;')
 
-        self.easyxf12 = easyxf(
-            u'font: height 220, name 宋体, bold on; align: wrap on, horiz left; borders: top thin, bottom thin, right thin;')
+        self.easyxf12 = easyxf(u'font: height 220, name 宋体, bold on;'
+                               u'align: wrap on, horiz left;'
+                               u'borders: top thin, bottom thin, right thin;')
 
-        self.easyxf13 = easyxf(
-            u'font: height 220, name 宋体; align: wrap on, horiz centre; borders: top thin, bottom thin, left thin, right thin;',
-            num_format_str="0%")
+        self.easyxf13 = easyxf(u'font: height 220, name 宋体;'
+                               u'align: wrap on, horiz centre;'
+                               u'borders: top thin, bottom thin, left thin, right thin;',
+                               num_format_str="0%")
 
     # 检查设备报告路径是否存在
     def check_path(self):
@@ -95,7 +112,7 @@ class WriteXls(object):
         self.sheet_name = self.device_info["log_name"]  # sheet名称
         self.xls_file = r"%s/%s.xls" % (parent_path, self.sheet_name)  # 文件路径及名称
 
-    # 启动脚本首先运行此函数，会生成报告雏形待填充数据
+    # 启动脚本首先运行此函数，会生成报告模板待填充数据
     def run(self):
         self.easy_xf()
         self.check_path()
@@ -108,7 +125,7 @@ class WriteXls(object):
         self.book.save(self.xls_file)
         return self.book
 
-    # 报告雏形设计，根据手动设计报告模板，使用函数实现
+    # 报告模板设计，根据手动设计报告模板，使用函数实现
     def write_title(self):
         self.sheet.col(0).width = 256 * 15
         self.sheet.col(1).width = 256 * 70
@@ -195,14 +212,10 @@ class WriteXls(object):
 
         self.sheet.write_merge(4, 4, 1, 7, end_times, self.easyxf2)
 
-        start_time = time.strptime(self.start_time, "%Y-%m-%d %H:%M:%S")
-        end_time = time.strptime(end_times, "%Y-%m-%d %H:%M:%S")
-        start_time = datetime.datetime(start_time[0], start_time[1], start_time[2],
-                                       start_time[3], start_time[4], start_time[5])
-        end_time = datetime.datetime(end_time[0], end_time[1], end_time[2],
-                                     end_time[3], end_time[4], end_time[5])
-        continue_time = end_time - start_time
-        self.sheet.write_merge(5, 5, 1, 7, str(continue_time), self.easyxf2)
+        start_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(self.start_time, "%Y-%m-%d %H:%M:%S")))
+        end_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(end_times, "%Y-%m-%d %H:%M:%S")))
+        continue_time = str(end_time - start_time)
+        self.sheet.write_merge(5, 5, 1, 7, continue_time, self.easyxf2)
 
         formula = (u'"通过 "&COUNTIF(H13:H{0},"Pass")&"； 失败 "&COUNTIF(H13:H{0},"Fail")&"； 执行错误 "&'
                    u'COUNTIF(H13:H{0},"Error")&"； 人工检查 "&COUNTIF(H13:H{0},"Wait")&"；"'.format(total_row))

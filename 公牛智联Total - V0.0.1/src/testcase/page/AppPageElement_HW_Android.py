@@ -25,7 +25,7 @@ class MainPageWidgetAndroidHW(object):
         return d
 
     # 添加设备页面
-    def add_device_method_page(self):
+    def add_device_page(self):
         d = {}
         # 标题
         d["title"] = ["com.huawei.smarthome:id/hand_device_btn_come", "id", u"添加设备页面"]
@@ -81,7 +81,7 @@ class MainPageWidgetAndroidHW(object):
         # 标题
         d["title"] = ["com.huawei.smarthome:id/base_device_layout_title_setting", "id", u"设备控制页面"]
         # 设备信息进入按钮
-        d["device_info"] = ["com.huawei.smarthome:id/base_device_layout_title_setting", "id", u"设备信息进入按钮"]
+        d["device_setting"] = ["com.huawei.smarthome:id/base_device_layout_title_setting", "id", u"设备信息进入按钮"]
         # 设备离线标志
         d["offline"] = [u"设备不在线", "name", u"设备离线标志"]
         # 电源开关
@@ -102,17 +102,36 @@ class MainPageWidgetAndroidHW(object):
         d["to_return"] = ["com.huawei.smarthome:id/hw_otherdevice_title_back", "id", u"返回"]
         return d
 
+    # 设备设置页面
+    def device_setting_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='设置']", "xpath", u"设备设置页面"]
+        # 删除设备按钮
+        d["unbind"] = ["com.huawei.smarthome:id/hw_otherdevice_setting_delete_device", "id", u"删除设备按钮"]
+        # 编辑设备备注
+        d["nickname"] = ["com.huawei.smarthome:id/setting_item_value", "id", u"编辑设备备注"]
+        # 设备信息
+        d["device_info"] = [u"//android.widget.TextView[@text='设备信息']", "xpath", u"编辑设备备注"]
+        # 返回按钮
+        d["to_return"] = ["com.huawei.smarthome:id/common_ui_new_title_back", "id", u"返回"]
+        return d
+
     # 设备信息页面
     def device_info_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='设置']", "xpath", u"设备信息页面"]
-        # 删除设备按钮
-        d["unbind"] = ["com.huawei.smarthome:id/hw_otherdevice_setting_delete_device", "id", u"删除设备按钮"]
-        # 编辑设备备注
-        d["nickname"] = ["com.huawei.smarthome:id/setting_item_name", "id", u"编辑设备备注"]
+        d["title"] = [u"//android.widget.TextView[@text='设备信息']", "xpath", u"设备信息页面"]
+        # Mac地址
+        d["mac"] = ["//android.widget.TextView[contains(@text, ':')]", "xpath", u"删除设备按钮"]
+        # 序列号
+        d["serial_number"] = ["//android.widget.RelativeLayout[4]//android.widget.TextView[2]", "xpath", u"序列号"]
+        # 设备型号
+        d["device_model"] = ["//android.widget.RelativeLayout[5]//android.widget.TextView[2]", "xpath", u"设备型号"]
+        # 固件版本
+        d["bin_ver"] = ["//android.widget.RelativeLayout[6]//android.widget.TextView[2]", "xpath", u"固件版本"]
         # 返回按钮
-        d["to_return"] = ["com.huawei.smarthome:id/common_ui_new_title_back", "id", u"返回"]
+        d["to_return"] = ["com.huawei.smarthome:id/hw_other_device_detail_back", "id", u"返回"]
         return d
 
     # 普通定时页面
@@ -137,10 +156,10 @@ class MainPageWidgetAndroidHW(object):
         d["title"] = [u"//android.widget.TextView[@text='新增定时']", "xpath", u"新建普通定时页面"]
         # 重复
         d["repeat"] = ["com.huawei.smarthome:id/setting_item_value", "id", u"重复"]
-        # 定时开机
-        d["timer_on"] = ["com.huawei.smarthome:id/device_control_time_config_open_switch", "id", u"定时开机"]
-        # 定时关机
-        d["timer_off"] = ["com.huawei.smarthome:id/device_control_time_config_close_switch", "id", u"定时关机"]
+        # 定时开按钮
+        d["button_on"] = ["com.huawei.smarthome:id/device_control_time_config_open_switch", "id", u"定时开按钮"]
+        # 定时关按钮
+        d["button_off"] = ["com.huawei.smarthome:id/device_control_time_config_close_switch", "id", u"定时关按钮"]
         # 开启时间
         d["time_on"] = ["//android.widget.RelativeLayout[3]//android.widget.TextView[2]", "xpath", u"开启时间"]
         # 关闭时间
@@ -148,7 +167,7 @@ class MainPageWidgetAndroidHW(object):
         # 取消按钮
         d["cancel"] = ["com.huawei.smarthome:id/device_time_config_cancle", "id", u"取消"]
         # 保存按钮
-        d["confirm"] = ["com.huawei.smarthome:id/device_time_config_ok", "id", u"保存按钮"]
+        d["saved"] = ["com.huawei.smarthome:id/device_time_config_ok", "id", u"保存按钮"]
         # 删除
         d["delete"] = [u"//android.widget.Button[@text='删除']", "xpath", u"删除"]
         return d
@@ -160,9 +179,9 @@ class PopupWidgetAndroidHW(object):
         d = {}
         d["title"] = [u"//android.widget.TextView[@text='发现新版本']", "xpath", u"有更新"]
         # 更新
-        d["confirm"] = [u"//android.widget.TextView[@text='立即更新']", "xpath", u"更新"]
-        # 检查更新
-        d["cancel"] = [u"//android.widget.TextView[@text='以后再说']", "xpath", u"稍后提醒"]
+        d["confirm"] = [u"//android.widget.Button[@text='立即更新']", "xpath", u"更新"]
+        # 稍后提醒
+        d["cancel"] = [u"//android.widget.Button[@text='以后再说']", "xpath", u"稍后提醒"]
         return d
 
     # 解绑设备
@@ -272,4 +291,6 @@ class PopupWidgetAndroidHW(object):
         d["confirm"] = ["com.huawei.smarthome:id/device_control_delay_dialog_btn_horizontal_ok", "id", u"确定"]
         # 取消
         d["cancel"] = ["com.huawei.smarthome:id/device_control_delay_dialog_btn_horizontal_cancle", "id", u"取消"]
+        # 停止
+        d["stop"] = ["com.huawei.smarthome:id/device_control_delay_dialog_btn_horizontal_stop", "id", u"停止"]
         return d
