@@ -11,42 +11,6 @@ from src.testcase.common.WidgetCheckUnit import *
 from src.utils.ScreenShot import *
 
 
-def launch_fail_fix_al(func):
-    def wrapper(self):
-        i = 1
-        ii = 1
-        while True:
-            try:
-                func(self)
-                break
-            except WebDriverException, e:
-                e = "".join(str(e).split())
-                if e != "Message:":
-                    self.debug.error(traceback.format_exc())
-                    self.debug.error("launch_app driver(WebDriverException):%s times" % i)
-
-                    time.sleep(1)
-                    if i >= 3:
-                        self.http_run_app()
-                    elif i >= 4:
-                        self.http_run_app(True)
-                        i = 0
-                    i += 1
-                else:
-                    self.http_run_app()
-            except URLError:
-                self.debug.error("launch_app driver(URLError):%s times" % ii)
-                ii += 1
-                self.http_run_app(True)
-                break
-            except BadStatusLine:
-                self.debug.error("launch_app driver(BadStatusLine)")
-                self.http_run_app(True)
-                break
-
-    return wrapper
-
-
 def decor_init_app_al(func):
     def wrapper(self):
         while True:
@@ -104,6 +68,42 @@ def decor_launch_app_al(func):
                 self.case_over("unknown")
                 self.debug.error("case_over:%s" % traceback.format_exc())
                 raise WebDriverException("Case launch unknown")
+
+    return wrapper
+
+
+def launch_fail_fix_al(func):
+    def wrapper(self):
+        i = 1
+        ii = 1
+        while True:
+            try:
+                func(self)
+                break
+            except WebDriverException, e:
+                e = "".join(str(e).split())
+                if e != "Message:":
+                    self.debug.error(traceback.format_exc())
+                    self.debug.error("launch_app driver(WebDriverException):%s times" % i)
+
+                    time.sleep(1)
+                    if i == 3:
+                        self.http_run_app()
+                    elif i >= 4:
+                        self.http_run_app(True)
+                        i = 0
+                    i += 1
+                else:
+                    self.http_run_app(True)
+            except URLError:
+                self.debug.error("launch_app driver(URLError):%s times" % ii)
+                ii += 1
+                self.http_run_app(True)
+                break
+            except BadStatusLine:
+                self.debug.error("launch_app driver(BadStatusLine)")
+                self.http_run_app(True)
+                break
 
     return wrapper
 
@@ -226,52 +226,6 @@ class LaunchAppAL(object):
             self.logger.info("time sleep %sS" % (i * 10))
             i += 1
 
-    def check_user_pwd(self):
-        self.init_operate()
-        ToLoginPage(self.driver, self.logger, self.device_info, self.page)
-        while True:
-            try:
-                user_name = self.widget_click(self.page["login_page"]["username"],
-                                              self.page["login_page"]["title"])
-
-                # 发送数据
-                data = self.user["user_name"]
-                data = str(data).decode('hex').replace(" ", "")
-                user_name.clear()
-                self.ac.send_keys(user_name, data, self.driver)
-                time.sleep(0.5)
-
-                precise_pwd = self.user["precise_pwd"]
-                for x in xrange(len(precise_pwd)):
-                    self.show_pwd(self.wait_widget(self.page["login_page"]["password"]),
-                                  self.wait_widget(self.page["login_page"]["check_box"]))
-                    login_pwd = self.widget_click(self.page["login_page"]["password"],
-                                                  self.page["login_page"]["title"])
-
-                    pwd_data = str(precise_pwd[x]).decode('hex').replace(" ", "")
-                    login_pwd.clear()
-                    self.ac.send_keys(login_pwd, pwd_data, self.driver)
-                    try:
-                        self.widget_click(self.page["login_page"]["login_button"],
-                                          self.page["account_setting_page"]["title"])
-                        if x == 0:
-                            self.user["login_pwd"] = precise_pwd[0]
-                            self.user["new_pwd"] = precise_pwd[1]
-                        else:
-                            self.user["login_pwd"] = precise_pwd[1]
-                            self.user["new_pwd"] = precise_pwd[0]
-                        break
-                    except TimeoutException:
-                        if x != len(precise_pwd) - 1:
-                            pass
-                        else:
-                            raise TimeoutException("login app error,[username:%s, pwd:%s]" % (data, pwd_data))
-                modified_conf(conf)
-                break
-            except TimeoutException:
-                self.wait_pwd_timeout()
-                self.debug.error("init_app:%s" % traceback.format_exc())
-
     @decor_init_app_al
     @launch_fail_fix_al
     def init_app(self):
@@ -325,19 +279,6 @@ class LaunchAppAL(object):
         self.driver.launch_app()
         time.sleep(0.5)
         self.debug.info("launch_app driver(launch_app success)")
-
-    def show_pwd(self, element, element1=None, param="name", state="false"):
-        while True:
-            try:
-                if self.ac.get_attribute(element, param) == state:
-                    break
-                else:
-                    if element1 is None:
-                        element.click()
-                    else:
-                        element1.click()
-            except BaseException:
-                self.debug.error(traceback.format_exc())
 
     def case_over(self, success):
         self.success = success

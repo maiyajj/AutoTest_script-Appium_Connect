@@ -20,7 +20,7 @@ class ALAppCycleTimer2(WidgetOperationAL):
 
         self.close_general_timer()
 
-        self.ac.swipe(0.5, 0.6, 0.5, 0.4, 0, self.driver)
+        self.ac.swipe(0.5, 0.6, 0.5, 0.4, self.driver)
         self.widget_click(self.page["control_device_page"]["cycle_timer"],
                           self.page["cycle_timer_page"]["title"])
 
@@ -37,7 +37,7 @@ class ALAppCycleTimer2(WidgetOperationAL):
         self.widget_click(self.page["cycle_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
 
-        self.ac.swipe(0.5, 0.4, 0.5, 0.6, 0, self.driver)
+        self.ac.swipe(0.5, 0.4, 0.5, 0.6, self.driver)
         attribute = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["launch_mode"]), "name")
         if attribute != u"循环任务开":
             raise TimeoutException("mode launch failed, current:%s" % [attribute])

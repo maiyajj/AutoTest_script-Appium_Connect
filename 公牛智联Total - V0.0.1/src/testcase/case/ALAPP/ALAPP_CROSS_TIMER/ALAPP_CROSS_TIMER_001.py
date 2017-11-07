@@ -49,7 +49,7 @@ class ALAppCrossTimer1(WidgetOperationAL):
         self.widget_click(self.page["delay_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
 
-        self.ac.swipe(0.5, 0.6, 0.5, 0.4, 0, self.driver)
+        self.ac.swipe(0.5, 0.6, 0.5, 0.4, self.driver)
         self.widget_click(self.page["control_device_page"]["cycle_timer"],
                           self.page["cycle_timer_page"]["title"])
 

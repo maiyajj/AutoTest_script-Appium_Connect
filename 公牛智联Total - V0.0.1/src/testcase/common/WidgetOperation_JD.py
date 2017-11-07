@@ -15,7 +15,7 @@ class WidgetOperationJD(LaunchAppJD):
                         self.widget_click(new_value, self.page["control_device_page"]["title"])
                         break
                     except TimeoutException:
-                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, self.driver)
                         time.sleep(1)
             break
 
@@ -31,7 +31,7 @@ class WidgetOperationJD(LaunchAppJD):
                         self.widget_click(new_value, element3)
                         raise ValueError()
                     else:
-                        self.ac.swipe(0.6, 0.9, 0.6, 0.4, 0, self.driver)
+                        self.ac.swipe(0.6, 0.9, 0.6, 0.4, self.driver)
                         time.sleep(1)
             except ValueError:
                 break
@@ -436,3 +436,49 @@ class WidgetOperationJD(LaunchAppJD):
                           self.page["control_device_page"]["title"])
 
         return elec, elec_bill
+
+    # 密码框显示密码
+    def show_pwd(self, element, element1=None, param="name", display=True):
+        if display:
+            while True:
+                try:
+                    if param == "name":
+                        if self.ac.get_attribute(element, param) != "":
+                            break
+                        else:
+                            if element1 is None:
+                                element.click()
+                            else:
+                                element1.click()
+                    else:
+                        if self.ac.get_attribute(element, param) == "true":
+                            break
+                        else:
+                            if element1 is None:
+                                element.click()
+                            else:
+                                element1.click()
+
+                except BaseException:
+                    self.debug.error(traceback.format_exc())
+        else:
+            while True:
+                try:
+                    if param == "name":
+                        if self.ac.get_attribute(element, param) == "":
+                            break
+                        else:
+                            if element1 is None:
+                                element.click()
+                            else:
+                                element1.click()
+                    else:
+                        if self.ac.get_attribute(element, param) == "false":
+                            break
+                        else:
+                            if element1 is None:
+                                element.click()
+                            else:
+                                element1.click()
+                except BaseException:
+                    self.debug.error(traceback.format_exc())

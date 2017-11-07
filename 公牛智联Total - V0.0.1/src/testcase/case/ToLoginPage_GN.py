@@ -20,6 +20,7 @@ class ToLoginPageGN(object):
         time.sleep(0.01)
         self.case()
 
+    # 检查APP是否升级，取消
     def check_update(self):
         try:
             self.wait_widget(self.page["update_popup"]["title"])
@@ -31,6 +32,7 @@ class ToLoginPageGN(object):
         except TimeoutException:
             pass
 
+    # 账户异地登录弹窗，确定跳过
     def login_abnormal(self):
         try:
             self.wait_widget(self.page["login_popup"]["title"])
@@ -41,47 +43,36 @@ class ToLoginPageGN(object):
         except TimeoutException:
             pass
 
+    # 退出登录至登录界面
     def device_to_login(self):
+        self.wait_widget(self.page["device_page"]["title"])
+        self.logger.info(u"[APP_INF] APP当前页面为主页面,等待退出")
         try:
-            self.wait_widget(self.page["device_page"]["title"])
-            self.logger.info(u"[APP_INF] APP当前页面为主页面,等待退出")
-            try:
-                self.widget_click(self.page["device_page"]["user_image"],
-                                  self.page["personal_settings_page"]["title"],
-                                  log_record=0)
+            self.widget_click(self.page["device_page"]["user_image"],
+                              self.page["personal_settings_page"]["title"],
+                              log_record=0)
 
-                self.widget_click(self.page["personal_settings_page"]["account_setting"],
-                                  self.page["account_setting_page"]["title"],
-                                  log_record=0)
+            self.widget_click(self.page["personal_settings_page"]["account_setting"],
+                              self.page["account_setting_page"]["title"],
+                              log_record=0)
 
-                self.widget_click(self.page["account_setting_page"]["logout"],
-                                  self.page["logout_popup"]["title"],
-                                  log_record=0)
+            self.widget_click(self.page["account_setting_page"]["logout"],
+                              self.page["logout_popup"]["title"],
+                              log_record=0)
 
-                self.widget_click(self.page["logout_popup"]["confirm"],
-                                  self.page["login_page"]["title"],
-                                  log_record=0)
-            except TimeoutException:
-                self.logger.info(u"[APP_INF] APP进入登录页面失败，正在重新启动")
-                self.driver.close_app()
-                self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
-                raise WebDriverException()
+            self.widget_click(self.page["logout_popup"]["confirm"],
+                              self.page["login_page"]["title"],
+                              log_record=0)
         except TimeoutException:
-            pass
+            self.logger.info(u"[APP_INF] APP进入登录页面失败")
+            self.driver.close_app()
+            self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
+            raise TimeoutException("ToLoginPage Error!")
 
+    # 用例动作
     def case(self):
-        # 用例动作
-        i = 0
-        while True:
-            self.check_update()
-            self.login_abnormal()
-            self.device_to_login()
-            try:
-                self.wait_widget(self.page["login_page"]["title"])
-                self.logger.info(u"[APP_INF] APP当前页面为登录页面")
-                break
-            except TimeoutException:
-                pass
-            i += 1
-            if i > 3:
-                raise TimeoutException("ToLoginPage Error!")
+        self.check_update()
+        self.login_abnormal()
+        self.device_to_login()
+        self.wait_widget(self.page["login_page"]["title"])
+        self.logger.info(u"[APP_INF] APP当前页面为登录页面")

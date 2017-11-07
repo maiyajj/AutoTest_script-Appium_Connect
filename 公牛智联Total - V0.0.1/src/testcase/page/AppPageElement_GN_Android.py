@@ -3,8 +3,8 @@ class MainPageWidgetAndroidGN(object):
     # 万能页面
     def god_page(self):
         d = {}
-        d["title"] = ["android.widget.FrameLayout", "class", u"万能控件",
-                      {"px": {"width": 0, "height": 0}}]
+        # 标题
+        d["title"] = ["android.widget.FrameLayout", "class", u"万能控件", {"px": [0, 0]}]
         return d
 
     # 引导页
@@ -23,8 +23,6 @@ class MainPageWidgetAndroidGN(object):
         d["activity"] = [".activitys.regist_login.LoginActivity", "activity", u"页面activity"]
         # 用户名输入框
         d["username"] = ["com.iotbull.android.superapp:id/login_et_username", "id", u"用户名输入框"]
-        # 密码输入框
-        # d["password"] = ["com.iotbull.android.superapp:id/login_et_password", "id", u"密码输入框"]
         # 密码显示的输入框
         d["password"] = ["com.iotbull.android.superapp:id/login_et_password", "id", u"密码显示输入框",
                          {"default_text": u"请输入密码"}]

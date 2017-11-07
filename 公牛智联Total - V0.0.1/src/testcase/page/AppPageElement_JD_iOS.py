@@ -3,8 +3,8 @@ class MainPageWidgetIosJD(object):
     # 万能页面
     def god_page(self):
         d = {}
-        d["title"] = ["//XCUIElementTypeStatusBar", "xpath", u"万能控件",
-                      {"px": {"width": 0, "height": 0}}]
+        # 标题
+        d["title"] = ["//XCUIElementTypeStatusBar", "xpath", u"万能控件", {"px": [0, 0]}]
         return d
 
     # 账户设置页
@@ -18,8 +18,7 @@ class MainPageWidgetIosJD(object):
         d["username"] = ["//XCUIElementTypeTable/XCUIElementTypeStaticText", "xpath", u"用户名"]
         return d
 
-        # 帮助与设置
-
+    # 帮助与设置
     def help_setting_page(self):
         d = {}
         # 标题
@@ -64,6 +63,8 @@ class MainPageWidgetIosJD(object):
             device[
                 i] = "//XCUIElementTypeOther[2]//XCUIElementTypeCell[%s]/XCUIElementTypeStaticText" % (i + 1)
         d["device"] = [device, "xpath", u"待控设备"]
+        # 有设备
+        d["has_device"] = ["//XCUIElementTypeTable/XCUIElementTypeCell/XCUIElementTypeButton", "xpath", u"有设备"]
         return d
 
     # 添加设备页面
@@ -360,9 +361,9 @@ class MainPageWidgetIosJD(object):
         # 设定时间
         d["set_timer"] = ["//XCUIElementTypeWebView//XCUIElementTypeTextField", "xpath", u"设定时间"]
         # 时间滚轮,时
-        d["roll_h"] = [u"XCUIElementTypeOther[@name='时']", "xpath", u"时间滚轮,时", {"px": [0.51, 0.5]}]
+        d["roll_h"] = [u"//XCUIElementTypeOther[@name='时']", "xpath", u"时间滚轮,时", {"px": [0.51, 0.5]}]
         # 时间滚轮,分
-        d["roll_m"] = [u"XCUIElementTypeOther[@name='分']", "xpath", u"时间滚轮,分", {"px": [0.51, 0.5]}]
+        d["roll_m"] = [u"//XCUIElementTypeOther[@name='分']", "xpath", u"时间滚轮,分", {"px": [0.51, 0.5]}]
         # 重复
         d["repeat"] = ["//XCUIElementTypeWebView//XCUIElementTypeOther[2]", "xpath", u"重复"]
         # 定时开机

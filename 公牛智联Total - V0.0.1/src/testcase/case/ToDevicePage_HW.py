@@ -24,6 +24,7 @@ class ToDevicePageHW(object):
         time.sleep(0.01)
         self.case()
 
+    # 检查APP是否升级，取消
     def check_update(self):
         try:
             self.wait_widget(self.page["update_popup"]["title"])
@@ -35,158 +36,12 @@ class ToDevicePageHW(object):
         except TimeoutException:
             pass
 
-    def close_ad(self):
-        try:
-            self.wait_widget(self.page["close_ad_popup"]["title"])
-            self.logger.info(u"[APP_INF] 页面有广告，关闭广告")
-            self.widget_click(self.page["close_ad_popup"]["confirm"],
-                              self.page["app_home_page"]["title"],
-                              log_record=0)
-        except TimeoutException:
-            pass
-
+    # 登录至APP主页面
     def login_to_device(self):
-        try:
-            self.wait_widget(self.page["app_home_page"]["no_device"])
-            self.widget_click(self.page["app_home_page"]["account_setting"],
-                              self.page["account_setting_page"]["title"],
-                              log_record=0)
-            try:
-                element = self.wait_widget(self.page["account_setting_page"]["username"])
-                if self.ac.get_attribute(element, "name") == u'点击登录':
-                    self.logger.info(u"[APP_INF] 当前APP未登录，开始重新登录")
-                    self.widget_click(self.page["account_setting_page"]["username"],
-                                      self.page["login_page"]["title"],
-                                      log_record=0)
-                    user_name = self.widget_click(self.page["login_page"]["username"],
-                                                  self.page["login_page"]["title"])
+        # TODO: 华为账号退出登录，由于APP的安全限制暂未定是否要做。
+        pass
 
-                    # 发送数据
-                    data = self.user["user_name"]
-                    data = str(data).decode('hex').replace(" ", "")
-                    user_name.clear()
-                    self.ac.send_keys(user_name, data, self.driver)
-                    self.logger.info(u'[APP_INPUT] ["重新登陆用户名"] input success')
-                    time.sleep(0.5)
-
-                    # self.show_pwd()
-                    login_pwd = self.widget_click(self.page["login_page"]["password"],
-                                                  self.page["login_page"]["title"])
-
-                    data = self.user["login_pwd"]
-                    data = str(data).decode('hex').replace(" ", "")
-                    login_pwd.clear()
-                    self.ac.send_keys(login_pwd, data, self.driver)
-                    self.logger.info(u'[APP_INPUT] ["重新输入登录密码"] input success')
-                    try:
-                        self.widget_click(self.page["login_page"]["login_button"],
-                                          self.page["app_home_page"]["title"])
-
-                    except TimeoutException:
-                        i = 1
-                        while i <= 31:
-                            time.sleep(10)
-                            self.driver.tap([(10, 10)])
-                            self.logger("time sleep %sS" % (i * 10))
-                            i += 1
-                        self.widget_click(self.page["login_page"]["login_button"],
-                                          self.page["app_home_page"]["title"])
-                else:
-                    px = self.driver.get_window_size()
-                    end_time = time.time() + 2
-                    while True:
-                        self.driver.tap([(px["width"] - 1, px["height"] - 1)])
-                        time.sleep(1)
-                        if self.ac.get_attribute(element, "is_displayed") == "false" and self.ac.get_attribute(
-                                self.wait_widget(self.page["app_home_page"]["title"]), "is_displayed") == "true":
-                            break
-                        else:
-                            if time.time() > end_time:
-                                raise TimeoutException("into home page timeout")
-            except TimeoutException:
-                self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
-                self.driver.close_app()
-                self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
-                raise WebDriverException(u"[APP_INF] APP进入设备主页失败，退出")
-        except TimeoutException:
-            pass
-
-    def show_pwd(self):
-        try:
-            element = self.wait_widget(self.page["login_page"]["check_box"])
-            while True:
-                if self.ac.get_attribute(self.wait_widget(self.page["login_page"]["password"]), "name") != "":
-                    break
-                else:
-                    element.click()
-        except TimeoutException:
-            pass
-
-    def check_user_pwd(self):
-        while True:
-            try:
-                user_name = self.widget_click(self.page["login_page"]["username"],
-                                              self.page["login_page"]["title"])
-
-                # 发送数据
-                data = self.user["user_name"]
-                data = str(data).decode('hex').replace(" ", "")
-                user_name.clear()
-                self.ac.send_keys(user_name, data, self.driver)
-                time.sleep(0.5)
-
-                precise_pwd = self.user["precise_pwd"]
-                for x in xrange(len(precise_pwd)):
-                    self.show_pwd()
-                    login_pwd = self.widget_click(self.page["login_page"]["password"],
-                                                  self.page["login_page"]["title"])
-
-                    pwd_data = str(precise_pwd[x]).decode('hex').replace(" ", "")
-                    login_pwd.clear()
-                    self.ac.send_keys(login_pwd, pwd_data, self.driver)
-                    try:
-                        self.widget_click(self.page["login_page"]["login_button"],
-                                          self.page["account_setting_page"]["title"])
-                        if x == 0:
-                            self.user["login_pwd"] = precise_pwd[0]
-                            self.user["new_pwd"] = precise_pwd[1]
-                        else:
-                            self.user["login_pwd"] = precise_pwd[1]
-                            self.user["new_pwd"] = precise_pwd[0]
-                        break
-                    except TimeoutException:
-                        if x != len(precise_pwd) - 1:
-                            pass
-                        else:
-                            raise TimeoutException("login app error,[username:%s, pwd:%s]" % (data, pwd_data))
-                modified_conf(conf)
-                break
-            except TimeoutException:
-                self.wait_pwd_timeout()
-                self.debug.error("init_app:%s" % traceback.format_exc())
-
-    def wait_pwd_timeout(self):
-        i = 1
-        while i <= 31:
-            time.sleep(10)
-            self.driver.tap([(10, 10)])
-            print "time sleep %sS" % (i * 10)
-            self.logger.info("time sleep %sS" % (i * 10))
-            i += 1
-
+    # 用例动作
     def case(self):
-        # 用例动作
-        i = 0
-        while True:
-            self.check_update()
-            self.close_ad()
-            self.login_to_device()
-            try:
-                self.wait_widget(self.page["app_home_page"]["title"])
-                self.logger.info(u"[APP_INF] APP当前页面为主页面")
-                break
-            except TimeoutException:
-                pass
-            i += 1
-            if i > 3:
-                raise TimeoutException("ToDevicePage Error!")
+        self.check_update()
+        self.login_to_device()

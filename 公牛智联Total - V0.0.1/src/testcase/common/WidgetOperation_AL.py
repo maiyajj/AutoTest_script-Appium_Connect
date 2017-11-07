@@ -17,7 +17,7 @@ class WidgetOperationAL(LaunchAppAL):
                 self.widget_click(new_value, self.page["control_device_page"]["title"], 3, 10)
                 break
             except TimeoutException:
-                self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                self.ac.swipe(0.6, 0.9, 0.6, 0.6, self.driver)
                 time.sleep(1)
 
                 if time.time() > end_time:
@@ -44,7 +44,7 @@ class WidgetOperationAL(LaunchAppAL):
             if self.wait_widget(new_value).location["y"] < self.driver.get_window_size()["height"]:
                 return new_value
             else:
-                self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                self.ac.swipe(0.6, 0.9, 0.6, 0.6, self.driver)
                 time.sleep(1)
 
                 if time.time() > end_time:
@@ -689,7 +689,7 @@ class WidgetOperationAL(LaunchAppAL):
         element = self.wait_widget(self.page["control_device_page"]["launch_mode"])
         while True:
             attribute = self.ac.get_attribute(element, "name")
-            if u"模式" not in attribute:
+            if u"模式" in attribute:
                 self.logger.info("[APP_INFO]Mode timer is run")
                 if u"热水器模式" in attribute:
                     self.widget_click(self.page["control_device_page"]["water_mode_timer"],
@@ -755,7 +755,7 @@ class WidgetOperationAL(LaunchAppAL):
         while True:
             attribute = self.ac.get_attribute(element, "name")
             if u"任务开" not in attribute:
-                self.logger.info("[APP_INFO]Mode timer is run")
+                self.logger.info("[APP_INFO]Normal timer is run")
                 if u"定时任务开" in attribute:
                     self.widget_click(self.page["control_device_page"]["normal_timer"],
                                       self.page["normal_timer_page"]["title"])
@@ -764,7 +764,7 @@ class WidgetOperationAL(LaunchAppAL):
 
                     self.widget_click(self.page["normal_timer_page"]["to_return"],
                                       self.page["control_device_page"]["title"])
-                if u"延时任务开" in attribute:
+                elif u"延时任务开" in attribute:
                     self.widget_click(self.page["control_device_page"]["delay_timer"],
                                       self.page["delay_timer_page"]["title"])
 
@@ -773,8 +773,8 @@ class WidgetOperationAL(LaunchAppAL):
 
                     self.widget_click(self.page["delay_timer_page"]["to_return"],
                                       self.page["control_device_page"]["title"])
-                if u"延时任务开" in attribute:
-                    self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                else:
+                    self.ac.swipe(0.6, 0.9, 0.6, 0.6, self.driver)
                     self.widget_click(self.page["control_device_page"]["cycle_timer"],
                                       self.page["cycle_timer_page"]["title"])
 
@@ -783,7 +783,9 @@ class WidgetOperationAL(LaunchAppAL):
 
                     self.widget_click(self.page["cycle_timer_page"]["to_return"],
                                       self.page["control_device_page"]["title"])
-
+            else:
+                self.logger.info("[APP_INFO]Normal timer don't run")
+                break
     # 启动模式定时
     def launch_mode_timer(self, page, start_now, start_time=None):
         if not isinstance(start_now, bool):
@@ -842,7 +844,7 @@ class WidgetOperationAL(LaunchAppAL):
             self.widget_click(self.page["control_device_page"]["elec"],
                               self.page["elec_page"]["title"])
 
-            self.ac.swipe(0.5, 0.7, 0.5, 0.4, 0, self.driver)
+            self.ac.swipe(0.5, 0.7, 0.5, 0.4, self.driver)
 
             self.widget_click(self.page["elec_page"]["more_elec_history"],
                               self.page["more_elec_history_page"]["title"])
@@ -858,7 +860,7 @@ class WidgetOperationAL(LaunchAppAL):
                             self.widget_click(new_value, self.page["day_elec_page"]["title"])
                             break
                         except TimeoutException:
-                            self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                            self.ac.swipe(0.6, 0.9, 0.6, 0.6, self.driver)
                             time.sleep(1)
                 break
 
@@ -908,3 +910,17 @@ class WidgetOperationAL(LaunchAppAL):
                           self.page["control_device_page"]["title"])
 
         return elec, elec_bill
+
+    # 密码框显示密码
+    def show_pwd(self, element, element1=None, param="name", state="false"):
+        while True:
+            try:
+                if self.ac.get_attribute(element, param) == state:
+                    break
+                else:
+                    if element1 is None:
+                        element.click()
+                    else:
+                        element1.click()
+            except BaseException:
+                self.debug.error(traceback.format_exc())

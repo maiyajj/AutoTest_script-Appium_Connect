@@ -1,8 +1,8 @@
 # coding=utf-8
-from src.testcase.case.LaunchApp_GN import *
+from src.testcase.common.WidgetOperation_GN import *
 
 
-class GNAppLogin3(LaunchAppGN):
+class GNAppLogin3(WidgetOperationGN):
     @case_run_gn(True)
     def run(self):
         self.case_module = u"登录"  # 用例所属模块

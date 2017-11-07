@@ -3,17 +3,44 @@ class MainPageWidgetAndroidAL(object):
     # 万能页面
     def god_page(self):
         d = {}
-        d["title"] = ["android.widget.FrameLayout", "class", u"万能控件",
-                      {"px": {"width": 0, "height": 0}}]
+        # 标题
+        d["title"] = ["android.widget.FrameLayout", "class", u"万能控件", {"px": [0, 0]}]
+        return d
+
+    # 欢迎页
+    def welcome_page(self):
+        d = {}
+        # 标题
+        d["title"] = ["btn_skip", "id", u"欢迎页"]
+        # 跳过
+        d["skip"] = ["btn_skip", "id", u"跳过"]
         return d
 
     # “我的”页面
     def my_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='我的家']", "xpath", u"“我的”页面"]
+        d["title"] = [u"//android.widget.TextView[@text='自动化']", "xpath", u"“我的”页面"]
         # 设置
         d["setting"] = ["com.aliyun.alink:id/layout_container_item_setting", "id", u"设置"]
+        return d
+
+    # FIXME:更新login_page元素库
+    # 账户登录页面
+    def login_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"账户登录", "accessibility_id", u"账户登录页面"]
+        # 用户名
+        d["username"] = ["//XCUIElementTypeTextField", "xpath", u"用户名输入框"]
+        # 密码
+        d["password"] = ["//XCUIElementTypeOther[4]/XCUIElementTypeTextField", "xpath", u"密码输入框"]
+        # 显示/关闭密码
+        d["check_box"] = ["//XCUIElementTypeOther[4]/XCUIElementTypeButton", "xpath", u"显示/关闭密码"]
+        # 登录
+        d["login_button"] = [u"登录", "accessibility_id", u"登录按钮"]
+        # 返回
+        d["to_return"] = [u"返回", "accessibility_id", u"返回"]
         return d
 
     # 设置页面
@@ -55,7 +82,12 @@ class MainPageWidgetAndroidAL(object):
         # 设备开关
         d["device_button"] = [device_button, "xpath", u"待控设备开关"]
         # 设备状态
-        d["device_state"] = [device_state, "xpath", u"待控设备开关"]
+        d["device_state"] = [device_state, "xpath", u"设备状态"]
+        # FIXME: “我的”按钮id待修改
+        # “我的”按钮
+        d["my"] = [device_state, "xpath", u"“我的”按钮"]
+        # “我的家”按钮
+        d["my_home"] = [u"我的家", "accessibility_id", u"“我的家”按钮"]
         return d
 
     # 选择添加方式页面
@@ -86,7 +118,8 @@ class MainPageWidgetAndroidAL(object):
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='插座排插']", "xpath", u"插座排插页面"]
         # 公牛WiFi智能插座2代（电量统计版）
-        d["y201S"] = [u"//android.widget.TextView[@text='公牛WiFi智能插座2代（电量统计版）']", "xpath", u"公牛WiFi智能插座2代（电量统计版）"]
+        d["y201S"] = [u"//android.widget.TextView[@text='公牛WiFi智能插座2代（电量统计版）']", "xpath",
+                      u"公牛WiFi智能插座2代（电量统计版）"]
         # 公牛WiFi智能插座2代
         d["y2010"] = [u"//android.widget.TextView[@text='公牛WiFi智能插座2代']", "xpath", u"公牛WiFi智能插座2代"]
         # 返回
@@ -114,7 +147,7 @@ class MainPageWidgetAndroidAL(object):
         # wifi密码输入框
         d["password"] = ["com.aliyun.alink:id/edittext_devicewificonfig_pwd", "id", u"wifi密码输入框"]
         # 密码显示关闭
-        d["check_box"] = ["com.aliyun.alink:id/button_devicewificonfig_pwd_switch", "id", u"wifi密码输入框"]
+        d["check_box"] = ["com.aliyun.alink:id/button_devicewificonfig_pwd_switch", "id", u"密码显示关闭"]
         # 返回
         d["to_return"] = ["com.aliyun.alink:id/button_devicewificonfig_back", "id", u"返回"]
         return d
@@ -136,14 +169,7 @@ class MainPageWidgetAndroidAL(object):
         # 返回
         d["to_return"] = ["com.aliyun.alink:id/textview_atopbar_left_1", "id", u"返回"]
         # 重试
-        d["retry"] = ["com.aliyun.alink:id/button_deviceconfigfailed_retry", "id", u"返回"]
-        return d
-
-    # 设备已被绑定
-    def bind_device_page(self):
-        d = {}
-        # 标题
-        d["title"] = [u"//android.widget.TextView[text='该设备已被绑定']", "xpath", u"该设备已被绑定"]
+        d["retry"] = ["com.aliyun.alink:id/button_deviceconfigfailed_retry", "id", u"重试"]
         return d
 
     # 设备控制页面
@@ -437,7 +463,7 @@ class MainPageWidgetAndroidAL(object):
     def timer_repeat_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.view.View[@content-desc='重复']", "xpath", u"定时重复页面"]
+        d["title"] = [u"//android.view.View[@content-desc='完成']", "xpath", u"定时重复页面"]
         # 永不
         d["once"] = [u"//android.view.View[contains(@content-desc, '永不')]", "xpath", u"永不", {"px": [0.09, 0.5]}]
         # 周一
@@ -631,6 +657,13 @@ class PopupWidgetAndroidAL(object):
         d["add_home_member"] = [u"//android.widget.TextView[@text='添加家庭成员']", "xpath", u"添加家庭成员"]
         # 关闭按钮
         d["close"] = ["com.aliyun.alink:id/homepage_topbar_menu_btn", "id", u"关闭按钮"]
+        return d
+
+    # 设备已被绑定
+    def bind_device_popup(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[text='该设备已被绑定']", "xpath", u"该设备已被绑定"]
         return d
 
     # 解绑设备弹窗

@@ -20,7 +20,7 @@ class ALAppEem3(WidgetOperationAL):
 
         self.close_general_timer()
 
-        self.ac.swipe(0.5, 0.9, 0.5, 0.1, 0, self.driver)
+        self.ac.swipe(0.5, 0.9, 0.5, 0.1, self.driver)
 
         self.widget_click(self.page["control_device_page"]["set_elec"],
                           self.page["set_elec_page"]["title"])

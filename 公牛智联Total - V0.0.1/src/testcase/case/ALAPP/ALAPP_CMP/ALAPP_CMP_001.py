@@ -29,7 +29,7 @@ class ALAppCmp1(WidgetOperationAL):
             except TimeoutException:
                 if time.time() > end_time:
                     raise TimeoutException()
-                self.ac.swipe(0.5, 0.6, 0.5, 0.5, 0, self.driver)
+                self.ac.swipe(0.5, 0.6, 0.5, 0.5, self.driver)
 
         end_time = time.time() + 30
         while True:
@@ -40,7 +40,7 @@ class ALAppCmp1(WidgetOperationAL):
             except TimeoutException:
                 if time.time() > end_time:
                     raise TimeoutException()
-                self.ac.swipe(0.5, 0.6, 0.5, 0.5, 0, self.driver)
+                self.ac.swipe(0.5, 0.6, 0.5, 0.5, self.driver)
 
         self.widget_click(self.page["add_specification_page"]["next"],
                           self.page["input_wifi_password_page"]["title"])
@@ -84,7 +84,7 @@ class ALAppCmp1(WidgetOperationAL):
         self.widget_click(self.page["control_device_page"]["device_info"],
                           self.page["device_info_page"]["title"])
 
-        self.ac.swipe(0.5, 0.6, 0.5, 0.4, 0, self.driver)
+        self.ac.swipe(0.5, 0.6, 0.5, 0.4, self.driver)
 
         self.widget_click(self.page["device_info_page"]["unbind"],
                           self.page["unbind_device_popup"]["title"])

@@ -15,6 +15,12 @@ class AppInitIos(object):
         elif self.app == "JD":
             self.app = "JD_iOS"
             self.device[k]["app"] = "JD"
+        elif self.app == "AL":
+            self.app = "AL_iOS"
+            self.device[k]["app"] = "AL"
+        elif self.app == "HW":
+            self.app = "HW_iOS"
+            self.device[k]["app"] = "HW"
         else:
             raise KeyError("%s:No such App!" % self.app)
 

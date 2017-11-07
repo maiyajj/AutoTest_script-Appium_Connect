@@ -26,8 +26,10 @@ class ShellCommandMac(object):
         Avoid system resource crashes.
         such idevicesyslog and mdworker.
         """
-        os.system("killall -9 idevicesyslog")
-        os.system("killall -9 mdworker")
+        # 使用popen4没有任何含义，仅仅是为了控制台不打出多余信息
+        # 使用popen控制台会有大量 No matching processes belonging to you were found
+        os.popen4("killall -9 idevicesyslog")
+        os.popen4("killall -9 mdworker")
     
     def kill_other_python(self):
         """

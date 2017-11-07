@@ -96,4 +96,4 @@ class AppiumCommandIos(object):
         window_size = driver.get_window_size()
         height = window_size["height"]
         width = window_size["width"]
-        driver.swipe(int(width * x1), int(height * y1), int(width * x2), int(height * y2), step)
+        driver.swipe(int(width * x1), int(height * y1), int(width * (x2 - x1)), int(height * (y2 - y1)), step)

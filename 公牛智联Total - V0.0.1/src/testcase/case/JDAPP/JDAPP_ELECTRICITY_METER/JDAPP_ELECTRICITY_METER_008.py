@@ -15,7 +15,7 @@ class JDAppElectricityMeter8(WidgetOperationJD):
 
         self.set_power("power_on")
 
-        self.ac.swipe(0.5, 0.9, 0.5, 0.7, 0, self.driver)
+        self.ac.swipe(0.5, 0.9, 0.5, 0.7, self.driver)
 
         self.widget_click(self.page["control_device_page"]["set_elec"],
                           self.page["set_elec_page"]["title"])
@@ -45,7 +45,7 @@ class JDAppElectricityMeter8(WidgetOperationJD):
         if u"单一电价" not in attribute:
             raise TimeoutException("set signal price is wrong, current mode is %s" % [attribute])
 
-        # self.ac.swipe(0.5, 0.7, 0.5, 0.9, 0, self.driver)
+        # self.ac.swipe(0.5, 0.7, 0.5, 0.9, self.driver)
 
 
         now_h = int(time.strftime("%H"))
@@ -193,7 +193,7 @@ class JDAppElectricityMeter8(WidgetOperationJD):
         if u"峰谷时间段电价" not in attribute:
             raise TimeoutException("set peak valley price is wrong, current mode is %s" % [attribute])
 
-        # self.ac.swipe(0.5, 0.7, 0.5, 0.9, 0, self.driver)
+        # self.ac.swipe(0.5, 0.7, 0.5, 0.9, self.driver)
 
         now_h = int(time.strftime("%H"))
         elec, elec_bill = self.get_device_elect(now_h + 2, True)

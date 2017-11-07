@@ -29,7 +29,7 @@ class ALAppSmartLink1(WidgetOperationAL):
             except TimeoutException:
                 if time.time() > end_time:
                     raise TimeoutException()
-                self.ac.swipe(0.5, 0.6, 0.5, 0.5, 0, self.driver)
+                self.ac.swipe(0.5, 0.6, 0.5, 0.5, self.driver)
 
         end_time = time.time() + 30
         while True:
@@ -40,7 +40,7 @@ class ALAppSmartLink1(WidgetOperationAL):
             except TimeoutException:
                 if time.time() > end_time:
                     raise TimeoutException()
-                self.ac.swipe(0.5, 0.6, 0.5, 0.5, 0, self.driver)
+                self.ac.swipe(0.5, 0.6, 0.5, 0.5, self.driver)
 
         self.widget_click(self.page["add_specification_page"]["next"],
                           self.page["input_wifi_password_page"]["title"])

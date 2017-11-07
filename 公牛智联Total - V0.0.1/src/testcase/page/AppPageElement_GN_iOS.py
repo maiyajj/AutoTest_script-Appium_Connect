@@ -3,10 +3,8 @@ class MainPageWidgetIosGN(object):
     # 万能页面
     def god_page(self):
         d = {}
-        d["title"] = ["//XCUIElementTypeStatusBar", "xpath", u"万能控件",
-                      {"px": {"width": 0, "height": 0}}]
-        d["battery"] = ["//XCUIElementTypeApplication/XCUIElementTypeWindow[3]/"
-                        "XCUIElementTypeStatusBar/XCUIElementTypeOther[2]/XCUIElementTypeOther[7]", "xpath", u"手机电量", ]
+        # 标题
+        d["title"] = ["//XCUIElementTypeStatusBar", "xpath", u"万能控件", {"px": [0, 0]}]
         return d
 
     # 引导页

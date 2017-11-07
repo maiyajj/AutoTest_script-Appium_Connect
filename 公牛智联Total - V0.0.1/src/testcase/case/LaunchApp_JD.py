@@ -11,42 +11,6 @@ from src.testcase.common.WidgetCheckUnit import *
 from src.utils.ScreenShot import *
 
 
-def launch_fail_fix_jd(func):
-    def wrapper(self):
-        i = 1
-        ii = 1
-        while True:
-            try:
-                func(self)
-                break
-            except WebDriverException, e:
-                e = "".join(str(e).split())
-                if e != "Message:":
-                    self.debug.error(traceback.format_exc())
-                    self.debug.error("launch_app driver(WebDriverException):%s times" % i)
-
-                    time.sleep(1)
-                    if i >= 3:
-                        self.http_run_app()
-                    elif i >= 4:
-                        self.http_run_app(True)
-                        i = 0
-                    i += 1
-                else:
-                    self.http_run_app()
-            except URLError:
-                self.debug.error("launch_app driver(URLError):%s times" % ii)
-                ii += 1
-                self.http_run_app(True)
-                break
-            except BadStatusLine:
-                self.debug.error("launch_app driver(BadStatusLine)")
-                self.http_run_app(True)
-                break
-
-    return wrapper
-
-
 def decor_init_app_jd(func):
     def wrapper(self):
         while True:
@@ -108,6 +72,42 @@ def decor_launch_app_jd(func):
     return wrapper
 
 
+def launch_fail_fix_jd(func):
+    def wrapper(self):
+        i = 1
+        ii = 1
+        while True:
+            try:
+                func(self)
+                break
+            except WebDriverException, e:
+                e = "".join(str(e).split())
+                if e != "Message:":
+                    self.debug.error(traceback.format_exc())
+                    self.debug.error("launch_app driver(WebDriverException):%s times" % i)
+
+                    time.sleep(1)
+                    if i == 3:
+                        self.http_run_app()
+                    elif i >= 4:
+                        self.http_run_app(True)
+                        i = 0
+                    i += 1
+                else:
+                    self.http_run_app(True)
+            except URLError:
+                self.debug.error("launch_app driver(URLError):%s times" % ii)
+                ii += 1
+                self.http_run_app(True)
+                break
+            except BadStatusLine:
+                self.debug.error("launch_app driver(BadStatusLine)")
+                self.http_run_app(True)
+                break
+
+    return wrapper
+
+
 def case_run_jd(bool):
     def wrapper(func):
         def _wrapper(self):
@@ -119,8 +119,6 @@ def case_run_jd(bool):
 
             try:
                 self.launch_app(bool)  # 启动APP
-                # battery = self.wait_widget(self.page["god_page"]["battery"], 3, 1).get_attribute("name")
-                # self.logger.warn(u"手机%s" % battery)
                 try:
                     self.case()
                 except TimeoutException:
@@ -279,51 +277,6 @@ class LaunchAppJD(object):
         self.driver.launch_app()
         time.sleep(0.5)
         self.debug.info("launch_app driver(launch_app success)")
-
-    def show_pwd(self, element, element1=None, param="name", display=True):
-        if display:
-            while True:
-                try:
-                    if param == "name":
-                        if self.ac.get_attribute(element, param) != "":
-                            break
-                        else:
-                            if element1 is None:
-                                element.click()
-                            else:
-                                element1.click()
-                    else:
-                        if self.ac.get_attribute(element, param) == "true":
-                            break
-                        else:
-                            if element1 is None:
-                                element.click()
-                            else:
-                                element1.click()
-
-                except BaseException:
-                    self.debug.error(traceback.format_exc())
-        else:
-            while True:
-                try:
-                    if param == "name":
-                        if self.ac.get_attribute(element, param) == "":
-                            break
-                        else:
-                            if element1 is None:
-                                element.click()
-                            else:
-                                element1.click()
-                    else:
-                        if self.ac.get_attribute(element, param) == "false":
-                            break
-                        else:
-                            if element1 is None:
-                                element.click()
-                            else:
-                                element1.click()
-                except BaseException:
-                    self.debug.error(traceback.format_exc())
 
     def case_over(self, success):
         self.success = success

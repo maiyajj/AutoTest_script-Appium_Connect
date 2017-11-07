@@ -15,7 +15,7 @@ class WidgetOperationHW(LaunchAppHW):
                         self.widget_click(new_value, self.page["control_device_page"]["title"])
                         break
                     except TimeoutException:
-                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, 0, self.driver)
+                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, self.driver)
                         time.sleep(1)
             break
 
@@ -195,7 +195,7 @@ class WidgetOperationHW(LaunchAppHW):
         else:
             return start_time_1, set_time_1, start_time_2, set_time_2
 
-            # 设置普通/模式定时循环模式
+    # 设置普通/模式定时循环模式
     def set_timer_loop(self, page, loop):
         loop_mode = {u"执行一次": "once",
                      u"每天": "everyday",
@@ -329,3 +329,49 @@ class WidgetOperationHW(LaunchAppHW):
                                   self.page["control_device_page"]["title"])
                 self.logger.info("It has no timer~")
                 break
+
+    # 显示密码
+    def show_pwd(self, element, element1=None, param="name", display=True):
+        if display:
+            while True:
+                try:
+                    if param == "name":
+                        if self.ac.get_attribute(element, param) != "":
+                            break
+                        else:
+                            if element1 is None:
+                                element.click()
+                            else:
+                                element1.click()
+                    else:
+                        if self.ac.get_attribute(element, param) == "true":
+                            break
+                        else:
+                            if element1 is None:
+                                element.click()
+                            else:
+                                element1.click()
+
+                except BaseException:
+                    self.debug.error(traceback.format_exc())
+        else:
+            while True:
+                try:
+                    if param == "name":
+                        if self.ac.get_attribute(element, param) == "":
+                            break
+                        else:
+                            if element1 is None:
+                                element.click()
+                            else:
+                                element1.click()
+                    else:
+                        if self.ac.get_attribute(element, param) == "false":
+                            break
+                        else:
+                            if element1 is None:
+                                element.click()
+                            else:
+                                element1.click()
+                except BaseException:
+                    self.debug.error(traceback.format_exc())

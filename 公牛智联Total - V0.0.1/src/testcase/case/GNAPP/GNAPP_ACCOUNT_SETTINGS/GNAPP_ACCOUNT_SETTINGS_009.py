@@ -1,8 +1,8 @@
 # coding=utf-8
-from src.testcase.case.LaunchApp_GN import *
+from src.testcase.common.WidgetOperation_GN import *
 
 
-class GNAppAccountSettings9(LaunchAppGN):
+class GNAppAccountSettings9(WidgetOperationGN):
     @case_run_gn(False)
     def run(self):
         self.case_module = u"账户设置"  # 用例所属模块
