@@ -55,7 +55,6 @@ def decor_launch_app_hw(func):
                         ToDevicePage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到设备主页面等待
                         break
                     elif page_login is None:
-                        pass
                         break
                     i = 0
                 except BaseException:
@@ -119,8 +118,6 @@ def case_run_hw(bool):
 
             try:
                 self.launch_app(bool)  # 启动APP
-                # battery = self.wait_widget(self.page["god_page"]["battery"], 3, 1).get_attribute("name")
-                # self.logger.warn(u"手机%s" % battery)
                 try:
                     self.case()
                 except TimeoutException:
@@ -207,12 +204,15 @@ class LaunchAppHW(object):
                 break
 
     def check_appium_launch(self):
+        end_time = time.time() + 10
         while True:
             try:
                 self.sc.find_proc_and_pid_by_port(self.port)[0]
             except IndexError:
                 self.debug.info("Appium Sever is death! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
                 time.sleep(1)
+                if time.time() > end_time:
+                    self.http_run_app(True)
             else:
                 self.debug.info("Appium Sever launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
                 break

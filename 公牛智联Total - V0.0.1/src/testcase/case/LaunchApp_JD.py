@@ -55,7 +55,6 @@ def decor_launch_app_jd(func):
                         ToDevicePage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到设备主页面等待
                         break
                     elif page_login is None:
-                        pass
                         break
                     i = 0
                 except BaseException:
@@ -205,24 +204,18 @@ class LaunchAppJD(object):
                 break
 
     def check_appium_launch(self):
+        end_time = time.time() + 10
         while True:
             try:
                 self.sc.find_proc_and_pid_by_port(self.port)[0]
             except IndexError:
                 self.debug.info("Appium Sever is death! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
                 time.sleep(1)
+                if time.time() > end_time:
+                    self.http_run_app(True)
             else:
                 self.debug.info("Appium Sever launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
                 break
-
-    def wait_pwd_timeout(self):
-        i = 1
-        while i <= 31:
-            time.sleep(10)
-            self.driver.tap([(10, 10)])
-            print "time sleep %sS" % (i * 10)
-            self.logger.info("time sleep %sS" % (i * 10))
-            i += 1
 
     @decor_init_app_jd
     @launch_fail_fix_jd
