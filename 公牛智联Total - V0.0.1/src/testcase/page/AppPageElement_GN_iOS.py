@@ -1,12 +1,5 @@
 # coding=utf-8
 class MainPageWidgetIosGN(object):
-    # 万能页面
-    def god_page(self):
-        d = {}
-        # 标题
-        d["title"] = ["//XCUIElementTypeStatusBar", "xpath", u"万能控件", {"px": [0, 0]}]
-        return d
-
     # 引导页
     def view_pager_page(self):
         d = {}
@@ -557,8 +550,7 @@ class PopupWidgetIosGN(object):
         d["cancel"] = [u"取消", "accessibility_id", u"取消"]
         return d
 
-        # 清空活动历史消息
-
+    # 清空活动历史消息
     def clear_device_popup(self):
         d = {}
         # 标题

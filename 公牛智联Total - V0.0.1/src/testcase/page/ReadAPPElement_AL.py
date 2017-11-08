@@ -28,7 +28,6 @@ class PageElementAL(object):
         self.device["page"]["device_info_page"] = self.mpw.device_info_page()
         self.device["page"]["elec_page"] = self.mpw.elec_page()
         self.device["page"]["fish_mode_timer_page"] = self.mpw.fish_mode_timer_page()
-        self.device["page"]["god_page"] = self.mpw.god_page()
         self.device["page"]["input_wifi_password_page"] = self.mpw.input_wifi_password_page()
         self.device["page"]["login_page"] = self.mpw.login_page()
         self.device["page"]["more_elec_history_page"] = self.mpw.more_elec_history_page()

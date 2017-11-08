@@ -1,12 +1,5 @@
 # coding=utf-8
 class MainPageWidgetAndroidGN(object):
-    # 万能页面
-    def god_page(self):
-        d = {}
-        # 标题
-        d["title"] = ["android.widget.FrameLayout", "class", u"万能控件", {"px": [0, 0]}]
-        return d
-
     # 引导页
     def view_pager_page(self):
         d = {}
@@ -497,7 +490,7 @@ class PopupWidgetAndroidGN(object):
         d = {}
         # 标题
         # d["title"] = [u"新版提示", "name", u"标题"]
-        d["title"] = ["com.iotbull.android.superapp:id/alertTitle", "id", u"标题", {"text": u"新版提示"}]
+        d["title"] = [u"//android.widget.TextView[@text='新版提示']", "xpath", u"标题"]
         # 立即体验
         d["confirm"] = ["android:id/button1", "id", u"立即体验"]
         # 稍后更新
@@ -517,7 +510,7 @@ class PopupWidgetAndroidGN(object):
         d = {}
         # 标题
         # d["title"] = [u"操作失败，账号在其他手机登录，请确认是否本人使用。", "name", u"提示 - 重新登录"]
-        d["title"] = ["android:id/message", "id", u"提示 - 重新登录", {"text": u"操作失败，账号在其他手机登录，请确认是否本人使用。"}]
+        d["title"] = [u"//android.widget.TextView[@text='操作失败，账号在其他手机登录，请确认是否本人使用。']", "xpath", u"提示 - 重新登录"]
         # 页面activity
         d["activity"] = [".activitys.regist_login.SplashActivity", "activity", u"页面activity"]
         # 登录
@@ -531,7 +524,7 @@ class PopupWidgetAndroidGN(object):
         d = {}
         # 标题
         # d["title"] = [u"是否确认退出登录？", "name", u"退出确认"]
-        d["title"] = ["android:id/message", "id", u"退出确认", {"text": u"是否确认退出登录？"}]
+        d["title"] = [u"//android.widget.TextView[@text='是否确认退出登录？']", "xpath", u"退出确认"]
         # 确认
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消
@@ -543,7 +536,7 @@ class PopupWidgetAndroidGN(object):
         d = {}
         # 标题
         # d["title"] = [u"是否确认终止添加设备？", "name", u"取消确认"]
-        d["title"] = ["android:id/message", "id", u"取消确认", {"text": u"是否确认终止添加设备？"}]
+        d["title"] = [u"//android.widget.TextView[@text='是否确认终止添加设备？']", "xpath", u"取消确认"]
         # 确认
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消
@@ -555,7 +548,7 @@ class PopupWidgetAndroidGN(object):
         d = {}
         # 标题
         # d["title"] = ["loading...", "name", u"正在加载中loading..."]
-        d["title"] = ["android:id/message", "id", u"正在加载中loading...", {"text": "loading..."}]
+        d["title"] = [u"//android.widget.TextView[@text='正在加载中loading...']", "xpath", u"正在加载中"]
         return d
 
     # 清空活动历史消息
@@ -563,20 +556,19 @@ class PopupWidgetAndroidGN(object):
         d = {}
         # 标题
         # d["title"] = [u"是否清除活动消息？", "name", u"清除确认"]
-        d["title"] = ["android:id/message", "id", u"清除确认", {"text": u"是否清除活动消息？"}]
+        d["title"] = [u"//android.widget.TextView[@text='是否清除活动消息？']", "xpath", u"清除确认"]
         # 确认
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消
         d["cancel"] = ["android:id/button2", "id", u"取消"]
         return d
 
-        # 清空活动历史消息
-
+    # 清空活动历史消息
     def clear_device_popup(self):
         d = {}
         # 标题
         # d["title"] = [u"是否清除设备消息？", "name", u"清除确认"]
-        d["title"] = ["android:id/message", "id", u"清除确认", {"text": u"是否清除设备消息？"}]
+        d["title"] = [u"//android.widget.TextView[@text='是否清除设备消息？']", "xpath", u"清除确认"]
         # 确认
         d["confirm"] = ["android:id/button1", "id", u"确认"]
         # 取消

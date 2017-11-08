@@ -25,7 +25,6 @@ class PageElementGN(object):
         self.device["page"]["feedback_page"] = self.mpw.feedback_page()
         self.device["page"]["find_password_page"] = self.mpw.find_password_page()
         self.device["page"]["gender_page"] = self.mpw.gender_page()
-        self.device["page"]["god_page"] = self.mpw.god_page()
         self.device["page"]["home_message_page"] = self.mpw.home_message_page()
         self.device["page"]["login_page"] = self.mpw.login_page()
         self.device["page"]["message_classify_page"] = self.mpw.message_classify_page()

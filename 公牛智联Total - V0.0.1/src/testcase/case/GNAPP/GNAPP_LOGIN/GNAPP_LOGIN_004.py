@@ -48,7 +48,6 @@ class GNAppLogin4(WidgetOperationGN):
                 self.wait_widget(self.page["update_popup"]["title"])
                 self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
                 self.widget_click(self.page["update_popup"]["cancel"],
-                                  self.page["god_page"]["title"],
                                   log_record=0)
                 self.logger.info(u"[APP_INF] 取消更新")
             except TimeoutException:

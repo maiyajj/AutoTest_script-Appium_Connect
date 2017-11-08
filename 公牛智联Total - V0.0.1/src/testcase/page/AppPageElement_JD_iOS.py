@@ -1,12 +1,5 @@
 # coding=utf-8
 class MainPageWidgetIosJD(object):
-    # 万能页面
-    def god_page(self):
-        d = {}
-        # 标题
-        d["title"] = ["//XCUIElementTypeStatusBar", "xpath", u"万能控件", {"px": [0, 0]}]
-        return d
-
     # 账户设置页
     def account_setting_page(self):
         d = {}
@@ -549,20 +542,19 @@ class PopupWidgetIosJD(object):
     # app升级确认弹窗
     def update_popup(self):
         d = {}
-        d["title"] = ["com.jd.smart:id/title", "id", u"有更新", {"text": u"更新提示"}]
-        # 更新
-        d["confirm"] = ["com.jd.smart:id/confirm", "id", u"更新"]
-        # 检查更新
-        d["cancel"] = ["com.jd.smart:id/cancel", "id", u"稍后提醒"]
+        d["title"] = [u"更新提示", "accessibility_id", u"有更新"]
+        # 稍后提醒
+        d["cancel"] = [u"稍后提醒", "accessibility_id", u"稍后提醒"]
         return d
 
+    # FIXME:更新close_ad_popup
     def close_ad_popup(self):
         d = {}
         # 广告关闭键
         # d["title"] = [u"操作失败，账号在其他手机登录，请确认是否本人使用。", "name", u"提示 - 重新登录"]
         d["title"] = ["com.jd.smart:id/close_pop_for_top_news", "id", u"发现广告"]
         # 确认
-        d["confirm"] = ["com.jd.smart:id/close_pop_for_top_news", "id", u"确认"]
+        d["confirm"] = [u"确认", "accessibility_id", u"确认"]
         return d
 
     def unbind_device_popup(self):
@@ -570,19 +562,19 @@ class PopupWidgetIosJD(object):
         # 删除设备弹窗
         d["title"] = [u"您的设备尚有定时任务，建议清除定时任务后再删除设备", "accessibility_id", u"删除设备按钮"]
         # 确认
-        d["confirm"] = [u"取消", "accessibility_id", u"确认"]
+        d["confirm"] = [u"仍然删除", "accessibility_id", u"确认"]
         # 取消
-        d["cancel"] = [u"仍然删除", "u", u"取消"]
+        d["cancel"] = [u"取消", "accessibility_id", u"取消"]
         return d
 
     def bind_device_fail_popup(self):
         d = {}
         # 绑定失败
-        d["title"] = ["com.jd.smart:id/confirm", "id", u"绑定失败"]
-        # 确认
-        d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
+        d["title"] = [u"绑定失败", "accessibility_id", u"绑定失败"]
+        # 确定
+        d["confirm"] = [u"确定", "accessibility_id", u"确定"]
         # 取消
-        d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
+        d["cancel"] = [u"取消", "accessibility_id", u"取消"]
         return d
 
     def loading_popup(self):

@@ -1,12 +1,5 @@
 # coding=utf-8
 class MainPageWidgetAndroidAL(object):
-    # 万能页面
-    def god_page(self):
-        d = {}
-        # 标题
-        d["title"] = ["android.widget.FrameLayout", "class", u"万能控件", {"px": [0, 0]}]
-        return d
-
     # 欢迎页
     def welcome_page(self):
         d = {}

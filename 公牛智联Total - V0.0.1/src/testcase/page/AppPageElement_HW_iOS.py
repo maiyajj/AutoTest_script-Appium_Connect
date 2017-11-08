@@ -1,10 +1,5 @@
 # coding=utf-8
 class MainPageWidgetIosHW(object):
-    # 万能页面
-    def god_page(self):
-        d = {}
-        return d
-
     # APP主页面
     def app_home_page(self):
         d = {}

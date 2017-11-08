@@ -60,9 +60,6 @@ class MainPageWidgetAL(object):
     def fish_mode_timer_page(self):
         return self.wrapper(self.mpwa.fish_mode_timer_page(), self.mpwi.fish_mode_timer_page())
 
-    def god_page(self):
-        return self.wrapper(self.mpwa.god_page(), self.mpwi.god_page())
-
     def input_wifi_password_page(self):
         return self.wrapper(self.mpwa.input_wifi_password_page(), self.mpwi.input_wifi_password_page())
 

@@ -20,7 +20,6 @@ class PageElementHW(object):
         self.device["page"]["control_device_page"] = self.mpw.control_device_page()
         self.device["page"]["device_info_page"] = self.mpw.device_info_page()
         self.device["page"]["device_setting_page"] = self.mpw.device_setting_page()
-        self.device["page"]["god_page"] = self.mpw.god_page()
         self.device["page"]["input_wifi_password_page"] = self.mpw.input_wifi_password_page()
         self.device["page"]["normal_timer_page"] = self.mpw.normal_timer_page()
         self.device["page"]["set_name_addr_page"] = self.mpw.set_name_addr_page()

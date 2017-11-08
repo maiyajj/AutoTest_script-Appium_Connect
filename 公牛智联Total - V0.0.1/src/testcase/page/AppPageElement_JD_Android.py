@@ -1,12 +1,5 @@
 # coding=utf-8
 class MainPageWidgetAndroidJD(object):
-    # 万能页面
-    def god_page(self):
-        d = {}
-        # 标题
-        d["title"] = ["android.widget.FrameLayout", "class", u"万能控件", {"px": [0, 0]}]
-        return d
-
     # 账户设置页
     def account_setting_page(self):
         d = {}
@@ -165,10 +158,10 @@ class MainPageWidgetAndroidJD(object):
         confirm_box = {}
         for i in xrange(4):
             device_box[i] = "//android.widget.ListView/android.widget.LinearLayout[%s]//android.widget.TextView[2]" % (
-            i + 1)
+                i + 1)
             confirm_box[
                 i] = "//android.widget.ListView/android.widget.LinearLayout[%s]/android.widget.LinearLayout/android.widget.TextView" % (
-            i + 1)
+                i + 1)
         # 设备路径
         d["device_box"] = [device_box, "xpath", u"设备等待添加"]
         # 使用
@@ -365,7 +358,7 @@ class MainPageWidgetAndroidJD(object):
         # 启动
         d["launch"] = ["com.jd.smart:id/button4", "id", u"启动"]
         return d
-    
+
     # 普通定时页面
     def normal_timer_page(self):
         d = {}
@@ -575,11 +568,12 @@ class MainPageWidgetAndroidJD(object):
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
 
+
 class PopupWidgetAndroidJD(object):
     # app升级确认弹窗
     def update_popup(self):
         d = {}
-        d["title"] = ["com.jd.smart:id/title", "id", u"有更新", {"text": u"更新提示"}]
+        d["title"] = [u"//android.widget.TextView[@text='更新提示']", "xpath", u"有更新"]
         # 更新
         d["confirm"] = ["com.jd.smart:id/confirm", "id", u"更新"]
         # 检查更新
@@ -625,7 +619,7 @@ class PopupWidgetAndroidJD(object):
     def logout_popup(self):
         d = {}
         # 退出登录弹窗
-        d["title"] = ["com.jd.smart:id/title", "id", u"退出登录弹窗", {"text": u"确定要退出当前账户吗？"}]
+        d["title"] = [u"//android.widget.TextView[@text='确定要退出当前账户吗？']", "xpath", u"退出登录弹窗"]
         # 确认
         d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
         # 取消

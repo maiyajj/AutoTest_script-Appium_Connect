@@ -1,11 +1,5 @@
 # coding=utf-8
 class MainPageWidgetIosAL(object):
-    # 万能页面
-    def god_page(self):
-        d = {}
-        d["title"] = ["//XCUIElementTypeStatusBar", "xpath", u"万能控件", {"px": [0, 0]}]
-        return d
-
     # 欢迎页
     def welcome_page(self):
         d = {}

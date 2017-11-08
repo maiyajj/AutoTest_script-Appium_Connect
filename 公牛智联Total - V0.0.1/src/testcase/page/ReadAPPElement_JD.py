@@ -28,7 +28,6 @@ class PageElementJD(object):
         self.device["page"]["elec_bill_page"] = self.mpw.elec_bill_page()
         self.device["page"]["elec_page"] = self.mpw.elec_page()
         self.device["page"]["fish_mode_timer_page"] = self.mpw.fish_mode_timer_page()
-        self.device["page"]["god_page"] = self.mpw.god_page()
         self.device["page"]["help_setting_page"] = self.mpw.help_setting_page()
         self.device["page"]["input_wifi_password_page"] = self.mpw.input_wifi_password_page()
         self.device["page"]["login_page"] = self.mpw.login_page()

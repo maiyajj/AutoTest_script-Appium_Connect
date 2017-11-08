@@ -36,9 +36,6 @@ class MainPageWidgetHW(object):
     def device_setting_page(self):
         return self.wrapper(self.mpwa.device_setting_page(), self.mpwi.device_setting_page())
 
-    def god_page(self):
-        return self.wrapper(self.mpwa.god_page(), self.mpwi.god_page())
-
     def input_wifi_password_page(self):
         return self.wrapper(self.mpwa.input_wifi_password_page(), self.mpwi.input_wifi_password_page())
 

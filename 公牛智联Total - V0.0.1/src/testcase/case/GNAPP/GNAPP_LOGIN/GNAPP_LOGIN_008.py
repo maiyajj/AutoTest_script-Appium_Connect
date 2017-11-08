@@ -34,8 +34,7 @@ class GNAppLogin8(WidgetOperationGN):
             self.logger.info(u'[APP_INPUT] ["错误密码"] input success')
             time.sleep(0.5)
 
-            self.widget_click(self.page["login_page"]["login_button"],
-                              self.page["god_page"]["title"])
+            self.widget_click(self.page["login_page"]["login_button"])
 
             while True:
                 try:

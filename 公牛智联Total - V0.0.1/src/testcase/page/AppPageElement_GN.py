@@ -51,9 +51,6 @@ class MainPageWidgetGN(object):
     def gender_page(self):
         return self.wrapper(self.mpwa.gender_page(), self.mpwi.gender_page())
 
-    def god_page(self):
-        return self.wrapper(self.mpwa.god_page(), self.mpwi.god_page())
-
     def home_message_page(self):
         return self.wrapper(self.mpwa.home_message_page(), self.mpwi.home_message_page())
 
