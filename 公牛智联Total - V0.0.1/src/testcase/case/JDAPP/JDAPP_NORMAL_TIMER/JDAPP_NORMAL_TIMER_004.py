@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_JD import *
 
 
 class JDAppNormalTimer4(WidgetOperationJD):
-    @case_run_jd(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
         self.case_title = u'普通定时_设置13组'  # 用例名称

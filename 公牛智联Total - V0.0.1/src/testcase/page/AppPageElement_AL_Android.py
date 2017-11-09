@@ -18,22 +18,23 @@ class MainPageWidgetAndroidAL(object):
         d["setting"] = ["com.aliyun.alink:id/layout_container_item_setting", "id", u"设置"]
         return d
 
-    # FIXME:更新login_page元素库
     # 账户登录页面
     def login_page(self):
         d = {}
         # 标题
-        d["title"] = [u"账户登录", "accessibility_id", u"账户登录页面"]
+        d["title"] = [u"//android.widget.TextView[@text='登录密码']", "xpath", u"账户登录页面"]
         # 用户名
-        d["username"] = ["//XCUIElementTypeTextField", "xpath", u"用户名输入框"]
+        d["username"] = ["com.aliyun.alink:id/accountCompleteTextView", "id", u"用户名输入框"]
         # 密码
-        d["password"] = ["//XCUIElementTypeOther[4]/XCUIElementTypeTextField", "xpath", u"密码输入框"]
+        d["password"] = ["com.aliyun.alink:id/content", "id", u"密码输入框"]
         # 显示/关闭密码
-        d["check_box"] = ["//XCUIElementTypeOther[4]/XCUIElementTypeButton", "xpath", u"显示/关闭密码"]
+        d["check_box"] = [u"//android.widget.TextView[contains(@content-desc, '显示密码')]", "xpath", u"显示/关闭密码"]
+        # 其他账户登录
+        d["other_user"] = ["com.aliyun.alink:id/switchLogin", "id", u"密码输入框"]
         # 登录
-        d["login_button"] = [u"登录", "accessibility_id", u"登录按钮"]
+        d["login_button"] = ["com.aliyun.alink:id/loginButton", "id", u"登录按钮"]
         # 返回
-        d["to_return"] = [u"返回", "accessibility_id", u"返回"]
+        d["to_return"] = ["com.aliyun.alink:id/aliuser_title_bar_back_button", "id", u"返回"]
         return d
 
     # 设置页面
@@ -72,15 +73,18 @@ class MainPageWidgetAndroidAL(object):
             device_state[i] = ("//android.support.v7.widget.RecyclerView/android.widget.FrameLayout[%s]/"
                                "android.widget.LinearLayout/android.widget.TextView" % (i + 1))
         d["device"] = [device, "xpath", u"待控设备"]
+        # 有设备
+        d["has_device"] = ["com.aliyun.alink:id/home3_device_listitem_deviceinfo_devicedesc", "id", u"有设备"]
         # 设备开关
         d["device_button"] = [device_button, "xpath", u"待控设备开关"]
         # 设备状态
         d["device_state"] = [device_state, "xpath", u"设备状态"]
-        # FIXME: “我的”按钮id待修改
         # “我的”按钮
-        d["my"] = [device_state, "xpath", u"“我的”按钮"]
+        d["my"] = [u"//android.widget.FrameLayout[4]//android.widget.TextView[contains(@resource-id, "
+                   u"'textview_homebaritem_title')]", "xpath", u"“我的”按钮"]
         # “我的家”按钮
-        d["my_home"] = [u"我的家", "accessibility_id", u"“我的家”按钮"]
+        d["my_home"] = [u"//android.widget.FrameLayout//android.widget.TextView[contains(@resource-id, "
+                        u"'textview_homebaritem_title')]", "xpath", u"“我的家”按钮"]
         return d
 
     # 选择添加方式页面

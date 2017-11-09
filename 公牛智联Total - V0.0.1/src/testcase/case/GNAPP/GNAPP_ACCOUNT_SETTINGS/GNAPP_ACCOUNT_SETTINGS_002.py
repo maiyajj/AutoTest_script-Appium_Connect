@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_GN import *
 
 
 class GNAppAccountSettings2(WidgetOperationGN):
-    @case_run_gn(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"账户设置"  # 用例所属模块
         self.case_title = u'密码修改后页面跳转确认'  # 用例名称

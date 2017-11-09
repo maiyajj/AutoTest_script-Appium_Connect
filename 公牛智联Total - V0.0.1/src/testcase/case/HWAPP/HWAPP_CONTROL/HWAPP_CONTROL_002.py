@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_HW import *
 
 
 class HWAppControl2(WidgetOperationHW):
-    @case_run_hw(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"远程控制(#250)"  # 用例所属模块
         self.case_title = u'在线状态，开关操作后，状态检查'  # 用例名称

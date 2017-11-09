@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_AL import *
 
 
 class ALAppCrossTimer1(WidgetOperationAL):
-    @case_run_al(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"FUT_CROSSTIMER_各种定时交叉执行(#45)"  # 用例所属模块
         self.case_title = u'FUT_CROSSTIMER_普通定时、循环定时、延时定时交叉设置后定时执行'  # 用例名称

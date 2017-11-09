@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_AL import *
 
 
 class ALAppNormalTimer11(WidgetOperationAL):
-    @case_run_al(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"FUT_NTIMER_普通定时(#48)"  # 用例所属模块
         self.case_title = u'FUT_NTIMER_普通定时循环信息检查'  # 用例名称

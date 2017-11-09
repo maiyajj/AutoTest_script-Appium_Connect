@@ -12,11 +12,14 @@ class ToLoginPageHW(object):
         self.page = page_element
         self.debug = self.device_info["debug"]
         self.basename = os.path.basename(__file__).split(".")[0]
-        widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger)
+        widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger, self.debug)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
         # 唤醒设备
-        self.driver.tap([(10, 10)])
+        try:
+            self.driver.tap([(10, 10)])
+        except BaseException:
+            self.debug.error("tap 10, 10 error")
         time.sleep(0.01)
         self.case()
 

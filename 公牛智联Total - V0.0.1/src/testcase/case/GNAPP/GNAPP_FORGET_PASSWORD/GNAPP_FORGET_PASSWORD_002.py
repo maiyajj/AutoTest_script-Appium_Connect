@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_GN import *
 
 
 class GNAppForgetPassword2(WidgetOperationGN):
-    @case_run_gn(True)
+    @case_run(True)
     def run(self):
         self.case_module = u"忘记密码"  # 用例所属模块
         self.case_title = u'忘记密码页面-未注册账户检测'  # 用例名称

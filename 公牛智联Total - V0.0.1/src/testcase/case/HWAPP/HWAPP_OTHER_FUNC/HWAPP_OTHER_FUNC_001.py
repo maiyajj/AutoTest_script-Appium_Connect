@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_HW import *
 
 
 class HWAppOtherFunc1(WidgetOperationHW):
-    @case_run_hw(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"其他功能(#247)"  # 用例所属模块
         self.case_title = u'APP查看信息功能'  # 用例名称

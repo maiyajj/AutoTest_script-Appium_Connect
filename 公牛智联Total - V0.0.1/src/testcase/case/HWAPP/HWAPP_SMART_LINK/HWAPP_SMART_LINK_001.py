@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_HW import *
 
 
 class HWAppSmartLink1(WidgetOperationHW):
-    @case_run_hw(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"配网功能(#245)"  # 用例所属模块
         self.case_title = u'设备首次配网操作检查'  # 用例名称

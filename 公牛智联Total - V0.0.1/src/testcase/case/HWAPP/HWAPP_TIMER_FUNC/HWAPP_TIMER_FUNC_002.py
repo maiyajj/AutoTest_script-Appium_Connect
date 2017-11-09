@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_HW import *
 
 
 class HWAppTimerFunc2(WidgetOperationHW):
-    @case_run_hw(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"定时功能(#240)"  # 用例所属模块
         self.case_title = u'普通定时的定时数量检查'  # 用例名称

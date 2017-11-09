@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_HW import *
 
 
 class HWAppNormalTimer6(WidgetOperationHW):
-    @case_run_hw(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"普通定时(#246)"  # 用例所属模块
         self.case_title = u'在线状态，1组开与1组关按自定义方式执行的定时执行状态检查'  # 用例名称

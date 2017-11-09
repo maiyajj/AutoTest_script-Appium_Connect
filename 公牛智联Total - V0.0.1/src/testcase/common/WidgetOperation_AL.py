@@ -712,6 +712,7 @@ class WidgetOperationAL(LaunchAppAL):
 
     # 删除普通定时
     def delete_normal_timer(self):
+        # 按照手动操作顺序删除定时
         end_time = time.time() + 120
         while True:
             try:
@@ -734,65 +735,27 @@ class WidgetOperationAL(LaunchAppAL):
 
     # 关闭模式定时
     def close_mode_timer(self):
+        timer_loop = {u"热水器模式": ["water_mode_timer", "water_mode_timer_page"],
+                      u"小夜灯模式": ["night_mode_timer", "night_mode_timer_page"],
+                      u"鱼缸模式": ["fish_mode_timer", "fish_mode_timer_page"],
+                      u"电蚊香模式": ["mosquito_mode_timer", "mosquito_mode_timer_page"],
+                      u"充电保护模式": ["control_device_page", "control_device_page_page"],
+                      u"取暖器模式": ["warmer_mode_timer", "warmer_mode_timer_page"]}
         element = self.wait_widget(self.page["control_device_page"]["launch_mode"])
         while True:
             attribute = self.ac.get_attribute(element, "name")
             if u"模式" in attribute:
                 self.logger.info("[APP_INFO]Mode timer is run")
-                if u"热水器模式" in attribute:
-                    self.widget_click(self.page["control_device_page"]["water_mode_timer"],
-                                      self.page["water_mode_timer_page"]["title"])
+                for timer_mode, value in timer_loop.items():
+                    if timer_mode in attribute:
+                        self.widget_click(self.page["control_device_page"][value[0]],
+                                          self.page[value[1]]["title"])
 
-                    self.widget_click(self.page["water_mode_timer_page"]["close"],
-                                      self.page["water_mode_timer_page"]["launch"], times=2)
+                        self.widget_click(self.page[value[1]]["close"],
+                                          self.page[value[1]]["launch"], times=2)
 
-                    self.widget_click(self.page["water_mode_timer_page"]["to_return"],
-                                      self.page["control_device_page"]["title"])
-                elif u"小夜灯模式" in attribute:
-                    self.widget_click(self.page["control_device_page"]["night_mode_timer"],
-                                      self.page["night_mode_timer_page"]["title"])
-
-                    self.widget_click(self.page["night_mode_timer_page"]["close"],
-                                      self.page["night_mode_timer_page"]["launch"], times=2)
-
-                    self.widget_click(self.page["night_mode_timer_page"]["to_return"],
-                                      self.page["control_device_page"]["title"])
-                elif u"鱼缸模式" in attribute:
-                    self.widget_click(self.page["control_device_page"]["fish_mode_timer"],
-                                      self.page["fish_mode_timer_page"]["title"])
-
-                    self.widget_click(self.page["fish_mode_timer_page"]["close"],
-                                      self.page["fish_mode_timer_page"]["launch"], times=2)
-
-                    self.widget_click(self.page["fish_mode_timer_page"]["to_return"],
-                                      self.page["control_device_page"]["title"])
-                elif u"电蚊香模式" in attribute:
-                    self.widget_click(self.page["control_device_page"]["mosquito_mode_timer"],
-                                      self.page["mosquito_mode_timer_page"]["title"])
-
-                    self.widget_click(self.page["mosquito_mode_timer_page"]["close"],
-                                      self.page["mosquito_mode_timer_page"]["launch"], times=2)
-
-                    self.widget_click(self.page["mosquito_mode_timer_page"]["to_return"],
-                                      self.page["control_device_page"]["title"])
-                elif u"充电保护模式" in attribute:
-                    self.widget_click(self.page["control_device_page"]["piocc_mode_timer"],
-                                      self.page["piocc_mode_timer_page"]["title"])
-
-                    self.widget_click(self.page["piocc_mode_timer_page"]["close"],
-                                      self.page["piocc_mode_timer_page"]["launch"], times=2)
-
-                    self.widget_click(self.page["piocc_mode_timer_page"]["to_return"],
-                                      self.page["control_device_page"]["title"])
-                else:
-                    self.widget_click(self.page["control_device_page"]["warmer_mode_timer"],
-                                      self.page["warmer_mode_timer_page"]["title"])
-
-                    self.widget_click(self.page["warmer_mode_timer_page"]["close"],
-                                      self.page["warmer_mode_timer_page"]["launch"], times=2)
-
-                    self.widget_click(self.page["warmer_mode_timer_page"]["to_return"],
-                                      self.page["control_device_page"]["title"])
+                        self.widget_click(self.page[value[1]]["to_return"],
+                                          self.page["control_device_page"]["title"])
             else:
                 self.logger.info("[APP_INFO]Mode timer don't run")
                 break
@@ -839,7 +802,7 @@ class WidgetOperationAL(LaunchAppAL):
     def launch_mode_timer(self, page, start_now, start_time=None):
         if not isinstance(start_now, bool):
             raise KeyError("start_now must be bool type")
-        if start_now is True:
+        if start_now is True:  # 立即启动，例如普通定时等
             try:
                 self.widget_click(self.page[page]["launch"],
                                   self.page["mode_timer_page"]["title"])
@@ -848,8 +811,8 @@ class WidgetOperationAL(LaunchAppAL):
                 self.wait_widget(self.page["mode_timer_conflict_popup"]["title"])
                 self.widget_click(self.page["mode_timer_conflict_popup"]["confirm"],
                                   self.page["mode_timer_page"]["title"])
-        else:
-            if start_time is None:
+        else:  # 需要特定时间点启动，例如延时模式等
+            if start_time is None:  # 若选择延迟启动，则启动时间点start_time不能为None
                 raise KeyError("if start_now is False, start_time can`t be None type")
             end_time = time.time() + 1 * 60 + 30
             while True:
@@ -868,97 +831,85 @@ class WidgetOperationAL(LaunchAppAL):
                         raise TimeoutException("Timer Saved Error, time:%s" % start_time)
                     time.sleep(1)
 
-    # 统计电量
-    def get_device_elect(self, check_time, across=False):
-        now_h = int(time.strftime("%H"))
-        if across is False:
-            if now_h + 2 <= 23:
-                across_day = False
-            else:
-                across_day = True
-        else:
-            across_day = True
-        elec = {}
-        elec_bill = {}
-
-        if across_day is True:
-            while True:
-                if int(time.strftime("%H")) == 23:
-                    time.sleep(60)
-                    break
-                else:
-                    self.driver.tap([(10, 10)])
-                    time.sleep(30)
-
-            self.widget_click(self.page["control_device_page"]["elec"],
-                              self.page["elec_page"]["title"])
-
-            self.ac.swipe(0.5, 0.7, 0.5, 0.4, self.driver)
-
-            self.widget_click(self.page["elec_page"]["more_elec_history"],
-                              self.page["more_elec_history_page"]["title"])
-
-            today = time.strftime("%m月%d日").decode("utf")
-            day_list = self.wait_widget(self.page["more_elec_history_page"]["day_elec"])
-            new_value = copy.copy(self.page["more_elec_history_page"]["day_elec"])
-            for index, element in day_list.items():
-                if element is not None and str(self.ac.get_attribute(element, "name")) == today:
-                    new_value[0] = new_value[0][index]
-                    while True:
-                        try:
-                            self.widget_click(new_value, self.page["day_elec_page"]["title"])
-                            break
-                        except TimeoutException:
-                            self.ac.swipe(0.6, 0.9, 0.6, 0.6, self.driver)
-                            time.sleep(1)
-                break
-
-            elec_bill_elements = self.wait_widget(self.page["day_elec_page"]["elec_time"])
-            elec_bill_value = copy.copy(self.page["day_elec_page"]["elec_value"])
-            for index, element in elec_bill_elements.items():
-                if element is not None:
-                    elec_bill_value[0] = self.page["day_elec_page"]["elec_value"][0][index]
-                    elec_bill[index] = int(re.findall("(\d+)W", self.ac.get_attribute(elec_bill_value, "name"))[0])
-                    self.logger.info("[APP_INFO]23:01_elec_bill:%s" % str(elec_bill))
-
-            self.widget_click(self.page["day_elec_page"]["to_return"],
-                              self.page["more_elec_history_page"]["title"])
-
-            self.widget_click(self.page["more_elec_history_page"]["to_return"],
-                              self.page["elec_page"]["title"])
-
-            self.widget_click(self.page["elec_page"]["to_return"],
-                              self.page["control_device_page"]["title"])
-
+    # 统计电量操作缩减
+    def get_device_elect_unit(self, check_time):
         while True:
             if int(time.strftime("%H")) == check_time:
                 time.sleep(60)
                 break
             else:
-                self.driver.tap([(10, 10)])
+                try:
+                    self.driver.tap([(10, 10)])
+                except BaseException:
+                    self.debug.error("tap 10, 10 error")
                 time.sleep(60)
 
-        self.widget_click(self.page["control_device_page"]["elec_bill"],
-                          self.page["elec_bill_page"]["title"])
-
-        elec_bill_elements = self.wait_widget(self.page["elec_bill_page"]["price_time"])
-        for index, element in elec_bill_elements.items():
-            if element is not None:
-                elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
-                # if index <= now_h + 1:
-                elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-                self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (check_time, str(elec_bill)))
-
-        self.widget_click(self.page["elec_bill_page"]["to_return"],
-                          self.page["control_device_page"]["title"])
-
         self.widget_click(self.page["control_device_page"]["elec"],
+                          self.page["elec_page"]["title"])
+
+        self.ac.swipe(0.5, 0.7, 0.5, 0.4, self.driver)
+
+        self.widget_click(self.page["elec_page"]["more_elec_history"],
+                          self.page["more_elec_history_page"]["title"])
+
+        # 选择当前日期
+        today = time.strftime("%m月%d日").decode("utf")  # 格式化日期
+        day_list = self.wait_widget(self.page["more_elec_history_page"]["day_elec"])
+        new_value = copy.copy(self.page["more_elec_history_page"]["day_elec"])
+        for index, element in day_list.items():
+            if element is not None and str(self.ac.get_attribute(element, "name")) == today:
+                new_value[0] = new_value[0][index]
+                while True:
+                    try:
+                        self.widget_click(new_value, self.page["day_elec_page"]["title"])
+                        break
+                    except TimeoutException:
+                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, self.driver)
+                        time.sleep(1)
+            break
+
+        # 读取指定时间点前电费数据
+        elec_and_bill_e = self.wait_widget(self.page["day_elec_page"]["elec_time"])
+        elec_and_bill_v = copy.copy(self.page["day_elec_page"]["elec_value"])
+        for index, element in elec_and_bill_e.items():
+            if element is not None:
+                elec_and_bill_v[0] = self.page["day_elec_page"]["elec_value"][0][index]
+                tmp = re.findall(u"(\d+.\d+|\d+)元.+?(\d+.\d+|\d+)W", self.ac.get_attribute(elec_and_bill_v, "name"))
+                self.elec[index] = float(tmp[1])
+                self.elec_bill[index] = float(tmp[0])
+        self.logger.info("[APP_INFO]%02d:01_elec:%s" % (check_time, str(self.elec)))
+        self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (check_time, str(self.elec_bill)))
+
+        self.widget_click(self.page["day_elec_page"]["to_return"],
+                          self.page["more_elec_history_page"]["title"])
+
+        self.widget_click(self.page["more_elec_history_page"]["to_return"],
                           self.page["elec_page"]["title"])
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])
 
-        return elec, elec_bill
+    # 统计电量
+    def get_device_elect(self, check_time, across=False):
+        now_h = int(time.strftime("%H"))
+        if across is False:
+            if now_h + 2 <= 23:  # 电量为下一整点上传，故从当前时间2个小时后才开始统计电量。判断2个小时后是否跨天
+                across_day = False
+            else:
+                across_day = True
+        else:
+            across_day = True
+        self.elec = {}
+        self.elec_bill = {}
+
+        if across_day is True:
+            # 晚上23点开始读取当前一天的所有电量数据
+            self.get_device_elect_unit(23)
+
+        # 到另一天指定时间点结束统计
+        self.get_device_elect_unit(check_time)
+
+        return self.elec, self.elec_bill
 
     # 密码框显示密码
     def show_pwd(self, element, element1=None, param="name", state="false"):

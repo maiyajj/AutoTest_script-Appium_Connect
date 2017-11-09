@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_JD import *
 
 
 class JDAppOverDay7(WidgetOperationJD):
-    @case_run_jd(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
         self.case_title = u'充电保护模式下延迟23h59min关闭'  # 用例名称

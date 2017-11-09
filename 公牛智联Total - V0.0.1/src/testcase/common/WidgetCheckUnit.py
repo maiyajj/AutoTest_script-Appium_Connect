@@ -8,21 +8,14 @@ from selenium.common.exceptions import *
 from data.Database import *
 
 
-class TimeoutError(Exception):
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return repr(self.value)
-
-
 # 元素操作API，将find_element进行再封装
 class WidgetCheckUnit(Exception):
     copy = copy  # 初始化copy函数，避免import copy函数未使用被自动删除
 
-    def __init__(self, driver, page_element, logger):
+    def __init__(self, driver, page_element, logger, debug):
         self.driver = driver
         self.logger = logger
+        self.debug = debug
         self.page = page_element
         self.px = None
 
@@ -97,8 +90,12 @@ class WidgetCheckUnit(Exception):
                     raise KeyError('find_element_by_%s must in ["id", "name", "class", "xpath", "activity", '
                                    '"accessibility_id"' % locate)
                 # 根据需要开启log日志记录
+                log_tmp = '[APP_INFO] wait_widget ["%s"] success' % main_widget[2]
                 if log_record != 0:
-                    self.logger.info('[APP_INFO] wait_widget ["%s"] success' % main_widget[2])
+                    self.logger.info(log_tmp)
+                    self.debug.info(log_tmp)
+                else:
+                    self.debug.info(log_tmp)
 
                 return element
             except NoSuchElementException:
@@ -132,7 +129,7 @@ class WidgetCheckUnit(Exception):
         """
         if not isinstance(operate_widget, list):
             raise TypeError("operate_widget must be list! [widget_id, type(widget_id)]")
-        elif not isinstance(wait_page, list):
+        elif not (isinstance(wait_page, list) or wait_page is None):
             raise TypeError("wait_page must be list! [widget_id, type(widget_id)]")
         run_times = times  # 操作元素的次数，不使用时间，需要元素操作次数场合使用时间不确定性太大。
         flag = 0  # 元素操作失败步骤标志位
@@ -171,8 +168,12 @@ class WidgetCheckUnit(Exception):
                         except TimeoutException:
                             break
                     # 根据需要开启log日志记录
+                    log_tmp = '[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2]
                     if log_record != 0:
-                        self.logger.info('[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2])
+                        self.logger.info(log_tmp)
+                        self.debug.info(log_tmp)
+                    else:
+                        self.debug.info(log_tmp)
                     time.sleep(0.1)
                 # 点击元素后等待页面加载
                 # 如果wait_page为None，则跳过此检测
@@ -194,7 +195,10 @@ class WidgetCheckUnit(Exception):
 
                     if log_record != 0:
                         self.logger.info(logger_info)
-                        database["err_request_timeout_count"] += 1
+                        self.debug.info(logger_info)
+                    else:
+                        self.debug.info(logger_info)
+                    database["err_request_timeout_count"] += 1
 
                     raise TimeoutException(error_info)
                 else:  # 第一次元素操作未完成
@@ -207,6 +211,3 @@ class WidgetCheckUnit(Exception):
                             click_flag = False  # 若页面已跳转，则下次操作不会再点击元素
                         except TimeoutException:
                             raise TimeoutException(self.driver.page_source)
-            except TypeError:  # 判断输入是否正确
-                self.logger.error(traceback.format_exc())
-                return traceback.format_exc()

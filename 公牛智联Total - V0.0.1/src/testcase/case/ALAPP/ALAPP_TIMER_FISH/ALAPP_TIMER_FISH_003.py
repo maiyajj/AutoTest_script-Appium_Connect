@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_AL import *
 
 
 class ALAppTimerFish3(WidgetOperationAL):
-    @case_run_al(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"FUT_MTIMER_FISH_鱼缸模式(#59)"  # 用例所属模块
         self.case_title = u'FUT_MTIMER_FISH_鱼缸模式开启2分钟，关闭2分钟功能是否正常'  # 用例名称

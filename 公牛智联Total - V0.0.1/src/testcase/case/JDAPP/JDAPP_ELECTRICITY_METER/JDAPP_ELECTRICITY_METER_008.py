@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_JD import *
 
 
 class JDAppElectricityMeter8(WidgetOperationJD):
-    @case_run_jd(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"APP功能测试"  # 用例所属模块
         self.case_title = u'电价设置验证'  # 用例名称
@@ -56,7 +56,10 @@ class JDAppElectricityMeter8(WidgetOperationJD):
             if time.strftime("%H:%M") == "23:01":
                 break
             else:
-                self.driver.tap([(10, 10)])
+                try:
+                    self.driver.tap([(10, 10)])
+                except BaseException:
+                    self.debug.error("tap 10, 10 error")
                 time.sleep(30)
 
         self.widget_click(self.page["control_device_page"]["elec_bill"],
@@ -94,7 +97,10 @@ class JDAppElectricityMeter8(WidgetOperationJD):
                 time.sleep(60)
                 break
             else:
-                self.driver.tap([(10, 10)])
+                try:
+                    self.driver.tap([(10, 10)])
+                except BaseException:
+                    self.debug.error("tap 10, 10 error")
                 time.sleep(60)
 
         self.widget_click(self.page["control_device_page"]["elec_bill"],

@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_GN import *
 
 
 class GNAppDevicePage1(WidgetOperationGN):
-    @case_run_gn(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"设备页"  # 用例所属模块
         self.case_title = u'默认页面信息检查'  # 用例名称

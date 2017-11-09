@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_JD import *
 
 
 class JDAppModeTimer8(WidgetOperationJD):
-    @case_run_jd(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
         self.case_title = u'鱼缸模式开启2分钟，关闭2分钟定时是否正确执行'  # 用例名称

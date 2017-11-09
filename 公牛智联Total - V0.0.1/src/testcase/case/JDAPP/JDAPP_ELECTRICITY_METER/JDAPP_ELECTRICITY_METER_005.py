@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_JD import *
 
 
 class JDAppElectricityMeter5(WidgetOperationJD):
-    @case_run_jd(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"电量计量"  # 用例所属模块
         self.case_title = u'用电图表显示周期设置'  # 用例名称

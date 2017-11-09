@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_GN import *
 
 
 class GNAppVersion1(WidgetOperationGN):
-    @case_run_gn(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"版本信息"  # 用例所属模块
         self.case_title = u'当前版本为最新版本，页面信息检查'  # 用例名称

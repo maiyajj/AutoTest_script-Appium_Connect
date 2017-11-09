@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_AL import *
 
 
 class ALAppCycleTimer1(WidgetOperationAL):
-    @case_run_al(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"FUT_CYCLETIMER_循环定时(#50)"  # 用例所属模块
         self.case_title = u'FUT_CYCLETIMER_循环定时设置永久循环执行（1分钟开1分钟关）'  # 用例名称

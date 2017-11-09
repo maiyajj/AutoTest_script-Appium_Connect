@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_HW import *
 
 
 class HWAppDelayTimer1(WidgetOperationHW):
-    @case_run_hw(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"延时定时(#249)"  # 用例所属模块
         self.case_title = u'延时定时设置后，改变设备状态后查看延时定时的执行状态'  # 用例名称

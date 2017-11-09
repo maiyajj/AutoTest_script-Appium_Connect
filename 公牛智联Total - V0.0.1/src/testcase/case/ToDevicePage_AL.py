@@ -16,11 +16,14 @@ class ToDevicePageAL(object):
         self.debug = self.device_info["debug"]
         self.user = conf["user_and_pwd"][self.device_info["udid"]][self.device_info["app"]]
         self.basename = os.path.basename(__file__).split(".")[0]
-        widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger)
+        widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger, self.debug)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
         # 唤醒设备
-        self.driver.tap([(10, 10)])
+        try:
+            self.driver.tap([(10, 10)])
+        except BaseException:
+            self.debug.error("tap 10, 10 error")
         time.sleep(0.01)
         self.case()
 
@@ -51,7 +54,6 @@ class ToDevicePageAL(object):
         try:
             self.wait_widget(self.page["app_home_page"]["no_device"])
             self.widget_click(self.page["app_home_page"]["my"],
-                              self.page["god"]["title"],
                               log_record=0)
             try:
                 self.wait_widget(self.page["login_page"]["title"])
@@ -83,7 +85,6 @@ class ToDevicePageAL(object):
                                       log_record=0)
         except TimeoutException:
             self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
-            self.driver.close_app()
             self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
             raise TimeoutException("ToDevicePage Error!")
 
@@ -100,6 +101,12 @@ class ToDevicePageAL(object):
 
     # 检查账户用户名和密码
     def check_user_pwd(self):
+        try:  # Android用户退出后又快捷登录，已显示用户名直接登录，不使用此方法，使用原始方法
+            self.widget_click(self.page["login_page"]["other_user"],
+                              self.page["login_page"]["username"])
+        except TimeoutException:
+            self.wait_widget(self.page["login_page"]["username"])
+
         self.show_pwd()
         user_name = self.widget_click(self.page["login_page"]["username"],
                                       self.page["login_page"]["title"])

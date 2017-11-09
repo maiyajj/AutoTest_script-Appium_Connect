@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_GN import *
 
 
 class GNAppThemeStyle3(WidgetOperationGN):
-    @case_run_gn(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"主题风格"  # 用例所属模块
         self.case_title = u'切换为橙色后，查看风格'  # 用例名称

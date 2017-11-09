@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_JD import *
 
 
 class JDAppAppFunction2(WidgetOperationJD):
-    @case_run_jd(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"APP功能测试"  # 用例所属模块
         self.case_title = u'启动鱼缸模式定时，APP中开关状态检查'  # 用例名称

@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_JD import *
 
 
 class JDAppOverDay1(WidgetOperationJD):
-    @case_run_jd(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
         self.case_title = u'热水器模式设置每日循环'  # 用例名称

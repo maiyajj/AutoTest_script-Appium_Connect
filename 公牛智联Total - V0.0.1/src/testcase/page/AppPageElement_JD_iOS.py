@@ -552,7 +552,7 @@ class PopupWidgetIosJD(object):
         d = {}
         # 广告关闭键
         # d["title"] = [u"操作失败，账号在其他手机登录，请确认是否本人使用。", "name", u"提示 - 重新登录"]
-        d["title"] = ["com.jd.smart:id/close_pop_for_top_news", "id", u"发现广告"]
+        d["title"] = ["com.jd.smart:id/close_pop_for_top_news", "accessibility_id", u"发现广告"]
         # 确认
         d["confirm"] = [u"确认", "accessibility_id", u"确认"]
         return d

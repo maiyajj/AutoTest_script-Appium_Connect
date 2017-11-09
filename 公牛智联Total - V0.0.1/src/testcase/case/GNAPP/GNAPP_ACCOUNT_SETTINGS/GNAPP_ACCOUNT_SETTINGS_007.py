@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_GN import *
 
 
 class GNAppAccountSettings7(WidgetOperationGN):
-    @case_run_gn(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"账户设置"  # 用例所属模块
         self.case_title = u'昵称为空时，功能检查'  # 用例名称

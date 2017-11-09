@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_GN import *
 
 
 class GNAppRegister1(WidgetOperationGN):
-    @case_run_gn(True)
+    @case_run(True)
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-已有账户登录按钮，跳转页面检查'  # 用例名称

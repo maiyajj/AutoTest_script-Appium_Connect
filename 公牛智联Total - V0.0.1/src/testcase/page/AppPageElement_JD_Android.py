@@ -54,9 +54,8 @@ class MainPageWidgetAndroidJD(object):
             device[i] = ("//android.widget.ListView/android.view.View[%s]//android.widget.LinearLayout/"
                          "android.widget.TextView" % (i + 1))
         d["device"] = [device, "xpath", u"待控设备"]
-        # FIXME:有设备
         # 有设备
-        d["has_device"] = [u"认识微联", "accessibility_id", u"没有设备/未登录"]
+        d["has_device"] = ["com.jd.smart:id/tv_name", "id", u"没有设备/未登录"]
         return d
 
     # 添加设备页面

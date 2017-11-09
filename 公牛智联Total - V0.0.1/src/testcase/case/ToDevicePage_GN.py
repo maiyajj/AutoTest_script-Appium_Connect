@@ -16,11 +16,14 @@ class ToDevicePageGN(object):
         self.debug = self.device_info["debug"]
         self.user = conf["user_and_pwd"][self.device_info["udid"]][self.device_info["app"]]
         self.basename = os.path.basename(__file__).split(".")[0]
-        widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger)
+        widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger, self.debug)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
         # 唤醒设备
-        self.driver.tap([(10, 10)])
+        try:
+            self.driver.tap([(10, 10)])
+        except BaseException:
+            self.debug.error("tap 10, 10 error")
         time.sleep(0.01)
         self.case()
 
@@ -85,7 +88,10 @@ class ToDevicePageGN(object):
         i = 1
         while i <= 31:
             time.sleep(10)
-            self.driver.tap([(10, 10)])
+            try:
+                self.driver.tap([(10, 10)])
+            except BaseException:
+                self.debug.error("tap 10, 10 error")
             print "time sleep %sS" % (i * 10)
             self.logger.info("time sleep %sS" % (i * 10))
             i += 1

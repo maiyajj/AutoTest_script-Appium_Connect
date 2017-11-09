@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_GN import *
 
 
 class GNAppLogin9(WidgetOperationGN):
-    @case_run_gn(True)
+    @case_run(True)
     def run(self):
         self.case_module = u"登录"  # 用例所属模块
         self.case_title = u'登录页面—密码为空，登录提示信息检查'  # 用例名称

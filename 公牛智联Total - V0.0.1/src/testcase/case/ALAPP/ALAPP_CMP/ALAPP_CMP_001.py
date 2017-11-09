@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_AL import *
 
 
 class ALAppCmp1(WidgetOperationAL):
-    @case_run_al(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"CMP_兼容性测试(#54)"  # 用例所属模块
         self.case_title = u'FUT_CMP_不同型号手机是否能正常添加设备'  # 用例名称

@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_JD import *
 
 
 class JDAppLogin1(WidgetOperationJD):
-    @case_run_jd(True)
+    @case_run(True)
     def run(self):
         self.case_module = u"登录"  # 用例所属模块
         self.case_title = u'京东微联APP账号登录'  # 用例名称

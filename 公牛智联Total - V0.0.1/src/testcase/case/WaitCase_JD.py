@@ -17,22 +17,22 @@ class ScriptInitError(Exception):
 
 class WaitCaseJD(object):
     def __init__(self, device_list, device_name, m_queue):
-        self.device_list = device_list
-        self.device_name = device_name
-        self.device_info = device_list[device_name]
-        self.app = self.device_info["app"]
-        database["m_queue"] = m_queue
+        self.device_list = device_list  # 设备列表
+        self.device_name = device_name  # 设备名称
+        self.device_info = device_list[device_name]  # 设备信息集
+        self.app = self.device_info["app"]  # 运行APP信息
+        database["m_queue"] = m_queue  # 用于主进程和子进程通讯的消息队列
 
-        self.report = None
-        self.logger = None
-        self.xls = None
-        self.debug = None
-        self.script_init_success = False
-        self.No = 1
-        self.row = 12
+        self.report = None  # 初始化结果报告模块
+        self.logger = None  # 初始化log日志模块
+        self.xls = None  # 初始化执行结果Excel文件模块
+        self.debug = None  # 初始化debug日志模块
+        self.script_init_success = False  # 脚本初始化结果标志位
+        database["case_location"] = 1  # 用例执行次数
+        self.row = 12  # Excel报告写入初始位置
 
-        self.sc = ShellCommand()
-        database[device_name] = {}
+        self.sc = ShellCommand()  # 实例化ShellCommand
+        database[device_name] = {}  # 初始化设备数据库
 
         try:
             self.create_debug()
@@ -53,25 +53,31 @@ class WaitCaseJD(object):
                                   "contain [create_debug(), create_log(), "
                                   "create_report(), write_xls(), check_appium()]")
 
+    # 从元素库筛选对应APP元素库
     def select_page_element(self):
         PageElement(self.device_list, self.device_info["platformName"], self.device_info["app"]).wrapper()
         self.page_element = self.device_list["page"]
 
+    # 生成log日志
     def create_log(self):
         check_log(self.device_list, self.device_name)
         self.logger = self.device_info["logger"]
 
+    # 生成log格式运行结果
     def create_report(self):
         check_report(self.device_list, self.device_name)
         self.report = self.device_info["report"]
 
+    # 生成debug日志
     def create_debug(self):
         check_debug(self.device_list, self.device_name)
         self.debug = self.device_info["debug"]
 
+    # 实例化Excel文件
     def write_xls(self):
         self.xls = WriteXls(self.device_list, self.device_name)
 
+    # 初始化启动APP
     def init_app(self):
         self.device_info_list = {"device_info": self.device_info,
                                  "page_element": self.page_element,
@@ -80,6 +86,7 @@ class WaitCaseJD(object):
                                  "sc": self.sc}
         LaunchAppJD(**self.device_info_list).init_app()
 
+    # 检查Appium服务是否启动
     def check_appium(self):
         while True:
             try:
@@ -90,7 +97,9 @@ class WaitCaseJD(object):
                 self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
                 break
 
+    # 开始执行用例
     def run(self):
+        # 填写设备信息日志
         self.logger.info("*" * 30)
         self.logger.info(u"[APP_INF]deviceName：.....%s" % self.device_info["deviceName"])
         self.logger.info(u"[APP_INF]UDID：...........%s" % self.device_info["udid"])
@@ -109,7 +118,7 @@ class WaitCaseJD(object):
                 pass
         self.logger.info("*" * 30)
 
-        database["case_location"] = self.No
+        # 执行用例
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])
             # self.write_report(JDAppLogin1)  # 0000, 京东微联APP账号登录
@@ -154,25 +163,20 @@ class WaitCaseJD(object):
             # self.write_report(JDAppOverDay7)  # 1306, 充电保护模式下延迟23h59min关闭
 
             database["program_loop_time"] += 1
-            ports = [self.device_info["port"], self.device_info["bp_port"], self.device_info["wda_port"]]
-            for port in ports:
-                try:
-                    pid = self.sc.find_proc_and_pid_by_port(port)[1]
-                    self.sc.kill_proc_by_pid(pid)
-                except IndexError:
-                    pass
 
+    # 输出报告
     def write_report(self, case_name):
         try:
             case = case_name(**self.device_info_list).run()
-            end_time = time.strftime("%Y-%m-%d %H:%M:%S")
-            zentao_id = case[1]
-            data = (u'[ZENTAO_ID=%s, RESULT=%s,%s CASE_NAME="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]'
-                    % (zentao_id, case[0], " " * (7 - len(case[0])), case[2], database["program_loop_time"],
-                       self.No, case[3], end_time))
-            self.report.info(data)
+
+            end = time.strftime("%Y-%m-%d %H:%M:%S")
+            d = (u'[ZENTAO_ID=%s, RESULT=%s CASE_TITLE="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % (
+                case[0], case[1], case[2], database["program_loop_time"], database["case_location"], case[3], end))
+            self.report.info(d)
+
+            zentao_id = case[0]
             xls_data = database[self.device_name]
-            xls_data[zentao_id]["end_time"] = end_time
+            xls_data[zentao_id]["end_time"] = end
             if "row" in xls_data[zentao_id].keys():
                 pass
             else:
@@ -190,7 +194,6 @@ class WaitCaseJD(object):
                                 xls_data[zentao_id]["test_wait"])
 
             self.debug.info("write_data:%s" % case[0])
-            self.No += 1
-            database["case_location"] = self.No
+            database["case_location"] += 1
         except BaseException:
             self.debug.error(traceback.format_exc())

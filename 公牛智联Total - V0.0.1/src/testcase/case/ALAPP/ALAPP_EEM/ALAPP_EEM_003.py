@@ -3,7 +3,7 @@ from src.testcase.common.WidgetOperation_AL import *
 
 
 class ALAppEem3(WidgetOperationAL):
-    @case_run_al(False)
+    @case_run(False)
     def run(self):
         self.case_module = u"电量计量"  # 用例所属模块
         self.case_title = u'FUT_EEM_电价设置验证（待定）'  # 用例名称

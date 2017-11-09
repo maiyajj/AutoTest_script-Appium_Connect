@@ -285,8 +285,8 @@ class WidgetOperationHW(LaunchAppHW):
                     while True:
                         time.sleep(10)
                         if self.ac.get_attribute(element, "name") == power_state:
-                            self.logger.info(
-                                "[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), (time.time() - 10)))
+                            self.logger.info("[APP_TIMER]End Time:%s[%s]" %
+                                             (time.strftime("%H:%M:%S"), (time.time() - 10)))
                             self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
                             break
                         else:
