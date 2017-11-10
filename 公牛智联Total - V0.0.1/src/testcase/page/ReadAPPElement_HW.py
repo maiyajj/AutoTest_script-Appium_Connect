@@ -24,6 +24,7 @@ class PageElementHW(object):
         self.device["page"]["normal_timer_page"] = self.mpw.normal_timer_page()
         self.device["page"]["set_name_addr_page"] = self.mpw.set_name_addr_page()
 
+        self.device["page"]["ad_popup"] = self.mpw.ad_popup()
         self.device["page"]["change_nickname_popup"] = self.mpw.change_nickname_popup()
         self.device["page"]["delay_timer_roll_popup"] = self.mpw.delay_timer_roll_popup()
         self.device["page"]["loading_popup"] = self.mpw.loading_popup()

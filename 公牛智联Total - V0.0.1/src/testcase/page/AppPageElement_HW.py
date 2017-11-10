@@ -45,6 +45,9 @@ class MainPageWidgetHW(object):
     def set_name_addr_page(self):
         return self.wrapper(self.mpwa.set_name_addr_page(), self.mpwi.set_name_addr_page())
 
+    def ad_popup(self):
+        return self.wrapper(self.pwa.ad_popup(), self.pwi.ad_popup())
+
     def change_nickname_popup(self):
         return self.wrapper(self.pwa.change_nickname_popup(), self.pwi.change_nickname_popup())
 

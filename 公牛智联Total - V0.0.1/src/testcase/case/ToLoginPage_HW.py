@@ -15,13 +15,19 @@ class ToLoginPageHW(object):
         widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger, self.debug)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
-        # 唤醒设备
-        try:
-            self.driver.tap([(10, 10)])
-        except BaseException:
-            self.debug.error("tap 10, 10 error")
-        time.sleep(0.01)
         self.case()
+
+    # 关闭广告
+    def close_ad(self):
+        try:
+            self.wait_widget(self.page["ad_popup"]["title"])
+            self.logger.info(u"[APP_INF] APP有广告")
+            self.widget_click(self.page["ad_popup"]["skip"],
+                              wait_time1=5,
+                              log_record=0)
+            self.logger.info(u"[APP_INF] 关闭广告")
+        except TimeoutException:
+            pass
 
     # 检查APP是否升级，取消
     def check_update(self):
@@ -41,7 +47,6 @@ class ToLoginPageHW(object):
 
     # 用例动作
     def case(self):
+        self.close_ad()
         self.check_update()
         self.device_to_login()
-        # self.wait_widget(self.page["login_page"]["title"])
-        self.logger.info(u"[APP_INF] APP当前页面为登录页面")

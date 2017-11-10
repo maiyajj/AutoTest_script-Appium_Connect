@@ -167,9 +167,21 @@ class MainPageWidgetAndroidHW(object):
 
 
 class PopupWidgetAndroidHW(object):
+    # 页面广告
+    def ad_popup(self):
+        d = {}
+        # 有广告
+        d["title"] = ["com.huawei.smarthome:id/tv_inSkip", "id", u"有广告"]
+        # 跳过
+        d["skip"] = ["com.huawei.smarthome:id/tv_inSkip", "id", u"跳过"]
+        # 稍后提醒
+        d["cancel"] = [u"//android.widget.Button[@text='以后再说']", "xpath", u"稍后提醒"]
+        return d
+
     # app升级确认弹窗
     def update_popup(self):
         d = {}
+        # app升级确认弹窗
         d["title"] = [u"//android.widget.TextView[@text='发现新版本']", "xpath", u"有更新"]
         # 更新
         d["confirm"] = [u"//android.widget.Button[@text='立即更新']", "xpath", u"更新"]

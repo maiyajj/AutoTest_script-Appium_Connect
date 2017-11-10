@@ -19,12 +19,6 @@ class ToDevicePageAL(object):
         widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger, self.debug)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
-        # 唤醒设备
-        try:
-            self.driver.tap([(10, 10)])
-        except BaseException:
-            self.debug.error("tap 10, 10 error")
-        time.sleep(0.01)
         self.case()
 
     # 检查APP是否升级，取消

@@ -47,6 +47,11 @@ class MainPageWidgetIosHW(object):
 
 
 class PopupWidgetIosHW(object):
+    # 页面广告
+    def ad_popup(self):
+        d = {}
+        return d
+
     # app升级确认弹窗
     def update_popup(self):
         d = {}
