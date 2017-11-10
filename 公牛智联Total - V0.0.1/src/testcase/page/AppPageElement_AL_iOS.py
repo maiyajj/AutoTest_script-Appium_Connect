@@ -69,9 +69,9 @@ class MainPageWidgetIosAL(object):
             device_button[i] = ("%s/XCUIElementTypeCell[%s]//XCUIElementTypeButton" % (tmp, i + 1))
             device_state[i] = ("%s/XCUIElementTypeCell[%s]//XCUIElementTypeStaticText[2]" % (tmp, i + 1))
         d["device"] = [device, "xpath", u"待控设备"]
-        # FIXME：更新d["has_device"]
         # 有设备
-        d["has_device"] = ["com.aliyun.alink:id/home3_device_listitem", "accessibility_id", u"有设备"]
+        d["has_device"] = ["//XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeCollectionView"
+                           "/XCUIElementTypeCell[2]/XCUIElementTypeOther/XCUIElementTypeImage", "xpath", u"有设备"]
         # 设备开关
         d["device_button"] = [device_button, "xpath", u"待控设备开关"]
         # 设备状态
