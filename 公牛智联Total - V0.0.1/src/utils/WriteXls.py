@@ -135,7 +135,7 @@ class WriteXls(object):
         self.sheet.write_merge(0, 1, 0, 7, u"测试报告", self.easyxf1)  # 写合并单元格(x,x,y,y)
         self.sheet.write_merge(2, 2, 0, 7, "", self.easyxf3)
 
-        self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
+        self.start_time = time.strftime("%Y-%m-%d %X")
         self.sheet.write(3, 0, u"开始时间：", self.easyxf9)  # 写单元格(x, y)
         self.sheet.write_merge(3, 3, 1, 7, self.start_time, self.easyxf2)
 
@@ -212,8 +212,8 @@ class WriteXls(object):
 
         self.sheet.write_merge(4, 4, 1, 7, end_times, self.easyxf2)
 
-        start_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(self.start_time, "%Y-%m-%d %H:%M:%S")))
-        end_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(end_times, "%Y-%m-%d %H:%M:%S")))
+        start_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(self.start_time, "%Y-%m-%d %X")))
+        end_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(end_times, "%Y-%m-%d %X")))
         continue_time = str(end_time - start_time)
         self.sheet.write_merge(5, 5, 1, 7, continue_time, self.easyxf2)
 

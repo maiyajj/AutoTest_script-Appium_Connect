@@ -298,7 +298,7 @@ def create_WaitCase():
         WaitCase.write('''                time.sleep(1)\n''')
         WaitCase.write('''            else:\n''')
         WaitCase.write(
-            '''                self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))\n''')
+            '''                self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %X"))\n''')
         WaitCase.write('''                break\n''')
         WaitCase.write('''\n''')
         WaitCase.write('''    def run(self):\n''')
@@ -354,7 +354,7 @@ def create_WaitCase():
         WaitCase.write(
             '''        data = u'[RUN_TIMES=%s, CASE_ID=%s, CASE_NAME="%s", RESULT=%s, START=%s, CLOSE=%s]' % \\\n''')
         WaitCase.write(
-            '''               (database["program_loop_time"], self.No, case[1], case[0], case[2], time.strftime("%Y-%m-%d %H:%M:%S"))\n''')
+            '''               (database["program_loop_time"], self.No, case[1], case[0], case[2], time.strftime("%Y-%m-%d %X"))\n''')
         WaitCase.write('''        self.report.info(data)\n''')
         WaitCase.write('''        self.No += 1\n''')
         WaitCase.write('''        database["case_location"] = self.No\n''')

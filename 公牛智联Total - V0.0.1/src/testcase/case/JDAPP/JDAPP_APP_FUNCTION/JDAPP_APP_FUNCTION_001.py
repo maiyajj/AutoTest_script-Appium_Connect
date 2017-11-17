@@ -50,7 +50,7 @@ class JDAppAppFunction1(WidgetOperationJD):
     
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
-        self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+        self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -70,7 +70,7 @@ class JDAppAppFunction1(WidgetOperationJD):
         if self.ac.get_attribute(element, "name") == set_time_date:
             self.logger.info(u"[APP_INFO]存在定时记录%s" % set_time_date)
         else:
-            raise TimeoutException("don`t have timing records :%s" % set_time_date)
+            raise TimeoutException("don`t have timing records: %s" % set_time_date)
 
         self.widget_click(self.page["timer_log_page"]["clear"],
                           self.page["timer_log_clear_popup"]["title"])

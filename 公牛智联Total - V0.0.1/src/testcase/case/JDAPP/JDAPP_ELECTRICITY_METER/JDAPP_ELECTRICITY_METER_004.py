@@ -72,7 +72,7 @@ class JDAppElectricityMeter4(WidgetOperationJD):
                 elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                 # if index >= now_h + 2:
                 elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-                self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (now_h + 2, elec_bill))
+                self.logger.info("[APP_INFO]%02d:01_elec_bill: %s" % (now_h + 2, elec_bill))
 
         self.widget_click(self.page["elec_bill_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -87,7 +87,7 @@ class JDAppElectricityMeter4(WidgetOperationJD):
                 elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                 # if index >= now_h + 2:
                 elec[index] = self.ac.get_attribute(elec_value, "name")
-                self.logger.info("[APP_INFO]23:01_elec:%s" % elec)
+                self.logger.info("[APP_INFO]23:01_elec: %s" % elec)
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -163,7 +163,7 @@ class JDAppElectricityMeter4(WidgetOperationJD):
         peak_price = [v for k, v in elec.items() if 6 <= k <= 22]
         valley_price = [v for k, v in elec.items() if k < 6 and k > 22]
 
-        elec_bill_info = ("current [elec_bill:%s, peak_price:%s, peak_data:%s, valley_price:%s, valley_data:%s]"
+        elec_bill_info = ("current [elec_bill: %s, peak_price: %s, peak_data: %s, valley_price: %s, valley_data: %s]"
                           % (sum(elec_bill.values()), sum(peak_price), peak_data, sum(valley_price), valley_data))
         self.logger.info(elec_bill_info)
 

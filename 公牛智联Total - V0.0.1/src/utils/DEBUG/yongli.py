@@ -2,122 +2,47 @@
 from ReadAPPElement import *
 
 
-class b(a):
+class fix(a):
+    # 创建延时类型定时
+    def set_peak_valley_time(self, elem, now_time, set_timer, peak):
+        attribute = self.ac.get_attribute(elem, "name")
+        if u"未设置" in attribute:
+            if peak is True:  # 峰电/谷电
+                time_roll = "08:00"
+            else:
+                time_roll = "22:00"
+        else:
+            time_roll = re.findall("(\d+:\d+)", attribute)[0]
+        print("[APP_TIMER]Start roll: %s" % time_roll)
+
+        if peak is True:  # 峰电/谷电
+            widget = "start_time"
+        else:
+            widget = "end_time"
+
+        self.widget_click(self.page["peak_valley_price_page"][widget],
+                          self.page["timer_roll_popup"]["title"])
+
+        start_time, set_time = self.set_timer_roll(self.page["timer_roll_popup"]["roll_p"],
+                                                   self.page["timer_roll_popup"]["roll_p_h"],
+                                                   self.page["timer_roll_popup"]["roll_p_m"],
+                                                   time_roll, now_time, set_timer, False, 0)
+
+        self.widget_click(self.page["timer_roll_popup"]["confirm"],
+                          self.page["peak_valley_price_page"]["title"])
+
+        return start_time, set_time
+
+
+class b(fix):
     def case(self):
-        try:
-            while True:
-                element = self.wait_widget(self.page["app_home_page"]["device"], 1, 0.5, True)
-                for i in element:
-                    if self.ac.get_attribute(i, "name") == conf["MAC"][0]:
-                        self.widget_click(self.page["app_home_page"]["device"],
-                                          self.page["control_device_page"]["title"],
-                                          operate_driver=i.parent)
-                        raise ValueError()
-                    else:
-                        self.ac.swipe(0.6, 0.9, 0.6, 0.4, 0, self.driver)
-                        time.sleep(1)
-        except ValueError:
-            pass
+        device = "C4:11:E0:00:00:00"
+        now = time.strftime("%H:%M")
 
-        try:
-            self.wait_widget(self.page["control_device_page"]["power_on"], 1, 0.5)
-            self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["power_off"])
-        except TimeoutException:
-            pass
+        delay_time_1, delay_time_2 = ["point", "08:00"], ["delay", "22:00"]
+        elem = self.wait_widget(self.page["peak_valley_price_page"]["start_time"])
+        tmp, tmp1 = self.set_peak_valley_time(elem, now, delay_time_1, True)
+        print tmp, tmp1
 
-        self.ac.swipe(0.5, 0.9, 0.5, 0.7, 0, self.driver)
-
-        self.widget_click(self.page["control_device_page"]["set_elec"],
-                          self.page["set_elec_page"]["title"])
-
-        self.widget_click(self.page["set_elec_page"]["single_button"],
-                          self.page["set_elec_page"]["title"])
-
-        self.widget_click(self.page["set_elec_page"]["single_price"],
-                          self.page["single_price_page"]["title"])
-
-        elec = self.widget_click(self.page["single_price_page"]["set_price"],
-                                 self.page["single_price_page"]["title"])
-
-        data = "5"
-        elec.clear()
-        self.ac.send_keys(elec, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["单一电价"] input success')
-        time.sleep(0.5)
-
-        self.widget_click(self.page["single_price_page"]["to_return"],
-                          self.page["set_elec_page"]["title"])
-
-        self.widget_click(self.page["set_elec_page"]["to_return"],
-                          self.page["control_device_page"]["title"])
-
-        # self.ac.swipe(0.5, 0.7, 0.5, 0.9, 0, self.driver)
-
-        now_h = int(time.strftime("%H"))
-        while True:
-            if time.strftime("%H") == str(now_h + 2):
-                self.widget_click(self.page["control_device_page"]["elec_bill"],
-                                  self.page["elec_bill_page"]["title"])
-                break
-            else:
-                time.sleep(60)
-        attribute = []
-        step = 0
-        while True:
-            start_h = str((now_h + 2 + step) % 24)
-            now_time = time.strftime("%H")
-            if now_time == start_h:
-                while True:
-                    elements = self.wait_widget(self.page["elec_bill_page"]["price_time"])
-                    new_value = copy.copy(self.page["elec_bill_page"]["price_value"])
-                    for index, element in elements.items():
-                        if element is not None and str(self.ac.get_attribute(element, "name")) == "%s:00" % (now_h + 1):
-                            new_value[0] = new_value[0][index]
-                            value = float(self.ac.get_attribute(self.wait_widget(new_value), "name")[:-1])
-                            attribute.append(value)
-                            break
-                    step += 1
-                    break
-            elif now_time == str(now_h + 1):
-                break
-            else:
-                time.sleep(60)
-                self.driver.tap([(10, 10)])
-    
 
 b().case()
-
-
-class c(a):
-    def case(self):
-        now_h = 20
-        attribute = []
-        step = 1
-        now = 22
-        while True:
-            start_h = str((now_h + 2 + step) % 24)
-            now_time = str(now % 24)
-            print now_time, start_h
-            if now_time == str(now_h + 1):
-                print now_time
-                break
-            elif now_time == start_h:
-                while True:
-                    elements = self.wait_widget(self.page["elec_bill_page"]["price_time"])
-                    new_value = copy.copy(self.page["elec_bill_page"]["price_value"])
-                    for index, element in elements.items():
-                        print "%02d:00" % int(now_time)
-                        if element is not None and str(self.ac.get_attribute(element, "name")) == "%02d:00" % int(
-                                now_time):
-                            new_value[0] = new_value[0][index]
-                            value = float(self.ac.get_attribute(self.wait_widget(new_value), "name")[:-1])
-                            attribute.append(value)
-                            break
-                    step += 1
-                    break
-            now += 1
-            print attribute
-            time.sleep(1)
-
-c().case()

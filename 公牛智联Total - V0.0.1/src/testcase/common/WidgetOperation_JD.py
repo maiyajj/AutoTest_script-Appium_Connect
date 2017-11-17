@@ -44,100 +44,122 @@ class WidgetOperationJD(LaunchAppJD):
             self.widget_click(self.page["control_device_page"]["power_button"],
                               self.page["control_device_page"][state])
 
+    # 设置滚轮
+    def set_roll(self, elem):
+        element = self.wait_widget(elem)
+        lc, sz = element.location, element.size
+        lcx, lcy, szw, szh = float(lc["x"]), float(lc["y"]), float(sz["width"]), float(sz["height"])
+        return lcx, lcy, szw, szh
+
     # 设置定时滚轮
-    def set_timer_roll(self, elem_h, elem_m, elem_t, et, now_time, same_fish_mode=False, leave_time=2):
-        if isinstance(et, int):
-            if et >= 0:
+    def set_timer_roll(self, elem_h, elem_m, elem_t, now_time, set_timer, cycle=False, delay_s=120):
+        """
+        :param elem_h: 滚轮控件“时”框架，用来获取“时”x坐标
+        :param elem_m: 滚轮控件“分”框架，用来获取“分”x坐标
+        :param elem_t: 滚轮当前的时间值，“HH:MM”格式
+        :param now_timer: 设置定时的当前时间
+        :param set_timer: 设置定时的目标时间
+        :param cycle: 是否是类鱼缸模式的连续定时模式
+        :param delay_s: 定时的设置时间和启动时间延迟
+        :return: 定时启动时间，格式为时间戳float型；定时执行时间，格式为时间戳float型
+        """
+        # 定时的设置时间包含延迟定时和准点定时：
+        # 准点定时为设置定时当前时间前/后***分钟执行，数据格式为int型及以时间格式展现的str字符串型；
+        # int型包含int型正数/负数（int型/负int型），用于设置当前时间***分钟前/后执行的定时，关键字为“int”，“minus”；
+        # 时间格式str字符串型（"09:00"），用于设置固定时间点执行的定时，关键字为“point”
+        # 延迟定时为设置时间段区间执行的定时，多用于鱼缸模式或延迟定时模式，数据格式为以时间格式展现的str字符串型；
+        # 时间格式str字符串型（"30:00"），用于设置时间段定时，关键字为“delay”
+        # ps：delay_s函数关键词用于给设置定时预留时间，设置定时也需要时间，默认延迟2分钟，当前时间8:00，定时开始执行时间为8:02；
+        if isinstance(set_timer, int):
+            if set_timer >= 0:
                 time_seg = "int"
             else:
                 time_seg = "minus"
         else:
-            if et[0] == "point":
+            if set_timer[0] == "point":
                 time_seg = "point"
-            elif et[0] == "delay":
+            elif set_timer[0] == "delay":
                 time_seg = "delay"
             else:
                 time_seg = None
+
         # 时滚轮
-        element_h = self.wait_widget(elem_h)
+        lcx_h, lcy_h, szw_h, szh_h = self.set_roll(elem_h)
         pxx_h, pxy_h = elem_h[3]["px"]
-        lc_h, sz_h = element_h.location, element_h.size
-        lcx_h, lcy_h, szw_h, szh_h = float(lc_h["x"]), float(lc_h["y"]), float(sz_h["width"]), float(sz_h["height"])
-        aszh_h = int(szh_h / 5)
-        start_x_h, start_y_h = int(lcx_h + pxx_h * szw_h), int(lcy_h + pxy_h * szh_h)
+        aszh_h = int(szh_h / 5)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度，默认为5
+        start_x_h, start_y_h = int(lcx_h + pxx_h * szw_h), int(lcy_h + szh_h / 2)  # “时”滚轮的操作起始点
         # 分滚轮
-        element_m = self.wait_widget(elem_m)
+        lcx_m, lcy_m, szw_m, szh_m = self.set_roll(elem_m)
         pxx_m, pxy_m = elem_m[3]["px"]
-        lc_m, sz_m = element_m.location, element_m.size
-        lcx_m, lcy_m, szw_m, szh_m = float(lc_m["x"]), float(lc_m["y"]), float(sz_m["width"]), float(sz_m["height"])
         aszh_m = int(szh_m / 5)
-        start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_m + pxy_m * szh_m)
+        start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_m + szh_m / 2)  # “分”滚轮的操作起始点
 
-        roll_now_h, roll_now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
-        roll_now_h, roll_now_m = int(roll_now_h), int(roll_now_m)
-        if roll_now_h == 0 and roll_now_m == 1:
-            self.driver.swipe(start_x_h, start_y_h, start_x_h, start_y_h - aszh_h, 0)
-            roll_now_h, roll_now_m = self.ac.get_attribute(self.wait_widget(elem_t), "name").split(":")
-            roll_now_h, roll_now_m = int(roll_now_h), int(roll_now_m)
+        time_roll = time.strftime("%Y-%m-%d r:00").replace("r", elem_t)  # 滚轮的当前时间
+        time_roll = time.mktime(time.strptime(time_roll, "%Y-%m-%d %X"))  # 转换为时间戳
 
-        now_h, now_m = now_time.split(":")
-        if same_fish_mode is False:
-            now_h, now_m = int(now_h), int(now_m)
-        else:
-            now_h, now_m = int(now_h), int(now_m) - leave_time
-            now_h, now_m = (now_h + now_m / 60) % 24, now_m % 60
-
-        if time_seg == "int":
-            aet = abs(et)
-            sign_aet = et / aet
-            set_h, set_m = now_h + sign_aet * (aet / 60), now_m + leave_time + sign_aet * (aet % 60)
-            set_h, set_m = (set_h + set_m / 60) % 24, set_m % 60
-            true_h, true_m = set_h, set_m
-        elif time_seg == "minus":
-            aet = abs(et)
-            sign_aet = et / aet
-            set_h, set_m = now_h + sign_aet * (aet / 60), now_m + sign_aet * (aet % 60)
-            set_h, set_m = (set_h + set_m / 60) % 24, set_m % 60
-            true_h, true_m = set_h, set_m
-        elif time_seg == "point":
-            set_h, set_m = et[1].split(":")
-            set_h, set_m = int(set_h), int(set_m)
-            true_h, true_m = set_h, set_m
-        elif time_seg == "delay":
-            set_h, set_m = et[1].split(":")
-            set_h, set_m = int(set_h), int(set_m)
-            true_h, true_m = int(set_h) + now_h, int(set_m) + leave_time + now_m
-            true_h, true_m = (true_h + true_m / 60) % 24, true_m % 60
-        else:
-            set_h, set_m = "error", "error"
-            true_h, true_m = set_h, set_m
-
-        start_h, start_m = (now_h + (now_m + leave_time) / 60) % 24, (now_m + leave_time) % 60
-        start_time = "%02d:%02d" % (start_h, start_m)
-        set_time = "%02d:%02d" % (set_h, set_m)
-        true_time = "%02d:%02d" % (true_h, true_m)
-
-        et_h = abs(set_h - roll_now_h)
-        et_m = abs(set_m - roll_now_m)
+        # 将now_time添加秒数。
+        # 若同时设置普通定时和延迟定时，若两定时执行时间点相同，则难以判断定时执行情况
+        # 将延迟模式的启动时间从准点往后推30s则可以和普通定时错开，相应的delay_s也要再加上对应的30s，默认120s→150s
         try:
-            end_y_h = start_y_h - (set_h - roll_now_h) / et_h * aszh_h
-        except ZeroDivisionError:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X")
+        except ValueError:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %X")
+        time_now = time.mktime(time_now)
+        if cycle is True:  # 若定时为鱼缸模式，第二个定时的开始时间为第一个定时的结束时间，应将定时设置延迟去除
+            time_now = time_now - delay_s
+
+        # 获取定时的执行时间点
+        if time_seg == "int":
+            time_set = time_now + set_timer * 60 + delay_s
+        elif time_seg == "minus":
+            time_set = time_now + set_timer * 60
+        elif time_seg == "point":
+            time_set = time.strftime("%Y-%m-%d r:00").replace("r", set_timer[1])
+            time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %X"))
+        elif time_seg == "delay":
+            time_set = time.strftime("%Y-%m-%d r:00").replace("r", set_timer[1])
+            time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %X")) + delay_s
+        else:
+            time_set = "error"
+
+        # 定时开始执行和设定的时间点
+        time_start = int(time_now + delay_s)
+        time_set = int(time_set)
+        # 将定时时间（时间戳，float型）格式化为时间（字符串型），仅做日志输出
+        start_time = time.strftime("%Y-%m-%d %X", time.localtime(time_start))
+        set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
+
+        # 滚轮相关操作
+        roll_h, roll_m = time.strftime("%H:%M", time.localtime(time_roll)).split(":")
+        set_h, set_m = time.strftime("%H:%M", time.localtime(time_set)).split(":")
+
+        time_et_h = int(set_h) - int(roll_h)  # 时间滚轮的“时”时间和待设置时间差值
+        time_et_h_a = abs(time_et_h) % 24  # “时”时间滚轮滑动次数
+        time_et_m = int(set_m) - int(roll_m)  # 时间滚轮的“分”时间和待设置时间差值
+        time_et_m_a = abs(time_et_m) % 60  # “分”时间滚轮滑动次数
+
+        try:  # 若time_et不相等
+            # time_et / time_et_a计算结果为1/-1，获取“时”滚轮滑动目的坐标值，用于计算时间滚轮是往上滑还是往下滑
+            end_y_h = start_y_h - time_et_h / time_et_h_a * aszh_h
+        except ZeroDivisionError:  # 若time_et相等
             end_y_h = start_y_h
         try:
-            end_y_m = start_y_m - (set_m - roll_now_m) / et_m * aszh_m
+            # 获取“分”滚轮滑动目的坐标值
+            end_y_m = start_y_m - time_et_m / time_et_m_a * aszh_m
         except ZeroDivisionError:
             end_y_m = start_y_m
-        # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
-        while et_m > 0:
-            self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 0)
-            et_m -= 1
-        while et_h > 0:
-            self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
-            et_h -= 1
 
-        self.logger.info("start_time: %s, set_time: %s, true_time: %s" % (start_time, set_time, true_time))
-        if self.ac.get_attribute(self.wait_widget(elem_t), "name") == set_time:
-            return start_time, true_time
+        # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
+        while time_et_m_a > 0:
+            self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 0)
+            time_et_m_a -= 1
+        while time_et_h_a > 0:
+            self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
+            time_et_h_a -= 1
+
+        self.logger.info("start_time: %s, set_time: %s" % (start_time, set_time))
+        if self.ac.get_attribute(self.wait_widget(elem_t), "name") == set_time[11:16]:
+            return time_start, time_set
         else:
             raise TimeoutException("timer set error")
 
@@ -166,7 +188,7 @@ class WidgetOperationJD(LaunchAppJD):
 
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
-        self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+        self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
 
         return start_time, set_time
 
@@ -235,22 +257,22 @@ class WidgetOperationJD(LaunchAppJD):
             delay_times = (set_times - start_times) * 60
         else:
             delay_times = 24 * 60 * 60 + (set_times - start_times) * 60
-        self.logger.info("[APP_TIMER]Delay Time:%s" % (delay_times + 30))
+        self.logger.info("[APP_TIMER]Delay Time: %s" % (delay_times + 30))
         while True:
             if time.strftime("%H:%M") == start_time:
                 now = time.time()
                 break
             else:
                 time.sleep(1)
-        self.logger.info("[APP_TIMER]Now Time:%s" % time.strftime("%H:%M:%S"))
+        self.logger.info("[APP_TIMER]Now Time: %s" % time.strftime("%X"))
         element = self.wait_widget(self.page["control_device_page"]["power_state"])
         while True:
             if time.strftime("%H:%M") == set_time:
                 if power_same_prev is False:
                     while True:
                         if self.ac.get_attribute(element, "name") == power_state:
-                            self.logger.info("[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
-                            self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
+                            self.logger.info("[APP_TIMER]End Time: %s[%s]" % (time.strftime("%X"), time.time()))
+                            self.logger.info(u"[APP_INFO]Device Info: %s" % power_state)
                             break
                         else:
                             time.sleep(1)
@@ -259,8 +281,8 @@ class WidgetOperationJD(LaunchAppJD):
                         time.sleep(10)
                         if self.ac.get_attribute(element, "name") == power_state:
                             self.logger.info(
-                                "[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), (time.time() - 10)))
-                            self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
+                                "[APP_TIMER]End Time: %s[%s]" % (time.strftime("%X"), (time.time() - 10)))
+                            self.logger.info(u"[APP_INFO]Device Info: %s" % power_state)
                             break
                         else:
                             time.sleep(1)
@@ -321,7 +343,7 @@ class WidgetOperationJD(LaunchAppJD):
             try:
                 self.widget_click(self.page[page]["launch"],
                                   self.page["mode_timer_page"]["title"])
-                self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+                self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
             except TimeoutException:
                 self.wait_widget(self.page["mode_timer_conflict_popup"]["title"])
                 self.widget_click(self.page["mode_timer_conflict_popup"]["confirm"],
@@ -335,7 +357,7 @@ class WidgetOperationJD(LaunchAppJD):
                     try:
                         self.widget_click(self.page[page]["launch"],
                                           self.page["mode_timer_page"]["title"])
-                        self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+                        self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
                     except TimeoutException:
                         self.wait_widget(self.page["mode_timer_conflict_popup"]["title"])
                         self.widget_click(self.page["mode_timer_conflict_popup"]["confirm"],
@@ -343,7 +365,7 @@ class WidgetOperationJD(LaunchAppJD):
                     break
                 else:
                     if time.time() > end_time:
-                        raise TimeoutException("Timer Saved Error, time:%s" % start_time)
+                        raise TimeoutException("Timer Saved Error, time: %s" % start_time)
                     time.sleep(1)
 
     # 统计电量
@@ -381,7 +403,7 @@ class WidgetOperationJD(LaunchAppJD):
                     elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                     # if index >= now_h + 2:
                     elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-            self.logger.info("[APP_INFO]23:01_elec_bill:%s" % elec_bill)
+            self.logger.info("[APP_INFO]23:01_elec_bill: %s" % elec_bill)
 
             self.widget_click(self.page["elec_bill_page"]["to_return"],
                               self.page["control_device_page"]["title"])
@@ -396,7 +418,7 @@ class WidgetOperationJD(LaunchAppJD):
                     elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                     # if index >= now_h + 2:
                     elec[index] = self.ac.get_attribute(elec_value, "name")
-            self.logger.info("[APP_INFO]23:01_elec:%s" % elec)
+            self.logger.info("[APP_INFO]23:01_elec: %s" % elec)
 
             self.widget_click(self.page["elec_page"]["to_return"],
                               self.page["control_device_page"]["title"])
@@ -421,7 +443,7 @@ class WidgetOperationJD(LaunchAppJD):
                 elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                 # if index <= now_h + 1:
                 elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-        self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (check_time, elec_bill))
+        self.logger.info("[APP_INFO]%02d:01_elec_bill: %s" % (check_time, elec_bill))
 
         self.widget_click(self.page["elec_bill_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -435,7 +457,7 @@ class WidgetOperationJD(LaunchAppJD):
                 elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                 # if index <= now_h + 1:
                 elec[index] = self.ac.get_attribute(elec_value, "name")
-        self.logger.info("[APP_INFO]%02d:01_elec:%s" % (check_time, elec))
+        self.logger.info("[APP_INFO]%02d:01_elec: %s" % (check_time, elec))
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])

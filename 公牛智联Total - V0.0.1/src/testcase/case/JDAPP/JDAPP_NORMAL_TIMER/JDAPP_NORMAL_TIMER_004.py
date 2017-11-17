@@ -63,7 +63,7 @@ class JDAppNormalTimer4(WidgetOperationJD):
             delay_time_13 = 13
             self.create_normal_timer(now, delay_time_13, "power_on", u"执行一次")
         except TimeoutException:
-            self.logger.info(u"[APP_TIMER]第13个定时设置失败:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+            self.logger.info(u"[APP_TIMER]第13个定时设置失败: %s[%s]" % (time.strftime("%X"), time.time()))
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

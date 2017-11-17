@@ -10,7 +10,8 @@ from data.Database import *
 
 # 元素操作API，将find_element进行再封装
 class WidgetCheckUnit(Exception):
-    copy = copy  # 初始化copy函数，避免import copy函数未使用被自动删除
+    copy = copy  # 初始化copy函数，避免import copy, traceback函数未使用被自动删除
+    traceback = traceback
 
     def __init__(self, driver, page_element, logger, debug):
         self.driver = driver
@@ -105,7 +106,7 @@ class WidgetCheckUnit(Exception):
 
     # 点击元素，同于element.click()
     def widget_click(self, operate_widget=None, wait_page=None, wait_time1=3, wait_time2=3,
-                     times=1, interval=1, log_record=1):
+                     times=3, interval=1, log_record=1):
         """
             Using click operation widgets - 使用点击方式操作元素
             widget_click(self, operate_widget=None, wait_page=None, wait_time1=1, wait_time2=1, timeout=6, interval=1,
@@ -183,14 +184,12 @@ class WidgetCheckUnit(Exception):
                 return widget
             except TimeoutException:
                 run_times -= 1
-                if run_times <= 0:
+                if run_times == 0:
                     if flag == 0:  # 点击操作未完成
-                        error_info = ("[ERROR]Failed to operate element.UiSelector[INSTANCE=0, RESOURCE_ID=%s,"
-                                      " RUN_TIMES=%sS]" % (operate_widget[0], run_times))
+                        error_info = "[ERROR]Failed to operate element.UiSelector[RESOURCE_ID=%s]" % [operate_widget[0]]
                         logger_info = '[APP_CLICK] operate_widget ["%s"] error' % operate_widget[2]
                     else:  # 完成点击操作，等待页面加载失败
-                        error_info = ("[ERROR]Failed to wait element.UiSelector[INSTANCE=0, RESOURCE_ID=%s,"
-                                      " RUN_TIMES=%sS]" % (wait_page[0], run_times))
+                        error_info = "[ERROR]Failed to wait element.UiSelector[RESOURCE_ID=%s]" % [wait_page[0]]
                         logger_info = '[APP_CLICK] wait_page ["%s"] error' % wait_page[2]
 
                     if log_record != 0:

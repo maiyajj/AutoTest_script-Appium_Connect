@@ -173,7 +173,7 @@ class MainPageWidgetAndroidAL(object):
     def control_device_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.view.View[contains(@content-desc, '实时功率')]", "xpath", u"设备控制页面"]
+        d["title"] = [u"//android.view.View[@content-desc='开关按钮']", "xpath", u"设备控制页面"]
         # 设备信息进入按钮
         d["device_info"] = ["com.aliyun.alink:id/textview_atopbar_right_1", "id", u"设备信息进入按钮"]
         # 设备已启动模式定时
@@ -185,23 +185,23 @@ class MainPageWidgetAndroidAL(object):
         # 电源开关
         d["power_button"] = [u"//android.view.View[@content-desc='开关按钮']", "xpath", u"电源开关"]
         # 热水器模式
-        d["water_mode_timer"] = [u"//android.view.View[@content-desc='热水器']", "xpath", u"热水器模式"]
+        d["water_mode_timer"] = [u"//android.view.View[@content-desc='栅格选项热水器']", "xpath", u"热水器模式"]
         # 小夜灯模式
-        d["night_mode_timer"] = [u"//android.view.View[@content-desc='小夜灯']", "xpath", u"小夜灯模式"]
+        d["night_mode_timer"] = [u"//android.view.View[@content-desc='栅格选项小夜灯']", "xpath", u"小夜灯模式"]
         # 鱼缸模式
-        d["fish_mode_timer"] = [u"//android.view.View[@content-desc='鱼缸模式']", "xpath", u"鱼缸模式"]
+        d["fish_mode_timer"] = [u"//android.view.View[@content-desc='栅格选项鱼缸模式']", "xpath", u"鱼缸模式"]
         # 蚊香模式
-        d["mosquito_mode_timer"] = [u"//android.view.View[@content-desc='蚊香模式']", "xpath", u"蚊香模式"]
+        d["mosquito_mode_timer"] = [u"//android.view.View[@content-desc='栅格选项蚊香模式']", "xpath", u"蚊香模式"]
         # 充电保护模式
-        d["piocc_mode_timer"] = [u"//android.view.View[@content-desc='充电保护']", "xpath", u"充电保护模式"]
+        d["piocc_mode_timer"] = [u"//android.view.View[@content-desc='栅格选项充电保护']", "xpath", u"充电保护模式"]
         # 取暖器模式
-        d["warmer_mode_timer"] = [u"//android.view.View[@content-desc='取暖器']", "xpath", u"取暖器模式"]
+        d["warmer_mode_timer"] = [u"//android.view.View[@content-desc='栅格选项取暖器']", "xpath", u"取暖器模式"]
         # 定时任务
-        d["normal_timer"] = [u"//android.view.View[contains(@content-desc, '定时任务')]", "xpath", u"定时任务"]
+        d["normal_timer"] = [u"//android.view.View[contains(@content-desc, ' 定时任务')]", "xpath", u"定时任务"]
         # 延时任务
-        d["delay_timer"] = [u"//android.view.View[contains(@content-desc, '延时任务')]", "xpath", u"延时任务"]
+        d["delay_timer"] = [u"//android.view.View[contains(@content-desc, ' 延时任务')]", "xpath", u"延时任务"]
         # 循环任务
-        d["cycle_timer"] = [u"//android.view.View[contains(@content-desc, '循环任务')]", "xpath", u"循环任务"]
+        d["cycle_timer"] = [u"//android.view.View[contains(@content-desc, ' 循环任务')]", "xpath", u"循环任务"]
         # 电价设置
         d["set_elec"] = [u"//android.view.View[contains(@content-desc, '电价设置')]", "xpath", u"电价设置"]
         # 用电数据
@@ -246,9 +246,9 @@ class MainPageWidgetAndroidAL(object):
         # 标题
         d["title"] = [u"//android.view.View[@content-desc='热水器模式']", "xpath", u"热水器模式页面"]
         # 开启时间
-        d["start_time"] = ["//android.widget.ListView/android.view.View", "xpath", u"开启时间"]
+        d["start_time"] = ['//android.widget.ListView/android.view.View//android.view.View[2]', "xpath", u"开启时间"]
         # 关闭时间
-        d["end_time"] = ["//android.widget.ListView/android.view.View[2]", "xpath", u"关闭时间"]
+        d["end_time"] = ["//android.widget.ListView/android.view.View[2]//android.view.View[2]", "xpath", u"关闭时间"]
         # 重复
         d["repeat"] = ["//android.widget.ListView[2]/android.view.View/android.view.View", "xpath", u"重复"]
         # 启动模式
@@ -416,12 +416,12 @@ class MainPageWidgetAndroidAL(object):
         # 定时关
         d["power_off"] = [u"//android.view.View[contains(@content-desc, '延时关')]", "xpath", u"延时关"]
         # 时间滚轮整体控件
-        d["roll"] = ["//android.webkit.WebView/android.view.View[4]/android.view.View[2]", "xpath", u"时间滚轮整体控件"]
+        d["roll"] = ["//android.webkit.WebView/android.view.View[3]/android.view.View[2]", "xpath", u"时间滚轮整体控件"]
         # 时间滚轮,时
-        d["roll_h"] = ["//android.webkit.WebView/android.view.View[4]/android.view.View[2]/android.widget.ListView",
+        d["roll_h"] = ["//android.webkit.WebView/android.view.View[3]/android.view.View[2]/android.widget.ListView",
                        "xpath", u"时间滚轮,时", {"px": [0.5, 0.59]}]
         # 时间滚轮,分
-        d["roll_m"] = ["//android.webkit.WebView/android.view.View[4]/android.view.View[2]/android.widget.ListView[2]",
+        d["roll_m"] = ["//android.webkit.WebView/android.view.View[3]/android.view.View[2]/android.widget.ListView[2]",
                        "xpath", u"时间滚轮,分", {"px": [0.5, 0.508]}]
         # 启动
         d["launch"] = [u"//android.view.View[@content-desc='启动']", "xpath", u"启动"]
@@ -709,7 +709,7 @@ class PopupWidgetAndroidAL(object):
     def timer_roll_popup(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.view.View[@content-desc='设置时间']", "xpath", u"设置时间"]
+        d["title"] = [u"//android.view.View[40][contains(@content-desc, '分')]", "xpath", u"设置时间"]
         # 时间滚轮整体控件
         d["roll"] = ["//android.webkit.WebView/android.view.View[6]", "xpath", u"时间滚轮整体控件"]
         # 时间滚轮,时
@@ -718,6 +718,14 @@ class PopupWidgetAndroidAL(object):
         # 时间滚轮,分
         d["roll_m"] = ["//android.webkit.WebView/android.view.View[6]/android.widget.ListView[2]", "xpath",
                        u"时间滚轮,分", {"px": [0.5, 0.5]}]
+        # 时间滚轮整体控件
+        d["roll_p"] = ["//android.webkit.WebView/android.view.View[5]", "xpath", u"时间滚轮整体控件"]
+        # 时间滚轮,时
+        d["roll_p_h"] = ["//android.webkit.WebView/android.view.View[5]/android.widget.ListView", "xpath",
+                         u"峰谷电时间滚轮,时", {"px": [0.5, 0.5]}]
+        # 时间滚轮,分
+        d["roll_p_m"] = ["//android.webkit.WebView/android.view.View[5]/android.widget.ListView[2]", "xpath",
+                         u"峰谷电时间滚轮,分", {"px": [0.5, 0.5]}]
         # 确定
         d["confirm"] = [u"//android.view.View[@content-desc='确定']", "xpath", u"确定"]
         # 取消

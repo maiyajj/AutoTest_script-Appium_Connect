@@ -74,7 +74,7 @@ class LaunchAppiumServicesIos(object):
                             if child_proc != []:
                                 for x in child_proc:
                                     appium_pid.append(x.pid)
-                                    files.write("pid:%s; name:%s parent:%s\n" % (x.pid, x.name(), x.parent()))
+                                    files.write("pid: %s; name: %s parent: %s\n" % (x.pid, x.name(), x.parent()))
                         files.write("%s\n" % appium_pid)
                         break
                     else:
@@ -92,7 +92,7 @@ class LaunchAppiumServicesIos(object):
                         break
                     else:
                         time.sleep(3)
-                        files.write("%s:%s,%s\n" % (time.strftime("%Y-%m-%d %H-%M-%S"), self.port, port))
+                        files.write("%s: %s, %s\n" % (time.strftime("%Y-%m-%d %H-%M-%S"), self.port, port))
     
     def create_adb_folder(self):
         """

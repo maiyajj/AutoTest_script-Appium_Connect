@@ -55,7 +55,7 @@ class MainFunc(object):
         # Refresh time per second.
         # When time is 7 a.m, send the scanned files in the mail.
         while True:
-            now_time = time.strftime("%H:%M:%S")
+            now_time = time.strftime("%X")
             if "07:00:00" in now_time:
                 Mailer(**kwargs).send_mail()
             time.sleep(1)

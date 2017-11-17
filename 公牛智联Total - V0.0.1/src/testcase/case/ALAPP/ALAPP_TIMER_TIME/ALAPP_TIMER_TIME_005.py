@@ -40,7 +40,7 @@ class ALAppTimerTime5(WidgetOperationAL):
 
             attribute = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["launch_mode"]), "name")
             if attribute != mode_info:
-                raise TimeoutException("mode launch failed, current:%s" % [attribute])
+                raise TimeoutException("mode launch failed, current: %s" % [attribute])
 
             time.sleep(60)
 

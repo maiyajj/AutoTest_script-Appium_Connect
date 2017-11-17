@@ -52,7 +52,7 @@ class AppiumCommandAndroid(object):
         location["centre"] = centre
         return location
 
-    def swipe(self, x1, y1, x2, y2, step, driver):
+    def swipe(self, x1, y1, x2, y2, driver, step=100):
         window_size = driver.get_window_size()
         height = window_size["height"]
         width = window_size["width"]

@@ -36,7 +36,7 @@ def decor_launch_app(func):
     def wrapper(self, page_login):
         global driver
         self.driver = driver  # 实例化driver
-        self.debug.info("basename:%s" % self.basename)
+        self.debug.info("basename: %s" % self.basename)
         self.data_statistics(self.zentao_id)  # 初始化数据统计
         i = 0
         while True:
@@ -44,7 +44,7 @@ def decor_launch_app(func):
                 self.sc.kill_zombie_proc()  # 杀死多余进程，在Mac中运行，僵尸进程可能会使系统卡死造成脚本执行缓慢
                 func(self)  # 执行 self.launch_fail_fix()
                 self.init_operate()  # 初始化控件操作
-                self.start_time = time.strftime("%Y-%m-%d %H:%M:%S")
+                self.start_time = time.strftime("%Y-%m-%d %X")
                 log_tmp = 'app start [time=%s]' % self.start_time
                 self.logger.info(log_tmp)  # 记录log，APP打开时间
                 self.debug.info(log_tmp)  # 记录log，APP打开时间
@@ -59,7 +59,7 @@ def decor_launch_app(func):
                 else:  # 待定
                     pass
             except BaseException, e:
-                self.debug.error("case_over:%s" % traceback.format_exc())  # 出了错误就一定要记录
+                self.debug.error("case_over: %s" % traceback.format_exc())  # 出了错误就一定要记录
                 i += 1
                 if i >= 3:  # 启动3次失败
                     self.case_over("unknown")
@@ -84,7 +84,7 @@ def launch_fail_fix(func):
                     self.http_run_app(True)  # 关闭Appium和手机端对应端口来终止Appium服务
                 else:  # 有详细错误信息表示Appium仍在运行
                     self.debug.error(traceback.format_exc())  # 记录错误信息
-                    self.debug.error("launch_app driver(WebDriverException):%s times" % i)
+                    self.debug.error("launch_app driver(WebDriverException): %s times" % i)
                     time.sleep(1)
                     if i == 3:
                         self.http_run_app()  # 不做任何操作重新启动APP
@@ -93,7 +93,7 @@ def launch_fail_fix(func):
                         i = 0
                     i += 1
             except URLError:  # 抛出URLError说明Appium服务已停止运行
-                self.debug.error("launch_app driver(URLError):%s times" % ii)
+                self.debug.error("launch_app driver(URLError): %s times" % ii)
                 ii += 1
                 self.http_run_app(True)  # 重置Appium服务后重新启动APP
                 break
@@ -120,7 +120,7 @@ def case_run(bool):
                     self.case()  # 执行测试用例
                 except TimeoutException:
                     self.case_over(False)  # 用例执行失败
-                    self.debug.error("case_over:%s" % traceback.format_exc())  # 记录错误信息
+                    self.debug.error("case_over: %s" % traceback.format_exc())  # 记录错误信息
                 database["unknown"] = 0  # 用例有执行成功过说明Appium服务运行正常，次数归零
             except BaseException:
                 self.debug.error(traceback.format_exc())  # Message: ***
@@ -128,7 +128,7 @@ def case_run(bool):
                 database["unknown"] += 1  # 用例执行错误次数+1
                 if database["unknown"] > 2:  # 执行错误次数大于2次重置Appium服务
                     database["unknown"] = 0
-                    self.debug.error("Too many unknown case!:%s" % self.basename)
+                    self.debug.error("Too many unknown case!: %s" % self.basename)
                     self.reset_port()
 
             # 记录运行结果
@@ -215,12 +215,12 @@ class LaunchAppAL(object):
             try:
                 self.sc.find_proc_and_pid_by_port(self.port)[0]
             except IndexError:
-                self.debug.info("Appium Sever is death! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
+                self.debug.info("Appium Sever is death! %s" % time.strftime("%Y-%m-%d %X"))
                 time.sleep(1)
                 if time.time() > end_time:  # 启动失败重置端口
                     self.http_run_app(True)
             else:
-                self.debug.info("Appium Sever launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
+                self.debug.info("Appium Sever launch Success! %s" % time.strftime("%Y-%m-%d %X"))
                 break
 
     # 初始化启动APP
@@ -248,7 +248,7 @@ class LaunchAppAL(object):
 
     # 数据统计
     def data_statistics(self, zentao_id):
-        self.debug.info("zentao_id:%s" % zentao_id)
+        self.debug.info("zentao_id: %s" % zentao_id)
         if zentao_id in database[self.device_name].keys():
             pass
         else:
@@ -260,7 +260,7 @@ class LaunchAppAL(object):
             database[self.device_name][zentao_id]["test_wait"] = 0  # 待手动检查用例数
             database[self.device_name][zentao_id]["ZenTao"] = zentao_id  # 禅道ID
             database[self.device_name][zentao_id]["case_title"] = self.case_title  # 用例标题
-        self.debug.info("case_title:%s" % self.case_title)
+        self.debug.info("case_title: %s" % self.case_title)
 
     # launch()启动APP
     @decor_launch_app

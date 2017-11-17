@@ -35,7 +35,7 @@ class ALAppTimerMos1(WidgetOperationAL):
 
             attribute = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["launch_mode"]), "name")
             if attribute != u"电蚊香模式":
-                raise TimeoutException("mode launch failed, current:%s" % [attribute])
+                raise TimeoutException("mode launch failed, current: %s" % [attribute])
 
             self.widget_click(self.page["control_device_page"]["to_return"],
                               self.page["app_home_page"]["title"])

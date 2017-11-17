@@ -5,7 +5,7 @@ import re
 
 # webview无法用uiautomatorviewer定位，使用driver.page_source可以获取
 # 获取页面源码后包含中文部分都是Unicode编码，可读性差，使用此脚本进行翻译；
-filepath = "page.html"
+filepath = "page1.html"
 tmp_path = "tmp.html"
 with open(tmp_path, "w") as files:
     for i in range(1, len(linecache.getlines(filepath))):

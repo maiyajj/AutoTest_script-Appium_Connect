@@ -131,7 +131,7 @@ class WidgetOperationAL(LaunchAppAL):
         :param set_timer: 设置定时的目标时间
         :param cycle: 是否是类鱼缸模式的连续定时模式
         :param delay_s: 定时的设置时间和启动时间延迟
-        :return: 定时启动时间，格式“HH:MM:SS”；定时执行时间，格式“HH:MM:SS”
+        :return: 定时启动时间，格式为时间戳float型；定时执行时间，格式为时间戳float型
         """
         # 定时的设置时间包含延迟定时和准点定时：
         # 准点定时为设置定时当前时间前/后***分钟执行，数据格式为int型及以时间格式展现的str字符串型；
@@ -168,15 +168,15 @@ class WidgetOperationAL(LaunchAppAL):
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_e + szh_e / 2)  # “分”滚轮的操作起始点
 
         time_roll = time.strftime("%Y-%m-%d r:00").replace("r", elem_t)  # 滚轮的当前时间
-        time_roll = time.mktime(time.strptime(time_roll, "%Y-%m-%d %H:%M:%S"))  # 转换为时间戳
+        time_roll = time.mktime(time.strptime(time_roll, "%Y-%m-%d %X"))  # 转换为时间戳
 
         # 将now_time添加秒数。
         # 若同时设置普通定时和延迟定时，若两定时执行时间点相同，则难以判断定时执行情况
         # 将延迟模式的启动时间从准点往后推30s则可以和普通定时错开，相应的delay_s也要再加上对应的30s，默认120s→150s
         try:
-            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X")
         except ValueError:
-            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %X")
         time_now = time.mktime(time_now)
         if cycle is True:  # 若定时为鱼缸模式，第二个定时的开始时间为第一个定时的结束时间，应将定时设置延迟去除
             time_now = time_now - delay_s
@@ -184,58 +184,57 @@ class WidgetOperationAL(LaunchAppAL):
         # 获取定时的执行时间点
         if time_seg == "int":
             time_set = time_now + set_timer * 60 + delay_s
-            time_true = time_set
         elif time_seg == "minus":
             time_set = time_now + set_timer * 60
-            time_true = time_set
         elif time_seg == "point":
             time_set = time.strftime("%Y-%m-%d r:00").replace("r", set_timer[1])
-            time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %H:%M:%S"))
-            time_true = time_set
+            time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %X"))
         elif time_seg == "delay":
             time_set = time.strftime("%Y-%m-%d r:00").replace("r", set_timer[1])
-            time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %H:%M:%S"))
-            time_true = time_set + delay_s
+            time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %X")) + delay_s
         else:
             time_set = "error"
-            time_true = time_set
 
-        # 定时开始执行的时间点
-        time_start = time_now + delay_s
-        # 将定时时间（时间戳，float型）格式化为时间（字符串型）
-        start_time = time.strftime("%H:%M:%S", time.localtime(time_start))
-        set_time = time.strftime("%H:%M:%S", time.localtime(time_set))
-        true_time = time.strftime("%H:%M:%S", time.localtime(time_true))
+        # 定时开始执行和设定的时间点
+        time_start = int(time_now + delay_s)
+        time_set = int(time_set)
+        # 将定时时间（时间戳，float型）格式化为时间（字符串型），仅做日志输出
+        start_time = time.strftime("%Y-%m-%d %X", time.localtime(time_start))
+        set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
 
-        time_et = time_set - time_roll  # 时间滚轮的时间和待设置时间差值
-        time_et_a = abs(time_et)  # 用于计算时间滚轮是往上滑还是往下滑
+        # 滚轮相关操作
+        roll_h, roll_m = time.strftime("%H:%M", time.localtime(time_roll)).split(":")
+        set_h, set_m = time.strftime("%H:%M", time.localtime(time_set)).split(":")
+
+        time_et_h = int(set_h) - int(roll_h)  # 时间滚轮的“时”时间和待设置时间差值
+        time_et_h_a = abs(time_et_h) % 24  # “时”时间滚轮滑动次数
+        time_et_m = int(set_m) - int(roll_m)  # 时间滚轮的“分”时间和待设置时间差值
+        time_et_m_a = abs(time_et_m) % 60  # “分”时间滚轮滑动次数
+
         try:  # 若time_et不相等
-            # time_et / time_et_a计算结果为1/-1，获取“时”滚轮滑动目的坐标值
-            end_y_h = start_y_h - time_et / time_et_a * aszh_h
+            # time_et / time_et_a计算结果为1/-1，获取“时”滚轮滑动目的坐标值，用于计算时间滚轮是往上滑还是往下滑
+            end_y_h = start_y_h - time_et_h / time_et_h_a * aszh_h
         except ZeroDivisionError:  # 若time_et相等
             end_y_h = start_y_h
         try:
             # 获取“分”滚轮滑动目的坐标值
-            end_y_m = start_y_m - time_et / time_et_a * aszh_m
+            end_y_m = start_y_m - time_et_m / time_et_m_a * aszh_m
         except ZeroDivisionError:
             end_y_m = start_y_m
 
-        # “时”，“分”滚轮滑动次数
-        time_et_h, time_et_m = time_et_a / 3600, time_et_a / 60
-
         # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
-        while time_et_m > 0:
+        while time_et_m_a > 0:
             self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 0)
-            time_et_m -= 1
-        while time_et_h > 0:
+            time_et_m_a -= 1
+        while time_et_h_a > 0:
             self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
-            time_et_h -= 1
+            time_et_h_a -= 1
 
-        self.logger.info("start_time: %s, set_time: %s, true_time: %s" % (start_time, set_time, true_time))
+        self.logger.info("start_time: %s, set_time: %s" % (start_time, set_time))
 
         time.sleep(2)
 
-        return start_time, true_time
+        return time_start, time_set
 
     # 设置次数滚轮
     def set_count_roll(self, elem, roll_value, set_value):
@@ -286,7 +285,7 @@ class WidgetOperationAL(LaunchAppAL):
 
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
-        self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+        self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
 
         return start_time, set_time
 
@@ -310,10 +309,10 @@ class WidgetOperationAL(LaunchAppAL):
                           self.page["delay_timer_page"]["launch"])
 
         try:
-            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X")
         except ValueError:
-            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
-        time_now = time.strftime("%H:%M:%S", time.localtime(time_now))
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %X")
+        time_now = time.strftime("%X", time.localtime(time_now))
 
         self.widget_click(self.page["delay_timer_page"][power],
                           self.page["delay_timer_page"]["title"])
@@ -326,14 +325,14 @@ class WidgetOperationAL(LaunchAppAL):
         # 等待启动时间点，并启动定时
         end_time = time.time() + 1 * 60 + 30
         while True:
-            if time.strftime("%H:%M:%S") == start_time:
+            if time.strftime("%X") == start_time:
                 self.widget_click(self.page["delay_timer_page"]["launch"],
                                   self.page["delay_timer_page"]["close"], times=2)  # time=2，若点击1次启动失败会再点击一次
-                self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+                self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
                 break
             else:
                 if time.time() > end_time:
-                    raise TimeoutException("Timer Saved Error, time:%s" % start_time)
+                    raise TimeoutException("Timer Saved Error, time: %s" % start_time)
                 time.sleep(1)
 
     # 创建循环定时
@@ -371,10 +370,10 @@ class WidgetOperationAL(LaunchAppAL):
         end_roll = "%02d:%02d" % (end_roll_h, end_roll_m)
 
         try:
-            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X")
         except ValueError:
-            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
-        time_now = time.strftime("%H:%M:%S", time.localtime(time_now))
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %X")
+        time_now = time.strftime("%X", time.localtime(time_now))
 
         # 设定滚轮时间
         self.widget_click(self.page[page]["start_time"],
@@ -415,28 +414,28 @@ class WidgetOperationAL(LaunchAppAL):
         loop_list = [[start_time, start_set_time, end_time, end_set_time]]
         # 第一组定时执行完毕时间
         es_time = time.strftime("%Y-%m-%d r").replace("r", end_set_time)  # 时间字符串格式
-        tmp = time.mktime(time.strptime(es_time, "%Y-%m-%d %H:%M:%S"))  # 转换为时间戳格式，用于计算
-        tmp_s = time.strftime("%H:%M:%S", time.localtime(tmp))  # 下一组定时的power_on开启时间，等于上一组定时power_off关闭的时间
+        tmp = time.mktime(time.strptime(es_time, "%Y-%m-%d %X"))  # 转换为时间戳格式，用于计算
+        tmp_s = time.strftime("%X", time.localtime(tmp))  # 下一组定时的power_on开启时间，等于上一组定时power_off关闭的时间
         for i in xrange(loop_count):
             tmp = tmp + sr  # power_on关闭时间
-            s_time = time.strftime("%H:%M:%S", time.localtime(tmp))  # 格式为时间字符串
+            s_time = time.strftime("%X", time.localtime(tmp))  # 格式为时间字符串
             tmp_e = s_time  # power_off开启时间
             tmp = tmp + er  # power_off关闭时间
-            e_time = time.strftime("%H:%M:%S", time.localtime(tmp))  # 格式为时间字符串
+            e_time = time.strftime("%X", time.localtime(tmp))  # 格式为时间字符串
             loop_list.append([tmp_s, s_time, tmp_e, e_time])
             tmp_s = e_time  # 下一组power_on开启时间
 
         # 定时启动时间
         end_time = time.time() + 1 * 60 + 30
         while True:
-            if time.strftime("%H:%M:%S") == start_time:
+            if time.strftime("%X") == start_time:
                 self.widget_click(self.page[page]["launch"],
                                   self.page[page]["close"], times=2)
-                self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+                self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
                 break
             else:
                 if time.time() > end_time:
-                    raise TimeoutException("Timer Saved Error, time:%s" % start_time)
+                    raise TimeoutException("Timer Saved Error, time: %s" % start_time)
                 time.sleep(1)
 
         return loop_list
@@ -450,10 +449,10 @@ class WidgetOperationAL(LaunchAppAL):
         end_roll = self.ac.get_attribute(self.wait_widget(self.page[page]["end_time"]), "name")
 
         try:
-            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X")
         except ValueError:
-            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
-        time_now = time.strftime("%H:%M:%S", time.localtime(time_now))
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %X")
+        time_now = time.strftime("%X", time.localtime(time_now))
 
         if exchange is True:
             self.widget_click(self.page[page]["time_exchange"],
@@ -504,10 +503,10 @@ class WidgetOperationAL(LaunchAppAL):
         time_roll = "%02d:%02d" % (time_roll_h, time_roll_m)
 
         try:
-            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X")
         except ValueError:
-            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %H:%M:%S")
-        time_now = time.strftime("%H:%M:%S", time.localtime(time_now))
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %X")
+        time_now = time.strftime("%X", time.localtime(time_now))
 
         start_time, set_time = self.set_timer_roll(self.page["timer_roll_popup"]["roll"],
                                                    self.page["timer_roll_popup"]["roll_h"],
@@ -516,14 +515,14 @@ class WidgetOperationAL(LaunchAppAL):
 
         end_time = time.time() + 1 * 60 + 30
         while True:
-            if time.strftime("%H:%M:%S") == start_time:
+            if time.strftime("%X") == start_time:
                 self.widget_click(self.page[page]["launch"],
                                   self.page[page]["close"], times=2)
-                self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+                self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
                 break
             else:
                 if time.time() > end_time:
-                    raise TimeoutException("Timer Saved Error, time:%s" % start_time)
+                    raise TimeoutException("Timer Saved Error, time: %s" % start_time)
                 time.sleep(1)
 
     # 设置普通/模式定时循环模式
@@ -577,7 +576,7 @@ class WidgetOperationAL(LaunchAppAL):
                 # 选择星期时，已存在的星期数是已经被勾选的，要取消需要再次点击；
                 # 例：已有周期为周一，周五，需要设置的周期为周三，周五
                 # 则实际操作为点击周一和周三，而周五不需要点击，因为周五已被选中，再点击周五则周五就会被取消选中
-                # 代码通过下述loop_tmp公式计算，输入当前循环周期和需要设定的周期，输出为需要待操作的周期
+                # 代码通过下述公式计算，输入当前循环周期和需要设定的周期，输出为需要待操作的周期
                 # 输入：当前[u"周一", u"周五"]，设定[u"周三", u"周五"]；
                 # 输出：[u"周一", u"周三"]；
                 cycle = list((set(attribute) | set(tmp)) - (set(attribute) & set(tmp)))
@@ -631,8 +630,8 @@ class WidgetOperationAL(LaunchAppAL):
         # 开始时间
         start_h, start_m, start_s = start_time.split(":")
         start_times = int(start_h) * 60 + int(start_m)
-        now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r").replace("r", start_time), "%Y-%m-%d %H:%M:%S"))
-        self.logger.info("[APP_TIMER]Now Time:%s. Start Time:%s" % (time.strftime("%H:%M:%S"), now))
+        now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r").replace("r", start_time), "%Y-%m-%d %X"))
+        self.logger.info("[APP_TIMER]Now Time: %s. Start Time: %s" % (time.strftime("%X"), now))
 
         # 设置时间
         set_h, set_m, set_s = set_time.split(":")
@@ -642,7 +641,7 @@ class WidgetOperationAL(LaunchAppAL):
             delay_times = (set_times - start_times) * 60
         else:
             delay_times = 24 * 60 * 60 + (set_times - start_times) * 60
-        self.logger.info("[APP_TIMER]Delay Time:%s" % (delay_times + 30))
+        self.logger.info("[APP_TIMER]Delay Time: %s" % (delay_times + 30))
 
         index = self.get_index(device, self.page["app_home_page"]["device"])
         element = copy.copy(self.page["app_home_page"]["power_state"])
@@ -652,7 +651,7 @@ class WidgetOperationAL(LaunchAppAL):
         flag = False
         while True:
             if sec is True:
-                if time.strftime("%H:%M:%S") == set_time:
+                if time.strftime("%X") == set_time:
                     flag = True
             else:
                 if time.strftime("%H:%M") == set_time[:5]:
@@ -663,75 +662,51 @@ class WidgetOperationAL(LaunchAppAL):
                     time.sleep(10)
                 while True:
                     if self.ac.get_attribute(element, "name") == power_state:
-                        self.logger.info("[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), now))
-                        self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
+                        self.logger.info("[APP_TIMER]End Time: %s[%s]" % (time.strftime("%X"), now))
+                        self.logger.info(u"[APP_INFO]Device Info: %s" % power_state)
                         break
                 break
             else:
                 if time.time() > end_time:
                     raise TimeoutException("Device state Error")
                 time.sleep(1)
-                # if not isinstance(args, list):
-                #     raise KeyError("args must list! Current %s" % str(args))
-                # time_list = []
-                # for start_time, set_time, power_state in args:
-                #     start_h, start_m = start_time.split(":")
-                #     start_times = int(start_h) * 60 + int(start_m)
-                #     set_h, set_m = set_time.split(":")
-                #     set_times = int(set_h) * 60 + int(set_m)
-                #     if start_times < set_times:
-                #         delay_times = (set_times - start_times) * 60
-                #     else:
-                #         delay_times = 24 * 60 * 60 + (set_times - start_times) * 60
-                #     time_list.append([start_time, set_time, delay_times, power_state])
-                # self.logger.info("[APP_TIMER]Time List:%s" % str(time_list))
-                # while True:
-                #     if time.strftime("%H:%M") == start_time:
-                #         now = time.time()
-                #         break
-                #     else:
-                #         time.sleep(1)
-                # self.logger.info("[APP_TIMER]Now Time:%s" % time.strftime("%H:%M:%S"))
-                # element = self.wait_widget(self.page["control_device_page"]["power_state"])
-                # while True:
-                #     if time.strftime("%H:%M") == set_time:
-                #         while True:
-                #             if self.ac.get_attribute(element, "name") == power_state:
-                #                 self.logger.info(
-                #                     "[APP_TIMER]End Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
-                #                 self.logger.info(u"[APP_INFO]Device Info:%s" % power_state)
-                #                 break
-                #             else:
-                #                 time.sleep(1)
-                #         break
-                #     else:
-                #         if time.time() < now + delay_times + 30:
-                #             time.sleep(1)
-                #         else:
-                #             raise TimeoutException("Device state Error")
 
     # 删除普通定时
     def delete_normal_timer(self):
         # 按照手动操作顺序删除定时
         end_time = time.time() + 120
+        flag = False  # 定时点击删掉后，定时消失有延迟，同时排除第一次进入页面加载失败造成的误判
         while True:
             try:
-                self.wait_widget(self.page["normal_timer_page"]["no_timer"], 5)
-                self.logger.info("It has normal timer.")
+                self.wait_widget(self.page["normal_timer_page"]["no_timer"])
+                print("It has normal timer.")
                 self.widget_click(self.page["normal_timer_page"]["timer_edit"],
                                   self.page["normal_timer_page"]["delete_timer"])
 
+                self.widget_click(self.page["normal_timer_page"]["delete_timer"],
+                                  self.page["normal_timer_page"]["delete"])
+
                 self.widget_click(self.page["normal_timer_page"]["delete"],
-                                  self.page["normal_timer_page"]["title"])
+                                  self.page["normal_timer_page"]["saved"])
+
+                self.widget_click(self.page["normal_timer_page"]["saved"],
+                                  self.page["normal_timer_page"]["timer_edit"])
+                flag = True
                 try:
-                    self.wait_widget(self.page["normal_timer_page"]["no_timer"], 5)
+                    self.wait_widget(self.page["normal_timer_page"]["no_timer"])
                 except TimeoutException:
-                    self.logger.info("It has no timer~")
+                    print("It has no timer~")
                     break
             except TimeoutException:
                 time.sleep(1)
                 if time.time() > end_time:
-                    raise TimeoutException("delete_normal_timer timeout, time limit: 120S")
+                    raise TimeoutException("delete_normal_timer timeout, time limit: %sS" % end_time)
+                elif flag is True:
+                    try:
+                        self.wait_widget(self.page["normal_timer_page"]["no_timer"])
+                    except TimeoutException:
+                        print("It has no timer~")
+                        break
 
     # 关闭模式定时
     def close_mode_timer(self):
@@ -739,7 +714,7 @@ class WidgetOperationAL(LaunchAppAL):
                       u"小夜灯模式": ["night_mode_timer", "night_mode_timer_page"],
                       u"鱼缸模式": ["fish_mode_timer", "fish_mode_timer_page"],
                       u"电蚊香模式": ["mosquito_mode_timer", "mosquito_mode_timer_page"],
-                      u"充电保护模式": ["control_device_page", "control_device_page_page"],
+                      u"充电保护模式": ["piocc_mode_timer", "piocc_mode_timer_page"],
                       u"取暖器模式": ["warmer_mode_timer", "warmer_mode_timer_page"]}
         element = self.wait_widget(self.page["control_device_page"]["launch_mode"])
         while True:
@@ -765,8 +740,8 @@ class WidgetOperationAL(LaunchAppAL):
         element = self.wait_widget(self.page["control_device_page"]["launch_mode"])
         while True:
             attribute = self.ac.get_attribute(element, "name")
-            if u"任务开" not in attribute:
-                self.logger.info("[APP_INFO]Normal timer is run")
+            if u"任务开" in attribute:
+                print("[APP_INFO]Normal timer is run")
                 if u"定时任务开" in attribute:
                     self.widget_click(self.page["control_device_page"]["normal_timer"],
                                       self.page["normal_timer_page"]["title"])
@@ -779,7 +754,7 @@ class WidgetOperationAL(LaunchAppAL):
                     self.widget_click(self.page["control_device_page"]["delay_timer"],
                                       self.page["delay_timer_page"]["title"])
 
-                    self.widget_click(self.page["delay_timer_page"]["close"],
+                    self.widget_click(self.page["delay_timer_page"]["cancel"],
                                       self.page["delay_timer_page"]["launch"])
 
                     self.widget_click(self.page["delay_timer_page"]["to_return"],
@@ -795,7 +770,8 @@ class WidgetOperationAL(LaunchAppAL):
                     self.widget_click(self.page["cycle_timer_page"]["to_return"],
                                       self.page["control_device_page"]["title"])
             else:
-                self.logger.info("[APP_INFO]Normal timer don't run")
+                print("[APP_INFO]Normal timer don't run")
+                self.ac.swipe(0.6, 0.6, 0.6, 0.9, self.driver)
                 break
 
     # 启动模式定时
@@ -806,7 +782,7 @@ class WidgetOperationAL(LaunchAppAL):
             try:
                 self.widget_click(self.page[page]["launch"],
                                   self.page["mode_timer_page"]["title"])
-                self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+                self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
             except TimeoutException:
                 self.wait_widget(self.page["mode_timer_conflict_popup"]["title"])
                 self.widget_click(self.page["mode_timer_conflict_popup"]["confirm"],
@@ -820,7 +796,7 @@ class WidgetOperationAL(LaunchAppAL):
                     try:
                         self.widget_click(self.page[page]["launch"],
                                           self.page["mode_timer_page"]["title"])
-                        self.logger.info(u"[APP_TIMER]Start Time:%s[%s]" % (time.strftime("%H:%M:%S"), time.time()))
+                        self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
                     except TimeoutException:
                         self.wait_widget(self.page["mode_timer_conflict_popup"]["title"])
                         self.widget_click(self.page["mode_timer_conflict_popup"]["confirm"],
@@ -828,7 +804,7 @@ class WidgetOperationAL(LaunchAppAL):
                     break
                 else:
                     if time.time() > end_time:
-                        raise TimeoutException("Timer Saved Error, time:%s" % start_time)
+                        raise TimeoutException("Timer Saved Error, time: %s" % start_time)
                     time.sleep(1)
 
     # 统计电量操作缩减
@@ -877,8 +853,8 @@ class WidgetOperationAL(LaunchAppAL):
                 tmp = re.findall(u"(\d+.\d+|\d+)元.+?(\d+.\d+|\d+)W", self.ac.get_attribute(elec_and_bill_v, "name"))
                 self.elec[index] = float(tmp[1])
                 self.elec_bill[index] = float(tmp[0])
-        self.logger.info("[APP_INFO]%02d:01_elec:%s" % (check_time, str(self.elec)))
-        self.logger.info("[APP_INFO]%02d:01_elec_bill:%s" % (check_time, str(self.elec_bill)))
+        self.logger.info("[APP_INFO]%02d:01_elec: %s" % (check_time, str(self.elec)))
+        self.logger.info("[APP_INFO]%02d:01_elec_bill: %s" % (check_time, str(self.elec_bill)))
 
         self.widget_click(self.page["day_elec_page"]["to_return"],
                           self.page["more_elec_history_page"]["title"])

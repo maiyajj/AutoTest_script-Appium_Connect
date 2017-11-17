@@ -33,7 +33,7 @@ class ALAppNormalTimer10(WidgetOperationAL):
 
         attribute = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["launch_mode"]), "name")
         if attribute != u"定时任务开":
-            raise TimeoutException("mode launch failed, current:%s" % [attribute])
+            raise TimeoutException("mode launch failed, current: %s" % [attribute])
 
         for i in xrange(2):
             self.widget_click(self.page["control_device_page"]["power_button"],

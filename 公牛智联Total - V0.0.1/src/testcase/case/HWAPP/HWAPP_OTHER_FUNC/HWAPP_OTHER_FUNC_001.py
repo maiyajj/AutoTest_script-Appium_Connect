@@ -28,7 +28,7 @@ class HWAppOtherFunc1(WidgetOperationHW):
         device_model = self.ac.get_attribute(self.wait_widget(self.page["device_info_page"]["device_model"]), "name")
 
         if "".join(mac.split(":")) != serial_number:
-            raise TimeoutException("Mac is error, current: Mac:%s; serial_number:%s" % (mac, serial_number))
+            raise TimeoutException("Mac is error, current: Mac: %s; serial_number: %s" % (mac, serial_number))
         if device_model != "GN-Y201H":
             raise TimeoutException("device_model is error, current: device_model: %s" % device_model)
 

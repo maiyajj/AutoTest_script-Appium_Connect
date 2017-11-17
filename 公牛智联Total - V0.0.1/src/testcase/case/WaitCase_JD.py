@@ -94,7 +94,7 @@ class WaitCaseJD(object):
             except IndexError:
                 time.sleep(1)
             else:
-                self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %H:%M:%S"))
+                self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %X"))
                 break
 
     # 开始执行用例
@@ -169,7 +169,7 @@ class WaitCaseJD(object):
         try:
             case = case_name(**self.device_info_list).run()
 
-            end = time.strftime("%Y-%m-%d %H:%M:%S")
+            end = time.strftime("%Y-%m-%d %X")
             d = (u'[ZENTAO_ID=%s, RESULT=%s CASE_TITLE="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % (
                 case[0], case[1], case[2], database["program_loop_time"], database["case_location"], case[3], end))
             self.report.info(d)
@@ -182,7 +182,7 @@ class WaitCaseJD(object):
             else:
                 xls_data[zentao_id]["row"] = self.row
                 self.row += 1
-            self.debug.info("row:%s" % xls_data[zentao_id]["row"])
+            self.debug.info("row: %s" % xls_data[zentao_id]["row"])
             self.xls.write_data(xls_data[zentao_id]["row"],
                                 xls_data[zentao_id]["ZenTao"],
                                 xls_data[zentao_id]["case_title"],
@@ -193,7 +193,7 @@ class WaitCaseJD(object):
                                 xls_data[zentao_id]["test_error"],
                                 xls_data[zentao_id]["test_wait"])
 
-            self.debug.info("write_data:%s" % case[0])
+            self.debug.info("write_data: %s" % case[0])
             database["case_location"] += 1
         except BaseException:
             self.debug.error(traceback.format_exc())
