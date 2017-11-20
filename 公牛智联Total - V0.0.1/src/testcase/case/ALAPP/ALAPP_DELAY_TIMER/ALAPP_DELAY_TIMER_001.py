@@ -43,6 +43,8 @@ class ALAppDelayTimer1(WidgetOperationAL):
         self.widget_click(self.page["control_device_page"]["delay_timer"],
                           self.page["delay_timer_page"]["title"])
 
+        now = time.strftime("%H:%M")
+
         delay_time_2 = 1
         start_time_2, set_time_2 = self.create_delay_timer(now, delay_time_2, "power_on")
 

@@ -215,11 +215,11 @@ class MainPageWidgetAndroidAL(object):
         # 取暖器模式
         d["warmer_mode_timer"] = [u"//android.view.View[@content-desc='栅格选项取暖器']", "xpath", u"取暖器模式"]
         # 定时任务
-        d["normal_timer"] = [u"//android.view.View[contains(@content-desc, '定时任务')]", "xpath", u"定时任务"]
+        d["normal_timer"] = [u"//android.view.View[contains(@content-desc, ' 定时任务')]", "xpath", u"定时任务"]
         # 延时任务
-        d["delay_timer"] = [u"//android.view.View[contains(@content-desc, '延时任务')]", "xpath", u"延时任务"]
+        d["delay_timer"] = [u"//android.view.View[contains(@content-desc, ' 延时任务')]", "xpath", u"延时任务"]
         # 循环任务
-        d["cycle_timer"] = [u"//android.view.View[contains(@content-desc, '循环任务')]", "xpath", u"循环任务"]
+        d["cycle_timer"] = [u"//android.view.View[contains(@content-desc, ' 循环任务')]", "xpath", u"循环任务"]
         # 电价设置
         d["set_elec"] = [u"//android.view.View[contains(@content-desc, '电价设置')]", "xpath", u"电价设置"]
         # 用电数据
@@ -264,9 +264,9 @@ class MainPageWidgetAndroidAL(object):
         # 标题
         d["title"] = [u"//android.view.View[@content-desc='热水器模式']", "xpath", u"热水器模式页面"]
         # 开启时间
-        d["start_time"] = ["//android.widget.ListView/android.view.View", "xpath", u"开启时间"]
+        d["start_time"] = ['//android.widget.ListView/android.view.View//android.view.View[2]', "xpath", u"开启时间"]
         # 关闭时间
-        d["end_time"] = ["//android.widget.ListView/android.view.View[2]", "xpath", u"关闭时间"]
+        d["end_time"] = ["//android.widget.ListView/android.view.View[2]//android.view.View[2]", "xpath", u"关闭时间"]
         # 重复
         d["repeat"] = ["//android.widget.ListView[2]/android.view.View/android.view.View", "xpath", u"重复"]
         # 启动模式
@@ -434,12 +434,12 @@ class MainPageWidgetAndroidAL(object):
         # 定时关
         d["power_off"] = [u"//android.view.View[contains(@content-desc, '延时关')]", "xpath", u"延时关"]
         # 时间滚轮整体控件
-        d["roll"] = ["//android.webkit.WebView/android.view.View[4]/android.view.View[2]", "xpath", u"时间滚轮整体控件"]
+        d["roll"] = ["//android.webkit.WebView/android.view.View[3]/android.view.View[2]", "xpath", u"时间滚轮整体控件"]
         # 时间滚轮,时
-        d["roll_h"] = ["//android.webkit.WebView/android.view.View[4]/android.view.View[2]/android.widget.ListView",
+        d["roll_h"] = ["//android.webkit.WebView/android.view.View[3]/android.view.View[2]/android.widget.ListView",
                        "xpath", u"时间滚轮,时", {"px": [0.5, 0.59]}]
         # 时间滚轮,分
-        d["roll_m"] = ["//android.webkit.WebView/android.view.View[4]/android.view.View[2]/android.widget.ListView[2]",
+        d["roll_m"] = ["//android.webkit.WebView/android.view.View[3]/android.view.View[2]/android.widget.ListView[2]",
                        "xpath", u"时间滚轮,分", {"px": [0.5, 0.508]}]
         # 启动
         d["launch"] = [u"//android.view.View[@content-desc='启动']", "xpath", u"启动"]
@@ -727,7 +727,7 @@ class PopupWidgetAndroidAL(object):
     def timer_roll_popup(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.view.View[@content-desc='设置时间']", "xpath", u"设置时间"]
+        d["title"] = [u"//android.view.View[40][contains(@content-desc, '分')]", "xpath", u"设置时间"]
         # 时间滚轮整体控件
         d["roll"] = ["//android.webkit.WebView/android.view.View[6]", "xpath", u"时间滚轮整体控件"]
         # 时间滚轮,时
@@ -736,6 +736,14 @@ class PopupWidgetAndroidAL(object):
         # 时间滚轮,分
         d["roll_m"] = ["//android.webkit.WebView/android.view.View[6]/android.widget.ListView[2]", "xpath",
                        u"时间滚轮,分", {"px": [0.5, 0.5]}]
+        # 时间滚轮整体控件
+        d["roll_p"] = ["//android.webkit.WebView/android.view.View[5]", "xpath", u"时间滚轮整体控件"]
+        # 时间滚轮,时
+        d["roll_p_h"] = ["//android.webkit.WebView/android.view.View[5]/android.widget.ListView", "xpath",
+                         u"峰谷电时间滚轮,时", {"px": [0.5, 0.5]}]
+        # 时间滚轮,分
+        d["roll_p_m"] = ["//android.webkit.WebView/android.view.View[5]/android.widget.ListView[2]", "xpath",
+                         u"峰谷电时间滚轮,分", {"px": [0.5, 0.5]}]
         # 确定
         d["confirm"] = [u"//android.view.View[@content-desc='确定']", "xpath", u"确定"]
         # 取消
@@ -1942,7 +1950,7 @@ class a(object):
         :param set_timer: 设置定时的目标时间
         :param cycle: 是否是类鱼缸模式的连续定时模式
         :param delay_s: 定时的设置时间和启动时间延迟
-        :return: 定时启动时间，格式为时间戳float型；定时执行时间，格式为时间戳float型
+        :return: 定时启动时间，int(time_start)；定时执行时间，int(time_set)
         """
         # 定时的设置时间包含延迟定时和准点定时：
         # 准点定时为设置定时当前时间前/后***分钟执行，数据格式为int型及以时间格式展现的str字符串型；
@@ -1988,7 +1996,7 @@ class a(object):
             time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X")
         except ValueError:
             time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %X")
-        time_now = int(time.mktime(time_now))
+        time_now = time.mktime(time_now)
         if cycle is True:  # 若定时为鱼缸模式，第二个定时的开始时间为第一个定时的结束时间，应将定时设置延迟去除
             time_now = time_now - delay_s
 
@@ -2054,7 +2062,7 @@ class a(object):
 
         time.sleep(2)
 
-        return time_start, time_set
+        return int(time_start), int(time_set)
 
     # 设置次数滚轮
     def set_count_roll(self, elem, roll_value, set_value):
@@ -2093,21 +2101,24 @@ class a(object):
         self.widget_click(self.page["normal_timer_page"]["add_normal_timer"],
                           self.page["add_normal_timer_page"]["title"])
 
-        start_time, set_time = self.set_timer_roll(self.page["add_normal_timer_page"]["roll"],
-                                                   self.page["add_normal_timer_page"]["roll_h"],
-                                                   self.page["add_normal_timer_page"]["roll_m"],
-                                                   "14:30", now_time, set_timer, delay_s=delay_s)
+        start_time, start_set_time = self.set_timer_roll(self.page["add_normal_timer_page"]["roll"],
+                                                         self.page["add_normal_timer_page"]["roll_h"],
+                                                         self.page["add_normal_timer_page"]["roll_m"],
+                                                         "14:30", now_time, set_timer, delay_s=delay_s)
+        print("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (start_time, start_set_time))
 
+        if start_set_time <= now_time:
+            start_set_time = start_set_time + 3600 * 24
         self.widget_click(self.page["add_normal_timer_page"][power],
                           self.page["add_normal_timer_page"]["title"])
 
-        self.set_timer_loop("add_normal_timer_page", loop)
+        cycle = self.set_timer_loop("add_normal_timer_page", loop)
 
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
         print(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%Y-%m-%d %X"), time.time()))
 
-        return start_time, set_time
+        return start_time, start_set_time, cycle
 
     # 创建延时定时
     def create_delay_timer(self, now_time, set_timer, power, delay_s=120, cycle=False):
@@ -2137,10 +2148,11 @@ class a(object):
         self.widget_click(self.page["delay_timer_page"][power],
                           self.page["delay_timer_page"]["title"])
 
-        start_time, set_time = self.set_timer_roll(self.page["delay_timer_page"]["roll"],
-                                                   self.page["delay_timer_page"]["roll_h"],
-                                                   self.page["delay_timer_page"]["roll_m"],
-                                                   time_roll, time_now, set_timer, cycle, delay_s)
+        start_time, start_set_time = self.set_timer_roll(self.page["delay_timer_page"]["roll"],
+                                                         self.page["delay_timer_page"]["roll_h"],
+                                                         self.page["delay_timer_page"]["roll_m"],
+                                                         time_roll, time_now, set_timer, cycle, delay_s)
+        print("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (start_time, start_set_time))
 
         # 等待启动时间点，并启动定时
         end_time = time.time() + 1 * 60 + 30
@@ -2156,7 +2168,7 @@ class a(object):
                     raise TimeoutException("Timer Saved Error, time: %s[%s]" % (tmp, start_time))
                 time.sleep(1)
 
-        return start_time, set_time
+        return start_time, start_set_time
 
     # 创建循环定时
     def create_cycle_timer(self, page, now_time, set_start_time, set_end_time, loop, delay_s=120, cycle=False, loops=0):
@@ -2235,7 +2247,7 @@ class a(object):
                           self.page[page]["launch"])
 
         # 设定循环次数
-        set_loop = self.set_timer_loop(page, loop)
+        set_loop = self.set_timer_loop(page, loop)[0]
         print("[APP_TIMER]Set loop: %s" % set_loop)
         if loop == u"永久循环":
             loop_count = loops  # 生成指定数量的时间对个数
@@ -2313,17 +2325,21 @@ class a(object):
                                                      end_roll, time_now, set_end_time, delay_s=delay_s)
         print("[APP_TIMER]End_time: %s, End_set_time: %s" % (end_time, end_set_time))
 
+        if end_set_time <= start_set_time:
+            end_set_time = end_set_time + 3600 * 24
+
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
                           self.page[page]["launch"])
 
-        self.set_timer_loop(page, loop)
+        cycle = self.set_timer_loop(page, loop)
 
         self.widget_click(self.page[page]["launch"],
                           self.page[page]["close"])
 
-        return [start_time, start_set_time], [end_time, end_set_time]
+        return [start_time, start_set_time], [end_time, end_set_time], cycle
 
-    # 创建充电保护类型模式
+        # 创建充电保护类型模式
+
     def create_delay_mode_timer(self, page, now_time, set_timer, delay_s=120, cycle=False):
         """与创建延迟定时相同
        return: None
@@ -2397,19 +2413,22 @@ class a(object):
                               self.page[page]["repeat"], )
 
             attr = self.ac.get_attribute(self.wait_widget(self.page[page]["repeat"]), "name")
-            if u"重复" in attr:  # 去除多余属性
-                attribute = attr.replace(u"重复", "").split()[0]
+            invalid_attr = '\ue617'
+            invalid_attr = invalid_attr.decode("unicode-escape")
+            if u"重复" in attr:  # 去除多余属性
+                attribute = attr.replace(u"重复", "").replace(invalid_attr, "").split()[0]
             else:
-                attribute = attr.replace(u"永久循环", "tmp").replace(u"循环", "").replace("tmp", u"永久循环").split()[0]
-            print("[APP_INFO]Repeat attr: %s" % attribute)
+                attribute = attr.replace(u"永久循环", "tmp").replace(u"循环", "").replace("tmp", u"永久循环").replace(
+                    invalid_attr, "").split()[0]
+            print("[APP_INFO]Repeat attr: %s, %s" % (attribute, [attribute]))
             # 自定义模式显示为：周一、周三、周五...etc
             # loop传参为[u"周一", u"周三", u"周五"]
             if isinstance(loop, list):
                 tmp = u"、".join(loop)  # list → str
             else:
                 tmp = loop
+            print("[APP_INFO]Repeat set attr: %s, %s" % (tmp, [tmp]))
 
-            print("[APP_INFO]Repeat set attr: %s" % tmp)
             # 若定时已存在循环模式与设定不同则需要重新设置，若相同则不会设置
             if tmp != attribute:
                 if u"每天" in attribute:
@@ -2430,26 +2449,28 @@ class a(object):
                     self.widget_click(self.page["timer_repeat_page"]["once"],
                                       self.page["timer_repeat_page"]["title"])
 
-                    cycle = loop
+                    cycle = [time.strftime("%A").lower()]
                 elif u"周" in loop or u"每天" in loop or u"工作日" in loop or isinstance(loop, list):
                     if u"每天" in loop:
-                        tmp = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
+                        loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
                     elif u"工作日" in loop:
-                        tmp = [u"周一", u"周二", u"周三", u"周四", u"周五"]
+                        loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五"]
                     elif u"周" in loop:
-                        tmp = [loop]
+                        loop_attr = [loop]
                     else:
-                        tmp = loop
+                        loop_attr = loop
                     # 选择星期时，已存在的星期数是已经被勾选的，要取消需要再次点击；
                     # 例：已有周期为周一，周五，需要设置的周期为周三，周五
                     # 则实际操作为点击周一和周三，而周五不需要点击，因为周五已被选中，再点击周五则周五就会被取消选中
                     # 代码通过下述公式计算，输入当前循环周期和需要设定的周期，输出为需要待操作的周期
                     # 输入：当前[u"周一", u"周五"]，设定[u"周三", u"周五"]；
                     # 输出：[u"周一", u"周三"]；
-                    cycle = list((set(attribute) | set(tmp)) - (set(attribute) & set(tmp)))
-                    for i in cycle:  # 根据计算元素点击
+                    result = list((set(attribute) | set(loop_attr)) - (set(attribute) & set(loop_attr)))
+                    for i in result:  # 根据计算元素点击
                         self.widget_click(self.page["timer_repeat_page"][loop_mode[i]],
                                           self.page["timer_repeat_page"]["title"])
+
+                    cycle = [loop_mode[i] for i in loop_attr]
                 else:
                     if u"永久循环" in attribute:  # 已存在模式为u"永久循环"
                         roll = 0
@@ -2457,17 +2478,35 @@ class a(object):
                         roll = int(re.findall(u"(\d+)次", attribute)[0])
 
                     if loop == u"永久循环":
-                        cycle = u"0次"
+                        cycle = [u"0次"]
                     else:
-                        cycle = loop
-                    loop_tmp = int(re.findall(u"(\d+)次", cycle)[0])
+                        cycle = [loop]
+                    loop_tmp = int(re.findall(u"(\d+)次", cycle[0])[0])
                     self.set_count_roll(self.page["timer_repeat_page"]["cycle_count"], roll, loop_tmp)  # 从“**次”到“永久循环”
 
                 # 保存
                 self.widget_click(self.page["timer_repeat_page"]["saved"],
                                   self.page[page]["title"])
             else:
-                cycle = attribute
+                if loop == u"永不":
+                    cycle = [time.strftime("%A").lower()]
+                elif u"周" in loop or u"每天" in loop or u"工作日" in loop or isinstance(loop, list):
+                    if u"每天" in loop:
+                        loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
+                    elif u"工作日" in loop:
+                        loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五"]
+                    elif u"周" in loop:
+                        loop_attr = [loop]
+                    else:
+                        loop_attr = loop
+                    cycle = [loop_mode[i] for i in loop_attr]
+                else:
+                    if loop == u"永久循环":
+                        cycle = [u"0次"]
+                    else:
+                        cycle = [loop]
+
+            print("[APP_INFO]Cycle: %s, %s" % (",".join(cycle), cycle))
 
             # 再次校验
             # 页面设置完成后，元素属性可能未改变，刷新页面更新元素
@@ -2479,10 +2518,11 @@ class a(object):
 
             attr = self.ac.get_attribute(self.wait_widget(self.page[page]["repeat"]), "name")
             if u"重复" in attr:
-                attribute = attr.replace(u"重复", "").split()[0]
+                attribute = attr.replace(u"重复", "").replace(invalid_attr, "").split()[0]
             else:
-                attribute = attr.replace(u"永久循环", "tmp").replace(u"循环", "").replace("tmp", u"永久循环").split()[0]
-            print("[APP_INFO]Repeat now attr: %s" % attribute)
+                attribute = attr.replace(u"永久循环", "tmp").replace(u"循环", "").replace("tmp", u"永久循环").replace(
+                    invalid_attr, "").split()[0]
+            print("[APP_INFO]Repeat attr: %s, %s" % (attribute, [attribute]))
             if tmp == attribute:
                 break
             else:
@@ -2501,16 +2541,29 @@ class a(object):
                 time_roll = "22:00"
         else:
             time_roll = re.findall("(\d+:\d+)", attribute)[0]
+        print("[APP_TIMER]Start roll: %s" % time_roll)
 
-        start_time, set_time = self.set_timer_roll(self.page["delay_timer_page"]["roll"],
-                                                   self.page["delay_timer_page"]["roll_h"],
-                                                   self.page["delay_timer_page"]["roll_m"],
-                                                   time_roll, now_time, set_timer, False, 120)
+        if peak is True:  # 峰电/谷电
+            widget = "start_time"
+        else:
+            widget = "end_time"
 
-        return start_time, set_time
+        self.widget_click(self.page["peak_valley_price_page"][widget],
+                          self.page["timer_roll_popup"]["title"])
+
+        start_time, start_set_time = self.set_timer_roll(self.page["timer_roll_popup"]["roll_p"],
+                                                         self.page["timer_roll_popup"]["roll_p_h"],
+                                                         self.page["timer_roll_popup"]["roll_p_m"],
+                                                         time_roll, now_time, set_timer, False, 0)
+        print("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (start_time, start_set_time))
+
+        self.widget_click(self.page["timer_roll_popup"]["confirm"],
+                          self.page["peak_valley_price_page"]["title"])
+
+        return start_time, start_set_time
 
     # 定时检查模板
-    def check_timer(self, device, start_time, set_time, power_state, power_same_prev=False, sec=True):
+    def check_timer(self, device, start_time, set_time, power_state, same_power=False, sec=True):
         # FIXME：定时的日期检测不完善，跨多天执行会有问题
         # 开始时间
         start_h, start_m, start_s = start_time.split(":")
@@ -2543,7 +2596,7 @@ class a(object):
                     flag = True
             if flag is True:
                 now = time.time()
-                if power_same_prev is True:
+                if same_power is True:
                     time.sleep(10)
                 while True:
                     if self.ac.get_attribute(element, "name") == power_state:

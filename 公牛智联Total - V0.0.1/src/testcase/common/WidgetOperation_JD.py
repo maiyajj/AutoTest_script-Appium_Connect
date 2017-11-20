@@ -248,7 +248,7 @@ class WidgetOperationJD(LaunchAppJD):
                 raise TimeoutException("Cycle set error")
 
     # 定时检查模板
-    def check_timer(self, start_time, set_time, power_state, power_same_prev=False):
+    def check_timer(self, start_time, set_time, power_state, same_power=False):
         start_h, start_m = start_time.split(":")
         start_times = int(start_h) * 60 + int(start_m)
         set_h, set_m = set_time.split(":")
@@ -268,7 +268,7 @@ class WidgetOperationJD(LaunchAppJD):
         element = self.wait_widget(self.page["control_device_page"]["power_state"])
         while True:
             if time.strftime("%H:%M") == set_time:
-                if power_same_prev is False:
+                if same_power is False:
                     while True:
                         if self.ac.get_attribute(element, "name") == power_state:
                             self.logger.info("[APP_TIMER]End Time: %s[%s]" % (time.strftime("%X"), time.time()))

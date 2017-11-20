@@ -625,7 +625,7 @@ class WidgetOperationAL(LaunchAppAL):
         return start_time, set_time
 
     # 定时检查模板
-    def check_timer(self, device, start_time, set_time, power_state, power_same_prev=False, sec=True):
+    def check_timer(self, device, start_time, set_time, power_state, same_power=False, sec=True):
         # FIXME：定时的日期检测不完善，跨多天执行会有问题
         # 开始时间
         start_h, start_m, start_s = start_time.split(":")
@@ -658,7 +658,7 @@ class WidgetOperationAL(LaunchAppAL):
                     flag = True
             if flag is True:
                 now = time.time()
-                if power_same_prev is True:
+                if same_power is True:
                     time.sleep(10)
                 while True:
                     if self.ac.get_attribute(element, "name") == power_state:
