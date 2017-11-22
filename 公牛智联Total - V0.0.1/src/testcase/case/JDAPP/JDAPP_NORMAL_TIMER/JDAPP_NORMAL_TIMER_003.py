@@ -24,40 +24,40 @@ class JDAppNormalTimer3(WidgetOperationJD):
         now = time.strftime("%H:%M")
 
         delay_time_1 = 1
-        start_time_1, set_time_1 = self.create_normal_timer(now, delay_time_1, "power_on", u"执行一次")
+        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, delay_time_1, "power_on", u"执行一次")
 
         delay_time_2 = 2
-        start_time_2, set_time_2 = self.create_normal_timer(now, delay_time_2, "power_off", u"执行一次")
+        start_time_2, set_time_2, cycle2 = self.create_normal_timer(now, delay_time_2, "power_off", u"执行一次")
 
         delay_time_3 = 3
-        start_time_3, set_time_3 = self.create_normal_timer(now, delay_time_3, "power_on", u"执行一次")
+        start_time_3, set_time_3, cycle3 = self.create_normal_timer(now, delay_time_3, "power_on", u"执行一次")
 
         delay_time_4 = 4
-        start_time_4, set_time_4 = self.create_normal_timer(now, delay_time_4, "power_off", u"执行一次")
+        start_time_4, set_time_4, cycle4 = self.create_normal_timer(now, delay_time_4, "power_off", u"执行一次")
 
         delay_time_5 = 5
-        start_time_5, set_time_5 = self.create_normal_timer(now, delay_time_5, "power_on", u"执行一次")
+        start_time_5, set_time_5, cycle5 = self.create_normal_timer(now, delay_time_5, "power_on", u"执行一次")
 
         delay_time_6 = 6
-        start_time_6, set_time_6 = self.create_normal_timer(now, delay_time_6, "power_off", u"执行一次")
+        start_time_6, set_time_6, cycle6 = self.create_normal_timer(now, delay_time_6, "power_off", u"执行一次")
 
         delay_time_7 = 7
-        start_time_7, set_time_7 = self.create_normal_timer(now, delay_time_7, "power_on", u"执行一次")
+        start_time_7, set_time_7, cycle7 = self.create_normal_timer(now, delay_time_7, "power_on", u"执行一次")
 
         delay_time_8 = 8
-        start_time_8, set_time_8 = self.create_normal_timer(now, delay_time_8, "power_off", u"执行一次")
+        start_time_8, set_time_8, cycle8 = self.create_normal_timer(now, delay_time_8, "power_off", u"执行一次")
 
         delay_time_9 = 9
-        start_time_9, set_time_9 = self.create_normal_timer(now, delay_time_9, "power_on", u"执行一次")
+        start_time_9, set_time_9, cycle9 = self.create_normal_timer(now, delay_time_9, "power_on", u"执行一次")
 
         delay_time_10 = 10
-        start_time_10, set_time_10 = self.create_normal_timer(now, delay_time_10, "power_off", u"执行一次")
+        start_time_10, set_time_10, cycle10 = self.create_normal_timer(now, delay_time_10, "power_off", u"执行一次")
 
         delay_time_11 = 11
-        start_time_11, set_time_11 = self.create_normal_timer(now, delay_time_11, "power_on", u"执行一次")
+        start_time_11, set_time_11, cycle11 = self.create_normal_timer(now, delay_time_11, "power_on", u"执行一次")
 
         delay_time_12 = 12
-        start_time_12, set_time_12 = self.create_normal_timer(now, delay_time_12, "power_off", u"执行一次")
+        start_time_12, set_time_12, cycle12 = self.create_normal_timer(now, delay_time_12, "power_off", u"执行一次")
         
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

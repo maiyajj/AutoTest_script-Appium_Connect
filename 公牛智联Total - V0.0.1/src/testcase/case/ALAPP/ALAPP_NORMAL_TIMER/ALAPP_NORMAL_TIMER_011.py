@@ -23,6 +23,8 @@ class ALAppNormalTimer11(WidgetOperationAL):
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
 
+        self.delete_normal_timer()
+
         now = time.strftime("%H:%M")
 
         delay_time_1 = 10

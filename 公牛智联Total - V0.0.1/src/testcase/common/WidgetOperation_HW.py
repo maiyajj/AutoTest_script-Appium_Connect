@@ -37,6 +37,10 @@ class WidgetOperationHW(LaunchAppHW):
     # 设置定时滚轮
     def set_timer_roll(self, elem_h, elem_m, now_time, set_timer, delay_s=120):
         """
+        int
+        -int
+        ["point", "09:00"]
+        ["delay", "00:30"]
         :param elem_h: 滚轮控件“时”框架，用来获取“时”x坐标
         :param elem_m: 滚轮控件“分”框架，用来获取“分”x坐标
         :param now_timer: 设置定时的当前时间
@@ -94,25 +98,17 @@ class WidgetOperationHW(LaunchAppHW):
         time_now = time.mktime(time_now)
 
         # 获取定时的执行时间点
-        if time_seg == "int":
+        if time_seg == "int" or time_seg == "minus":
             time_set = time_now + set_timer * 60 + delay_s
-        elif time_seg == "minus":
-            time_set = time_now + set_timer * 60
-        elif time_seg == "point":
+        elif time_seg == "point" or time_seg == "delay":
             time_set = time.strftime("%Y-%m-%d r:00").replace("r", set_timer[1])
             time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %X"))
-        elif time_seg == "delay":
-            time_set = time.strftime("%Y-%m-%d r:00").replace("r", set_timer[1])
-            time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %X")) + delay_s
         else:
             time_set = "error"
 
         # 定时开始执行和设定的时间点
-        time_start = int(time_now + delay_s)
-        time_set = int(time_set)
-        # 将定时时间（时间戳，float型）格式化为时间（字符串型），仅做日志输出
-        start_time = time.strftime("%Y-%m-%d %X", time.localtime(time_start))
-        set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
+        time_start = time_now + delay_s
+        time_set = time_set
 
         # 滚轮相关操作
         roll_h, roll_m = time.strftime("%H:%M", time.localtime(time_roll)).split(":")
@@ -136,21 +132,40 @@ class WidgetOperationHW(LaunchAppHW):
 
         # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
         while time_et_m_a > 0:
-            self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 0)
+            self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 900)  # step=25
             time_et_m_a -= 1
+            time.sleep(0.5)
         while time_et_h_a > 0:
-            self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
+            self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 900)
             time_et_h_a -= 1
+            time.sleep(0.5)
 
-        self.logger.info("start_time: %s, set_time: %s" % (start_time, set_time))
+        # 将定时时间（时间戳，float型）格式化为时间（字符串型），仅做日志输出
+        start_time = time.strftime("%Y-%m-%d %X", time.localtime(time_start))
 
-        time.sleep(2)
+        # 延时定时的滚轮时间和实际执行时间不一致，需转换一下
+        if time_seg == "delay":
+            delay_time = set_timer[1]
+            add_h, add_m = delay_time.split(":")
+            time_delay = int(add_h) * 3600 + int(add_m) * 60
+            time_set = time_now + time_delay + delay_s
+            set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
+            self.logger.info("[APP_TIMER]Delay: start_time: %s, set_time: %s, delay_time: %s" %
+                             (start_time, set_time, delay_time))
+            self.logger.info("[APP_TIMER]Delay: time_start: %s, time_set: %s, time_delay: %s" %
+                             (time_start, time_set, time_delay))
+        else:
+            set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
+            self.logger.info("[APP_TIMER]start_time: %s, set_time: %s" % (start_time, set_time))
+            self.logger.info("[APP_TIMER]time_start: %s, time_set: %s" % (time_start, time_set))
+
+        time.sleep(1)
 
         value_h = int(re.findall("(\d+)", self.ac.get_attribute(self.wait_widget(elem_h), "name"))[0])
         value_m = int(re.findall("(\d+)", self.ac.get_attribute(self.wait_widget(elem_m), "name"))[0])
         elem_t = "%02d:%02d" % (value_h, value_m)
         if elem_t == set_time[11:16]:
-            return time_start, time_set
+            return int(time_start), int(time_set)
         else:
             raise TimeoutException("timer set error")
 
@@ -176,6 +191,10 @@ class WidgetOperationHW(LaunchAppHW):
 
             self.widget_click(self.page["normal_timer_roll_popup"]["confirm"],
                               self.page["add_normal_timer_page"]["title"])
+
+            if set_time_1 <= now_time:
+                set_time_1 = set_time_1 + 3600 * 24
+
         else:
             start_time_1, set_time_1 = None, None
             while True:
@@ -195,6 +214,9 @@ class WidgetOperationHW(LaunchAppHW):
 
             self.widget_click(self.page["normal_timer_roll_popup"]["confirm"],
                               self.page["add_normal_timer_page"]["title"])
+
+            if set_time_2 <= now_time:
+                set_time_2 = set_time_2 + 3600 * 24
         else:
             start_time_2, set_time_2 = None, None
             while True:
@@ -207,18 +229,18 @@ class WidgetOperationHW(LaunchAppHW):
         self.widget_click(self.page["add_normal_timer_page"]["repeat"],
                           self.page["timer_repeat_popup"]["title"])
 
-        self.set_timer_loop("add_normal_timer_page", loop)
+        cycle = self.set_timer_loop("add_normal_timer_page", loop)
 
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
         self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
 
         if time_on is False:
-            return start_time_2, set_time_2
+            return start_time_2, set_time_2, cycle
         elif time_off is False:
-            return start_time_1, set_time_1
+            return start_time_1, set_time_1, cycle
         else:
-            return start_time_1, set_time_1, start_time_2, set_time_2
+            return start_time_1, set_time_1, start_time_2, set_time_2, cycle
 
     # 设置普通/模式定时循环模式
     def set_timer_loop(self, page, loop):

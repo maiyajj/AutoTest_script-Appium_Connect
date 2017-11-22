@@ -20,8 +20,8 @@ class Mailer(object):
         self.mail_pwd = kwargs["mail_pwd"]
 
         self.mail_host = "smtp.163.com"
-        self.mail_user = self.mail_pwd[163]["user_name"].decode("hex")
-        self.mail_pass = self.mail_pwd[163]["pwd"].decode("hex")
+        self.mail_user = self.mail_pwd["163"]["user_name"].decode("hex")
+        self.mail_pass = self.mail_pwd["163"]["pwd"].decode("hex")
         self.mail_postfix = self.mail_user.split("@")[1]
 
         self.sc = ShellCommand()

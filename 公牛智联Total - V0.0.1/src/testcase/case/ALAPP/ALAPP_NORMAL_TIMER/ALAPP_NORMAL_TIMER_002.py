@@ -23,10 +23,12 @@ class ALAppNormalTimer2(WidgetOperationAL):
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
 
+        self.delete_normal_timer()
+
         now = time.strftime("%H:%M")
 
         delay_time_1 = 2
-        start_time_1, set_time_1 = self.create_normal_timer(now, delay_time_1, "power_off", u"永不")
+        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, delay_time_1, "power_off", u"永不")
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -38,6 +40,6 @@ class ALAppNormalTimer2(WidgetOperationAL):
         self.widget_click(self.page["control_device_page"]["to_return"],
                           self.page["app_home_page"]["title"])
 
-        self.check_timer(device, start_time_1, set_time_1, u"设备已关闭")
+        self.check_timer(device, start_time_1, set_time_1, u"关", cycle1)
 
         self.case_over(True)

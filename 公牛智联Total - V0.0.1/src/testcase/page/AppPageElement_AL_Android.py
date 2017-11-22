@@ -197,11 +197,14 @@ class MainPageWidgetAndroidAL(object):
         # 取暖器模式
         d["warmer_mode_timer"] = [u"//android.view.View[@content-desc='栅格选项取暖器']", "xpath", u"取暖器模式"]
         # 定时任务
-        d["normal_timer"] = [u"//android.view.View[contains(@content-desc, ' 定时任务')]", "xpath", u"定时任务"]
+        d["normal_timer"] = ["//android.webkit.WebView/android.widget.ListView/android.view.View", "xpath", u"定时任务",
+                             {"px": [0.937, 0.5]}]
         # 延时任务
-        d["delay_timer"] = [u"//android.view.View[contains(@content-desc, ' 延时任务')]", "xpath", u"延时任务"]
+        d["delay_timer"] = ["//android.webkit.WebView/android.widget.ListView/android.view.View[2]", "xpath", u"延时任务",
+                            {"px": [0.937, 0.5]}]
         # 循环任务
-        d["cycle_timer"] = [u"//android.view.View[contains(@content-desc, ' 循环任务')]", "xpath", u"循环任务"]
+        d["cycle_timer"] = ["//android.webkit.WebView/android.widget.ListView/android.view.View[3]", "xpath", u"循环任务",
+                            {"px": [0.937, 0.5]}]
         # 电价设置
         d["set_elec"] = [u"//android.view.View[contains(@content-desc, '电价设置')]", "xpath", u"电价设置"]
         # 用电数据
@@ -368,7 +371,7 @@ class MainPageWidgetAndroidAL(object):
         # 删除定时
         d["delete_timer"] = ["//android.webkit.WebView/android.view.View[4]/android.view.View", "xpath", u"删除定时"]
         # 删除
-        d["delete"] = [u"//android.view.View[@content-desc='删除']", "xpath", u"删除"]
+        d["delete"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"删除", {"px": [0.9, 0.15]}]
         # 完成
         d["saved"] = [u"//android.view.View[@content-desc='完成']", "xpath", u"完成"]
         # 定时循环信息

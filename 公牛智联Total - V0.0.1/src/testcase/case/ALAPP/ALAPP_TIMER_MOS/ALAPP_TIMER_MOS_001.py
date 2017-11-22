@@ -40,6 +40,6 @@ class ALAppTimerMos1(WidgetOperationAL):
             self.widget_click(self.page["control_device_page"]["to_return"],
                               self.page["app_home_page"]["title"])
 
-            self.check_timer(device, start_time_1, set_time_1, u"设备已关闭")
+            self.check_timer(device, start_time_1, set_time_1, u"关")
 
         self.case_over(True)

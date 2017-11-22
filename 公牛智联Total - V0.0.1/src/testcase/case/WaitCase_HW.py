@@ -176,7 +176,7 @@ class WaitCaseHW(object):
                                 xls_data[zentao_id]["test_error"],
                                 xls_data[zentao_id]["test_wait"])
 
-            self.debug.info("write_data: %s" % case[0])
+            self.debug.info("write_data: %s" % xls_data[zentao_id])
             database["case_location"] += 1
         except BaseException:
             self.debug.error(traceback.format_exc())

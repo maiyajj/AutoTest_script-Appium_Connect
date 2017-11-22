@@ -25,8 +25,8 @@ class WidgetCheckUnit(Exception):
         self.px = plural = False  # 元素在屏幕的像素坐标
         if not isinstance(main_widget, list):
             raise TypeError("main_widget must be list! [widget, locate method...]")
-        locate = main_widget[1]  # page函数中的元素查找名称，例："//XCUIElementTypeTextField","btn_skip"，etc
-        widget = main_widget[0]  # page函数中的元素查找方式，例："xpath","name","id"，etc
+        locate = main_widget[1]  # page函数中的元素查找方式，例："xpath","name","id"，etc
+        widget = main_widget[0]  # page函数中的元素查找名称，例："//XCUIElementTypeTextField","btn_skip"，etc
         try:
             if isinstance(widget, dict):
                 plural = "dict"
@@ -101,7 +101,8 @@ class WidgetCheckUnit(Exception):
                 return element
             except NoSuchElementException:
                 if time.time() > end_time:
-                    raise TimeoutException()
+                    raise TimeoutException("[ERROR]Failed to wait element.UiSelector[RESOURCE_ID=%s]\n%s"
+                                           % ([widget], self.driver.page_source))
                 time.sleep(interval)
 
     # 点击元素，同于element.click()

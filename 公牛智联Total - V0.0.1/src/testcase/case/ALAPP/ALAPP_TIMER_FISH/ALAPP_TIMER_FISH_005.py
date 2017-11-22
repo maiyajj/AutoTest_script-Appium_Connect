@@ -25,10 +25,9 @@ class ALAppTimerFish5(WidgetOperationAL):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1, delay_time_2 = 1, 1
+        delay_time_1, delay_time_2 = ["delay", "00:01"], ["delay", "00:01"]
         tmp = self.create_cycle_timer("fish_mode_timer_page", now, delay_time_1, delay_time_2, u"1次")
         start_time_1, set_time_1, start_time_2, set_time_2 = tmp[0]
-        start_time_3, set_time_3, start_time_4, set_time_4 = tmp[1]
 
         self.widget_click(self.page["fish_mode_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -40,9 +39,7 @@ class ALAppTimerFish5(WidgetOperationAL):
         self.widget_click(self.page["control_device_page"]["to_return"],
                           self.page["app_home_page"]["title"])
 
-        self.check_timer(device, start_time_1, set_time_1, u"设备已关闭")
-        self.check_timer(device, start_time_2, set_time_2, u"设备已开启")
-        self.check_timer(device, start_time_3, set_time_3, u"设备已关闭")
-        self.check_timer(device, start_time_4, set_time_4, u"设备已关闭", True)
+        self.check_timer(device, start_time_1, set_time_1, u"关")
+        self.check_timer(device, start_time_2, set_time_2, u"关", same_power=True)
 
         self.case_over(True)

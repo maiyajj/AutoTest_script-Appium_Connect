@@ -351,7 +351,7 @@ class WidgetOperationJD(LaunchAppJD):
         else:
             if start_time is None:
                 raise KeyError("if start_now is False, start_time can`t be None type")
-            end_time = time.time() + 1 * 60 + 30
+            end_time = time.time() + 5 * 60 + 30
             while True:
                 if time.strftime("%H:%M") == start_time:
                     try:

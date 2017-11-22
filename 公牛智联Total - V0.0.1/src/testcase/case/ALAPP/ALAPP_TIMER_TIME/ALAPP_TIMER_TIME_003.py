@@ -31,7 +31,7 @@ class ALAppTimerTime3(WidgetOperationAL):
             now = time.strftime("%H:%M")
 
             delay_time_1, delay_time_2 = ["point", "07:00"], ["point", "16:00"]
-            tmp = self.create_point_mode_timer(page, now, delay_time_1, delay_time_2, u"周日")
+            tmp, cycle = self.create_point_mode_timer(page, now, delay_time_1, delay_time_2, u"周日")
             start_time_1, set_time_1 = tmp[0]
             start_time_2, set_time_2 = tmp[1]
 
@@ -45,7 +45,7 @@ class ALAppTimerTime3(WidgetOperationAL):
             self.widget_click(self.page["control_device_page"]["to_return"],
                               self.page["app_home_page"]["title"])
 
-            self.check_timer(device, start_time_1, set_time_1, u"设备已关闭")
-            self.check_timer(device, start_time_2, set_time_2, u"设备已开启")
+            self.check_timer(device, start_time_1, set_time_1, u"关", cycle)
+            self.check_timer(device, start_time_2, set_time_2, u"开", cycle)
 
         self.case_over(True)

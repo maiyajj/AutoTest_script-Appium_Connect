@@ -79,7 +79,9 @@ def launch_fail_fix(func):
                 break
             except WebDriverException, e:  # 抛出WebDriverException可能是偶然启动失败
                 e = "".join(str(e).split())
-                if e == "Message:":  # 错误信息只有"Message:"则表示Appium服务已停止，手机端发送信息无返回
+                # 错误信息只有"Message:"则表示Appium服务已停止，手机端发送信息无返回
+                # "Message: A session is either terminated or not started"表示PC与手机的连接已变更，Launch_App无法启动
+                if e == "Message:" or e == "Message: A session is either terminated or not started":
                     self.debug.error(traceback.format_exc())  # 记录错误信息
                     self.http_run_app(True)  # 关闭Appium和手机端对应端口来终止Appium服务
                 else:  # 有详细错误信息表示Appium仍在运行
@@ -292,4 +294,4 @@ class LaunchAppGN(object):
         result = d_result[self.success]
         self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
         database[self.device_name][self.zentao_id][result[1]] += 1
-        return self.zentao_id, "%s,%s" % (result[0], " " * len(result[0])), self.case_title, self.start_time
+        return self.zentao_id, "%s,%s" % (result[0], " " * (7 - len(result[0]))), self.case_title, self.start_time

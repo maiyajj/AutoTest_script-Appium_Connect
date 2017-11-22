@@ -122,7 +122,7 @@ class WaitCaseAL(object):
         while True:
             self.logger.info("run times [%s]" % database["program_loop_time"])
             # self.write_report(ALAppCmp1)  # 431, FUT_CMP_不同型号手机是否能正常添加设备
-            self.write_report(ALAppCrossTimer1)  # 519, FUT_CROSSTIMER_普通定时、循环定时、延时定时交叉设置后定时执行
+            # self.write_report(ALAppCrossTimer1)  # 519, FUT_CROSSTIMER_普通定时、循环定时、延时定时交叉设置后定时执行
             self.write_report(ALAppCycleTimer1)  # 470, FUT_CYCLETIMER_循环定时设置永久循环执行（1分钟开1分钟关）
             self.write_report(ALAppCycleTimer2)  # 471, FUT_CYCLETIMER_循环定时执行过程中手动切换设备状态
             self.write_report(ALAppCycleTimer3)  # 482, FUT_CYCLETIMER_循环定时5次
@@ -140,7 +140,7 @@ class WaitCaseAL(object):
             self.write_report(ALAppNormalTimer2)  # 515, FUT_NTIMER_单次定时关
             self.write_report(ALAppNormalTimer3)  # 513, FUT_NTIMER_单次定时开
             self.write_report(ALAppNormalTimer4)  # 512, FUT_NTIMER_单日循环定时
-            self.write_report(ALAppNormalTimer5)  # 510, FUT_NTIMER_定时时间早于当前时间的永不循环定时设置
+            # self.write_report(ALAppNormalTimer5)  # 510, FUT_NTIMER_定时时间早于当前时间的永不循环定时设置
             # self.write_report(ALAppNormalTimer6)  # 508, FUT_NTIMER_隔天普通定时
             self.write_report(ALAppNormalTimer7)  # 505, FUT_NTIMER_普通交叉定时
             # self.write_report(ALAppNormalTimer8)  # 497, FUT_NTIMER_每日循环普通定时
@@ -196,7 +196,7 @@ class WaitCaseAL(object):
                                 xls_data[zentao_id]["test_error"],
                                 xls_data[zentao_id]["test_wait"])
 
-            self.debug.info("write_data: %s" % case[0])
+            self.debug.info("write_data: %s" % xls_data[zentao_id])
             database["case_location"] += 1
         except BaseException:
             self.debug.error(traceback.format_exc())

@@ -47,11 +47,11 @@ class AppiumCommand(object):
             raise KeyError("The OS is wrong!")
         return attribute_value
 
-    def swipe(self, x1, y1, x2, y2, driver, step=100):
+    def swipe(self, x1, y1, x2, y2, driver, step=900):
         if self.phone_os == "Android":
-            attribute_value = AppiumCommandAndroid().swipe(x1, y1, x2, y2, step, driver)
+            attribute_value = AppiumCommandAndroid().swipe(x1, y1, x2, y2, driver, step)
         elif self.phone_os == "iOS":
-            attribute_value = AppiumCommandIos().swipe(x1, y1, x2, y2, step, driver)
+            attribute_value = AppiumCommandIos().swipe(x1, y1, x2, y2, driver, step)
         else:
             raise KeyError("The OS is wrong!")
         return attribute_value

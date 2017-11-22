@@ -31,7 +31,7 @@ class ALAppTimerTime7(WidgetOperationAL):
             now = time.strftime("%H:%M")
 
             delay_time_1, delay_time_2 = 1, 3
-            tmp = self.create_point_mode_timer(page, now, delay_time_1, delay_time_2, u"永不")
+            tmp, cycle = self.create_point_mode_timer(page, now, delay_time_1, delay_time_2, u"永不")
             start_time_1, set_time_1 = tmp[0]
             start_time_2, set_time_2 = tmp[1]
 
@@ -45,8 +45,8 @@ class ALAppTimerTime7(WidgetOperationAL):
             self.widget_click(self.page["control_device_page"]["to_return"],
                               self.page["app_home_page"]["title"])
 
-            self.check_timer(device, start_time_1, set_time_1, u"设备已关闭")
-            self.check_timer(device, start_time_2, set_time_2, u"设备已开启")
+            self.check_timer(device, start_time_1, set_time_1, u"关", cycle)
+            self.check_timer(device, start_time_2, set_time_2, u"开", cycle)
 
             self.set_power(device, "power_off")
 
@@ -62,7 +62,7 @@ class ALAppTimerTime7(WidgetOperationAL):
             now = time.strftime("%H:%M")
 
             delay_time_1, delay_time_2 = 1, 3
-            tmp = self.create_point_mode_timer(page, now, delay_time_1, delay_time_2, u"永不", exchange=True)
+            tmp, cycle = self.create_point_mode_timer(page, now, delay_time_1, delay_time_2, u"永不", exchange=True)
             start_time_1, set_time_1 = tmp[0]
             start_time_2, set_time_2 = tmp[1]
 
@@ -76,7 +76,7 @@ class ALAppTimerTime7(WidgetOperationAL):
             self.widget_click(self.page["control_device_page"]["to_return"],
                               self.page["app_home_page"]["title"])
 
-            self.check_timer(device, start_time_1, set_time_1, u"设备已开启")
-            self.check_timer(device, start_time_2, set_time_2, u"设备已关闭")
+            self.check_timer(device, start_time_1, set_time_1, u"开", cycle)
+            self.check_timer(device, start_time_2, set_time_2, u"关", cycle)
 
         self.case_over(True)

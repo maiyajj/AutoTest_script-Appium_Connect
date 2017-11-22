@@ -25,33 +25,37 @@ class ALAppEem2(WidgetOperationAL):
         self.widget_click(self.page["control_device_page"]["elec"],
                           self.page["elec_page"]["title"])
 
-        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])[0]
+        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
+        elec_elements = self.ac.get_attribute(elec_elements, "name")
         self.logger.info("[ELEC_INFO]%s" % elec_elements)
-        if re.findall(u"日总电量", self.ac.get_attribute(elec_elements, "name")) == []:
+        if re.findall(u"日总电量", elec_elements) == []:
             raise TimeoutException("day elec time is wrong, current: %s" % [elec_elements])
 
         self.widget_click(self.page["elec_page"]["week"],
                           self.page["elec_page"]["title"])
 
-        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])[0]
+        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
+        elec_elements = self.ac.get_attribute(elec_elements, "name")
         self.logger.info("[ELEC_INFO]%s" % elec_elements)
-        if re.findall(u"周总电量", self.ac.get_attribute(elec_elements, "name")) == []:
+        if re.findall(u"周总电量", elec_elements) == []:
             raise TimeoutException("week elec time is wrong, current: %s" % [elec_elements])
 
         self.widget_click(self.page["elec_page"]["month"],
                           self.page["elec_page"]["title"])
 
-        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])[0]
+        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
+        elec_elements = self.ac.get_attribute(elec_elements, "name")
         self.logger.info("[ELEC_INFO]%s" % elec_elements)
-        if re.findall(u"月总电量", self.ac.get_attribute(elec_elements, "name")) == []:
+        if re.findall(u"月总电量", elec_elements) == []:
             raise TimeoutException("month elec time is wrong, current: %s" % [elec_elements])
 
         self.widget_click(self.page["elec_page"]["year"],
                           self.page["elec_page"]["title"])
 
-        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])[0]
+        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
+        elec_elements = self.ac.get_attribute(elec_elements, "name")
         self.logger.info("[ELEC_INFO]%s" % elec_elements)
-        if re.findall(u"年总电量", self.ac.get_attribute(elec_elements, "name")) == []:
+        if re.findall(u"年总电量", elec_elements) == []:
             raise TimeoutException("year elec time is wrong, current: %s" % [elec_elements])
 
         self.widget_click(self.page["elec_page"]["to_return"],
@@ -60,9 +64,10 @@ class ALAppEem2(WidgetOperationAL):
         self.widget_click(self.page["control_device_page"]["elec"],
                           self.page["elec_page"]["title"])
 
-        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])[0]
+        elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
+        elec_elements = self.ac.get_attribute(elec_elements, "name")
         self.logger.info("[ELEC_INFO]%s" % elec_elements)
-        if re.findall(u"日总电量", self.ac.get_attribute(elec_elements, "name")) == []:
+        if re.findall(u"日总电量", elec_elements) == []:
             raise TimeoutException("day elec time2 is wrong, current: %s" % [elec_elements])
 
         self.case_over(True)
