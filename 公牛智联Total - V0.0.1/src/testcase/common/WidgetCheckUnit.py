@@ -9,7 +9,7 @@ from data.Database import *
 
 
 # 元素操作API，将find_element进行再封装
-class WidgetCheckUnit(Exception):
+class WidgetCheckUnit(object):
     copy = copy  # 初始化copy函数，避免import copy, traceback函数未使用被自动删除
     traceback = traceback
 
@@ -101,8 +101,7 @@ class WidgetCheckUnit(Exception):
                 return element
             except NoSuchElementException:
                 if time.time() > end_time:
-                    raise TimeoutException("[ERROR]Failed to wait element.UiSelector[RESOURCE_ID=%s]\n%s"
-                                           % ([widget], self.driver.page_source))
+                    raise TimeoutException("[ERROR]Failed to wait element.UiSelector[RESOURCE_ID=%s]\n" % [widget])
                 time.sleep(interval)
 
     # 点击元素，同于element.click()
@@ -164,9 +163,16 @@ class WidgetCheckUnit(Exception):
 
                     # 点击元素后会有页面跳转加载动画，等待页面加载完成
                     while True:
+                        result = []
                         try:
                             for k in self.page["loading_popup"].keys():
-                                self.wait_widget(self.page["loading_popup"][k], 0.2, 0.1)
+                                try:
+                                    self.wait_widget(self.page["loading_popup"][k], 0.2, 0.1)
+                                    result.append(True)
+                                except TimeoutException:
+                                    result.append(False)
+                            if True not in result:
+                                raise TimeoutException()
                         except TimeoutException:
                             break
                     # 根据需要开启log日志记录
@@ -210,4 +216,4 @@ class WidgetCheckUnit(Exception):
                             self.wait_widget(wait_page, wait_time2, interval, 0)
                             click_flag = False  # 若页面已跳转，则下次操作不会再点击元素
                         except TimeoutException:
-                            raise TimeoutException(self.driver.page_source)
+                            raise TimeoutException("run times: %s" % run_times)

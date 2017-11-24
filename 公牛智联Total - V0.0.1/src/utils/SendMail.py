@@ -13,12 +13,16 @@ class Mailer(object):
     """
     The function of sending an email.
     """
-    
-    def __init__(self, **kwargs):
-        self.mail_list = kwargs["mail_list"]
-        self.file_path = kwargs["file_path"]
-        self.mail_pwd = kwargs["mail_pwd"]
 
+    def __init__(self, m_queue, conf):
+        # Receiver/Sender for mail.
+        self.mail_list = ["chenghao@gongniu.cn",
+                          "zhulei@gongniu.cn",
+                          "fanrt@gongniu.cn",
+                          "sunsy@gongniu.cn",
+                          "dongjz@gongniu.cn"]
+
+        self.mail_pwd = conf["mail_pwd"]
         self.mail_host = "smtp.163.com"
         self.mail_user = self.mail_pwd["163"]["user_name"].decode("hex")
         self.mail_pass = self.mail_pwd["163"]["pwd"].decode("hex")
@@ -28,7 +32,25 @@ class Mailer(object):
 
         log_tmp = os.path.join(self.sc.set_appium_log_addr(), "AutoTestGNApp/%s" % time.strftime("%Y-%m-%d %H-%M"))
         self.mail_error = os.path.join(log_tmp, "mail_error.log")
-    
+
+        # Get report xls from child process, is blocking!
+        parent_path = m_queue.get()
+
+        # Scan the root directory to get the files you want to send by mail.
+        self.file_path = []
+        for parent, dirnames, filenames in os.walk(parent_path):
+            for filename in filenames:
+                file_path = os.path.join(parent, filename)
+                self.file_path.append(file_path)
+
+        # Refresh time per second.
+        # When time is 7 a.m, send the scanned files in the mail.
+        while True:
+            now_time = time.strftime("%X")
+            if "07:00:00" in now_time:
+                self.send_mail()
+            time.sleep(1)
+
     def send_mail(self):
         me = "%s<%s@%s>" % (self.mail_user, self.mail_user, self.mail_postfix)
         msg = MIMEMultipart()
@@ -79,7 +101,7 @@ class Mailer(object):
             with open(self.mail_error, "a") as files:
                 files.write(str(e))
             return False
-    
+
     def format_addr(self, s):
         name, addr = parseaddr(s)
         return formataddr(

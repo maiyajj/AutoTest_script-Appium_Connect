@@ -13,12 +13,14 @@ class HWAppNormalTimer4(WidgetOperationHW):
     def case(self):
         self.choose_home_device(conf["MAC"]["HW"][0])
 
+        self.delete_normal_timer()
+
+        self.delete_delay_timer()
+
         self.set_power("power_off")
 
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
-
-        self.delete_normal_timer()
 
         now = time.strftime("%H:%M")
 
@@ -49,13 +51,13 @@ class HWAppNormalTimer4(WidgetOperationHW):
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
 
-        self.check_timer(start_time_1, set_time_1, "power_on")
-        self.check_timer(start_time_2, set_time_2, "power_off")
-        self.check_timer(start_time_3, set_time_3, "power_on")
-        self.check_timer(start_time_4, set_time_4, "power_off")
-        self.check_timer(start_time_5, set_time_5, "power_on")
-        self.check_timer(start_time_6, set_time_6, "power_off")
-        self.check_timer(start_time_7, set_time_7, "power_on")
-        self.check_timer(start_time_8, set_time_8, "power_off")
+        self.check_timer(start_time_1, set_time_1, u"电源已开启", cycle1)
+        self.check_timer(start_time_2, set_time_2, u"电源已关闭", cycle2)
+        self.check_timer(start_time_3, set_time_3, u"电源已开启", cycle3)
+        self.check_timer(start_time_4, set_time_4, u"电源已关闭", cycle4)
+        self.check_timer(start_time_5, set_time_5, u"电源已开启", cycle5)
+        self.check_timer(start_time_6, set_time_6, u"电源已关闭", cycle6)
+        self.check_timer(start_time_7, set_time_7, u"电源已开启", cycle7)
+        self.check_timer(start_time_8, set_time_8, u"电源已关闭", cycle8)
 
         self.case_over(True)

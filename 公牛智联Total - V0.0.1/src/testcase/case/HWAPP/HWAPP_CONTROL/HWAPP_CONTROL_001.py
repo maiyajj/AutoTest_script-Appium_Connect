@@ -13,11 +13,11 @@ class HWAppControl1(WidgetOperationHW):
     def case(self):
         self.choose_home_device(conf["MAC"]["HW"][0])
 
-        self.set_power("power_on")
-
         self.delete_normal_timer()
 
         self.delete_delay_timer()
+
+        self.set_power("power_on")
 
         i = 10
         while i > 0:
@@ -25,7 +25,7 @@ class HWAppControl1(WidgetOperationHW):
                               self.page["control_device_page"]["title"])
             i -= 1
         state = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["power_state"]), "name")
-        if state != u"设备已开启":
+        if state != u"电源已开启":
             raise TimeoutException("power state is error,current: %s" % [state])
 
         i = 9
@@ -34,7 +34,7 @@ class HWAppControl1(WidgetOperationHW):
                               self.page["control_device_page"]["title"])
             i -= 1
         state = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["power_state"]), "name")
-        if state != u"设备已关闭":
+        if state != u"电源已关闭":
             raise TimeoutException("power state is error,current: %s" % [state])
 
         self.case_over(True)

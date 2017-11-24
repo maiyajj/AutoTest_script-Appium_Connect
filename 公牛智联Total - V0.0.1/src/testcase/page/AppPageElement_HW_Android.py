@@ -72,7 +72,7 @@ class MainPageWidgetAndroidHW(object):
     def control_device_page(self):
         d = {}
         # 标题
-        d["title"] = ["com.huawei.smarthome:id/base_device_layout_title_setting", "id", u"设备控制页面"]
+        d["title"] = ["com.huawei.smarthome:id/device_control_btn_title", "id", u"设备控制页面"]
         # 设备信息进入按钮
         d["device_setting"] = ["com.huawei.smarthome:id/base_device_layout_title_setting", "id", u"设备信息进入按钮"]
         # 设备离线标志
@@ -259,9 +259,9 @@ class PopupWidgetAndroidHW(object):
         # 周日
         d["weekday"] = [u"//android.widget.TextView[@text='周日']", "xpath", u"周日"]
         # 完成
-        d["confirm"] = [u"//android.widget.Button[@content-desc='完成']", "xpath", u"完成"]
+        d["confirm"] = ["com.huawei.smarthome:id/device_timer_custom_repeat_finish_btn", "id", u"完成"]
         # 取消
-        d["cancel"] = [u"//android.widget.Button[@content-desc='取消']", "xpath", u"取消"]
+        d["cancel"] = ["com.huawei.smarthome:id/device_timer_config_repeat_default_canclebutton", "id", u"取消"]
         return d
 
     # 普通定时时间设置滚轮
@@ -296,6 +296,10 @@ class PopupWidgetAndroidHW(object):
         d["confirm"] = ["com.huawei.smarthome:id/device_control_delay_dialog_btn_horizontal_ok", "id", u"确定"]
         # 取消
         d["cancel"] = ["com.huawei.smarthome:id/device_control_delay_dialog_btn_horizontal_cancle", "id", u"取消"]
+        # 关闭确定
+        d["c_confirm"] = ["com.huawei.smarthome:id/device_control_delay_dialog_btn_vertical_ok", "id", u"关闭确定"]
+        # 关闭取消
+        d["c_cancel"] = ["com.huawei.smarthome:id/device_control_delay_dialog_btn_vertical_cancel", "id", u"关闭取消"]
         # 停止
-        d["stop"] = ["com.huawei.smarthome:id/device_control_delay_dialog_btn_horizontal_stop", "id", u"停止"]
+        d["stop"] = ["com.huawei.smarthome:id/device_control_delay_dialog_btn_vertical_stop", "id", u"关闭停止"]
         return d

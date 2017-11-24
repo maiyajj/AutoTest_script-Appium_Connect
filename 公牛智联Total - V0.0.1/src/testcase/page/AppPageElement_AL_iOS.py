@@ -405,11 +405,11 @@ class MainPageWidgetIosAL(object):
         # 定时关
         d["power_off"] = [u"定时关", "accessibility_id", u"定时关"]
         # 时间滚轮整体控件
-        d["roll"] = ["//XCUIElementTypeOther[4]", "xpath", u"时间滚轮整体控件"]
+        d["roll"] = [u"//XCUIElementTypeStaticText[@name='选择时间']", "xpath", u"时间滚轮整体控件", {"px": [0.5, 1.71]}]
         # 时间滚轮,时
-        d["roll_h"] = ["//XCUIElementTypeOther[4]//XCUIElementTypeOther[2]", "xpath", u"时间滚轮,时", {"px": [0.5, 0.5]}]
+        d["roll_h"] = [u"//XCUIElementTypeStaticText[contains(@name, ' 时')]", "xpath", u"时间滚轮,时", {"px": [0.5, 0.5]}]
         # 时间滚轮,分
-        d["roll_m"] = ["//XCUIElementTypeOther[4]//XCUIElementTypeOther[3]", "xpath", u"时间滚轮,分", {"px": [0.5, 0.5]}]
+        d["roll_m"] = [u"//XCUIElementTypeStaticText[contains(@name, ' 分')]", "xpath", u"时间滚轮,分", {"px": [0.5, 0.5]}]
         # 重复
         d["repeat"] = [u"//XCUIElementTypeOther[6]//XCUIElementTypeLink[3]/XCUIElementTypeStaticText", "xpath", u"重复"]
         # 完成

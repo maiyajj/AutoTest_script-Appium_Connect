@@ -13,9 +13,6 @@ __build_version__ = ""
 
 
 class MainFunc(object):
-    """
-    """
-
     def run(self, device_list, device_name, m_queue):
         """
         One process launch appium services.
@@ -27,38 +24,10 @@ class MainFunc(object):
         case = Process(target=WaitCase, args=(device_list, device_name, m_queue))
         case.start()
 
-    def send_mail(self, m_queue):
+    def send_mail(self, m_queue, conf):
+        """Send mail at set time every day.
         """
-        Send mail at 7 o 'clock every day.
-        """
-        # Receiver/Sender for mail.
-        mail_list = ["chenghao@gongniu.cn",
-                     "zhulei@gongniu.cn",
-                     "fanrt@gongniu.cn",
-                     "sunsy@gongniu.cn",
-                     "dongjz@gongniu.cn"]
-
-        kwargs = {"mail_list": mail_list,
-                  "mail_pwd": conf["mail_pwd"]}
-
-        # Get report xls from child process, is blocking!
-        parent_path = m_queue.get()
-
-        # Scan the root directory to get the files you want to send by mail.
-        file_list = []
-        for parent, dirnames, filenames in os.walk(parent_path):
-            for filename in filenames:
-                file_path = os.path.join(parent, filename)
-                file_list.append(file_path)
-        kwargs["file_path"] = file_list
-
-        # Refresh time per second.
-        # When time is 7 a.m, send the scanned files in the mail.
-        while True:
-            now_time = time.strftime("%X")
-            if "07:00:00" in now_time:
-                Mailer(**kwargs).send_mail()
-            time.sleep(1)
+        Mailer(m_queue, conf)
 
 
 if __name__ == '__main__':
@@ -78,7 +47,7 @@ if __name__ == '__main__':
     m_queue = Queue()
 
     # Start send mail process.
-    mail = Process(target=mf.send_mail, args=(m_queue,))
+    mail = Process(target=mf.send_mail, args=(m_queue, conf,))
     mail.start()
 
     # Start app auto test process.

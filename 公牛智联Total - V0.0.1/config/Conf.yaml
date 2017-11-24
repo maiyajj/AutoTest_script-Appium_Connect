@@ -15,7 +15,7 @@ MAC:
   AL:
     0: 'C4:11:E0:00:00:00'
   HW:
-    0: 'C4:11:E0:01:45:31'
+    0: 'C4:11:E0:01:45:7F'
 # 电量计量设备备注名
 Elec_stat_mac: ['Elec_test_1', 'Elec_test_2', 'Elec_test_3', 'Elec_test_4', 'Elec_test_5', 'Elec_test_6', 'Elec_test_7', 'Elec_test_8', 'Elec_test_9', 'Elec_test_10']
 # 错误密码

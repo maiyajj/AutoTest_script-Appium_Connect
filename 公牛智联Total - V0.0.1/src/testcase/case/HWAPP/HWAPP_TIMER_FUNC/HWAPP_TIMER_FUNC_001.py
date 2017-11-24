@@ -13,9 +13,11 @@ class HWAppTimerFunc1(WidgetOperationHW):
     def case(self):
         self.choose_home_device(conf["MAC"]["HW"][0])
 
-        self.set_power("power_off")
+        self.delete_normal_timer()
 
         self.delete_delay_timer()
+
+        self.set_power("power_off")
 
         self.widget_click(self.page["control_device_page"]["delay_timer"],
                           self.page["delay_timer_roll_popup"]["title"])
@@ -25,7 +27,7 @@ class HWAppTimerFunc1(WidgetOperationHW):
         delay_time_1 = 1
         self.set_timer_roll(self.page["delay_timer_roll_popup"]["roll_h"],
                             self.page["delay_timer_roll_popup"]["roll_m"],
-                            now, delay_time_1)
+                            "00:00", now, delay_time_1)
 
         self.widget_click(self.page["control_device_page"]["delay_timer"],
                           self.page["delay_timer_roll_popup"]["title"])

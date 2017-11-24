@@ -13,25 +13,27 @@ class HWAppDelayTimer1(WidgetOperationHW):
     def case(self):
         self.choose_home_device(conf["MAC"]["HW"][0])
 
-        self.set_power("power_on")
+        self.delete_normal_timer()
 
         self.delete_delay_timer()
+
+        self.set_power("power_on")
 
         self.widget_click(self.page["control_device_page"]["delay_timer"],
                           self.page["delay_timer_roll_popup"]["title"])
 
         now = time.strftime("%H:%M")
 
-        delay_time_1 = 2
+        delay_time_1 = ["delay", "00:02"]
         start_time_1, set_time_1 = self.set_timer_roll(self.page["delay_timer_roll_popup"]["roll_h"],
                                                        self.page["delay_timer_roll_popup"]["roll_m"],
-                                                       now, delay_time_1)
+                                                       "00:00", now, delay_time_1)
 
         time.sleep(60)
 
         self.widget_click(self.page["control_device_page"]["power_button"],
-                          self.page["control_device_page"]["power_on"])
+                          self.page["control_device_page"]["power_off"])
 
-        self.check_timer(start_time_1, set_time_1, "power_on", True)
+        self.check_timer(start_time_1, set_time_1, u"电源已关闭", same_power=True)
 
         self.case_over(True)

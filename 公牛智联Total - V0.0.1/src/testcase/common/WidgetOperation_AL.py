@@ -48,7 +48,7 @@ class WidgetOperationAL(LaunchAppAL):
         new_value[0] = new_value[0][index]
         end_time = time.time() + 30
         while True:
-            # 通过元素坐标判断元素是否显示，未展示时滑动屏幕
+            # 通过元素坐标判断元素是否显示，未展示时滑动屏幕,与set_power有关。不能通过点击来判断
             if self.wait_widget(new_value).location["y"] < self.driver.get_window_size()["height"]:
                 return new_value
             else:
@@ -170,12 +170,12 @@ class WidgetOperationAL(LaunchAppAL):
         # 时滚轮
         lcx_h, lcy_h, szw_h, szh_h = self.set_roll(elem_h)
         pxx_h, pxy_h = elem_h[3]["px"]
-        aszh_h = int(szh_e / 5) - 5  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度，个数默认为5
+        aszh_h = int(szh_e / 5)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度，个数默认为5
         start_x_h, start_y_h = int(lcx_h + pxx_h * szw_h), int(lcy_e + szh_e / 2)  # “时”滚轮的操作起始点
         # 分滚轮
         lcx_m, lcy_m, szw_m, szh_m = self.set_roll(elem_m)
         pxx_m, pxy_m = elem_m[3]["px"]
-        aszh_m = int(szh_e / 5) - 5
+        aszh_m = int(szh_e / 5)
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_e + szh_e / 2)  # “分”滚轮的操作起始点
 
         time_roll = time.strftime("%Y-%m-%d r:00").replace("r", elem_t)  # 滚轮的当前时间
@@ -226,12 +226,15 @@ class WidgetOperationAL(LaunchAppAL):
             end_y_m = start_y_m
 
         # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
+        swipe = self.ac.swipe
         while time_et_m_a > 0:
-            self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 900)  # step=25
+            swipe(start_x_m, start_y_m, start_x_m, end_y_m, self.driver, percent=False)
+            print time_et_m_a
             time_et_m_a -= 1
             time.sleep(0.5)
         while time_et_h_a > 0:
-            self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 900)
+            swipe(start_x_h, start_y_h, start_x_h, end_y_h, self.driver, percent=False)
+            print time_et_h_a
             time_et_h_a -= 1
             time.sleep(0.5)
 
@@ -263,7 +266,7 @@ class WidgetOperationAL(LaunchAppAL):
         # 滚轮
         lcx, lcy, szw, szh = self.set_roll(elem)
         pxx, pxy = elem[3]["px"]
-        aszh = int(szh / 5) - 5
+        aszh = int(szh / 5)
         start_x, start_y = int(lcx + pxx * szw), int(lcy + pxy * szh)  # 获取滚轮滑动开始坐标值
 
         diff = set_value - roll_value
@@ -273,8 +276,11 @@ class WidgetOperationAL(LaunchAppAL):
             end_y = start_y - diff / diff_a * aszh
         except ZeroDivisionError:
             end_y = start_y
+
+        swipe = self.ac.swipe
         while diff_a > 0:
-            self.driver.swipe(start_x, start_y, start_x, end_y, 900)  # step=25
+            swipe(start_x, start_y, start_x, end_y, self.driver, percent=False)  # step=25
+            print diff_a
             diff_a -= 1
             time.sleep(0.5)
 
@@ -300,14 +306,19 @@ class WidgetOperationAL(LaunchAppAL):
                                                          self.page["add_normal_timer_page"]["roll_h"],
                                                          self.page["add_normal_timer_page"]["roll_m"],
                                                          "14:30", now_time, set_timer, delay_s=delay_s)
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (start_time, start_set_time))
-
-        if start_set_time <= now_time:
+        now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X"))
+        if start_set_time <= now:
             start_set_time = start_set_time + 3600 * 24
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
+
         self.widget_click(self.page["add_normal_timer_page"][power],
                           self.page["add_normal_timer_page"]["title"])
 
         cycle = self.set_timer_loop("add_normal_timer_page", loop)
+        if cycle == ["None"]:
+            cycle = [time.strftime("%A", time.localtime(start_set_time)).lower()]
 
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
@@ -347,7 +358,9 @@ class WidgetOperationAL(LaunchAppAL):
                                                          self.page["delay_timer_page"]["roll_h"],
                                                          self.page["delay_timer_page"]["roll_m"],
                                                          time_roll, time_now, set_timer, cycle, delay_s)
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (start_time, start_set_time))
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
         # 等待启动时间点，并启动定时
         end_time = time.time() + 5 * 60 + 30
@@ -423,7 +436,9 @@ class WidgetOperationAL(LaunchAppAL):
                                                          self.page["timer_roll_popup"]["roll_h"],
                                                          self.page["timer_roll_popup"]["roll_m"],
                                                          start_roll, time_now, set_start_time, cycle, delay_s)
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (start_time, start_set_time))
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
                           self.page[page]["launch"])
@@ -436,7 +451,9 @@ class WidgetOperationAL(LaunchAppAL):
                                                      self.page["timer_roll_popup"]["roll_h"],
                                                      self.page["timer_roll_popup"]["roll_m"],
                                                      end_roll, time_now_end, set_end_time, True)
-        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (end_time, end_set_time))
+        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(end_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(end_set_time))))
 
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
                           self.page[page]["launch"])
@@ -507,7 +524,9 @@ class WidgetOperationAL(LaunchAppAL):
                                                          self.page["timer_roll_popup"]["roll_h"],
                                                          self.page["timer_roll_popup"]["roll_m"],
                                                          start_roll, time_now, set_start_time, delay_s=delay_s)
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (start_time, start_set_time))
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
                           self.page[page]["launch"])
@@ -519,7 +538,9 @@ class WidgetOperationAL(LaunchAppAL):
                                                      self.page["timer_roll_popup"]["roll_h"],
                                                      self.page["timer_roll_popup"]["roll_m"],
                                                      end_roll, time_now, set_end_time, delay_s=delay_s)
-        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (end_time, end_set_time))
+        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(end_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(end_set_time))))
 
         if end_set_time <= start_set_time:
             end_set_time = end_set_time + 3600 * 24
@@ -528,13 +549,13 @@ class WidgetOperationAL(LaunchAppAL):
                           self.page[page]["launch"])
 
         cycle = self.set_timer_loop(page, loop)
+        if cycle is ["None"]:
+            cycle = [time.strftime("%A", time.localtime(start_set_time)).lower()]
 
         self.widget_click(self.page[page]["launch"],
                           self.page[page]["close"])
 
         return [[start_time, start_set_time], [end_time, end_set_time]], cycle
-
-        # 创建充电保护类型模式
 
     # 创建鱼缸，充电保护类型模式
     def create_delay_mode_timer(self, page, now_time, set_timer, delay_s=120, cycle=False):
@@ -568,7 +589,9 @@ class WidgetOperationAL(LaunchAppAL):
                                                          self.page["timer_roll_popup"]["roll_h"],
                                                          self.page["timer_roll_popup"]["roll_m"],
                                                          time_roll, time_now, set_timer, cycle, delay_s)
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (start_time, start_set_time))
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
                           self.page[page]["launch"])
@@ -646,7 +669,7 @@ class WidgetOperationAL(LaunchAppAL):
                     self.widget_click(self.page["timer_repeat_page"]["once"],
                                       self.page["timer_repeat_page"]["title"])
 
-                    cycle = [time.strftime("%A").lower()]
+                    cycle = ["None"]
                 elif u"周" in loop or u"每天" in loop or u"工作日" in loop or isinstance(loop, list):
                     if u"每天" in loop:
                         loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
@@ -707,7 +730,7 @@ class WidgetOperationAL(LaunchAppAL):
                         raise TimeoutException("Cycle set error")
             else:
                 if loop == u"永不":
-                    cycle = [time.strftime("%A").lower()]
+                    cycle = ["None"]
                 elif u"周" in loop or u"每天" in loop or u"工作日" in loop or isinstance(loop, list):
                     if u"每天" in loop:
                         loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
@@ -752,7 +775,9 @@ class WidgetOperationAL(LaunchAppAL):
                                                          self.page["timer_roll_popup"]["roll_p_h"],
                                                          self.page["timer_roll_popup"]["roll_p_m"],
                                                          time_roll, now_time, set_timer, False, 0)
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (start_time, start_set_time))
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
                           self.page["peak_valley_price_page"]["title"])
@@ -795,7 +820,7 @@ class WidgetOperationAL(LaunchAppAL):
                         i += 1
                         if i == 3:
                             raise TimeoutException("tap error!")
-                    time.sleep(60)
+                    time.sleep(1)
 
         delay_times = set_times - start_time
         self.logger.info("[APP_CHECK_TIMER]Delay Time: %s" % delay_times)
@@ -879,24 +904,27 @@ class WidgetOperationAL(LaunchAppAL):
                       u"电蚊香模式": ["mosquito_mode_timer", "mosquito_mode_timer_page"],
                       u"充电保护模式": ["piocc_mode_timer", "piocc_mode_timer_page"],
                       u"取暖器模式": ["warmer_mode_timer", "warmer_mode_timer_page"]}
-        element = self.wait_widget(self.page["control_device_page"]["launch_mode"])
-        while True:
-            attribute = self.ac.get_attribute(element, "name")
-            if u"模式" in attribute:
-                self.logger.info("[APP_INFO]Mode timer is run")
-                for timer_mode, value in timer_loop.items():
-                    if timer_mode in attribute:
-                        self.widget_click(self.page["control_device_page"][value[0]],
-                                          self.page[value[1]]["title"])
+        try:
+            element = self.wait_widget(self.page["control_device_page"]["launch_mode"])
+            while True:
+                attribute = self.ac.get_attribute(element, "name")
+                if u"模式" in attribute:
+                    self.logger.info("[APP_INFO]Mode timer is run")
+                    for timer_mode, value in timer_loop.items():
+                        if timer_mode in attribute:
+                            self.widget_click(self.page["control_device_page"][value[0]],
+                                              self.page[value[1]]["title"])
 
-                        self.widget_click(self.page[value[1]]["close"],
-                                          self.page[value[1]]["launch"], times=2)
+                            self.widget_click(self.page[value[1]]["close"],
+                                              self.page[value[1]]["launch"], times=2)
 
-                        self.widget_click(self.page[value[1]]["to_return"],
-                                          self.page["control_device_page"]["title"])
-            else:
-                self.logger.info("[APP_INFO]Mode timer don't run")
-                break
+                            self.widget_click(self.page[value[1]]["to_return"],
+                                              self.page["control_device_page"]["title"])
+                else:
+                    self.logger.info("[APP_INFO]Mode timer don't run")
+                    break
+        except TimeoutException:
+            self.logger.info("[APP_INFO]Mode timer don't run")
 
     # 关闭定时任务
     def close_general_timer(self):

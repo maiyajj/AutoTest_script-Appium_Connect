@@ -13,12 +13,14 @@ class HWAppTimerFunc2(WidgetOperationHW):
     def case(self):
         self.choose_home_device(conf["MAC"]["HW"][0])
 
+        self.delete_normal_timer()
+
+        self.delete_delay_timer()
+
         self.set_power("power_off")
 
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])
-
-        self.delete_normal_timer()
 
         now = time.strftime("%H:%M")
 

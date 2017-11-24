@@ -122,10 +122,12 @@ def case_run(bool):
                     self.case()  # 执行测试用例
                 except TimeoutException:
                     self.case_over(False)  # 用例执行失败
-                    self.debug.error("case_over: %s" % traceback.format_exc())  # 记录错误信息
+                    self.debug.error("Case_over:\n%s" % traceback.format_exc())  # 记录错误信息
+                    self.debug.error("Now page source:\n%s" % self.driver.page_source)
                 database["unknown"] = 0  # 用例有执行成功过说明Appium服务运行正常，次数归零
             except BaseException:
-                self.debug.error(traceback.format_exc())  # Message: ***
+                self.debug.error("Case_error:\n%s" % traceback.format_exc())  # 记录错误信息
+                self.debug.error("Now page source:\n%s" % self.driver.page_source)
                 self.case_over("unknown")  # 用例执行错误
                 database["unknown"] += 1  # 用例执行错误次数+1
                 if database["unknown"] > 2:  # 执行错误次数大于2次重置Appium服务
