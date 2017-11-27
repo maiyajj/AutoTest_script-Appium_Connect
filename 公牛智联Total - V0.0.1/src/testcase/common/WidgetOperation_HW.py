@@ -44,7 +44,7 @@ class WidgetOperationHW(LaunchAppHW):
         return lcx, lcy, szw, szh
 
     # 设置定时滚轮
-    def set_timer_roll(self, elem_h, elem_m, elem_t, now_time, set_timer, delay_s=120):
+    def set_timer_roll(self, elem_h, elem_m, elem_t, now_time, set_timer, cycle=False, delay_s=120):
         """
         int
         -int
@@ -83,12 +83,12 @@ class WidgetOperationHW(LaunchAppHW):
         # 时滚轮
         lcx_h, lcy_h, szw_h, szh_h = self.set_roll(elem_h)
         pxx_h, pxy_h = elem_h[3]["px"]
-        aszh_h = int(szh_h / 5)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度，默认为5
+        aszh_h = int(szh_h / 5) - 3  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度，默认为5
         start_x_h, start_y_h = int(lcx_h + pxx_h * szw_h), int(lcy_h + szh_h / 2)  # “时”滚轮的操作起始点
         # 分滚轮
         lcx_m, lcy_m, szw_m, szh_m = self.set_roll(elem_m)
         pxx_m, pxy_m = elem_m[3]["px"]
-        aszh_m = int(szh_m / 5)
+        aszh_m = int(szh_m / 5) - 3
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_m + szh_m / 2)  # “分”滚轮的操作起始点
 
         # 从控件拿到当前控件的值
@@ -103,6 +103,8 @@ class WidgetOperationHW(LaunchAppHW):
         except ValueError:
             time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %X")
         time_now = time.mktime(time_now)
+        if cycle is True:  # 若定时为鱼缸模式，第二个定时的开始时间为第一个定时的结束时间，应将定时设置延迟去除
+            time_now = time_now - delay_s
 
         # 获取定时的执行时间点
         if time_seg == "int" or time_seg == "minus":
@@ -143,12 +145,12 @@ class WidgetOperationHW(LaunchAppHW):
             swipe(start_x_m, start_y_m, start_x_m, end_y_m, self.driver, 0, False)
             print time_et_m_a
             time_et_m_a -= 1
-            time.sleep(0.1)
+            time.sleep(0.5)
         while time_et_h_a > 0:
             swipe(start_x_h, start_y_h, start_x_h, end_y_h, self.driver, 0, False)
             print time_et_h_a
             time_et_h_a -= 1
-            time.sleep(0.1)
+            time.sleep(0.5)
 
         # 将定时时间（时间戳，float型）格式化为时间（字符串型），仅做日志输出
         start_time = time.strftime("%Y-%m-%d %X", time.localtime(time_start))
@@ -215,7 +217,7 @@ class WidgetOperationHW(LaunchAppHW):
             start_time, start_set_time = None, None
             while True:
                 element = self.wait_widget(self.page["add_normal_timer_page"]["button_on"])
-                if self.ac.get_attribute(element, "selected") == "false":
+                if self.ac.get_attribute(element, "checked") == "false":
                     self.widget_click(self.page["add_normal_timer_page"]["button_on"],
                                       self.page["add_normal_timer_page"]["title"])
                     break
@@ -261,6 +263,45 @@ class WidgetOperationHW(LaunchAppHW):
             return start_time, start_set_time, cycle1
         else:
             return start_time, start_set_time, end_time, end_set_time, cycle1, cycle2
+
+    # 创建延时定时
+    def create_delay_timer(self, now_time, set_timer, power, delay_s=120, cycle=False):
+        """
+        :param now_time: 当前时间
+        :param set_timer: 设定时间
+        :param power: 设定定时开/关
+        :param delay_s: 定时设定与执行时间差
+        :param cycle: 是否是类鱼缸模式的连续定时模式
+        :return: 定时启动时间，定时执行时间
+        """
+        try:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X")
+        except ValueError:
+            time_now = time.strptime(time.strftime("%Y-%m-%d r").replace("r", now_time), "%Y-%m-%d %X")
+        time_now = time.strftime("%X", time.localtime(time.mktime(time_now)))
+
+        start_time, start_set_time = self.set_timer_roll(self.page["delay_timer_roll_popup"]["roll_h"],
+                                                         self.page["delay_timer_roll_popup"]["roll_m"],
+                                                         "00:00", time_now, set_timer, cycle, delay_s)
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
+
+        # 等待启动时间点，并启动定时
+        end_time = time.time() + 5 * 60 + 30
+        while True:
+            if int(time.time()) == start_time:
+                self.widget_click(self.page["delay_timer_roll_popup"]["confirm"])
+                self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%Y-%m-%d %X"), time.time()))
+                self.wait_widget(self.page["control_device_page"]["title"], log_record=0)
+                break
+            else:
+                if time.time() > end_time:
+                    tmp = time.strftime("%Y-%m-%d %X", time.localtime(start_time))
+                    raise TimeoutException("Timer Saved Error, time: %s[%s]" % (tmp, start_time))
+                time.sleep(1)
+
+        return start_time, start_set_time
 
     # 设置普通/模式定时循环模式
     def set_timer_loop(self, page, loop):

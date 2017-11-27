@@ -37,11 +37,15 @@ class Mailer(object):
         parent_path = m_queue.get()
 
         # Scan the root directory to get the files you want to send by mail.
-        self.file_path = []
-        for parent, dirnames, filenames in os.walk(parent_path):
-            for filename in filenames:
-                file_path = os.path.join(parent, filename)
-                self.file_path.append(file_path)
+        f = lambda x: os.path.join(parent_path, x)
+        while True:  # create root directory is faster than create files, maybe no files in mail.
+            try:
+                self.file_path = os.listdir(parent_path)
+                if self.file_path != []:
+                    self.file_path = map(f, self.file_path)
+                    break
+            except WindowsError:
+                time.sleep(1)
 
         # Refresh time per second.
         # When time is 7 a.m, send the scanned files in the mail.

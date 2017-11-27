@@ -29,6 +29,9 @@ class HWAppDelayTimer3(WidgetOperationHW):
                                                        self.page["delay_timer_roll_popup"]["roll_m"],
                                                        "00:00", now, delay_time_1)
 
+        self.widget_click(self.page["delay_timer_roll_popup"]["confirm"],
+                          self.page["control_device_page"]["title"])
+
         self.check_timer(start_time_1, set_time_1, u"电源已开启")
 
         self.case_over(True)

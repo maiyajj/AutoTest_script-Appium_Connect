@@ -29,6 +29,9 @@ class HWAppDelayTimer1(WidgetOperationHW):
                                                        self.page["delay_timer_roll_popup"]["roll_m"],
                                                        "00:00", now, delay_time_1)
 
+        self.widget_click(self.page["delay_timer_roll_popup"]["confirm"],
+                          self.page["control_device_page"]["title"])
+
         time.sleep(60)
 
         self.widget_click(self.page["control_device_page"]["power_button"],

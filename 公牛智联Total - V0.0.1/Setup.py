@@ -24,7 +24,7 @@ class MainFunc(object):
         case = Process(target=WaitCase, args=(device_list, device_name, m_queue))
         case.start()
 
-    def send_mail(self, m_queue, conf):
+    def send_mail(self, m_queue):
         """Send mail at set time every day.
         """
         Mailer(m_queue, conf)
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     m_queue = Queue()
 
     # Start send mail process.
-    mail = Process(target=mf.send_mail, args=(m_queue, conf,))
+    mail = Process(target=mf.send_mail, args=(m_queue,))
     mail.start()
 
     # Start app auto test process.

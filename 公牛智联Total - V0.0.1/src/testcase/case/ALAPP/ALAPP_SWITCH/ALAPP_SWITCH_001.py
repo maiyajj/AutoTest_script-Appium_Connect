@@ -5,9 +5,9 @@ from src.testcase.common.WidgetOperation_AL import *
 class ALAppSwitch1(WidgetOperationAL):
     @case_run(False)
     def run(self):
-        self.case_module = u"FUT_NTIMER_普通定时(#48)"  # 用例所属模块
-        self.case_title = u'FUT_NTIMER_冲突定时设置'  # 用例名称
-        self.zentao_id = 517  # 禅道ID
+        self.case_module = u"FUT_SWITCH_开关操作及记忆功能(#46)"  # 用例所属模块
+        self.case_title = u'FUT_SWITCH_手机和插座在相同网络下能否正常控制设备'  # 用例名称
+        self.zentao_id = 516  # 禅道ID
 
     # 用例动作
     def case(self):
