@@ -25,9 +25,7 @@ class HWAppTimerFunc1(WidgetOperationHW):
         now = time.strftime("%H:%M")
 
         delay_time_1 = 1
-        self.set_timer_roll(self.page["delay_timer_roll_popup"]["roll_h"],
-                            self.page["delay_timer_roll_popup"]["roll_m"],
-                            "00:00", now, delay_time_1)
+        self.create_delay_timer(now, delay_time_1)
 
         self.widget_click(self.page["control_device_page"]["delay_timer"],
                           self.page["delay_timer_roll_popup"]["title"])

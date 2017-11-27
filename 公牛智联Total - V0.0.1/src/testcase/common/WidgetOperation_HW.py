@@ -265,11 +265,10 @@ class WidgetOperationHW(LaunchAppHW):
             return start_time, start_set_time, end_time, end_set_time, cycle1, cycle2
 
     # 创建延时定时
-    def create_delay_timer(self, now_time, set_timer, power, delay_s=120, cycle=False):
+    def create_delay_timer(self, now_time, set_timer, delay_s=120, cycle=False):
         """
         :param now_time: 当前时间
         :param set_timer: 设定时间
-        :param power: 设定定时开/关
         :param delay_s: 定时设定与执行时间差
         :param cycle: 是否是类鱼缸模式的连续定时模式
         :return: 定时启动时间，定时执行时间
