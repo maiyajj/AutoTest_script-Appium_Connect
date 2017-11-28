@@ -1,2 +1,0 @@
-1、python实现禁止输入法自动弹出(华为手机的问题)
-2、python获取cmd的运行输出值为使用os.popen(command).read()
