@@ -35,4 +35,3 @@ class HWAppNormalTimer9(WidgetOperationHW):
         self.check_timer(start_time_1, set_time_1, u"电源已开启", cycle1)
         self.check_timer(start_time_2, set_time_2, u"电源已关闭", cycle2)
 
-        self.case_over(True)

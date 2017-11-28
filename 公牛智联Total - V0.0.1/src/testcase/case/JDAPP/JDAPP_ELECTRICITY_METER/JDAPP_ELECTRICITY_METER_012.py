@@ -41,4 +41,3 @@ class JDAppElectricityMeter12(WidgetOperationJD):
         if power_error > 0.01:
             raise TimeoutException("the battery error is over 0.01, current is %s" % power_error)
 
-        self.case_over(True)

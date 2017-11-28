@@ -53,4 +53,3 @@ class ALAppTimerTime5(WidgetOperationAL):
             self.check_timer(device, start_time_1, set_time_1, u"关", cycle, True)
             self.check_timer(device, start_time_2, set_time_2, u"开", cycle)
 
-        self.case_over(True)

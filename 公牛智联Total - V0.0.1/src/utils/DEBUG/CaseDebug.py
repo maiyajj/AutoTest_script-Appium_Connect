@@ -48,9 +48,22 @@ class WidgetTest(WidgetOperationHW):
 
 class b(WidgetTest):
     def case(self):
-        a = time.mktime(time.strptime("2017-11-25 17:05:10", "%Y-%m-%d %X"))
+        self.set_power("power_on")
 
-        self.check_timer(time.time(), a, u"电源已开启", ["saturday"])
+        self.widget_click(self.page["control_device_page"]["delay_timer"],
+                          self.page["delay_timer_roll_popup"]["title"])
+
+        now = time.strftime("%H:%M")
+
+        delay_time_1 = ["delay", "00:02"]
+        start_time_1, set_time_1 = self.create_delay_timer(now, delay_time_1)
+
+        time.sleep(60)
+
+        self.widget_click(self.page["control_device_page"]["power_button"],
+                          self.page["control_device_page"]["power_off"])
+
+        self.check_timer(start_time_1, set_time_1, u"电源已关闭", same_power=True)
 
 
 b().case()

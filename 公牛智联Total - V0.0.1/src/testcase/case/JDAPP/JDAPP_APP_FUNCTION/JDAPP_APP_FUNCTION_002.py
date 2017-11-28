@@ -26,4 +26,3 @@ class JDAppAppFunction2(WidgetOperationJD):
 
         self.wait_widget(self.page["control_device_page"]["power_on"])
 
-        self.case_over(True)

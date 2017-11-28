@@ -58,4 +58,3 @@ class JDAppElectricityMeter6(WidgetOperationJD):
         if sum(elec_bill[now_h + 1]) != sum(elec[now_h + 1]) * int(elec_price_data):
             raise TimeoutException(elec_bill_info)
 
-        self.case_over(True)

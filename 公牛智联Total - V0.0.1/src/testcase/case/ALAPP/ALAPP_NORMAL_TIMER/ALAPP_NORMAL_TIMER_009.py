@@ -130,4 +130,3 @@ class ALAppNormalTimer9(WidgetOperationAL):
             self.check_timer(device, start_time_19, set_time_19, u"开", cycle19)
             self.check_timer(device, start_time_20, set_time_20, u"关", cycle20)
 
-        self.case_over(True)

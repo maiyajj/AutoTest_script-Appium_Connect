@@ -32,4 +32,3 @@ class HWAppTimerFunc1(WidgetOperationHW):
 
         self.wait_widget(self.page["delay_timer_roll_popup"]["stop"])
 
-        self.case_over(True)

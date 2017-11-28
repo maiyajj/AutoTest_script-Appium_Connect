@@ -92,4 +92,3 @@ class ALAppCmp1(WidgetOperationAL):
         self.widget_click(self.page["unbind_device_popup"]["confirm"],
                           self.page["app_home_page"]["title"])
 
-        self.case_over(True)

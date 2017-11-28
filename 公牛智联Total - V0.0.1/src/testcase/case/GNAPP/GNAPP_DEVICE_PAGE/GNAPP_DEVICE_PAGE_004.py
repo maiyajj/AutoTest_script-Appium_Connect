@@ -37,4 +37,3 @@ class GNAppDevicePage4(WidgetOperationGN):
         self.widget_click(self.page["terminate_add_device_popup"]["confirm"],
                           self.page["set_network_page"]["title"])
 
-        self.case_over(True)

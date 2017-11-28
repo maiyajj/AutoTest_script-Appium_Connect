@@ -48,4 +48,3 @@ class JDAppModeTimer3(WidgetOperationJD):
 
         self.check_timer(start_time_1, set_time_1, u"设备已关闭", True)
 
-        self.case_over(True)

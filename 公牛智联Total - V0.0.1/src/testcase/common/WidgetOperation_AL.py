@@ -170,12 +170,12 @@ class WidgetOperationAL(LaunchAppAL):
         # 时滚轮
         lcx_h, lcy_h, szw_h, szh_h = self.set_roll(elem_h)
         pxx_h, pxy_h = elem_h[3]["px"]
-        aszh_h = int(szh_e / 5)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度，个数默认为5
+        aszh_h = int(szh_e / 5 * 4 / 5)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度，个数默认为5
         start_x_h, start_y_h = int(lcx_h + pxx_h * szw_h), int(lcy_e + szh_e / 2)  # “时”滚轮的操作起始点
         # 分滚轮
         lcx_m, lcy_m, szw_m, szh_m = self.set_roll(elem_m)
         pxx_m, pxy_m = elem_m[3]["px"]
-        aszh_m = int(szh_e / 5)
+        aszh_m = int(szh_e / 5 * 4 / 5)
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_e + szh_e / 2)  # “分”滚轮的操作起始点
 
         time_roll = time.strftime("%Y-%m-%d r:00").replace("r", elem_t)  # 滚轮的当前时间
@@ -227,16 +227,17 @@ class WidgetOperationAL(LaunchAppAL):
 
         # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
         swipe = self.ac.swipe
+        swipe_time = conf["roll_time"]["AL"]
         while time_et_m_a > 0:
             swipe(start_x_m, start_y_m, start_x_m, end_y_m, self.driver, percent=False)
             print time_et_m_a
             time_et_m_a -= 1
-            time.sleep(0.5)
+            time.sleep(swipe_time)
         while time_et_h_a > 0:
             swipe(start_x_h, start_y_h, start_x_h, end_y_h, self.driver, percent=False)
             print time_et_h_a
             time_et_h_a -= 1
-            time.sleep(0.5)
+            time.sleep(swipe_time)
 
         # 将定时时间（时间戳，float型）格式化为时间（字符串型），仅做日志输出
         start_time = time.strftime("%Y-%m-%d %X", time.localtime(time_start))
@@ -266,7 +267,7 @@ class WidgetOperationAL(LaunchAppAL):
         # 滚轮
         lcx, lcy, szw, szh = self.set_roll(elem)
         pxx, pxy = elem[3]["px"]
-        aszh = int(szh / 5)
+        aszh = int(szh / 5 * 4 / 5)
         start_x, start_y = int(lcx + pxx * szw), int(lcy + pxy * szh)  # 获取滚轮滑动开始坐标值
 
         diff = set_value - roll_value
@@ -278,11 +279,12 @@ class WidgetOperationAL(LaunchAppAL):
             end_y = start_y
 
         swipe = self.ac.swipe
+        swipe_time = conf["roll_time"]["AL"]
         while diff_a > 0:
             swipe(start_x, start_y, start_x, end_y, self.driver, percent=False)  # step=25
             print diff_a
             diff_a -= 1
-            time.sleep(0.5)
+            time.sleep(swipe_time)
 
         self.logger.info("roll_value: %s, set_value: %s" % (roll_value, set_value))
 
@@ -307,6 +309,7 @@ class WidgetOperationAL(LaunchAppAL):
                                                          self.page["add_normal_timer_page"]["roll_m"],
                                                          "14:30", now_time, set_timer, delay_s=delay_s)
         now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X"))
+
         if start_set_time <= now:
             start_set_time = start_set_time + 3600 * 24
         self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
@@ -524,6 +527,10 @@ class WidgetOperationAL(LaunchAppAL):
                                                          self.page["timer_roll_popup"]["roll_h"],
                                                          self.page["timer_roll_popup"]["roll_m"],
                                                          start_roll, time_now, set_start_time, delay_s=delay_s)
+        now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X"))
+
+        if start_set_time <= now:
+            start_set_time = start_set_time + 3600 * 24
         self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
             time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
             time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
@@ -538,18 +545,22 @@ class WidgetOperationAL(LaunchAppAL):
                                                      self.page["timer_roll_popup"]["roll_h"],
                                                      self.page["timer_roll_popup"]["roll_m"],
                                                      end_roll, time_now, set_end_time, delay_s=delay_s)
-        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
-            time.strftime("%Y-%m-%d %X", time.localtime(end_time)),
-            time.strftime("%Y-%m-%d %X", time.localtime(end_set_time))))
+        now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X"))
+
+        if end_set_time <= now:
+            end_set_time = end_set_time + 3600 * 24
 
         if end_set_time <= start_set_time:
             end_set_time = end_set_time + 3600 * 24
+        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(end_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(end_set_time))))
 
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
                           self.page[page]["launch"])
 
         cycle = self.set_timer_loop(page, loop)
-        if cycle is ["None"]:
+        if cycle == ["None"]:
             cycle = [time.strftime("%A", time.localtime(start_set_time)).lower()]
 
         self.widget_click(self.page[page]["launch"],
@@ -785,10 +796,9 @@ class WidgetOperationAL(LaunchAppAL):
         return start_time, start_set_time
 
     # 定时检查模板
-    def check_timer(self, device, start_time, set_time, power_state, cycle=None, same_power=False):
+    def check_timer(self, device, start_time, set_time, power_state, cycle=None):
         # 开始时间, 设置时间
         start_times = time.strftime("%Y-%m-%d %X", time.localtime(start_time))
-        now = time.time()
         self.logger.info("[APP_CHECK_TIMER]Now time: %s. Start time: %s" % (time.strftime("%Y-%m-%d %X"), start_times))
         now_week = time.strftime("%A").lower()
         if cycle is None:
@@ -816,7 +826,7 @@ class WidgetOperationAL(LaunchAppAL):
                     print("********************")
                     try:
                         self.driver.tap([(10, 10)])
-                    except TimeoutException:
+                    except BaseException:
                         i += 1
                         if i == 3:
                             raise TimeoutException("tap error!")
@@ -829,17 +839,12 @@ class WidgetOperationAL(LaunchAppAL):
         element = copy.copy(self.page["app_home_page"]["device_state"])
         element[0] = element[0][index]
         element = self.wait_widget(element)
-        end_time = now + delay_times + 30
+        end_time = set_times + 30
         self.logger.info("[APP_CHECK_TIMER]End Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(end_time)))
-        flag = False
         self.logger.info("[APP_CHECK_TIMER]Set Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(set_times)))
         while True:
             current_time = int(time.time())
-            if current_time >= set_times - 10:  # 从执行时间前10S开始观察设备状态
-                flag = True
-            if flag is True:
-                if same_power is True:
-                    time.sleep(10)
+            if current_time >= set_times:
                 while True:
                     state = self.ac.get_attribute(element, "name")
                     if state == power_state:
@@ -848,13 +853,13 @@ class WidgetOperationAL(LaunchAppAL):
                         break
                     else:
                         time.sleep(1)
-                        if time.time() > set_times + 60:  # 从执行时间后10S结束
+                        print "[APP_CHECK_TIMER]In Time %s" % time.strftime("%Y-%m-%d %X")
+                        if time.time() > end_time:
                             raise TimeoutException("Device state Error, current: %s" % state)
                 break
             else:
-                if time.time() > end_time:
-                    raise TimeoutException("Device state Error, timeout.")
                 time.sleep(1)
+                print "[APP_CHECK_TIMER]Out Time %s" % time.strftime("%Y-%m-%d %X")
 
     # 删除普通定时
     def delete_normal_timer(self):

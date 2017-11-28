@@ -107,4 +107,3 @@ class ALAppEem1(WidgetOperationAL):
         self.widget_click(self.page["set_elec_page"]["confirm"],
                           self.page["control_device_page"]["title"])
 
-        self.case_over(True)

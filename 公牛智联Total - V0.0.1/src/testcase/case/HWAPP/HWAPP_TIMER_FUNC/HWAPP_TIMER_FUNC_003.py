@@ -32,8 +32,23 @@ class HWAppTimerFunc3(WidgetOperationHW):
 
         self.wait_widget(self.page["timer_repeat_popup"]["everyday"])
 
-        self.wait_widget(self.page["timer_repeat_popup"]["weekday"])
-
         self.wait_widget(self.page["timer_repeat_popup"]["weekend"])
 
-        self.case_over(True)
+        self.wait_widget(self.page["timer_repeat_popup"]["define"])
+
+        self.widget_click(self.page["timer_repeat_popup"]["define"],
+                          self.page["timer_repeat_popup"]["monday"])
+
+        self.wait_widget(self.page["timer_repeat_popup"]["monday"])
+
+        self.wait_widget(self.page["timer_repeat_popup"]["tuesday"])
+
+        self.wait_widget(self.page["timer_repeat_popup"]["wednesday"])
+
+        self.wait_widget(self.page["timer_repeat_popup"]["thursday"])
+
+        self.wait_widget(self.page["timer_repeat_popup"]["friday"])
+
+        self.wait_widget(self.page["timer_repeat_popup"]["saturday"])
+
+        self.wait_widget(self.page["timer_repeat_popup"]["weekday"])

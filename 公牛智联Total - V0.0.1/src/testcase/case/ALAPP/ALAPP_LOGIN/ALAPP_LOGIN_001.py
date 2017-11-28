@@ -37,4 +37,3 @@ class ALAppLogin1(LaunchAppAL):
         self.widget_click(self.page["login_page"]["login_button"],
                           self.page["app_home_page"]["title"])
 
-        self.case_over(True)

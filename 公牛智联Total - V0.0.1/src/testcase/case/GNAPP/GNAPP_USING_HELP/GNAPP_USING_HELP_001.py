@@ -20,4 +20,3 @@ class GNAppUsingHelp1(WidgetOperationGN):
         self.widget_click(self.page["app_help_page"]["to_return"],
                           self.page["personal_settings_page"]["title"])
 
-        self.case_over(True)

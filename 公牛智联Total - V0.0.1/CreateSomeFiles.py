@@ -1,8 +1,8 @@
 # coding=utf-8
 try:
     from src.testcase.case.WaitCase import *
-except ImportError:
-    pass
+except ImportError, e:
+    print e
 from src.utils.SendMail import *
 
 _main_version = ""
@@ -15,7 +15,7 @@ class CreateFunc(object):
                     "GN": "公牛智联",
                     "JD": "京东微联",
                     "HW": "智能家居"}
-        app = str(func1.__name__)[-2:].upper()
+        app = getattr(func1, "__name__")[-2:][-2:].upper()
         a = []
         b = []
         for i in dir(func1):
@@ -46,7 +46,7 @@ class CreateFunc(object):
                 files.write('''        self.device["page"]["{0}"] = self.mpw.{0}()\n'''.format(i))
 
     def create_AppPageElement(self, func1, func2):
-        app = str(func1.__name__)[-2:].upper()
+        app = getattr(func1, "__name__")[-2:].upper()
         a = []
         b = []
         for i in dir(func1):
@@ -110,6 +110,8 @@ class CreateFunc(object):
                 for parent, dirnames, filenames in os.walk(os.path.join(parents, dirname)):
                     for dirname in [i for i in dirnames if "INPUT_CASE" not in i]:
                         path_tmp = os.path.join(parent, dirname)
+                        with open("%s/__init__.py" % path_tmp, "w") as tmp:
+                            del tmp
                         files = [i for i in os.listdir(path_tmp) if "pyc" not in i and "init" not in i]
                         input_name = files[0][:-7]
                         tmp = ""

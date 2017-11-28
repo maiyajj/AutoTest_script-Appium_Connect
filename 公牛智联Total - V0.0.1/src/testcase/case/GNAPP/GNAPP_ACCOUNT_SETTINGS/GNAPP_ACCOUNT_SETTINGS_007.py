@@ -33,4 +33,3 @@ class GNAppAccountSettings7(WidgetOperationGN):
         if state != "false":
             raise TimeoutException("nickname commit state is not false, current state is %s" % state)
 
-        self.case_over(True)

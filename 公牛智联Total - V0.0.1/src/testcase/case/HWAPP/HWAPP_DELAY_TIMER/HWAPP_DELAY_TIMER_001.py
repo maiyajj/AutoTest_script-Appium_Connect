@@ -32,6 +32,4 @@ class HWAppDelayTimer1(WidgetOperationHW):
         self.widget_click(self.page["control_device_page"]["power_button"],
                           self.page["control_device_page"]["power_off"])
 
-        self.check_timer(start_time_1, set_time_1, u"电源已关闭", same_power=True)
-
-        self.case_over(True)
+        self.check_timer(start_time_1, set_time_1, u"电源已关闭")

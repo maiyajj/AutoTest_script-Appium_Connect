@@ -52,4 +52,3 @@ class GNAppRegister3(WidgetOperationGN):
         if len(check_code) != 6:  # 检测验证码长度
             raise TimeoutException("check code len is not 6, current is %s" % len(check_code))
 
-        self.case_over(True)

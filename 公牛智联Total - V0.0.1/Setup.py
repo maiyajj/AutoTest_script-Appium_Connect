@@ -13,13 +13,13 @@ __build_version__ = ""
 
 
 class MainFunc(object):
-    def run(self, device_list, device_name, m_queue):
+    def run(self, device_list, device_name):
         """
         One process launch appium services.
         Another process launch test case.
         """
         # These two functions cannot run on the same process and can only be run with multiple processes.
-        appium = Process(target=LaunchAppiumServices, args=(device_list, device_name,), name=device_name)
+        appium = Process(target=LaunchAppiumServices, args=(device_list, device_name), name=device_name)
         appium.start()
         case = Process(target=WaitCase, args=(device_list, device_name, m_queue))
         case.start()
@@ -52,6 +52,6 @@ if __name__ == '__main__':
 
     # Start app auto test process.
     # Open an equal number of processes according to the number of mobile phones.
-    process = [Process(target=mf.run, args=(device_list, device_name, m_queue)) for device_name in device_list.keys()]
+    process = [Process(target=mf.run, args=(device_list, device_name)) for device_name in device_list.keys()]
     for i in process:
         i.start()

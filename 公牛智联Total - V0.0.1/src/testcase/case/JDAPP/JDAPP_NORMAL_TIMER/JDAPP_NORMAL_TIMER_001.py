@@ -36,4 +36,3 @@ class JDAppNormalTimer1(WidgetOperationJD):
 
         self.check_timer(start_time_1, set_time_1, u"设备已开启", True)
         
-        self.case_over(True)

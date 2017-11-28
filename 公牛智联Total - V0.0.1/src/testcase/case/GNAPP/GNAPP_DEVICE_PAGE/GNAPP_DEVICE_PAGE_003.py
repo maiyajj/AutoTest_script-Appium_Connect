@@ -37,4 +37,3 @@ class GNAppDevicePage3(WidgetOperationGN):
         self.widget_click(self.page["terminate_add_device_popup"]["cancel"],
                           self.page["scan_with_subscribe_page"]["title"])
 
-        self.case_over(True)

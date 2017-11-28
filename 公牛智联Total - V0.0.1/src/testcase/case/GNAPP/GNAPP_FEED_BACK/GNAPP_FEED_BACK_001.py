@@ -20,4 +20,3 @@ class GNAppFeedBack1(WidgetOperationGN):
         self.widget_click(self.page["feedback_page"]["to_return"],
                           self.page["personal_settings_page"]["title"])
 
-        self.case_over(True)

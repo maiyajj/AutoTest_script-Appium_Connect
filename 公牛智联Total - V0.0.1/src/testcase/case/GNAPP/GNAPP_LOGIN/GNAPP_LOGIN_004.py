@@ -77,4 +77,3 @@ class GNAppLogin4(WidgetOperationGN):
             except TimeoutException:
                 pass
 
-        self.case_over(True)

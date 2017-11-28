@@ -47,4 +47,3 @@ class ALAppCycleTimer4(WidgetOperationAL):
         self.check_timer(device, start_time_3, set_time_3, u"关")
         self.check_timer(device, start_time_4, set_time_4, u"关", same_power=True)
 
-        self.case_over(True)

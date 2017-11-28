@@ -17,4 +17,3 @@ class GNAppForgetPassword1(WidgetOperationGN):
         self.widget_click(self.page["find_password_page"]["to_return"],
                           self.page["login_page"]["title"])
 
-        self.case_over(True)

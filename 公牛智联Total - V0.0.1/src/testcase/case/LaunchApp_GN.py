@@ -3,6 +3,7 @@ import inspect
 from httplib import BadStatusLine
 from urllib2 import URLError
 
+import psutil
 from appium import webdriver
 
 from src.testcase.case.ToDevicePage import *
@@ -11,31 +12,9 @@ from src.testcase.common.WidgetCheckUnit import *
 from src.utils.ScreenShot import *
 
 
-# 初始化APP
-def decor_init_app(func):
-    def wrapper(self):
-        while True:
-            try:
-                self.check_appium_launch()  # 检查Appium服务是否启动
-                try:
-                    self.driver.quit()
-                    self.debug.warn("driver quit success")
-                except BaseException:
-                    self.debug.warn("driver need not quit")
-                func(self)  # 执行self.launch_fail_fix()
-                self.debug.info("init_app driver(close_app success)")
-                break
-            except BaseException:
-                self.debug.error(traceback.format_exc())
-
-    return wrapper
-
-
 # launch()启动APP
 def decor_launch_app(func):
     def wrapper(self, page_login):
-        global driver
-        self.driver = driver  # 实例化driver
         self.debug.info("basename: %s" % self.basename)
         self.data_statistics(self.zentao_id)  # 初始化数据统计
         i = 0
@@ -103,6 +82,8 @@ def launch_fail_fix(func):
                 self.debug.error("launch_app driver(BadStatusLine)")
                 self.http_run_app(True)  # 重置Appium服务后重新启动APP
                 break
+            except BaseException:
+                self.debug.error(traceback.format_exc())
 
     return wrapper
 
@@ -115,23 +96,31 @@ def case_run(bool):
             self.basename = re.findall(r"\((.+?)\)", inspect.stack()[2][4][0])[0]  # 获取用例的文件名称:GNAPP_LOGIN_001
             self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                              % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
-
             try:
                 self.launch_app(bool)  # 启动APP并使APP跳转到指定页面
                 try:
                     self.case()  # 执行测试用例
+                    self.case_over(True)  # 用例执行成功
                 except TimeoutException:
                     self.case_over(False)  # 用例执行失败
-                    self.debug.error("case_over: %s" % traceback.format_exc())  # 记录错误信息
+                    self.debug.error("case_over: %s\n" % traceback.format_exc())  # 记录错误信息
+                    self.debug.error("Now page source: \n%s" % self.driver.page_source)
                 database["unknown"] = 0  # 用例有执行成功过说明Appium服务运行正常，次数归零
             except BaseException:
-                self.debug.error(traceback.format_exc())  # Message: ***
                 self.case_over("unknown")  # 用例执行错误
+                self.debug.error("case_error: %s\n" % traceback.format_exc())  # Message: ***
+                self.debug.error("Now page source: \n%s" % self.driver.page_source)
                 database["unknown"] += 1  # 用例执行错误次数+1
-                if database["unknown"] > 2:  # 执行错误次数大于2次重置Appium服务
+                if database["unknown"] > 5:  # 执行错误次数大于5次重置Appium服务
                     database["unknown"] = 0
                     self.debug.error("Too many unknown case!: %s" % self.basename)
                     self.reset_port()
+            finally:
+                try:
+                    self.driver.quit()  # 用例执行结束关闭断开连接
+                    self.debug.warn("driver quit success")
+                except BaseException:
+                    self.debug.warn("driver need not quit")
 
             # 记录运行结果
             return self.result()
@@ -161,7 +150,7 @@ class LaunchAppGN(object):
         self.zentao_id = 0000  # 禅道ID
         self.basename = ""  # 用例自动化文件名称
         self.success = False  # 初始化用例执行结果
-        # self.start_fail = False  # 初始化APP启动结果
+        self.main_pid = psutil.Process(os.getpid()).parent().parent().pid  # 主进程pid
         self.widget_click = None  # 初始化
         self.wait_widget = None  # 初始化
         self.start_time = None  # 初始化
@@ -214,6 +203,9 @@ class LaunchAppGN(object):
         """
         end_time = time.time() + 10
         while True:
+            # 主进程崩溃后有残留子进程，关闭当前子进程
+            if not psutil.pid_exists(self.main_pid):
+                psutil.Process(os.getpid()).kill()
             try:
                 self.sc.find_proc_and_pid_by_port(self.port)[0]
             except IndexError:
@@ -224,22 +216,6 @@ class LaunchAppGN(object):
             else:
                 self.debug.info("Appium Sever launch Success! %s" % time.strftime("%Y-%m-%d %X"))
                 break
-
-    # 初始化启动APP
-    @decor_init_app
-    @launch_fail_fix
-    def init_app(self):
-        """
-        初始化APP，建立PC和手机通讯
-        :return: driver
-        """
-        global driver  # init_app在对应的WaitCase文件中执行，数据在当前文件无法使用，driver需定义为全局变量
-        with open("appium command %s.txt" % self.device_name, "a") as files:
-            files.write('''driver = webdriver.Remote('http://localhost:%s/wd/hub', %s)''' % (
-                self.device_info["port"], self.device_info["desired_caps"]) + "\n\n")
-
-        driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
-                                  self.device_info["desired_caps"])  # 启动APP
 
     # 实例化用例操作
     def init_operate(self):
@@ -268,17 +244,9 @@ class LaunchAppGN(object):
     @decor_launch_app
     @launch_fail_fix
     def launch_app(self):
-        self.debug.warn("launch_app driver(ready launch)")
-        # 关闭APP，恢复测试场景
-        try:
-            self.driver.close_app()
-            time.sleep(1)
-            self.debug.info("launch_app close_app success")
-        except BaseException:
-            self.debug.info("launch_app close_app error success")
-        self.driver.launch_app()
-        time.sleep(0.5)
-        self.debug.info("launch_app driver(launch_app success)")
+        self.check_appium_launch()  # 判断Appium服务是否已启动
+        self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
+                                       self.device_info["desired_caps"])  # 启动APP
 
     # 用例执行完毕
     def case_over(self, success):

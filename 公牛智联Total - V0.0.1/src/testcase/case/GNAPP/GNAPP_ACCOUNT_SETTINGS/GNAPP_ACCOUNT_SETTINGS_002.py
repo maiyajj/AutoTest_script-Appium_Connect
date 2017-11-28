@@ -56,4 +56,3 @@ class GNAppAccountSettings2(WidgetOperationGN):
         self.widget_click(self.page["change_pwd_page"]["commit"],
                           self.page["login_page"]["title"])
 
-        self.case_over(True)

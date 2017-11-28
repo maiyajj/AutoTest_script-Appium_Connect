@@ -26,4 +26,3 @@ class JDAppKeyMemory1(WidgetOperationJD):
             self.logger.info(u"[APP_INFO]Device info: power off")
             tmp -= 1
 
-        self.case_over(True)

@@ -113,4 +113,3 @@ class GNAppLogin5(WidgetOperationGN):
         self.widget_click(self.page["login_page"]["login_button"],
                           self.page["device_page"]["title"])
 
-        self.case_over(True)

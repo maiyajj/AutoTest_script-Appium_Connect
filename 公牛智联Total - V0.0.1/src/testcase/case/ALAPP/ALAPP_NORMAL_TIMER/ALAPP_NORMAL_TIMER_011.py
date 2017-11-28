@@ -48,4 +48,3 @@ class ALAppNormalTimer11(WidgetOperationAL):
             if tmp not in attribute:
                 raise TimeoutException("loop is wrong!")
 
-        self.case_over(True)

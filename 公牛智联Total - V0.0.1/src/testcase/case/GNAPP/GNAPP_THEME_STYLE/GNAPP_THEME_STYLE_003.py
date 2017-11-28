@@ -23,4 +23,3 @@ class GNAppThemeStyle3(WidgetOperationGN):
         # 截取屏幕信息
         ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
 
-        self.case_over(True)

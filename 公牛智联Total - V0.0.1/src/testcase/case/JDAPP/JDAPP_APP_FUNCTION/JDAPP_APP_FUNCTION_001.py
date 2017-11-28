@@ -78,4 +78,3 @@ class JDAppAppFunction1(WidgetOperationJD):
         self.widget_click(self.page["timer_log_clear_popup"]["confirm"],
                           self.page["timer_log_page"]["no_log"])
 
-        self.case_over(True)

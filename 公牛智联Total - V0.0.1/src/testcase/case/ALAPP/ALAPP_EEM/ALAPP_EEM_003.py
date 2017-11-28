@@ -120,4 +120,3 @@ class ALAppEem3(WidgetOperationAL):
         if sum(elec_bill.values()) != sum(peak_price) * int(peak_data) + sum(valley_price) * int(valley_data):
             raise TimeoutException(elec_bill_info)
 
-        self.case_over(True)

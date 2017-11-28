@@ -70,4 +70,3 @@ class ALAppEem2(WidgetOperationAL):
         if re.findall(u"日总电量", elec_elements) == []:
             raise TimeoutException("day elec time2 is wrong, current: %s" % [elec_elements])
 
-        self.case_over(True)

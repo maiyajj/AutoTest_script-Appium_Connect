@@ -84,7 +84,6 @@ class WaitCaseJD(object):
                                  "logger": self.logger,
                                  "app": self.app,
                                  "sc": self.sc}
-        LaunchAppJD(**self.device_info_list).init_app()
 
     # 检查Appium服务是否启动
     def check_appium(self):

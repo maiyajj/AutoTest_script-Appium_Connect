@@ -35,4 +35,3 @@ class GNAppMessageClassify3(WidgetOperationGN):
             self.widget_click(self.page["home_message_page"]["message_activity"],
                               self.page["home_message_page"]["title"])
 
-        self.case_over(True)

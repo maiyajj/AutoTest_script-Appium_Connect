@@ -44,7 +44,7 @@ class Mailer(object):
                 if self.file_path != []:
                     self.file_path = map(f, self.file_path)
                     break
-            except WindowsError:
+            except BaseException:
                 time.sleep(1)
 
         # Refresh time per second.

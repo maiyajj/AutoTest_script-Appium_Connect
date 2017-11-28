@@ -29,4 +29,3 @@ class HWAppDelayTimer3(WidgetOperationHW):
 
         self.check_timer(start_time_1, set_time_1, u"电源已开启")
 
-        self.case_over(True)

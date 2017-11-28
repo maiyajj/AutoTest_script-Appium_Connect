@@ -32,4 +32,3 @@ class GNAppRegister12(WidgetOperationGN):
         if len(user_name) != 11:
             raise TimeoutException("user name len is not 11, current is %s" % len(user_name))
 
-        self.case_over(True)

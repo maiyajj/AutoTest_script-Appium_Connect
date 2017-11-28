@@ -86,12 +86,12 @@ class WidgetOperationJD(LaunchAppJD):
         # 时滚轮
         lcx_h, lcy_h, szw_h, szh_h = self.set_roll(elem_h)
         pxx_h, pxy_h = elem_h[3]["px"]
-        aszh_h = int(szh_h / 5)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度，默认为5
+        aszh_h = int(szh_h / 5 * 4 / 5)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度，默认为5
         start_x_h, start_y_h = int(lcx_h + pxx_h * szw_h), int(lcy_h + szh_h / 2)  # “时”滚轮的操作起始点
         # 分滚轮
         lcx_m, lcy_m, szw_m, szh_m = self.set_roll(elem_m)
         pxx_m, pxy_m = elem_m[3]["px"]
-        aszh_m = int(szh_m / 5)
+        aszh_m = int(szh_m / 5 * 4 / 5)
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_m + szh_m / 2)  # “分”滚轮的操作起始点
 
         time_roll = time.strftime("%Y-%m-%d r:00").replace("r", elem_t)  # 滚轮的当前时间
@@ -150,12 +150,18 @@ class WidgetOperationJD(LaunchAppJD):
             end_y_m = start_y_m
 
         # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
+        swipe = self.ac.swipe
+        swipe_time = conf["roll_time"]["JD"]
         while time_et_m_a > 0:
-            self.driver.swipe(start_x_m, start_y_m, start_x_m, end_y_m, 0)
+            swipe(start_x_m, start_y_m, start_x_m, end_y_m, self.driver, 0, False)
+            print time_et_m_a
             time_et_m_a -= 1
+            time.sleep(swipe_time)
         while time_et_h_a > 0:
-            self.driver.swipe(start_x_h, start_y_h, start_x_h, end_y_h, 0)
+            swipe(start_x_h, start_y_h, start_x_h, end_y_h, self.driver, 0, False)
+            print time_et_h_a
             time_et_h_a -= 1
+            time.sleep(swipe_time)
 
         self.logger.info("start_time: %s, set_time: %s" % (start_time, set_time))
         if self.ac.get_attribute(self.wait_widget(elem_t), "name") == set_time[11:16]:
@@ -164,7 +170,7 @@ class WidgetOperationJD(LaunchAppJD):
             raise TimeoutException("timer set error")
 
     # 创建普通定时
-    def create_normal_timer(self, now_time, delay_time, power, loop):
+    def create_normal_timer(self, now_time, delay_time, power, delay_s=120, loop=u"执行一次"):
         '''
 
         :param now_time: now time
@@ -176,21 +182,31 @@ class WidgetOperationJD(LaunchAppJD):
         self.widget_click(self.page["normal_timer_page"]["add_timer"],
                           self.page["add_normal_timer_page"]["title"])
 
-        start_time, set_time = self.set_timer_roll(self.page["add_normal_timer_page"]["roll_h"],
-                                                   self.page["add_normal_timer_page"]["roll_m"],
-                                                   self.page["add_normal_timer_page"]["set_timer"],
-                                                   delay_time, now_time)
+        start_time, start_set_time = self.set_timer_roll(self.page["add_normal_timer_page"]["roll_h"],
+                                                         self.page["add_normal_timer_page"]["roll_m"],
+                                                         self.page["add_normal_timer_page"]["set_timer"],
+                                                         delay_time, now_time, delay_s=delay_s)
+        now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X"))
+
+        if start_set_time <= now:
+            start_set_time = start_set_time + 3600 * 24
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
         self.widget_click(self.page["add_normal_timer_page"][power],
                           self.page["add_normal_timer_page"]["title"])
 
-        self.set_timer_loop("add_normal_timer_page", loop)
+        cycle = self.set_timer_loop("add_normal_timer_page", loop)
+
+        if cycle == ["None"]:
+            cycle = [time.strftime("%A", time.localtime(start_set_time)).lower()]
 
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
         self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
 
-        return start_time, set_time
+        return start_time, start_set_time
 
     # 设置普通/模式定时循环模式
     def set_timer_loop(self, page, loop):
@@ -217,9 +233,11 @@ class WidgetOperationJD(LaunchAppJD):
             if loop == u"执行一次":
                 self.widget_click(self.page["timer_repeat_page"]["repeat_button"],
                                   self.page["timer_repeat_page"]["once"])
+                cycle = ["None"]
             elif loop == u"永久循环":
                 self.widget_click(self.page["timer_repeat_page"]["fish_repeat_button"],
                                   self.page["timer_repeat_page"]["forever"])
+                cycle = [u"0次"]
             else:
                 try:
                     self.wait_widget(self.page["timer_repeat_page"]["everyday"])
@@ -237,60 +255,92 @@ class WidgetOperationJD(LaunchAppJD):
                     for i in loop:
                         self.widget_click(self.page["timer_repeat_page"][loop_mode[i]],
                                           self.page["timer_repeat_page"]["title"])
+                    cycle = [loop_mode[i] for i in loop]
                 else:
                     self.widget_click(self.page["timer_repeat_page"][loop_mode[loop]],
                                       self.page["timer_repeat_page"]["title"])
+                    cycle = [loop_mode[loop]]
 
             self.widget_click(self.page["timer_repeat_page"]["to_return"],
                               self.page[page]["title"])
             attribute = self.ac.get_attribute(self.wait_widget(self.page[page]["repeat"]), "name")
             if tmp not in attribute:
                 raise TimeoutException("Cycle set error")
+        else:
+            if loop == u"执行一次":
+                cycle = ["None"]
+            elif loop == u"永久循环":
+                cycle = [u"0次"]
+            elif isinstance(loop, list):
+                cycle = [loop_mode[i] for i in loop]
+            else:
+                cycle = [loop_mode[loop]]
+        return cycle
 
     # 定时检查模板
-    def check_timer(self, start_time, set_time, power_state, same_power=False):
-        start_h, start_m = start_time.split(":")
-        start_times = int(start_h) * 60 + int(start_m)
-        set_h, set_m = set_time.split(":")
-        set_times = int(set_h) * 60 + int(set_m)
-        if start_times < set_times:
-            delay_times = (set_times - start_times) * 60
+    def check_timer(self, start_time, set_time, power_state, cycle):
+        # 开始时间, 设置时间
+        start_times = time.strftime("%Y-%m-%d %X", time.localtime(start_time))
+        self.logger.info("[APP_CHECK_TIMER]Now time: %s. Start time: %s" % (time.strftime("%Y-%m-%d %X"), start_times))
+        now_week = time.strftime("%A").lower()
+        if cycle is None:
+            set_week = now_week
         else:
-            delay_times = 24 * 60 * 60 + (set_times - start_times) * 60
-        self.logger.info("[APP_TIMER]Delay Time: %s" % (delay_times + 30))
+            if len(cycle) == 1:
+                set_week = cycle[0]
+            else:
+                set_week = ",".join(cycle)
+        self.logger.info("[APP_CHECK_TIMER]Now week: %s, Set week: %s" % (now_week, set_week))
+        i = 0
         while True:
-            if time.strftime("%H:%M") == start_time:
-                now = time.time()
+            now_week = time.strftime("%A").lower()
+            if now_week in set_week:
+                tmp = time.strftime("%Y-%m-%d ")
+                tmp = tmp + time.strftime("%X", time.localtime(set_time))
+                set_times = int(time.mktime(time.strptime(tmp, "%Y-%m-%d %X")))
                 break
             else:
-                time.sleep(1)
-        self.logger.info("[APP_TIMER]Now Time: %s" % time.strftime("%X"))
-        element = self.wait_widget(self.page["control_device_page"]["power_state"])
-        while True:
-            if time.strftime("%H:%M") == set_time:
-                if same_power is False:
-                    while True:
-                        if self.ac.get_attribute(element, "name") == power_state:
-                            self.logger.info("[APP_TIMER]End Time: %s[%s]" % (time.strftime("%X"), time.time()))
-                            self.logger.info(u"[APP_INFO]Device Info: %s" % power_state)
-                            break
-                        else:
-                            time.sleep(1)
+                if time.strftime("%M") == "00":
+                    self.logger.info("now week: %s" % now_week)
                 else:
-                    while True:
-                        time.sleep(10)
-                        if self.ac.get_attribute(element, "name") == power_state:
-                            self.logger.info(
-                                "[APP_TIMER]End Time: %s[%s]" % (time.strftime("%X"), (time.time() - 10)))
-                            self.logger.info(u"[APP_INFO]Device Info: %s" % power_state)
-                            break
-                        else:
-                            time.sleep(1)
+                    print("********************")
+                    print("now week: %s" % now_week)
+                    print("********************")
+                    try:
+                        self.driver.tap([(10, 10)])
+                    except BaseException:
+                        i += 1
+                        if i == 3:
+                            raise TimeoutException("tap error!")
+                    time.sleep(1)
+
+        delay_times = set_times - start_time
+        self.logger.info("[APP_CHECK_TIMER]Delay Time: %s" % delay_times)
+        if delay_times < 0:
+            raise TimeoutException("Set time is before now time, delay time is: %s" % delay_times)
+
+        element = self.wait_widget(self.page["control_device_page"]["power_state"])
+        end_time = set_times + 30
+        self.logger.info("[APP_CHECK_TIMER]End Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(end_time)))
+        self.logger.info("[APP_CHECK_TIMER]Set Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(set_times)))
+        while True:
+            current_time = int(time.time())
+            if current_time >= set_times:
+                while True:
+                    state = self.ac.get_attribute(element, "name")
+                    if state == power_state:
+                        self.logger.info("[APP_CHECK_TIMER]Current Time: %s" % time.strftime("%Y-%m-%d %X"))
+                        self.logger.info("[APP_CHECK_TIMER]Device Info: %s" % power_state)
+                        break
+                    else:
+                        time.sleep(1)
+                        print "[APP_CHECK_TIMER]In Time %s" % time.strftime("%Y-%m-%d %X")
+                        if time.time() > end_time:
+                            raise TimeoutException("Device state Error, current: %s" % state)
                 break
             else:
-                if time.time() > now + delay_times + 30:
-                    raise TimeoutException("Device state Error")
                 time.sleep(1)
+                print "[APP_CHECK_TIMER]Out Time %s" % time.strftime("%Y-%m-%d %X")
 
     # 删除普通定时
     def delete_normal_timer(self):

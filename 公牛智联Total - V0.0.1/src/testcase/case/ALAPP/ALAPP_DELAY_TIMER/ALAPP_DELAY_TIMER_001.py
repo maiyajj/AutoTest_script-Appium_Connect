@@ -59,4 +59,3 @@ class ALAppDelayTimer1(WidgetOperationAL):
 
         self.check_timer(device, start_time_2, set_time_2, u"关")
 
-        self.case_over(True)

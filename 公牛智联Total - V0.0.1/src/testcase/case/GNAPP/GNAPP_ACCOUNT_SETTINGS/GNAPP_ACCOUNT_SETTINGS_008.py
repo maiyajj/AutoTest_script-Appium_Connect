@@ -40,4 +40,3 @@ class GNAppAccountSettings8(WidgetOperationGN):
         if modified_nickname != u"被修改的昵称":
             raise TimeoutException("nickname is different from modified_nickname,current %s" % [modified_nickname])
 
-        self.case_over(True)

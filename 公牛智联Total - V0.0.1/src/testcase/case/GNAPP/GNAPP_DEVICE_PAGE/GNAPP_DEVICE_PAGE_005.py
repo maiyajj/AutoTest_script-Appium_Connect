@@ -37,4 +37,3 @@ class GNAppDevicePage5(WidgetOperationGN):
 
         self.wait_widget(self.page["add_device_failed_page"]["cancel"], 60, 1)
 
-        self.case_over(True)

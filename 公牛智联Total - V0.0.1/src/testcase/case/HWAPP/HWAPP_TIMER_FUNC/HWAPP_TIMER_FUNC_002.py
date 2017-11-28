@@ -54,4 +54,3 @@ class HWAppTimerFunc2(WidgetOperationHW):
         except TimeoutException:
             pass
 
-        self.case_over(True)

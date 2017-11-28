@@ -81,4 +81,3 @@ class ALAppSmartLink1(WidgetOperationAL):
                     raise TimeoutException("search device timeout!")
                 time.sleep(1)
 
-        self.case_over(True)

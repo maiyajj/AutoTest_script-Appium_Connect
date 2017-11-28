@@ -20,4 +20,3 @@ class GNAppThemeStyle1(WidgetOperationGN):
         self.widget_click(self.page["theme_style_page"]["to_return"],
                           self.page["personal_settings_page"]["title"])
 
-        self.case_over(True)

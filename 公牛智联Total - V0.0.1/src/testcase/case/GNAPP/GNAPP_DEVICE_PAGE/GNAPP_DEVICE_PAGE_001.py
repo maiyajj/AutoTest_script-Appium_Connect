@@ -31,4 +31,3 @@ class GNAppDevicePage1(WidgetOperationGN):
 
         self.wait_widget(self.page["device_page"]["weather"])
 
-        self.case_over(True)

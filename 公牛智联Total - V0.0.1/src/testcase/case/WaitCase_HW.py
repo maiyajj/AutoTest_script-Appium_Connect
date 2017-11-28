@@ -85,7 +85,6 @@ class WaitCaseHW(object):
                                  "logger": self.logger,
                                  "app": self.app,
                                  "sc": self.sc}
-        LaunchAppHW(**self.device_info_list).init_app()
 
     # 检查Appium服务是否启动
     def check_appium(self):
@@ -127,14 +126,14 @@ class WaitCaseHW(object):
             self.write_report(HWAppDelayTimer1)  # 2100, 延时定时设置后，改变设备状态后查看延时定时的执行状态
             self.write_report(HWAppDelayTimer2)  # 2099, 在线状态，1组单关的延时定时执行状态检查
             self.write_report(HWAppDelayTimer3)  # 2098, 在线状态，1组单开的延时定时执行状态检查
-            self.write_report(HWAppNormalTimer1)  # 2079, 在线状态，临界点1组开与1组关的定时执行状态检查
+            # self.write_report(HWAppNormalTimer1)  # 2079, 在线状态，临界点1组开与1组关的定时执行状态检查
             # self.write_report(HWAppNormalTimer2)  # 2064, 在线状态，4组开与4组关按自定义方式执行的定时执行状态检查
             # self.write_report(HWAppNormalTimer3)  # 2063, 在线状态，4组开与4组关按周末方式执行的定时执行状态检查
             # self.write_report(HWAppNormalTimer4)  # 2062, 在线状态，4组开与4组关按工作日方式执行的定时执行状态检查
             self.write_report(HWAppNormalTimer5)  # 2061, 在线状态，4组开与4组关单次执行的定时执行状态检查
             # self.write_report(HWAppNormalTimer6)  # 2060, 在线状态，1组开与1组关按自定义方式执行的定时执行状态检查
             # self.write_report(HWAppNormalTimer7)  # 2059, 在线状态，1组开与1组关按周末执行的定时执行状态检查
-            self.write_report(HWAppNormalTimer8)  # 2058, 在线状态，1组开与1组关按工作日执行的定时执行状态检查
+            # self.write_report(HWAppNormalTimer8)  # 2058, 在线状态，1组开与1组关按工作日执行的定时执行状态检查
             # self.write_report(HWAppNormalTimer9)  # 2057, 在线状态，临界点1组开与1组关的定时执行状态检查
             self.write_report(HWAppNormalTimer10)  # 2056, 在线状态，1组开与1组关定时执行状态检查
             self.write_report(HWAppNormalTimer11)  # 2055, 在线状态，1组单关定时执行状态检查

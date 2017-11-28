@@ -20,4 +20,3 @@ class ALAppSwitch1(WidgetOperationAL):
             self.widget_click(self.page["control_device_page"]["power_button"],
                               self.page["control_device_page"]["title"])
 
-        self.case_over(True)

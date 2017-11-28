@@ -32,4 +32,3 @@ class GNAppVersion1(WidgetOperationGN):
         if current_version == new_version and btn_state != "false":
             raise TimeoutException("btn state state is not false, current is %s" % btn_state)
 
-        self.case_over(True)

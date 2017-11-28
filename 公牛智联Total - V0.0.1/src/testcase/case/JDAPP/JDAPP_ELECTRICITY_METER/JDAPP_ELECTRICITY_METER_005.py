@@ -45,4 +45,3 @@ class JDAppElectricityMeter5(WidgetOperationJD):
         if re.findall(u"月.+", self.ac.get_attribute(elec_elements, "name")) != []:
             raise TimeoutException("elec time2 is wrong, current is %s" % elec_elements)
 
-        self.case_over(True)

@@ -23,13 +23,13 @@ class HWAppNormalTimer11(WidgetOperationHW):
                           self.page["normal_timer_page"]["title"])
 
         now = time.strftime("%H:%M")
+        delay_s = 120 + 1 * ((59 + 23) * 1)
 
         delay_time_1 = 2
-        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, time_off=delay_time_1)
+        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, time_off=delay_time_1, delay_s=delay_s)
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
 
         self.check_timer(start_time_1, set_time_1, u"电源已关闭", cycle1)
 
-        self.case_over(True)

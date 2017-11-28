@@ -31,4 +31,3 @@ class GNAppAccountSettings4(WidgetOperationGN):
         if len(pwd) != 0:
             raise TimeoutException("pwd len is wrong, current len is %s" % len(pwd))
 
-        self.case_over(True)

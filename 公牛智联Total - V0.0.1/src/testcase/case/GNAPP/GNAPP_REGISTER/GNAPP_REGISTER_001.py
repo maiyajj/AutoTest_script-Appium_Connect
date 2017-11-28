@@ -17,4 +17,3 @@ class GNAppRegister1(WidgetOperationGN):
         self.widget_click(self.page["register_page"]["to_login"],
                           self.page["login_page"]["title"])
 
-        self.case_over(True)

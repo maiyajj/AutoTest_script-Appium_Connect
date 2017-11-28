@@ -62,5 +62,4 @@ class JDAppOverDay6(WidgetOperationJD):
     
         self.check_timer(start_time_2, set_time_2, u"设备已开启")
         
-        self.case_over(True)
     

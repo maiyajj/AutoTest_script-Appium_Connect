@@ -27,4 +27,3 @@ class GNAppAccountSettings6(WidgetOperationGN):
         self.widget_click(self.page["change_nickname_page"]["to_return"],
                           self.page["account_setting_page"]["title"])
 
-        self.case_over(True)

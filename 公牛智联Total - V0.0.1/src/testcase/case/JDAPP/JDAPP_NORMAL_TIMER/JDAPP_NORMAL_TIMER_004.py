@@ -70,4 +70,3 @@ class JDAppNormalTimer4(WidgetOperationJD):
 
         self.wait_widget(self.page["control_device_page"]["power_off"])
 
-        self.case_over(True)

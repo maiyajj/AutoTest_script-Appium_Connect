@@ -8,6 +8,12 @@ request_timeout: 30
 offline_recovery_timeout: 10
 # 程序操作等待时间
 operate_wait_time: 0.1
+# 滚轮滑动等待时间
+roll_time:
+  GN: 0.3
+  AL: 0.3
+  JD: 0.3
+  HW: 0.3
 # 待添加的设备Mac
 MAC:
   JD:

@@ -27,7 +27,7 @@ class HWAppNormalTimer7(WidgetOperationHW):
         delay_time_1 = ["point", "10:00"]
         delay_time_2 = ["point", "14:00"]
         start_time_1, set_time_1, start_time_2, set_time_2, cycle1, cycle2 = self.create_normal_timer(
-            now, delay_time_1, delay_time_2, u"周末")
+            now, delay_time_1, delay_time_2, loop=u"周末")
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -35,4 +35,3 @@ class HWAppNormalTimer7(WidgetOperationHW):
         self.check_timer(start_time_1, set_time_1, u"电源已开启", cycle1)
         self.check_timer(start_time_2, set_time_2, u"电源已关闭", cycle2)
 
-        self.case_over(True)

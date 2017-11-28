@@ -13,4 +13,3 @@ class JDAppElectricityMeter1(WidgetOperationJD):
     def case(self):
         self.choose_home_device(conf["MAC"]["JD"][0])
 
-        self.case_over(True)

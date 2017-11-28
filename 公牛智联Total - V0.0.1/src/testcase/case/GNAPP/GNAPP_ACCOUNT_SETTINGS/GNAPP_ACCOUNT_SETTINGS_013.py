@@ -37,4 +37,3 @@ class GNAppAccountSettings13(WidgetOperationGN):
         if len(nick_name) != 16:
             raise TimeoutException("nick name len is not 16, current len is %s" % len(nick_name))
 
-        self.case_over(True)

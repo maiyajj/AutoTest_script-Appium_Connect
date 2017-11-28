@@ -37,4 +37,3 @@ class HWAppControl1(WidgetOperationHW):
         if state != u"电源已关闭":
             raise TimeoutException("power state is error,current: %s" % [state])
 
-        self.case_over(True)

@@ -42,4 +42,3 @@ class GNAppAccountSettings3(WidgetOperationGN):
         except ValueError:
             raise TimeoutException("logout popup still show")
 
-        self.case_over(True)

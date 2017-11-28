@@ -51,4 +51,3 @@ class GNAppRegister9(WidgetOperationGN):
         if len(pwd) != 0:
             raise TimeoutException("pwd len is not 0, current is %s" % len(pwd))
 
-        self.case_over(True)

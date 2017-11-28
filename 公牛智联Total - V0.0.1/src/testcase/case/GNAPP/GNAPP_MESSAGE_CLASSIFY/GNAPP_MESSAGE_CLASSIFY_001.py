@@ -89,4 +89,3 @@ class GNAppMessageClassify1(WidgetOperationGN):
         if result != "true":
             raise TimeoutException("A5 state is not true, current is %s" % result)
 
-        self.case_over(True)

@@ -32,4 +32,3 @@ class HWAppOtherFunc1(WidgetOperationHW):
         if device_model != "GN-Y201H":
             raise TimeoutException("device_model is error, current: device_model: %s" % device_model)
 
-        self.case_over(True)

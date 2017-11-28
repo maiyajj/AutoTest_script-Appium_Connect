@@ -14,4 +14,3 @@ class GNAppLogin2(WidgetOperationGN):
         self.widget_click(self.page["login_page"]["to_find_password"],
                           self.page["find_password_page"]["title"])
 
-        self.case_over(True)

@@ -100,4 +100,3 @@ class ALAppCrossTimer1(WidgetOperationAL):
         self.check_timer(device, start_time_14, set_time_14, u"关")
         self.check_timer(device, start_time_15, set_time_15, u"开")
 
-        self.case_over(True)

@@ -25,4 +25,3 @@ class GNAppMessageClassify5(WidgetOperationGN):
 
         self.wait_widget(self.page["message_setting_page"]["clear_device"])
 
-        self.case_over(True)

@@ -31,4 +31,3 @@ class GNAppRegister8(WidgetOperationGN):
         if len(check_code) != 0:
             raise TimeoutException("check code len is not 0, current is %s" % len(check_code))
 
-        self.case_over(True)
