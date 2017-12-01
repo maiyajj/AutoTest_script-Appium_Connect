@@ -4,6 +4,7 @@ import datetime
 from xlwt import *
 
 from data.Database import *
+from src.utils.ReadConf import *
 from src.utils.ShellCommand import *
 
 '''
@@ -36,13 +37,18 @@ class WriteXls(object):
         self.device_list = device_list
         self.device_name = device_name
         self.device_info = device_list[device_name]
+        self.app = self.device_info["app"]
+        self.user = conf["app_device_name"][self.app]
+        self.app_name = self.user["app_name"]
+        self.device_name = self.user["device_name"]
+        self.app_ver = self.user["app_ver"]
         self.debug = self.device_info["debug"]
         self.run()
 
     # 单元格格式
     def easy_xf(self):
         self.easyxf1 = easyxf(u'font: height 320, name 宋体, colour_index 70, bold on;'
-                              u'align: wrap on, vert top, horiz left;'
+                              u'align: wrap on, vert top, horiz centre;'
                               u'borders: top thin, left thin, right thin;')
 
         self.easyxf2 = easyxf(u'font: height 220, name 宋体;'
@@ -117,53 +123,76 @@ class WriteXls(object):
         self.easy_xf()
         self.check_path()
 
-        self.case_count = []
+        self.case_row = {}
         self.total_row = []
         self.book = Workbook(encoding='utf-8')
         self.sheet = self.book.add_sheet(self.sheet_name, cell_overwrite_ok=True)
-        self.write_title()
+        self.row = self.write_title()
+        self.scan_case_files()
         self.book.save(self.xls_file)
-        return self.book
+        database["case_row"] = self.case_row
 
     # 报告模板设计，根据手动设计报告模板，使用函数实现
     def write_title(self):
-        self.sheet.col(0).width = 256 * 15
+        row = 0
+        self.sheet.col(0).width = 256 * 17
         self.sheet.col(1).width = 256 * 70
-        for i in xrange(2, 8):
+        for i in xrange(2, 9):
             self.sheet.col(i).width = 256 * 11  # 设置单元格宽度
 
-        self.sheet.write_merge(0, 1, 0, 7, u"测试报告", self.easyxf1)  # 写合并单元格(x,x,y,y)
-        self.sheet.write_merge(2, 2, 0, 7, "", self.easyxf3)
+        self.sheet.write_merge(row, row + 1, 0, 8, u"%s测试报告" % self.device_name, self.easyxf1)  # 写合并单元格(x,x,y,y)
+        row += 2
+
+        self.sheet.write_merge(row, row, 0, 8, "", self.easyxf3)  # 写单元格(x, y)
+        row += 1
+
+        self.phone_module = u"%s(%s%s)" % (conf["phone_name"][self.device_info["udid"]]["phone_module"],
+                                           self.device_info["platformName"], self.device_info["platformVersion"])
+        self.sheet.write(row, 0, u"手机型号：", self.easyxf9)
+        self.sheet.write_merge(row, row, 1, 8, self.phone_module, self.easyxf2)
+        row += 1
+
+        self.sheet.write(row, 0, u"APP及版本号：", self.easyxf9)
+        self.sheet.write_merge(row, row, 1, 8, self.app_name + self.app_ver, self.easyxf2)
+        row += 1
 
         self.start_time = time.strftime("%Y-%m-%d %X")
-        self.sheet.write(3, 0, u"开始时间：", self.easyxf9)  # 写单元格(x, y)
-        self.sheet.write_merge(3, 3, 1, 7, self.start_time, self.easyxf2)
+        self.sheet.write(row, 0, u"开始时间：", self.easyxf9)
+        self.sheet.write_merge(row, row, 1, 8, self.start_time, self.easyxf2)
+        row += 1
 
-        self.sheet.write(4, 0, u"结束时间：", self.easyxf9)
-        self.sheet.write_merge(4, 4, 1, 7, self.start_time, self.easyxf2)
+        self.sheet.write(row, 0, u"结束时间：", self.easyxf9)
+        self.sheet.write_merge(row, row, 1, 8, self.start_time, self.easyxf2)
+        row += 1
 
-        self.sheet.write(5, 0, u"持续时间：", self.easyxf9)
-        self.sheet.write_merge(5, 5, 1, 7, "0:00:00", self.easyxf2)
+        self.sheet.write(row, 0, u"持续时间：", self.easyxf9)
+        self.sheet.write_merge(row, row, 1, 8, "0:00:00", self.easyxf2)
+        row += 1
 
-        self.run_case_count = 6
-        self.sheet.write(self.run_case_count, 0, u"执行用例数：", self.easyxf9)
-        self.sheet.write_merge(self.run_case_count, self.run_case_count, 1, 7, 0, self.easyxf2)
+        self.sheet.write(row, 0, u"执行用例数：", self.easyxf9)
+        self.sheet.write_merge(row, row, 1, 8, 0, self.easyxf2)
+        row += 1
 
-        self.result = 7
-        self.sheet.write(self.result, 0, u"执行结果：", self.easyxf9)
-        self.sheet.write_merge(self.result, self.result, 1, 7, u"通过 0； 失败 0； 执行错误 0； 人工检查 0；", self.easyxf2)
+        self.sheet.write(row, 0, u"执行结果：", self.easyxf9)
+        self.sheet.write_merge(row, row, 1, 8, u"通过 0； 失败 0； 执行错误 0； 人工检查 0；", self.easyxf2)
+        row += 1
 
-        self.sheet.write_merge(8, 8, 0, 7, "", self.easyxf7)
-        self.sheet.write_merge(9, 9, 0, 7, u"用例执行情况：", self.easyxf7)
-        self.sheet.write_merge(10, 10, 0, 7, "", self.easyxf7)
+        self.sheet.write_merge(row, row, 0, 8, "", self.easyxf7)
+        row += 1
+        self.sheet.write_merge(row, row, 0, 8, u"用例执行情况：", self.easyxf7)
+        row += 1
+        self.sheet.write_merge(row, row, 0, 8, "", self.easyxf7)
+        row += 1
 
-        row = 11
-        write_list = [u"禅道ID", u"用例名称", u"执行次数", u"通过", u"失败", u"未知错误", u"人工检查", u"最终结果"]
+        write_list = [u"禅道ID", u"用例名称", u"是否执行", u"执行次数", u"通过", u"失败", u"未知错误", u"人工检查", u"最终结果"]
         for i in write_list:
             self.sheet.write(row, write_list.index(i), i, self.easyxf5)
+        row += 1
+
+        return row
 
     # 用例执行完毕调用此函数，写入测试报告数据。
-    def write_data(self, row, Zentao, Name, end_time, Count=0, Pass=0, Fail=0, Error=0, Wait=0):
+    def write_data(self, row, Zentao, Name, end_time, run, Count=0, Pass=0, Fail=0, Error=0, Wait=0):
         '''
         'font: height 240, name Arial, colour_index black, bold on, italic on;'
             'align: wrap on, vert centre, horiz left;'
@@ -180,17 +209,17 @@ class WriteXls(object):
         :param Wait:
         :return:
         '''
-        self.case_count.append(Zentao)
         self.sheet.write(row, 0, Zentao, self.easyxf4)
         self.sheet.write(row, 1, Name, self.easyxf4)
-        self.sheet.write(row, 2, Count, self.easyxf10)
-        self.sheet.write(row, 3, Pass, self.easyxf10)
-        self.sheet.write(row, 4, Fail, self.easyxf10)
-        self.sheet.write(row, 5, Error, self.easyxf10)
-        self.sheet.write(row, 6, Wait, self.easyxf10)
+        self.sheet.write(row, 2, run, self.easyxf10)
+        self.sheet.write(row, 3, Count, self.easyxf10)
+        self.sheet.write(row, 4, Pass, self.easyxf10)
+        self.sheet.write(row, 5, Fail, self.easyxf10)
+        self.sheet.write(row, 6, Error, self.easyxf10)
+        self.sheet.write(row, 7, Wait, self.easyxf10)
         formula = ('IF({3}{0}>0,"Error",IF({2}{0}>0,"Fail",IF({4}{0}>0,"Wait",IF({1}{0}>0,"Pass",""))))'.
-                   format(row + 1, chr(68), chr(69), chr(70), chr(71)))  # 写excel公式，由Excel软件设计好再写入代码, chr(68)="D"
-        self.sheet.write(row, 7, Formula(formula), self.easyxf6)
+            format(row + 1, chr(69), chr(70), chr(71), chr(72)))  # 写excel公式，由Excel软件设计好再写入代码, chr(69)="E"
+        self.sheet.write(row, 8, Formula(formula), self.easyxf6)
 
         self.book.save(self.xls_file)
         self.write_total(row + 1, end_time)
@@ -203,28 +232,46 @@ class WriteXls(object):
         total_row_min = min(self.total_row)
         self.sheet.write(total_row, 0, "Total", self.easyxf11)
         self.sheet.write(total_row, 1, "", self.easyxf12)
-        for i in xrange(2, 7):
+
+        formula = 'COUNTIF({0}{2}:{0}{1},"Y")'.format(chr(67), total_row, total_row_min)
+        self.sheet.write(total_row, 2, Formula(formula), self.easyxf8)
+        self.sheet.write_merge(9, 9, 1, 8, Formula(formula), self.easyxf2)
+
+        for i in xrange(3, 8):
             formula = 'SUM({0}{2}:{0}{1})'.format(chr(i + 65), total_row, total_row_min)
             self.sheet.write(total_row, i, Formula(formula), self.easyxf8)
 
-        formula = 'COUNTIF(H{1}:H{0},"Pass")/COUNTA(H{1}:H{0})'.format(total_row, total_row_min)
-        self.sheet.write(total_row, 7, Formula(formula), self.easyxf13)
+        formula = ('COUNTIF({0}{2}:{0}{1},"Pass")/(COUNTA({0}{2}:{0}{1})-COUNTIF({0}{2}:{0}{1},""))'.
+            format(chr(73), total_row, total_row_min))
+        self.sheet.write(total_row, 8, Formula(formula), self.easyxf13)
 
-        self.sheet.write_merge(4, 4, 1, 7, end_times, self.easyxf2)
+        self.sheet.write_merge(6, 6, 1, 8, end_times, self.easyxf2)
 
         start_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(self.start_time, "%Y-%m-%d %X")))
         end_time = datetime.datetime.fromtimestamp(time.mktime(time.strptime(end_times, "%Y-%m-%d %X")))
         continue_time = str(end_time - start_time)
-        self.sheet.write_merge(5, 5, 1, 7, continue_time, self.easyxf2)
+        self.sheet.write_merge(7, 7, 1, 8, continue_time, self.easyxf2)
 
-        formula = (u'"通过 "&COUNTIF(H13:H{0},"Pass")&"； 失败 "&COUNTIF(H13:H{0},"Fail")&"； 执行错误 "&'
-                   u'COUNTIF(H13:H{0},"Error")&"； 人工检查 "&COUNTIF(H13:H{0},"Wait")&"；"'.format(total_row))
-        self.sheet.write_merge(6, 6, 1, 7, Formula(formula), self.easyxf2)
-
-        self.sheet.write_merge(7, 7, 1, 7, len(set(self.case_count)), self.easyxf2)
+        formula = (u'"通过 "&COUNTIF({0}{2}:{0}{1},"Pass")&"； 失败 "&COUNTIF({0}{2}:{0}{1},"Fail")&"； 执行错误 "&'
+                   u'COUNTIF({0}{2}:{0}{1},"Error")&"； 人工检查 "&COUNTIF({0}{2}:{0}{1},"Wait")&"；"'.
+            format(chr(73), total_row, total_row_min))
+        self.sheet.write_merge(8, 8, 1, 8, Formula(formula), self.easyxf2)
 
         self.book.save(self.xls_file)
 
         # 写入运行时长
         with open(r"./runTime.log", "w") as run_time:
             run_time.write(str(continue_time))
+
+    def scan_case_files(self):
+        row = self.row
+        rootdir = r"./src/testcase/case/%sAPP" % self.app  # 指明被遍历的文件夹
+        for parent, dirnames, filenames in os.walk(rootdir):  # 三个参
+            for filename in (i for i in filenames if "%sAPP" % self.app in i and "pyc" not in i):
+                with open(os.path.join(parent, filename), "r") as files:
+                    file = files.read()
+                    case_name = re.findall(r"self.case_title = u'(.+)'", file)[0]
+                    zentao_id = re.findall(r'self.zentao_id = (\d+)', file)[0]
+                    self.write_data(row, zentao_id, case_name, time.strftime("%Y-%m-%d %X"), "N", 0, 0, 0, 0, 0)
+                    self.case_row[int(zentao_id)] = row
+                    row += 1

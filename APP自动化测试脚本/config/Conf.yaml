@@ -55,3 +55,48 @@ App:
 # Toast消息
 Toast:
   login_password_mistake: [40, 1570, 1040, 1750]
+# 待测APP名称和设备名称
+app_device_name:
+  GN:
+    app_name: "公牛智联"
+    device_name: "GN-Y2010"
+    app_ver: "V0.0.1.0623"
+  AL:
+    app_name: "阿里智能"
+    device_name: "GN-Y201S"
+    app_ver: "V3.6.1.1"
+  JD:
+    app_name: "京东微联"
+    device_name: "GN-Y201J"
+    app_ver: "V4.4.0 build:57371"
+  HW:
+    app_name: "智能家居"
+    device_name: "GN-Y201H"
+    app_ver: ""
+# 手机型号及待运行APP
+phone_name:
+  b9388cbb:
+    app: 'JD'
+    phone_module: '小米5'
+  8c710f0a2007635ea8d1124575a10038e7655c6e:
+    app: 'JD'
+    phone_module: 'iphone 6s'
+  85GABMN9UDD2:
+    app: 'HW'
+    phone_module: '魅族MX5'
+  8681-M02-0xa0a151df:
+    app: 'JD'
+    phone_module: '360奇酷'
+  1b010b2e0d07c07aba0490d20056ff6295ce727b:
+    app: 'JD'
+    phone_module: 'iphone 5s'
+  6910ec366b7e396410c2be813bff57ef1c9ccc7e:
+    app: 'JD'
+    phone_device: 'iphone 6sp'
+  54a9608b:
+    app: 'AL'
+    phone_module: 'vivo Y51A'
+  ZTEC880U:
+    app: 'AL'
+    phone_module: '中兴 C880U'
+

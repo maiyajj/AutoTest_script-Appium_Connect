@@ -823,7 +823,6 @@ class WidgetOperationAL(LaunchAppAL):
                     print("********************")
                     print("now week: %s" % now_week)
                     print("********************")
-                    try:
                     time.sleep(1)
 
         delay_times = set_times - start_time

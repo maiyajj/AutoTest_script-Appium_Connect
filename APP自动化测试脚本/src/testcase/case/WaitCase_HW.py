@@ -1,6 +1,7 @@
 # coding=utf-8
-from src.testcase.case.HWAPP.INPUT_CASE.HWAppInputCase import *
+import json
 
+from src.testcase.case.HWAPP.INPUT_CASE.HWAppInputCase import *
 from src.testcase.page.ReadAPPElement import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
@@ -28,9 +29,11 @@ class WaitCaseHW(object):
         self.logger = None  # 初始化log日志模块
         self.xls = None  # 初始化执行结果Excel文件模块
         self.debug = None  # 初始化debug日志模块
+        self.page_element = None  # 初始化元素库模块
+        self.device_info_list = {}  # 初始化设备信息
         self.script_init_success = False  # 脚本初始化结果标志位
         database["case_location"] = 1  # 用例执行次数
-        self.row = 12  # Excel报告写入初始位置
+        self.row = 0  # Excel报告写入初始位置
 
         self.sc = ShellCommand()  # 实例化ShellCommand
         database[device_name] = {}  # 初始化设备数据库
@@ -151,31 +154,30 @@ class WaitCaseHW(object):
         try:
             case = case_name(**self.device_info_list).run()
 
-            end = time.strftime("%Y-%m-%d %X")
+            end_time = time.strftime("%Y-%m-%d %X")
             d = (u'[ZENTAO_ID=%s, RESULT=%s CASE_TITLE="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % (
-                case[0], case[1], case[2], database["program_loop_time"], database["case_location"], case[3], end))
+                case[0], case[1], case[2], database["program_loop_time"], database["case_location"], case[3], end_time))
             self.report.info(d)
 
             zentao_id = case[0]
             xls_data = database[self.device_name]
-            xls_data[zentao_id]["end_time"] = end
-            if "row" in xls_data[zentao_id].keys():
-                pass
-            else:
-                xls_data[zentao_id]["row"] = self.row
-                self.row += 1
-            self.debug.info("row: %s" % xls_data[zentao_id]["row"])
-            self.xls.write_data(xls_data[zentao_id]["row"],
-                                xls_data[zentao_id]["ZenTao"],
-                                xls_data[zentao_id]["case_title"],
-                                xls_data[zentao_id]["end_time"],
-                                xls_data[zentao_id]["test_count"],
-                                xls_data[zentao_id]["test_pass"],
-                                xls_data[zentao_id]["test_fail"],
-                                xls_data[zentao_id]["test_error"],
-                                xls_data[zentao_id]["test_wait"])
-
-            self.debug.info("write_data: %s" % xls_data[zentao_id])
+            xls_data = xls_data[zentao_id]
+            xls_data["end_time"] = end_time
+            xls_data["row"] = database["case_row"][zentao_id]
+            xls_data["run"] = "Y"
+            self.debug.info("row: %s" % xls_data["row"])
+            self.xls.write_data(xls_data["row"],
+                                xls_data["ZenTao"],
+                                xls_data["case_title"],
+                                xls_data["end_time"],
+                                xls_data["run"],
+                                xls_data["test_count"],
+                                xls_data["test_pass"],
+                                xls_data["test_fail"],
+                                xls_data["test_error"],
+                                xls_data["test_wait"])
+            # 列表中的中文能以汉字的形式写入日志中
+            self.debug.info("write_data: %s" % json.dumps(xls_data, encoding='UTF-8', ensure_ascii=False))
             database["case_location"] += 1
         except BaseException:
             self.debug.error(traceback.format_exc())

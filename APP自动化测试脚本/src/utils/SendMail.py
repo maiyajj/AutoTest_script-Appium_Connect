@@ -64,7 +64,8 @@ class Mailer(object):
 
         # puretext = MIMEText('<h1>你好，<br/>'+self.mail_content+'</h1>','html','utf-8')
         puretext = MIMEText(u'Dear All:\n'
-                            u'    如下是公牛智联APP自动测试结果输出，请各位审阅，谢谢。\n', 'plain', 'utf-8')
+                            u'    如下是自动测试结果输出，请各位审阅，谢谢。若附件部分内容缺失请用本地应用打开附件即可\n',
+                            'plain', 'utf-8')
         msg.attach(puretext)
 
         # 文本类型的附件

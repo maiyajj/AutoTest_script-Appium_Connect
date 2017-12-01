@@ -8,7 +8,7 @@ class AppInitAndroid(object):
     def __init__(self, device, k):
         self.device = device
         self.k = k
-        self.app = conf["user_and_pwd"][k]["app"].upper()
+        self.app = conf["phone_name"][k]["app"].upper()
         if self.app == "GN":
             self.app = "GN_Android"
             self.device[k]["app"] = "GN"
