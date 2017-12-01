@@ -144,12 +144,12 @@ class WidgetOperationHW(LaunchAppHW):
         swipe_time = conf["roll_time"]["HW"]
         while time_et_m_a > 0:
             swipe(start_x_m, start_y_m, start_x_m, end_y_m, self.driver, 0, False)
-            print time_et_m_a
+            print(time_et_m_a)
             time_et_m_a -= 1
             time.sleep(swipe_time)
         while time_et_h_a > 0:
             swipe(start_x_h, start_y_h, start_x_h, end_y_h, self.driver, 0, False)
-            print time_et_h_a
+            print(time_et_h_a)
             time_et_h_a -= 1
             time.sleep(swipe_time)
 
@@ -394,7 +394,6 @@ class WidgetOperationHW(LaunchAppHW):
             else:
                 set_week = ",".join(cycle)
         self.logger.info("[APP_CHECK_TIMER]Now week: %s, Set week: %s" % (now_week, set_week))
-        i = 0
         while True:
             now_week = time.strftime("%A").lower()
             if now_week in set_week:
@@ -409,12 +408,6 @@ class WidgetOperationHW(LaunchAppHW):
                     print("********************")
                     print("now week: %s" % now_week)
                     print("********************")
-                    try:
-                        self.driver.tap([(10, 10)])
-                    except BaseException:
-                        i += 1
-                        if i == 3:
-                            raise TimeoutException("tap error!")
                     time.sleep(1)
 
         delay_times = set_times - start_time
@@ -437,13 +430,13 @@ class WidgetOperationHW(LaunchAppHW):
                         break
                     else:
                         time.sleep(1)
-                        print "[APP_CHECK_TIMER]In Time %s" % time.strftime("%Y-%m-%d %X")
+                        print("[APP_CHECK_TIMER]In Time %s" % time.strftime("%Y-%m-%d %X"))
                         if time.time() > end_time:
                             raise TimeoutException("Device state Error, current: %s" % state)
                 break
             else:
                 time.sleep(1)
-                print "[APP_CHECK_TIMER]Out Time %s" % time.strftime("%Y-%m-%d %X")
+                print("[APP_CHECK_TIMER]Out Time %s" % time.strftime("%Y-%m-%d %X"))
 
     # 删除普通定时
     def delete_normal_timer(self):

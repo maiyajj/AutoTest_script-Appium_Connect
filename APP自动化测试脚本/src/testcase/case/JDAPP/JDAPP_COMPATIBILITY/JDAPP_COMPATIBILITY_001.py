@@ -65,13 +65,11 @@ class JDAppCompatibility1(WidgetOperationJD):
         i = 3
         while i > 0:
             try:
-                self.widget_click(self.page["control_device_page"]["power_button"],
-                                  self.page["control_device_page"]["title"])
+                self.widget_click(self.page["control_device_page"]["power_button"])
             except TimeoutException:
                 pass
             try:
-                self.widget_click(self.page["control_device_page"]["power_button"],
-                                  self.page["control_device_page"]["title"])
+                self.widget_click(self.page["control_device_page"]["power_button"])
             except TimeoutException:
                 pass
             i -= 1

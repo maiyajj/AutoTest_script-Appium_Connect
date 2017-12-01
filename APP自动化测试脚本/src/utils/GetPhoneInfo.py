@@ -5,10 +5,10 @@ from GetPhoneInfo_iOS import *
 
 class GetPhoneInfo(ShellCommand):
     def title(self):
-        print u"***************************************************************"
-        print u"***            测试安卓手机可选择Windows或Mac OS            ***"
-        print u"***  测试iPhone暂不支持Windows，请务必在Mac OS上进行测试！  ***"
-        print u"***************************************************************"
+        print(u"***************************************************************")
+        print(u"***            测试安卓手机可选择Windows或Mac OS            ***")
+        print(u"***  测试iPhone暂不支持Windows，请务必在Mac OS上进行测试！  ***")
+        print(u"***************************************************************")
 
     def select_port(self, selected_port):
         while True:

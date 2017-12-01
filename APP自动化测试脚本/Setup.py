@@ -34,7 +34,7 @@ if __name__ == '__main__':
     # The list of information to be tested.
     # device_list: type dict.
     device_list = AppInit().app_init()
-    print device_list
+    print(device_list)
     mf = MainFunc()
 
     scan_case = Process(target=scan_case_name)

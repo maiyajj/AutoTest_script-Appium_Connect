@@ -21,8 +21,7 @@ class HWAppControl1(WidgetOperationHW):
 
         i = 10
         while i > 0:
-            self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["title"])
+            self.widget_click(self.page["control_device_page"]["power_button"])
             i -= 1
         state = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["power_state"]), "name")
         if state != u"电源已开启":
@@ -30,8 +29,7 @@ class HWAppControl1(WidgetOperationHW):
 
         i = 9
         while i > 0:
-            self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["title"])
+            self.widget_click(self.page["control_device_page"]["power_button"])
             i -= 1
         state = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["power_state"]), "name")
         if state != u"电源已关闭":

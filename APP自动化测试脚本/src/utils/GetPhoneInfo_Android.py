@@ -10,7 +10,7 @@ class GetPhoneInfoAndroid(ShellCommand):
             for i in self.find_proc_and_pid_by_port(5037):  # 查找占用5037端口进程
                 self.kill_proc_by_pid(i[1])  # 杀死占用5037端口进程
         except IndexError:
-            print u"5037端口未占用"
+            print(u"5037端口未占用")
 
     def get_phone_info(self):
         """

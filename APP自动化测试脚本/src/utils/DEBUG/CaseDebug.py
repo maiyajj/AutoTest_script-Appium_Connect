@@ -18,7 +18,7 @@ port = device_info["port"]
 bp_port = device_info["bp_port"]
 wda_port = device_info["wda_port"]
 
-print 'appium -a 127.0.0.1 -p %s -bp %s -U %s --no-reset --local-timezone' % (port, bp_port, deviceName)
+print('appium -a 127.0.0.1 -p %s -bp %s -U %s --no-reset --local-timezone' % (port, bp_port, deviceName))
 
 driver = webdriver.Remote('http://localhost:%s/wd/hub' % port, device_info['desired_caps'])
 

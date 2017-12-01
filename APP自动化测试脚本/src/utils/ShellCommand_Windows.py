@@ -1,6 +1,7 @@
 # coding=utf-8
 import os
 import re
+
 import time
 
 
@@ -103,7 +104,7 @@ class ShellCommandWindows(object):
         os.popen(command)
         time.sleep(1)
         if self.find_proc_and_pid_by_proc(proc) == []:
-            print u"终止 %s 进程。" % proc
+            print(u"终止 %s 进程。" % proc)
         else:
             raise PortBindError("kill %s fail." % proc)
     
@@ -122,7 +123,7 @@ class ShellCommandWindows(object):
         os.popen(command)
         time.sleep(1)
         if self.find_proc_and_pid_by_pid(pid) == []:
-            print u"终止 PID %s。" % pid
+            print(u"终止 PID %s。" % pid)
         else:
             raise PortBindError("kill %s fail." % pid)
     

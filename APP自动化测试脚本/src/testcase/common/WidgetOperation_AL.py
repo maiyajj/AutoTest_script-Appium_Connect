@@ -230,12 +230,12 @@ class WidgetOperationAL(LaunchAppAL):
         swipe_time = conf["roll_time"]["AL"]
         while time_et_m_a > 0:
             swipe(start_x_m, start_y_m, start_x_m, end_y_m, self.driver, percent=False)
-            print time_et_m_a
+            print(time_et_m_a)
             time_et_m_a -= 1
             time.sleep(swipe_time)
         while time_et_h_a > 0:
             swipe(start_x_h, start_y_h, start_x_h, end_y_h, self.driver, percent=False)
-            print time_et_h_a
+            print(time_et_h_a)
             time_et_h_a -= 1
             time.sleep(swipe_time)
 
@@ -282,7 +282,7 @@ class WidgetOperationAL(LaunchAppAL):
         swipe_time = conf["roll_time"]["AL"]
         while diff_a > 0:
             swipe(start_x, start_y, start_x, end_y, self.driver, percent=False)  # step=25
-            print diff_a
+            print(diff_a)
             diff_a -= 1
             time.sleep(swipe_time)
 
@@ -809,7 +809,6 @@ class WidgetOperationAL(LaunchAppAL):
             else:
                 set_week = ",".join(cycle)
         self.logger.info("[APP_CHECK_TIMER]Now week: %s, Set week: %s" % (now_week, set_week))
-        i = 0
         while True:
             now_week = time.strftime("%A").lower()
             if now_week in set_week:
@@ -825,11 +824,6 @@ class WidgetOperationAL(LaunchAppAL):
                     print("now week: %s" % now_week)
                     print("********************")
                     try:
-                        self.driver.tap([(10, 10)])
-                    except BaseException:
-                        i += 1
-                        if i == 3:
-                            raise TimeoutException("tap error!")
                     time.sleep(1)
 
         delay_times = set_times - start_time
@@ -853,13 +847,13 @@ class WidgetOperationAL(LaunchAppAL):
                         break
                     else:
                         time.sleep(1)
-                        print "[APP_CHECK_TIMER]In Time %s" % time.strftime("%Y-%m-%d %X")
+                        print("[APP_CHECK_TIMER]In Time %s" % time.strftime("%Y-%m-%d %X"))
                         if time.time() > end_time:
                             raise TimeoutException("Device state Error, current: %s" % state)
                 break
             else:
                 time.sleep(1)
-                print "[APP_CHECK_TIMER]Out Time %s" % time.strftime("%Y-%m-%d %X")
+                print("[APP_CHECK_TIMER]Out Time %s" % time.strftime("%Y-%m-%d %X"))
 
     # 删除普通定时
     def delete_normal_timer(self):
@@ -1004,10 +998,6 @@ class WidgetOperationAL(LaunchAppAL):
                 time.sleep(60)
                 break
             else:
-                try:
-                    self.driver.tap([(10, 10)])
-                except BaseException:
-                    self.logger.info("tap 10, 10 error")
                 time.sleep(60)
 
         self.widget_click(self.page["control_device_page"]["elec"],

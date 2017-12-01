@@ -1,10 +1,22 @@
 # coding=utf-8
 import shutil
+import traceback
 from subprocess import *
 
 import psutil
 
 from ShellCommand import *
+
+
+def launch_appium_error_log(func):
+    def wrapper(self):
+        try:
+            func(self)
+        except BaseException:
+            with open(os.path.join(self.sc.set_appium_log_addr(), "appium_launch_error.log"), "a") as appium_error:
+                appium_error.write(traceback.format_exc())
+
+    return wrapper
 
 
 class LaunchAppiumServicesAndroid(object):
@@ -32,6 +44,7 @@ class LaunchAppiumServicesAndroid(object):
         # or there will be conflicts and appium services doesn`t work.
         self.sc.kill_proc_by_proc("adb")
 
+    @launch_appium_error_log
     def launch_appium(self):
         # The appium service log stores the directory.
         # Classify at current minute time.
@@ -43,7 +56,7 @@ class LaunchAppiumServicesAndroid(object):
                 pass
 
         # appium服务调用进程链的pid，name等信息，每次运行程序前会清空，而运行时追加，所以写在while True外面.
-        with open(os.path.join(self.sc.set_appium_log_addr(), "appium_port_%s.txt" % self.log_name), "w") as files:
+        with open(os.path.join(self.sc.set_appium_log_addr(), "appium_port_%s.log" % self.log_name), "w") as files:
             # Popen(command, shell=True)语句是非阻塞式，如果appium服务崩溃则会继续往下执行然后回到while True.
             while True:
                 # appium服务日志存放目录
@@ -51,10 +64,10 @@ class LaunchAppiumServicesAndroid(object):
                 # 启动appium服务命令
                 command = 'appium -a 127.0.0.1 -p %s -bp %s -U %s -g "%s" --no-reset --local-timezone' % (
                     self.port, self.bp_port, self.udid, log)
-                print command
+                print(command)
 
                 # 为了后期调试方便，将当前appium启动命令写入文件中，方便使用shell命令调试手机.
-                with open("appium command %s.txt" % self.device_info["udid"], "a") as filess:
+                with open("appium command %s.log" % self.device_info["udid"], "a") as filess:
                     filess.write(time.strftime("%Y-%m-%d %H-%M") + "\n")
                     filess.write(command.replace(' -g "%s"' % log, "") + "\n")
                     filess.write("from appium import webdriver" + "\n")
@@ -92,17 +105,17 @@ class LaunchAppiumServicesAndroid(object):
                     else:
                         time.sleep(3)
                         files.write("%s: %s, %s\n" % (time.strftime("%Y-%m-%d %H-%M-%S"), self.port, port))
-    
+
     def create_adb_folder(self):
         """
         Create screenshot folder in phone.
         """
         command = "adb -s %s shell mkdir /sdcard/Appium" % self.udid
         os.popen(command)
-    
+
         command = "adb -s %s shell mkdir /sdcard/Appium/%s" % (self.udid, self.folder)
         os.popen(command)
-    
+
         try:
             os.makedirs("./screenshots/%s" % self.folder)
         except WindowsError:

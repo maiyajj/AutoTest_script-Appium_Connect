@@ -13,7 +13,10 @@ def launch_appium_error_log(func):
         try:
             func(self)
         except BaseException:
-            print traceback.format_exc()
+            with open(os.path.join(self.sc.set_appium_log_addr(), "appium_launch_error.log"), "a") as appium_error:
+                appium_error.write(traceback.format_exc())
+
+    return wrapper
 
 
 class LaunchAppiumServicesIos(object):
@@ -62,7 +65,7 @@ class LaunchAppiumServicesIos(object):
                 # 启动appium服务命令
                 command = 'appium -a 127.0.0.1 -p %s -bp %s -U %s -g "%s" --no-reset --local-timezone' % (
                     self.port, self.bp_port, self.udid, log)
-                print command
+                print(command)
 
                 # 为了后期调试方便，将当前appium启动命令写入文件中，方便使用shell命令调试手机.
                 with open("appium_command_%s.txt" % self.log_name, "a") as filess:

@@ -52,4 +52,4 @@ def scan_case_name():
                 if v == tmp:
                     dump = dump + "%s:%s," % (k, v)
             raise ValueError(u"%s重复" % dump[:-1])
-    print u"《自动化测试用例对照表.log》创建完成"
+    print(u"《自动化测试用例对照表.log》创建完成")

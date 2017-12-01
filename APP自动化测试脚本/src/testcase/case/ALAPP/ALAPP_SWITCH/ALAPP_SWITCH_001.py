@@ -17,6 +17,4 @@ class ALAppSwitch1(WidgetOperationAL):
         self.choose_home_device(device)
 
         for i in xrange(2):
-            self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["title"])
-
+            self.widget_click(self.page["control_device_page"]["power_button"])

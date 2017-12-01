@@ -1,0 +1,11 @@
+﻿1、查找APPpackage方式：manifest，查找APPactivity方式：activity
+2、发现问题：搜索到设备页面出现时程序会突然崩溃
+3、获取控件的文本属性时使用语句driver.find_element_by_xpath(search_device_mac2).get_attribute("name")
+   使用的是“name”值，uiautomatorviewer.bat里面的“content-desc”是无效的。
+4、python内置函数dir(Dict) desired_caps = {}
+['__class__', '__cmp__', '__contains__', '__delattr__', '__delitem__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__iter__', '__le__', '__len__', '__lt__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', 'clear', 'copy', 'fromkeys', 'get', 'has_key', 'items', 'iteritems', 'iterkeys', 'itervalues', 'keys', 'pop', 'popitem', 'setdefault', 'update', 'values', 'viewitems', 'viewkeys', 'viewvalues']
+desired_caps.__class__:<type 'dict'>;desired_caps.__class__():{}__class__ 可以告诉某个实例对象是哪个类
+cmp(x,y) 函数用于比较2个对象，如果 x < y 返回 -1, 如果 x == y 返回 0, 如果 x > y 返回 1。
+__delattr__删除属性
+__delitem__删除值
+__doc__将文档写在程序里，是LISP中的一个特色，Python也借鉴过。每个函数都是一个对象，每个函数对象都是有一个__doc__的属性，函数语句中，如果第一个表达式是一个string，这个函数的__doc__就是这个string，否则__doc__是None。

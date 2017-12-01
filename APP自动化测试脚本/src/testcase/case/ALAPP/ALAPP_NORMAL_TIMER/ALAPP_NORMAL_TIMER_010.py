@@ -38,8 +38,7 @@ class ALAppNormalTimer10(WidgetOperationAL):
             raise TimeoutException("mode launch failed, current: %s" % [attribute])
 
         for i in xrange(2):
-            self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["title"])
+            self.widget_click(self.page["control_device_page"]["power_button"])
 
         self.widget_click(self.page["control_device_page"]["to_return"],
                           self.page["app_home_page"]["title"])

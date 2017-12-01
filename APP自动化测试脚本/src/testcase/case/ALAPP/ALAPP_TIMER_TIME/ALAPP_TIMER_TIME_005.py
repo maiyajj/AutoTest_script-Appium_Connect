@@ -44,12 +44,11 @@ class ALAppTimerTime5(WidgetOperationAL):
 
             time.sleep(60)
 
-            self.widget_click(self.page["control_device_page"]["power_button"],
-                              self.page["control_device_page"]["title"])
+            self.widget_click(self.page["control_device_page"]["power_button"])
 
             self.widget_click(self.page["control_device_page"]["to_return"],
                               self.page["app_home_page"]["title"])
 
-            self.check_timer(device, start_time_1, set_time_1, u"关", cycle, True)
+            self.check_timer(device, start_time_1, set_time_1, u"关", cycle)
             self.check_timer(device, start_time_2, set_time_2, u"开", cycle)
 

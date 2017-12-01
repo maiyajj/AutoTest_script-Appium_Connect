@@ -19,8 +19,7 @@ class HWAppControl2(WidgetOperationHW):
 
         self.set_power("power_on")
 
-        self.widget_click(self.page["control_device_page"]["power_button"],
-                          self.page["control_device_page"]["title"])
+        self.widget_click(self.page["control_device_page"]["power_button"])
 
         state = self.ac.get_attribute(self.wait_widget(self.page["control_device_page"]["power_state"]), "name")
         if state != u"电源已关闭":
