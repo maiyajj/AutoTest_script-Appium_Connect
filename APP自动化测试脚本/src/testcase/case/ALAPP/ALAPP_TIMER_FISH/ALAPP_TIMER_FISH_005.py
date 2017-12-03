@@ -40,5 +40,4 @@ class ALAppTimerFish5(WidgetOperationAL):
                           self.page["app_home_page"]["title"])
 
         self.check_timer(device, start_time_1, set_time_1, u"关")
-        self.check_timer(device, start_time_2, set_time_2, u"关", same_power=True)
-
+        self.check_timer(device, start_time_2, set_time_2, u"关")

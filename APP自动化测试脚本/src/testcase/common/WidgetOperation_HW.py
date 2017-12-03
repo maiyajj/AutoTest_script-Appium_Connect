@@ -66,6 +66,7 @@ class WidgetOperationHW(LaunchAppHW):
         # 延迟定时为设置时间段区间执行的定时，多用于鱼缸模式或延迟定时模式，数据格式为以时间格式展现的str字符串型；
         # 时间格式str字符串型（"30:00"），用于设置时间段定时，关键字为“delay”
         # ps：delay_s函数关键词用于给设置定时预留时间，设置定时也需要时间，默认延迟2分钟，当前时间8:00，定时开始执行时间为8:02；
+        swipe_time = conf["roll_time"]["HW"]  # 华为智能家居APP的滚轮滑动间隔时间
         if isinstance(set_timer, int):
             if set_timer >= 0:
                 time_seg = "int"
@@ -80,6 +81,9 @@ class WidgetOperationHW(LaunchAppHW):
                 time_seg = None
         if not isinstance(now_time, str):
             raise KeyError("now time must be time.strftime('%%H:%%M'), current: %s" % str(now_time))
+
+        # 获取“时”“分”滚轮滑动的基准值
+        """"""
         # 时滚轮
         lcx_h, lcy_h, szw_h, szh_h = self.set_roll(elem_h)
         pxx_h, pxy_h = elem_h[3]["px"]
@@ -90,6 +94,7 @@ class WidgetOperationHW(LaunchAppHW):
         pxx_m, pxy_m = elem_m[3]["px"]
         aszh_m = int(szh_m / 5 * 4 / 5)
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_m + szh_m / 2)  # “分”滚轮的操作起始点
+        """"""
 
         # 从控件拿到当前控件的值
         time_roll = time.strftime("%Y-%m-%d r:00").replace("r", elem_t)  # 滚轮的当前时间
@@ -141,7 +146,6 @@ class WidgetOperationHW(LaunchAppHW):
 
         # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
         swipe = self.ac.swipe
-        swipe_time = conf["roll_time"]["HW"]
         while time_et_m_a > 0:
             swipe(start_x_m, start_y_m, start_x_m, end_y_m, self.driver, 0, False)
             print(time_et_m_a)
@@ -163,16 +167,16 @@ class WidgetOperationHW(LaunchAppHW):
             time_delay = int(add_h) * 3600 + int(add_m) * 60
             time_set = time_now + time_delay + delay_s
             set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
-            self.logger.info("[APP_TIMER]Delay: start_time: %s, set_time: %s, delay_time: %s" %
-                             (start_time, set_time, delay_time))
-            self.logger.info("[APP_TIMER]Delay: time_start: %s, time_set: %s, time_delay: %s" %
-                             (time_start, time_set, time_delay))
         else:
+            delay_time = "None"
+            time_delay = "None"
             set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
-            self.logger.info("[APP_TIMER]start_time: %s, set_time: %s" % (start_time, set_time))
-            self.logger.info("[APP_TIMER]time_start: %s, time_set: %s" % (time_start, time_set))
-
+        self.logger.info("[APP_TIMER]start_time: %s, set_time: %s, delay_time: %s" % (start_time, set_time, delay_time))
+        self.logger.info("[APP_TIMER]time_start: %s, time_set: %s, time_delay: %s" % (time_start, time_set, time_delay))
         time.sleep(1)
+
+        # 判断设置后的滚轮是否与设定一致
+        pass
 
         return int(time_start), int(time_set)
 

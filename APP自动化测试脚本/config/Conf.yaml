@@ -72,7 +72,7 @@ app_device_name:
   HW:
     app_name: "智能家居"
     device_name: "GN-Y201H"
-    app_ver: ""
+    app_ver: "V1.0.5.307"
 # 手机型号及待运行APP
 phone_name:
   b9388cbb:

@@ -44,5 +44,4 @@ class ALAppNormalTimer1(WidgetOperationAL):
                           self.page["app_home_page"]["title"])
 
         self.check_timer(device, start_time_1, set_time_1, u"开", cycle1)
-        self.check_timer(device, start_time_2, set_time_2, u"开", cycle2, True)
-
+        self.check_timer(device, start_time_2, set_time_2, u"开", cycle2)

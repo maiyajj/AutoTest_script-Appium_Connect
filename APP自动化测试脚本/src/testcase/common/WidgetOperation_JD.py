@@ -70,6 +70,7 @@ class WidgetOperationJD(LaunchAppJD):
         # 延迟定时为设置时间段区间执行的定时，多用于鱼缸模式或延迟定时模式，数据格式为以时间格式展现的str字符串型；
         # 时间格式str字符串型（"30:00"），用于设置时间段定时，关键字为“delay”
         # ps：delay_s函数关键词用于给设置定时预留时间，设置定时也需要时间，默认延迟2分钟，当前时间8:00，定时开始执行时间为8:02；
+        swipe_time = conf["roll_time"]["JD"]  # 京东微联APP的滚轮滑动间隔时间
         if isinstance(set_timer, int):
             if set_timer >= 0:
                 time_seg = "int"
@@ -82,7 +83,11 @@ class WidgetOperationJD(LaunchAppJD):
                 time_seg = "delay"
             else:
                 time_seg = None
+        if not isinstance(now_time, str):
+            raise KeyError("now time must be time.strftime('%%H:%%M'), current: %s" % str(now_time))
 
+        # 获取“时”“分”滚轮滑动的基准值
+        """"""
         # 时滚轮
         lcx_h, lcy_h, szw_h, szh_h = self.set_roll(elem_h)
         pxx_h, pxy_h = elem_h[3]["px"]
@@ -93,7 +98,9 @@ class WidgetOperationJD(LaunchAppJD):
         pxx_m, pxy_m = elem_m[3]["px"]
         aszh_m = int(szh_m / 5 * 4 / 5)
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_m + szh_m / 2)  # “分”滚轮的操作起始点
+        """"""
 
+        # 从控件拿到当前控件的值
         time_roll = time.strftime("%Y-%m-%d r:00").replace("r", elem_t)  # 滚轮的当前时间
         time_roll = time.mktime(time.strptime(time_roll, "%Y-%m-%d %X"))  # 转换为时间戳
 
@@ -109,25 +116,17 @@ class WidgetOperationJD(LaunchAppJD):
             time_now = time_now - delay_s
 
         # 获取定时的执行时间点
-        if time_seg == "int":
+        if time_seg == "int" or time_seg == "minus":
             time_set = time_now + set_timer * 60 + delay_s
-        elif time_seg == "minus":
-            time_set = time_now + set_timer * 60
-        elif time_seg == "point":
+        elif time_seg == "point" or time_seg == "delay":
             time_set = time.strftime("%Y-%m-%d r:00").replace("r", set_timer[1])
             time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %X"))
-        elif time_seg == "delay":
-            time_set = time.strftime("%Y-%m-%d r:00").replace("r", set_timer[1])
-            time_set = time.mktime(time.strptime(time_set, "%Y-%m-%d %X")) + delay_s
         else:
             time_set = "error"
 
         # 定时开始执行和设定的时间点
-        time_start = int(time_now + delay_s)
-        time_set = int(time_set)
-        # 将定时时间（时间戳，float型）格式化为时间（字符串型），仅做日志输出
-        start_time = time.strftime("%Y-%m-%d %X", time.localtime(time_start))
-        set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
+        time_start = time_now + delay_s
+        time_set = time_set
 
         # 滚轮相关操作
         roll_h, roll_m = time.strftime("%H:%M", time.localtime(time_roll)).split(":")
@@ -151,7 +150,6 @@ class WidgetOperationJD(LaunchAppJD):
 
         # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
         swipe = self.ac.swipe
-        swipe_time = conf["roll_time"]["JD"]
         while time_et_m_a > 0:
             swipe(start_x_m, start_y_m, start_x_m, end_y_m, self.driver, 0, False)
             print(time_et_m_a)
@@ -163,11 +161,31 @@ class WidgetOperationJD(LaunchAppJD):
             time_et_h_a -= 1
             time.sleep(swipe_time)
 
-        self.logger.info("start_time: %s, set_time: %s" % (start_time, set_time))
+        # 将定时时间（时间戳，float型）格式化为时间（字符串型），仅做日志输出
+        start_time = time.strftime("%Y-%m-%d %X", time.localtime(time_start))
+
+        # 延时定时的滚轮时间和实际执行时间不一致，需转换一下
+        if time_seg == "delay":
+            delay_time = set_timer[1]
+            add_h, add_m = delay_time.split(":")
+            time_delay = int(add_h) * 3600 + int(add_m) * 60
+            time_set = time_now + time_delay + delay_s
+            set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
+        else:
+            delay_time = "None"
+            time_delay = "None"
+            set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
+        self.logger.info("[APP_TIMER]start_time: %s, set_time: %s, delay_time: %s" % (start_time, set_time, delay_time))
+        self.logger.info("[APP_TIMER]time_start: %s, time_set: %s, time_delay: %s" % (time_start, time_set, time_delay))
+        time.sleep(1)
+
+        # 判断设置后的滚轮是否与设定一致
         if self.ac.get_attribute(self.wait_widget(elem_t), "name") == set_time[11:16]:
-            return time_start, time_set
+            pass
         else:
             raise TimeoutException("timer set error")
+
+        return int(time_start), int(time_set)
 
     # 创建普通定时
     def create_normal_timer(self, now_time, delay_time, power, delay_s=120, loop=u"执行一次"):

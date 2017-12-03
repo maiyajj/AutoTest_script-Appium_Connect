@@ -45,5 +45,4 @@ class ALAppCycleTimer4(WidgetOperationAL):
         self.check_timer(device, start_time_1, set_time_1, u"关")
         self.check_timer(device, start_time_2, set_time_2, u"开")
         self.check_timer(device, start_time_3, set_time_3, u"关")
-        self.check_timer(device, start_time_4, set_time_4, u"关", same_power=True)
-
+        self.check_timer(device, start_time_4, set_time_4, u"关")

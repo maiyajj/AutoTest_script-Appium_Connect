@@ -71,14 +71,14 @@ class ALAppCrossTimer1(WidgetOperationAL):
 
         self.check_timer(device, start_time_6, set_time_6, u"关")
         self.check_timer(device, start_time_1, set_time_1, u"开")
-        self.check_timer(device, start_time_7, set_time_7, u"开", True)
-        self.check_timer(device, start_time_5, set_time_5, u"开", True)
+        self.check_timer(device, start_time_7, set_time_7, u"开")
+        self.check_timer(device, start_time_5, set_time_5, u"开")
         self.check_timer(device, start_time_8, set_time_8, u"关")
-        self.check_timer(device, start_time_2, set_time_2, u"关", True)
+        self.check_timer(device, start_time_2, set_time_2, u"关")
         self.check_timer(device, start_time_9, set_time_9, u"开")
         self.check_timer(device, start_time_10, set_time_10, u"关")
         self.check_timer(device, start_time_3, set_time_3, u"开")
-        self.check_timer(device, start_time_11, set_time_11, u"开", True)
+        self.check_timer(device, start_time_11, set_time_11, u"开")
 
         self.choose_home_device(device)
         self.widget_click(self.page["control_device_page"]["delay_timer"],
@@ -94,8 +94,8 @@ class ALAppCrossTimer1(WidgetOperationAL):
                           self.page["app_home_page"]["title"])
 
         self.check_timer(device, start_time_16, set_time_16, u"关")
-        self.check_timer(device, start_time_4, set_time_4, u"关", True)
-        self.check_timer(device, start_time_12, set_time_12, u"关", True)
+        self.check_timer(device, start_time_4, set_time_4, u"关")
+        self.check_timer(device, start_time_12, set_time_12, u"关")
         self.check_timer(device, start_time_13, set_time_13, u"开")
         self.check_timer(device, start_time_14, set_time_14, u"关")
         self.check_timer(device, start_time_15, set_time_15, u"开")
