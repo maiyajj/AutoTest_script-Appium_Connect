@@ -27,6 +27,7 @@ class PageElementAL(object):
         self.device["page"]["delay_timer_page"] = self.mpw.delay_timer_page()
         self.device["page"]["device_info_page"] = self.mpw.device_info_page()
         self.device["page"]["elec_page"] = self.mpw.elec_page()
+        self.device["page"]["exit_error"] = self.mpw.exit_error()
         self.device["page"]["fish_mode_timer_page"] = self.mpw.fish_mode_timer_page()
         self.device["page"]["input_wifi_password_page"] = self.mpw.input_wifi_password_page()
         self.device["page"]["login_page"] = self.mpw.login_page()

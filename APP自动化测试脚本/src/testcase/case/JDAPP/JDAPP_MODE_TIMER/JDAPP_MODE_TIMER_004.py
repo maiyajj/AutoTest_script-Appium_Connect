@@ -26,15 +26,7 @@ class JDAppModeTimer4(WidgetOperationJD):
         now = time.strftime("%H:%M")
 
         delay_time_1 = ["delay", "00:05"]
-        start_time_1, set_time_1 = self.set_timer_roll(self.page["piocc_mode_timer_page"]["end_h"],
-                                                       self.page["piocc_mode_timer_page"]["end_m"],
-                                                       self.page["piocc_mode_timer_page"]["end_time_text"],
-                                                       delay_time_1, now)
-
-        self.widget_click(self.page["piocc_mode_timer_page"]["end_time"],
-                          self.page["piocc_mode_timer_page"]["title"])
-
-        self.launch_mode_timer("piocc_mode_timer_page", False, start_time_1)
+        start_time_1, set_time_1 = self.create_delay_mode_timer(now, delay_time_1)
 
         self.widget_click(self.page["mode_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

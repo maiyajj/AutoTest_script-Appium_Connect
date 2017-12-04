@@ -50,3 +50,5 @@ class ToLoginPageHW(object):
         self.close_ad()
         self.check_update()
         self.device_to_login()
+        self.wait_widget(self.page["login_page"]["title"])
+        self.logger.info(u"[APP_INF] APP当前页面为登录页面")

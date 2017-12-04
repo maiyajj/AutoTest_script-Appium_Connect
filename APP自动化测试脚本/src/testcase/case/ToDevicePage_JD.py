@@ -140,3 +140,5 @@ class ToDevicePageJD(object):
         self.check_update()
         self.close_ad()
         self.login_to_device()
+        self.wait_widget(self.page["app_home_page"]["title"])
+        self.logger.info(u"[APP_INF] APP当前页面为app主页面")

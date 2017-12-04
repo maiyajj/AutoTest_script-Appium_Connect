@@ -656,6 +656,17 @@ class MainPageWidgetIosAL(object):
         d["to_return"] = [u"", "accessibility_id", u"返回"]
         return d
 
+    # 异常退出修复页面
+    def exit_error(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//XCUIElementTypeStaticText[@name='异常退出']", "xpath", u"异常退出修复页面"]
+        # 修复
+        d["fix"] = [u"//XCUIElementTypeStaticText[@name='点击修复']", "xpath", u"点击修复"]
+        # 点击跳过此步骤
+        d["skip"] = [u"//XCUIElementTypeButton[@name='点击跳过此步骤']", "xpath", u"点击跳过此步骤"]
+        return d
+
 
 class PopupWidgetIosAL(object):
     # 升级弹窗

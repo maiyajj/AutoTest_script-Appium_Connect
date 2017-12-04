@@ -631,6 +631,17 @@ class MainPageWidgetAndroidAL(object):
         d["to_return"] = ["//android.webkit.WebView/android.view.View", "xpath", u"返回"]
         return d
 
+    # 异常退出修复页面
+    def exit_error(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[@content-desc='异常退出']", "xpath", u"异常退出修复页面"]
+        # 修复
+        d["fix"] = [u"//android.view.View[@content-desc='点击修复']", "xpath", u"点击修复"]
+        # 点击跳过此步骤
+        d["skip"] = [u"//android.view.View[@content-desc='点击跳过此步骤']", "xpath", u"点击跳过此步骤"]
+        return d
+
 
 class PopupWidgetAndroidAL(object):
     # 升级弹窗

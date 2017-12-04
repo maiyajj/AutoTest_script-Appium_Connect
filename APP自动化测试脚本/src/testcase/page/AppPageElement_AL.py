@@ -57,6 +57,9 @@ class MainPageWidgetAL(object):
     def elec_page(self):
         return self.wrapper(self.mpwa.elec_page(), self.mpwi.elec_page())
 
+    def exit_error(self):
+        return self.wrapper(self.mpwa.exit_error(), self.mpwi.exit_error())
+
     def fish_mode_timer_page(self):
         return self.wrapper(self.mpwa.fish_mode_timer_page(), self.mpwi.fish_mode_timer_page())
 

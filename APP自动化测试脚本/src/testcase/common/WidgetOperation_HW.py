@@ -324,21 +324,7 @@ class WidgetOperationHW(LaunchAppHW):
                      u"周六": "saturday",
                      u"周日": "weekday",
                      u"周末": "weekend"}
-
-        if u"每天" in loop:
-            loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
-        elif u"工作日" in loop:
-            loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五"]
-        elif u"周末" in loop:
-            loop_attr = [u"周六", u"周日"]
-        elif u"周" in loop:
-            loop_attr = [loop]
-        else:
-            loop_attr = loop
-        if u"执行一次" in loop:
-            cycle = ["None"]
-        else:
-            cycle = [loop_mode[i] for i in loop_attr]
+        cycle = ["None"]
 
         attribute = self.ac.get_attribute(self.wait_widget(self.page[page]["repeat"]), "name")
         if loop not in attribute:
@@ -380,6 +366,21 @@ class WidgetOperationHW(LaunchAppHW):
                 tmp = loop
             if tmp not in attribute:
                 raise TimeoutException("Cycle set error")
+
+        if u"每天" in loop:
+            loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
+        elif u"工作日" in loop:
+            loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五"]
+        elif u"周末" in loop:
+            loop_attr = [u"周六", u"周日"]
+        elif u"周" in loop:
+            loop_attr = [loop]
+        else:
+            loop_attr = loop
+        if u"执行一次" in loop:
+            cycle = ["None"]
+        else:
+            cycle = [loop_mode[i] for i in loop_attr]
 
         return cycle
 

@@ -57,7 +57,7 @@ class LaunchAppiumServicesIos(object):
                 pass
 
         # appium服务调用进程链的pid，name等信息，每次运行程序前会清空，而运行时追加，所以写在while True外面.
-        with open(os.path.join(self.sc.set_appium_log_addr(), "appium_port_%s.txt" % self.log_name), "w") as files:
+        with open(os.path.join(self.sc.set_appium_log_addr(), "appium_port_%s.log" % self.log_name), "w") as files:
             # Popen(command, shell=True)语句是非阻塞式，如果appium服务崩溃则会继续往下执行然后回到while True.
             while True:
                 # appium服务日志存放目录
@@ -68,7 +68,7 @@ class LaunchAppiumServicesIos(object):
                 print(command)
 
                 # 为了后期调试方便，将当前appium启动命令写入文件中，方便使用shell命令调试手机.
-                with open("appium_command_%s.txt" % self.log_name, "a") as filess:
+                with open("appium_command_%s.log" % self.log_name, "a") as filess:
                     filess.write(time.strftime("%Y-%m-%d %H-%M") + "\n")
                     filess.write(command.replace(' -g "%s"' % log, "") + "\n")
                     filess.write("from appium import webdriver" + "\n")

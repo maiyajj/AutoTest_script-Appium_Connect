@@ -3,21 +3,30 @@ from src.testcase.case.LaunchApp_JD import *
 
 
 class WidgetOperationJD(LaunchAppJD):
+    # 获取元素索引
+    def get_index(self, device, element1):
+        while True:
+            elements = self.wait_widget(element1)  # 返回元素字典
+            for index, element in elements.items():
+                if element is not None and self.ac.get_attribute(element, "name") == device:
+                    return index
+
     # 主页面选择待测设备
-    def choose_home_device(self, device):
-        elements = self.wait_widget(self.page["app_home_page"]["device"])
+    def choose_home_device(self, device, device_index=None):
+        if device_index is None:
+            index = self.get_index(device, self.page["app_home_page"]["device"])
+        else:
+            index = device_index
+
         new_value = copy.copy(self.page["app_home_page"]["device"])
-        for index, element in elements.items():
-            if element is not None and str(self.ac.get_attribute(element, "name")) == device:
-                new_value[0] = new_value[0][index]
-                while True:
-                    try:
-                        self.widget_click(new_value, self.page["control_device_page"]["title"])
-                        break
-                    except TimeoutException:
-                        self.ac.swipe(0.6, 0.9, 0.6, 0.6, self.driver)
-                        time.sleep(1)
-            break
+        new_value[0] = new_value[0][index]
+        while True:
+            try:
+                self.widget_click(new_value, self.page["control_device_page"]["title"])
+                break
+            except TimeoutException:
+                self.ac.swipe(0.6, 0.9, 0.6, 0.6, self.driver)
+                time.sleep(1)
 
     # 选择设备
     def choose_device(self, device, element1, element2, element3):
@@ -203,7 +212,7 @@ class WidgetOperationJD(LaunchAppJD):
         start_time, start_set_time = self.set_timer_roll(self.page["add_normal_timer_page"]["roll_h"],
                                                          self.page["add_normal_timer_page"]["roll_m"],
                                                          self.page["add_normal_timer_page"]["set_timer"],
-                                                         delay_time, now_time, delay_s=delay_s)
+                                                         now_time, delay_time, delay_s=delay_s)
         now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X"))
 
         if start_set_time <= now:
@@ -224,7 +233,147 @@ class WidgetOperationJD(LaunchAppJD):
                           self.page["normal_timer_page"]["title"])
         self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
 
+        return start_time, start_set_time, cycle
+
+    # 创建热水器类型模式
+    def create_water_mode_timer(self, now_time, set_start_time, set_end_time, loop, delay_s=120):
+        """与创建普通定时相同
+        return: ([start_time, start_set_time], [end_time, end_set_time])
+        """
+        self.widget_click(self.page["water_mode_timer_page"]["start_time"],
+                          self.page["water_mode_timer_page"]["roll_h"])
+
+        start_time, start_set_time = self.set_timer_roll(self.page["water_mode_timer_page"]["roll_h"],
+                                                         self.page["water_mode_timer_page"]["roll_m"],
+                                                         self.page["water_mode_timer_page"]["start_time_text"],
+                                                         now_time, set_start_time, delay_s=delay_s)
+        now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X"))
+
+        if start_set_time <= now:
+            start_set_time = start_set_time + 3600 * 24
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
+
+        self.widget_click(self.page["water_mode_timer_page"]["start_time"],
+                          self.page["water_mode_timer_page"]["title"])
+
+        self.widget_click(self.page["water_mode_timer_page"]["end_time"],
+                          self.page["water_mode_timer_page"]["end_h"])
+
+        end_time, end_set_time = self.set_timer_roll(self.page["water_mode_timer_page"]["end_h"],
+                                                     self.page["water_mode_timer_page"]["end_m"],
+                                                     self.page["water_mode_timer_page"]["end_time_text"],
+                                                     now_time, set_end_time, delay_s=delay_s)
+        now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X"))
+
+        if end_set_time <= now:
+            end_set_time = end_set_time + 3600 * 24
+
+        if end_set_time <= start_set_time:
+            end_set_time = end_set_time + 3600 * 24
+        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(end_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(end_set_time))))
+
+        self.widget_click(self.page["water_mode_timer_page"]["end_time"],
+                          self.page["water_mode_timer_page"]["title"])
+
+        cycle = self.set_timer_loop("water_mode_timer_page", loop)
+        if cycle == ["None"]:
+            cycle = [time.strftime("%A", time.localtime(start_set_time)).lower()]
+
+        self.launch_mode_timer("water_mode_timer_page", True)
+
+        return [[start_time, start_set_time], [end_time, end_set_time]], cycle
+
+    # 创建鱼缸，充电保护类型模式
+    def create_delay_mode_timer(self, now_time, set_timer, delay_s=120, cycle=False):
+        """与创建延迟定时相同
+       return: None
+       """
+        start_time, start_set_time = self.set_timer_roll(self.page["piocc_mode_timer_page"]["end_h"],
+                                                         self.page["piocc_mode_timer_page"]["end_m"],
+                                                         self.page["piocc_mode_timer_page"]["end_time_text"],
+                                                         now_time, set_timer, cycle, delay_s)
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
+
+        self.widget_click(self.page["piocc_mode_timer_page"]["end_time"],
+                          self.page["piocc_mode_timer_page"]["title"])
+
+        self.launch_mode_timer("piocc_mode_timer_page", False, start_time)
+
         return start_time, start_set_time
+
+    # 创建循环定时
+    def create_fish_timer(self, now_time, set_start_time, set_end_time, loop, delay_s=120, cycle=False, loops=1):
+        """
+        :param page: 定时模式，鱼缸模式/循环模式...etc
+        :param now_time: 当前时间
+        :param set_start_time: 启动时间时长
+        :param set_end_time: 关闭时间时长
+        :param loop: 循环模式
+        :param delay_s: 定时设定与执行时间差
+        :param cycle: 是否是类鱼缸模式的连续定时模式
+        :param loops: 循环为永久循环时需要产出的时间对个数
+        :return:
+        """
+        self.widget_click(self.page["fish_mode_timer_page"]["start_time"],
+                          self.page["fish_mode_timer_page"]["roll_h"])
+
+        start_time, start_set_time = self.set_timer_roll(self.page["fish_mode_timer_page"]["roll_h"],
+                                                         self.page["fish_mode_timer_page"]["roll_m"],
+                                                         self.page["fish_mode_timer_page"]["start_time_text"],
+                                                         now_time, set_start_time)
+        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
+
+        self.widget_click(self.page["fish_mode_timer_page"]["start_time"],
+                          self.page["fish_mode_timer_page"]["title"])
+
+        self.widget_click(self.page["fish_mode_timer_page"]["end_time"],
+                          self.page["fish_mode_timer_page"]["end_h"])
+
+        end_time, end_set_time = self.set_timer_roll(self.page["fish_mode_timer_page"]["end_h"],
+                                                     self.page["fish_mode_timer_page"]["end_m"],
+                                                     self.page["fish_mode_timer_page"]["end_time_text"],
+                                                     now_time, set_end_time, True)
+        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(end_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(end_set_time))))
+
+        self.widget_click(self.page["fish_mode_timer_page"]["end_time"],
+                          self.page["fish_mode_timer_page"]["title"])
+
+        # 设定循环次数
+        set_loop = self.set_timer_loop("fish_mode_timer_page", loop)[0]
+        self.logger.info("[APP_TIMER]Set loop: %s" % set_loop)
+        if loop == u"永久循环":
+            loop_count = loops  # 生成指定数量的时间对个数
+        else:
+            loop_count = int(re.findall(u"(\d+)次", set_loop)[0])  # 同时设置循环模式
+        # 延迟时间段长度，30分钟为1800s，在上一段定时结束后加上1800s就是下一段定时执行时间点
+        start_period = start_set_time - start_time
+        end_period = end_set_time - end_time
+
+        # [[power_on开启时间，power_on关闭时间，power_off开启时间，power_off关闭时间]...]
+        # power_on关闭时间 = power_off开启时间
+        loop_list = [[start_time, start_set_time, end_time, end_set_time]]
+        # 第一组定时执行完毕时间
+        on_start = end_set_time  # 下一组定时的power_on开启时间，等于上一组定时power_off关闭的时间
+        for i in xrange(loop_count - 1):
+            on_end = on_start + start_period  # power_on关闭时间
+            off_start = on_end  # power_off开启时间
+            off_end = off_start + end_period  # power_off关闭时间
+            loop_list.append([on_start, on_end, off_start, off_end])  # 写入列表
+            on_start = off_end  # 下一组power_on开启时间
+
+        self.launch_mode_timer("fish_mode_timer_page", False, start_time)
+
+        return loop_list
 
     # 设置普通/模式定时循环模式
     def set_timer_loop(self, page, loop):
@@ -239,6 +388,7 @@ class WidgetOperationJD(LaunchAppJD):
                      u"周六": "saturday",
                      u"周日": "weekday",
                      u"永久循环": "forever"}
+        cycle = ["None"]
 
         attribute = self.ac.get_attribute(self.wait_widget(self.page[page]["repeat"]), "name")
         if isinstance(loop, list):
@@ -257,6 +407,14 @@ class WidgetOperationJD(LaunchAppJD):
                                   self.page["timer_repeat_page"]["forever"])
                 cycle = [u"0次"]
             else:
+                if u"每天" in loop:
+                    loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
+                elif u"工作日" in loop:
+                    loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五"]
+                elif u"周" in loop:
+                    loop_attr = [loop]
+                else:
+                    loop_attr = loop
                 try:
                     self.wait_widget(self.page["timer_repeat_page"]["everyday"])
                 except TimeoutException:
@@ -269,34 +427,35 @@ class WidgetOperationJD(LaunchAppJD):
                     self.widget_click(self.page["timer_repeat_page"]["define"],
                                       self.page["timer_repeat_page"]["monday"])
 
-                if isinstance(loop, list):
-                    for i in loop:
-                        self.widget_click(self.page["timer_repeat_page"][loop_mode[i]],
-                                          self.page["timer_repeat_page"]["title"])
-                    cycle = [loop_mode[i] for i in loop]
-                else:
-                    self.widget_click(self.page["timer_repeat_page"][loop_mode[loop]],
+                for i in loop_attr:
+                    self.widget_click(self.page["timer_repeat_page"][loop_mode[i]],
                                       self.page["timer_repeat_page"]["title"])
-                    cycle = [loop_mode[loop]]
+                    cycle = [loop_mode[i] for i in loop]
 
             self.widget_click(self.page["timer_repeat_page"]["to_return"],
                               self.page[page]["title"])
             attribute = self.ac.get_attribute(self.wait_widget(self.page[page]["repeat"]), "name")
             if tmp not in attribute:
                 raise TimeoutException("Cycle set error")
+
+        if loop == u"执行一次":
+            cycle = ["None"]
+        elif loop == u"永久循环":
+            cycle = [u"0次"]
         else:
-            if loop == u"执行一次":
-                cycle = ["None"]
-            elif loop == u"永久循环":
-                cycle = [u"0次"]
-            elif isinstance(loop, list):
-                cycle = [loop_mode[i] for i in loop]
+            if u"每天" in loop:
+                loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
+            elif u"工作日" in loop:
+                loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五"]
+            elif u"周" in loop:
+                loop_attr = [loop]
             else:
-                cycle = [loop_mode[loop]]
+                loop_attr = loop
+            cycle = [loop_mode[i] for i in loop_attr]
         return cycle
 
     # 定时检查模板
-    def check_timer(self, start_time, set_time, power_state, cycle):
+    def check_timer(self, start_time, set_time, power_state, cycle=None):
         # 开始时间, 设置时间
         start_times = time.strftime("%Y-%m-%d %X", time.localtime(start_time))
         self.logger.info("[APP_CHECK_TIMER]Now time: %s. Start time: %s" % (time.strftime("%Y-%m-%d %X"), start_times))

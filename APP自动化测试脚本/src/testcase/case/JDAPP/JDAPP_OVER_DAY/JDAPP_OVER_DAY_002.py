@@ -24,47 +24,23 @@ class JDAppOverDay2(WidgetOperationJD):
                           self.page["water_mode_timer_page"]["title"])
 
         now = time.strftime("%H:%M")
-    
-        delay_time_1 = ["point", "17:00"]
-        self.widget_click(self.page["water_mode_timer_page"]["start_time"],
-                          self.page["water_mode_timer_page"]["roll_h"])
-    
-        start_time_1, set_time_1 = self.set_timer_roll(self.page["water_mode_timer_page"]["roll_h"],
-                                                       self.page["water_mode_timer_page"]["roll_m"],
-                                                       self.page["water_mode_timer_page"]["start_time_text"],
-                                                       delay_time_1, now)
-        
-        self.widget_click(self.page["water_mode_timer_page"]["start_time"],
-                          self.page["water_mode_timer_page"]["title"])
-    
-        delay_time_2 = ["point", "01:00"]
-        self.widget_click(self.page["water_mode_timer_page"]["end_time"],
-                          self.page["water_mode_timer_page"]["end_h"])
-    
-        start_time_2, set_time_2 = self.set_timer_roll(self.page["water_mode_timer_page"]["end_h"],
-                                                       self.page["water_mode_timer_page"]["end_m"],
-                                                       self.page["water_mode_timer_page"]["end_time_text"],
-                                                       delay_time_2, now)
-        
-        self.widget_click(self.page["water_mode_timer_page"]["end_time"],
-                          self.page["water_mode_timer_page"]["title"])
 
+        delay_time_1, delay_time_2 = ["point", "17:00"], ["point", "01:00"]
         now = time.strftime("%A").lower()
         date_1 = ["monday", "wednesday", "friday"]
         if now in date_1:
             date_2 = [u"周一", u"周三", u"周五"]
         else:
             date_2 = [u"周二", u"周四", u"周六"]
-        self.set_timer_loop("water_mode_timer_page", date_2)
-
-        self.launch_mode_timer("water_mode_timer_page", True)
+        tmp, cycle = self.create_water_mode_timer(now, delay_time_1, delay_time_2, date_2)
+        start_time_1, set_time_1 = tmp[0]
+        start_time_2, set_time_2 = tmp[1]
 
         self.widget_click(self.page["mode_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
         
         self.wait_widget(self.page["control_device_page"]["power_off"])
-    
-        self.check_timer(start_time_1, set_time_1, u"设备已开启")
-    
-        self.check_timer(start_time_2, set_time_2, u"设备已关闭")
-        
+
+        self.check_timer(start_time_1, set_time_1, u"设备已开启", cycle)
+
+        self.check_timer(start_time_2, set_time_2, u"设备已关闭", cycle)

@@ -77,9 +77,10 @@ app_device_name:
 phone_name:
   b9388cbb:
     app: 'JD'
+    mac:
     phone_module: '小米5'
   8c710f0a2007635ea8d1124575a10038e7655c6e:
-    app: 'JD'
+    app: 'AL'
     phone_module: 'iphone 6s'
   85GABMN9UDD2:
     app: 'HW'
@@ -97,6 +98,6 @@ phone_name:
     app: 'AL'
     phone_module: 'vivo Y51A'
   ZTEC880U:
-    app: 'AL'
+    app: 'JD'
     phone_module: '中兴 C880U'
 

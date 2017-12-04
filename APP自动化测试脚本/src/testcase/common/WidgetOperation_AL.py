@@ -639,14 +639,18 @@ class WidgetOperationAL(LaunchAppAL):
                      u"周五": "friday",
                      u"周六": "saturday",
                      u"周日": "weekday"}
+        cycle = ["None"]
         end_time = time.time() + 60
         while True:
+            # 属性判断会不正常，通过以下操作验证
+            """"""
             self.logger.info("""*******""")
             self.widget_click(self.page[page]["repeat"],
                               self.page["timer_repeat_page"]["title"])
 
             self.widget_click(self.page["timer_repeat_page"]["to_return"],
                               self.page[page]["repeat"], )
+            """"""
 
             attr = self.ac.get_attribute(self.wait_widget(self.page[page]["repeat"]), "name")
             invalid_attr = '\ue617'
@@ -657,6 +661,7 @@ class WidgetOperationAL(LaunchAppAL):
                 attribute = attr.replace(u"永久循环", "tmp").replace(u"循环", "").replace("tmp", u"永久循环").replace(
                     invalid_attr, "").split()[0]
             self.logger.info("[APP_INFO]Repeat attr: %s, %s" % (attribute, [attribute]))
+
             # 自定义模式显示为：周一、周三、周五...etc
             # loop传参为[u"周一", u"周三", u"周五"]
             if isinstance(loop, list):
@@ -685,7 +690,6 @@ class WidgetOperationAL(LaunchAppAL):
                     self.widget_click(self.page["timer_repeat_page"]["once"],
                                       self.page["timer_repeat_page"]["title"])
 
-                    cycle = ["None"]
                 elif u"周" in loop or u"每天" in loop or u"工作日" in loop or isinstance(loop, list):
                     if u"每天" in loop:
                         loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
@@ -705,20 +709,17 @@ class WidgetOperationAL(LaunchAppAL):
                     for i in result:  # 根据计算元素点击
                         self.widget_click(self.page["timer_repeat_page"][loop_mode[i]],
                                           self.page["timer_repeat_page"]["title"])
-
-                    cycle = [loop_mode[i] for i in loop_attr]
                 else:
                     if u"永久循环" in attribute:  # 已存在模式为u"永久循环"
                         roll = 0
                     else:  # 已存在模式为u"**次"
                         roll = int(re.findall(u"(\d+)次", attribute)[0])
-
                     if loop == u"永久循环":
-                        cycle = [u"0次"]
+                        set_roll = [u"0次"]
                     else:
-                        cycle = [loop]
-                    loop_tmp = int(re.findall(u"(\d+)次", cycle[0])[0])
-                    self.set_count_roll(self.page["timer_repeat_page"]["cycle_count"], roll, loop_tmp)  # 从“**次”到“永久循环”
+                        set_roll = [loop]
+                    set_roll = int(re.findall(u"(\d+)次", set_roll[0])[0])
+                    self.set_count_roll(self.page["timer_repeat_page"]["cycle_count"], roll, set_roll)  # 从“**次”到“永久循环”
 
                 # 保存
                 self.widget_click(self.page["timer_repeat_page"]["saved"],
@@ -744,25 +745,24 @@ class WidgetOperationAL(LaunchAppAL):
                 else:
                     if time.time() > end_time:
                         raise TimeoutException("Cycle set error")
-            else:
-                if loop == u"永不":
-                    cycle = ["None"]
-                elif u"周" in loop or u"每天" in loop or u"工作日" in loop or isinstance(loop, list):
-                    if u"每天" in loop:
-                        loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
-                    elif u"工作日" in loop:
-                        loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五"]
-                    elif u"周" in loop:
-                        loop_attr = [loop]
-                    else:
-                        loop_attr = loop
-                    cycle = [loop_mode[i] for i in loop_attr]
+
+            if loop == u"永不":
+                cycle = ["None"]
+            elif u"周" in loop or u"每天" in loop or u"工作日" in loop or isinstance(loop, list):
+                if u"每天" in loop:
+                    loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
+                elif u"工作日" in loop:
+                    loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五"]
+                elif u"周" in loop:
+                    loop_attr = [loop]
                 else:
-                    if loop == u"永久循环":
-                        cycle = [u"0次"]
-                    else:
-                        cycle = [loop]
-                break
+                    loop_attr = loop
+                cycle = [loop_mode[i] for i in loop_attr]
+            elif u"永久循环" in loop:
+                cycle = [u"0次"]
+            else:
+                cycle = [loop]
+            break
         self.logger.info("[APP_INFO]Cycle: %s, %s" % (",".join(cycle), cycle))
 
         return cycle

@@ -21,6 +21,17 @@ class ToDevicePageAL(object):
         self.wait_widget = widget_check_unit.wait_widget
         self.case()
 
+    # app异常修复
+    def app_error_fix(self):
+        try:
+            self.wait_widget(self.page["exit_error"]["title"])
+            self.logger.info(u"[APP_INF] APP异常修复")
+            self.widget_click(self.page["exit_error"]["skip"],
+                              log_record=0)
+            self.logger.info(u"[APP_INF] 跳过")
+        except TimeoutException:
+            pass
+
     # 检查APP是否升级，取消
     def check_update(self):
         try:
@@ -137,6 +148,9 @@ class ToDevicePageAL(object):
 
     # 用例动作
     def case(self):
+        self.app_error_fix()
         self.check_update()
         self.skip_welcome()
         self.login_to_device()
+        self.wait_widget(self.page["app_home_page"]["title"])
+        self.logger.info(u"[APP_INF] APP当前页面为app主页面")

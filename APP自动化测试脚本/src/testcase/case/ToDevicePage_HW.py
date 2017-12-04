@@ -54,3 +54,5 @@ class ToDevicePageHW(object):
         self.close_ad()
         self.check_update()
         self.login_to_device()
+        self.wait_widget(self.page["app_home_page"]["title"])
+        self.logger.info(u"[APP_INF] APP当前页面为app主页面")

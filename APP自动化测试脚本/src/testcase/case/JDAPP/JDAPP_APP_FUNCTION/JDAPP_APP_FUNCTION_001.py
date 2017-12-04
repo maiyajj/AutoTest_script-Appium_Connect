@@ -34,28 +34,15 @@ class JDAppAppFunction1(WidgetOperationJD):
         self.widget_click(self.page["timer_log_page"]["to_return"],
                           self.page["normal_timer_page"]["title"])
 
-        self.widget_click(self.page["normal_timer_page"]["add_timer"],
-                          self.page["add_normal_timer_page"]["title"])
-
         now = time.strftime("%H:%M")
     
         delay_time_1 = 1
-        start_time_1, set_time_1 = self.set_timer_roll(self.page["add_normal_timer_page"]["roll_h"],
-                                                       self.page["add_normal_timer_page"]["roll_m"],
-                                                       self.page["add_normal_timer_page"]["set_timer"],
-                                                       delay_time_1, now)
-
-        self.widget_click(self.page["add_normal_timer_page"]["power_on"],
-                          self.page["add_normal_timer_page"]["title"])
-    
-        self.widget_click(self.page["add_normal_timer_page"]["saved"],
-                          self.page["normal_timer_page"]["title"])
-        self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
+        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, delay_time_1, "power_on")
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
 
-        self.check_timer(start_time_1, set_time_1, u"设备已开启")
+        self.check_timer(start_time_1, set_time_1, u"设备已开启", cycle1)
         
         self.widget_click(self.page["control_device_page"]["normal_timer"],
                           self.page["normal_timer_page"]["title"])

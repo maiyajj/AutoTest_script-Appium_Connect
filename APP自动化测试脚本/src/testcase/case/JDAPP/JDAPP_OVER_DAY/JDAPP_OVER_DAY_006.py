@@ -24,35 +24,12 @@ class JDAppOverDay6(WidgetOperationJD):
                           self.page["fish_mode_timer_page"]["title"])
 
         now = time.strftime("%H:%M")
-    
-        delay_time_1 = ["delay", "23:59"]
-        self.widget_click(self.page["fish_mode_timer_page"]["start_time"],
-                          self.page["fish_mode_timer_page"]["roll_h"])
-    
-        start_time_1, set_time_1 = self.set_timer_roll(self.page["fish_mode_timer_page"]["roll_h"],
-                                                       self.page["fish_mode_timer_page"]["roll_m"],
-                                                       self.page["fish_mode_timer_page"]["start_time_text"],
-                                                       delay_time_1, now)
-        
-        self.widget_click(self.page["fish_mode_timer_page"]["start_time"],
-                          self.page["fish_mode_timer_page"]["title"])
-    
-        delay_time_2 = ["delay", "23:59"]
-        self.widget_click(self.page["fish_mode_timer_page"]["end_time"],
-                          self.page["fish_mode_timer_page"]["end_h"])
-    
-        start_time_2, set_time_2 = self.set_timer_roll(self.page["fish_mode_timer_page"]["end_h"],
-                                                       self.page["fish_mode_timer_page"]["end_m"],
-                                                       self.page["fish_mode_timer_page"]["end_time_text"],
-                                                       delay_time_2, set_time_1, True)
-        
-        self.widget_click(self.page["fish_mode_timer_page"]["end_time"],
-                          self.page["fish_mode_timer_page"]["title"])
 
-        self.set_timer_loop("fish_mode_timer_page", u"永久循环")
+        delay_time_1, delay_time_2 = ["delay", "23:59"], ["delay", "23:59"]
+        tmp = self.create_fish_timer(now, delay_time_1, delay_time_2, u"永久循环")
+        start_time_1, set_time_1 = tmp[0]
+        start_time_2, set_time_2 = tmp[1]
 
-        self.launch_mode_timer("fish_mode_timer_page", False, start_time_1)
-        
         self.widget_click(self.page["mode_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
         

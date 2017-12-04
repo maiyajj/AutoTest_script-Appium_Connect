@@ -117,6 +117,7 @@ def case_run(bool):
                     self.reset_port()
             finally:
                 try:
+                    self.driver.close_app()  # 关闭APP
                     self.driver.quit()  # 用例执行结束关闭断开连接
                     self.debug.warn("driver quit success")
                 except BaseException:
