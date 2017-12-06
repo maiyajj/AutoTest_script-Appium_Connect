@@ -373,7 +373,7 @@ class MainPageWidgetAndroidJD(object):
         d["timer_edit"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath",
                            u"编辑定时", {"px": [0.9975, 0.5]}]
         # 无定时
-        d["no_timer"] = [u"//android.view.View[@content-desc='暂无设置定时']", "xpath", u"无定时"]
+        d["no_timer"] = [u"//android.view.View[contains(@content-desc, '暂无设置定时')]", "xpath", u"无定时"]
         return d
 
     # 新建普通定时页面

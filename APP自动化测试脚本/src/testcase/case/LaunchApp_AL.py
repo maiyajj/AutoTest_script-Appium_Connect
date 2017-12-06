@@ -246,6 +246,10 @@ class LaunchAppAL(object):
     @launch_fail_fix
     def launch_app(self):
         self.check_appium_launch()  # 判断Appium服务是否已启动
+        # 记录调试信息
+        with open("appium command %s.log" % self.device_name, "a") as files:
+            files.write('''driver = webdriver.Remote('http://localhost:%s/wd/hub', %s)''' % (
+                self.device_info["port"], self.device_info["desired_caps"]) + "\n\n")
         self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
                                        self.device_info["desired_caps"])  # 启动APP
 
