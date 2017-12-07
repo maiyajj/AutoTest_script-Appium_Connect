@@ -55,7 +55,7 @@ class GetPhoneInfoIos(ShellCommand):
             # PC OS
             device[k]["os"] = self.os
         '''
-        device={'6910ec366b7e396410c2be813bff57ef1c9ccc7e':
+        device = {'6910ec366b7e396410c2be813bff57ef1c9ccc7e':
                       {'deviceName': 'iPhone6s Plus',
                        'log_name': 'iPhone6s Plus',
                        'udid': '6910ec366b7e396410c2be813bff57ef1c9ccc7e',

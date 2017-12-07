@@ -161,12 +161,10 @@ class LaunchAppGN(object):
         for ports in [self.port]:
             proc_pid = self.sc.find_proc_and_pid_by_port(ports)
             if proc_pid == []:  # 判断当前端口是否被占用
-                print("COM %s unused" % ports)
                 self.debug.info("COM %s unused" % ports)
             else:
                 for i in proc_pid:
                     self.sc.kill_proc_by_pid(i[1])
-                    print("Kill %s" % i[0])
                     self.debug.info("Kill %s" % i[0])
 
     # 重新连接PC和手机

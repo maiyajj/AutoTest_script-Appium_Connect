@@ -85,6 +85,7 @@ class ShellCommand(object):
         """
         command = "idevice_id -l"
         udid = re.findall("(.+)", os.popen(command).read())
+
         return udid
     
     def find_proc_and_pid_by_port(self, port):

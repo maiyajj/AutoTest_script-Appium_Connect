@@ -47,26 +47,26 @@ class GetPhoneInfo(ShellCommand):
                 device[k][ports] = selected_port
                 selected_port += 1
         '''
-        device: {'8681-M02-0xa0a151df':
-                   {'deviceName': '8681-M02', 
-                    'log_name': '8681-M02', 
-                    'bp_port': 4726, 
-                    'udid': '8681-M02-0xa0a151df',
-                    'platformVersion': '5.1', 
-                    'model': '8681_M02', 
-                    'platformName': 'Android', 
-                    'port': 4725, 
-                    'dpi': {'width': '1080', 'height': '1920'}}}
-                {'6910ec366b7e396410c2be813bff57ef1c9ccc7e':
-                   {'deviceName': 'iPhone6s Plus',
-                    'log_name': 'iPhone6s Plus',
-                    'wda_Port': 4729, 
-                    'bp_port': 4728, 
-                    'udid': '6910ec366b7e396410c2be813bff57ef1c9ccc7e',
-                    'platformVersion': '10.3.2',
-                    'model': 'iPhone6s Plus',
-                    'platformName': 'ios', 
-                    'port': 4727, 
-                    'dpi': {'width': 1080, 'height': 1920}}}
+        device = {'8681-M02-0xa0a151df':
+                      {'deviceName': '8681-M02',
+                       'log_name': '8681-M02',
+                       'bp_port': 4726,
+                       'udid': '8681-M02-0xa0a151df',
+                       'platformVersion': '5.1',
+                       'model': '8681_M02',
+                       'platformName': 'Android',
+                       'port': 4725,
+                       'dpi': {'width': '1080', 'height': '1920'}},
+                  '6910ec366b7e396410c2be813bff57ef1c9ccc7e':
+                      {'deviceName': 'iPhone6s Plus',
+                       'log_name': 'iPhone6s Plus',
+                       'wda_Port': 4729,
+                       'bp_port': 4728,
+                       'udid': '6910ec366b7e396410c2be813bff57ef1c9ccc7e',
+                       'platformVersion': '10.3.2',
+                       'model': 'iPhone6s Plus',
+                       'platformName': 'ios',
+                       'port': 4727,
+                       'dpi': {'width': 1080, 'height': 1920}}}
         '''
         return device

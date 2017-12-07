@@ -58,14 +58,14 @@ class GetPhoneInfoAndroid(ShellCommand):
 
             # PC OS
             device[k]["os"] = self.os
-
         '''
-        device: {udid:{'deviceName': '8681-M02', 
-                       'log_name': '8681-M02', 
-                       'udid': '8681-M02-0xa0a151df',
-                       'platformVersion': '5.1', 
-                       'model': '8681_M02', 
-                       'platformName': 'Android', 
-                       'dpi': {'width': '1080', 'height': '1920'}}}
+        device = {'8681-M02':
+                     {'deviceName': '8681-M02',
+                      'log_name': '8681-M02',
+                      'udid': '8681-M02-0xa0a151df',
+                      'platformVersion': '5.1',
+                      'model': '8681_M02',
+                      'platformName': 'Android',
+                      'dpi': {'width': '1080', 'height': '1920'}}}
         '''
         return device
