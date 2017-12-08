@@ -131,5 +131,6 @@ class ShellCommandWindows(object):
         """
         set appium server log repository path for Windows.
         """
-        addr = os.getenv("Temp")
+        # addr = os.getenv("Temp")
+        addr = os.getcwd()
         return addr

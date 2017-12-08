@@ -98,6 +98,6 @@ phone_name:
     app: 'AL'
     phone_module: 'vivo Y51A'
   ZTEC880U:
-    app: 'JD'
+    app: 'AL'
     phone_module: '中兴 C880U'
 

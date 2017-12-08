@@ -1,4 +1,6 @@
 # coding=utf-8
+import logging
+import logging.handlers
 import shutil
 import traceback
 from subprocess import *
@@ -20,14 +22,16 @@ def launch_appium_error_log(func):
                 pass
 
         # appium服务调用进程链的pid，name等信息，每次运行程序前会清空，而运行时追加，所以写在while True外面.
-        with open(os.path.join(self.sc.set_appium_log_addr(), "appium_port_%s.log" % self.log_name), "w") as files:
-            # Popen(command, shell=True)语句是非阻塞式，如果appium服务崩溃则会继续往下执行然后回到while True.
-            while True:
-                try:
-                    func(self, log_tmp, files)
-                except BaseException:
-                    with open(os.path.join(self.sc.set_appium_log_addr(), "appium_error.log"), "a") as appium_error:
-                        appium_error.write(traceback.format_exc())
+        # Popen(command, shell=True)语句是非阻塞式，如果appium服务崩溃则会继续往下执行然后回到while True.
+        while True:
+            try:
+                # 主进程崩溃后有残留子进程，关闭当前子进程
+                if not psutil.pid_exists(self.main_pid):
+                    psutil.Process(self.current_pid).kill()
+                func(self, log_tmp)
+            except BaseException:
+                with open(os.path.join(self.sc.set_appium_log_addr(), "appium_error.log"), "a") as appium_error:
+                    appium_error.write(traceback.format_exc())
 
     return wrapper
 
@@ -39,16 +43,20 @@ class LaunchAppiumServicesIos(object):
 
     def __init__(self, device_info):
         self.device_info = device_info
-        self.port = self.device_info["port"]
-        self.bp_port = self.device_info["bp_port"]
-        self.wda_port = self.device_info["wda_port"]
-        self.log_name = self.device_info["log_name"]
-        self.udid = self.device_info["udid"]
+        self.port = device_info["port"]
+        self.bp_port = device_info["bp_port"]
+        self.wda_port = device_info["wda_port"]
+        self.log_name = device_info["log_name"]
+        self.udid = device_info["udid"]
+        self.model = device_info["model"]
+        self.current_pid = os.getpid()
+        self.main_pid = psutil.Process(self.current_pid).parent().parent().pid  # 主进程pid
 
         self.sc = ShellCommand()
+        self.appium_port_debug()
 
         # Screenshot directory in android phone.
-        self.folder = "%s{%s}" % (self.device_info["model"], self.device_info["udid"])
+        self.folder = "%s{%s}" % (self.model, self.udid)
 
         self.kill_adb()
         # self.create_adb_folder()
@@ -59,7 +67,7 @@ class LaunchAppiumServicesIos(object):
         self.sc.kill_proc_by_proc("adb")
 
     @launch_appium_error_log
-    def launch_appium(self, log_tmp, files):
+    def launch_appium(self, log_tmp):
         # appium服务日志存放目录
         log = os.path.join(log_tmp, "%s-[%s].log" % (self.log_name, time.strftime("%Y-%m-%d %H-%M-%S")))
         # 启动appium服务命令
@@ -81,18 +89,19 @@ class LaunchAppiumServicesIos(object):
         while True:
             port = self.sc.find_proc_and_pid_by_port(self.port)
             wda_port = self.sc.find_proc_and_pid_by_port(self.wda_port)
-            files.write("Port: %s; Wda_port: %s\n" % (port, wda_port))
+            self.debug.info("Port: %s; Wda_port: %s\n" % (port, wda_port))
             if port != [] and wda_port != []:
                 for i in appium_pid:
                     child_proc = psutil.Process(i).children()
                     if child_proc != []:
                         for x in child_proc:
                             appium_pid.append(x.pid)
-                            files.write("pid: %s; name: %s parent: %s\n" % (x.pid, x.name(), x.parent()))
-                files.write("%s\n" % appium_pid)
+                            self.debug.info("pid: %s; name: %s parent: %s\n" % (x.pid, x.name(), x.parent()))
+                self.debug.info("%s\n" % appium_pid)
                 break
             else:
                 time.sleep(3)
+                self.debug.info("launch_appium: pid %s\n" % self.current_pid)
 
         # 轮询检测端口占用，若端口已关闭则重启Appium服务。
         # 优先关闭子进程，关闭所有子进程后再关闭主进程。
@@ -100,14 +109,14 @@ class LaunchAppiumServicesIos(object):
         while True:
             port = self.sc.find_proc_and_pid_by_port(self.port)
             wda_port = self.sc.find_proc_and_pid_by_port(self.wda_port)
-            files.write("Check! Port: %s; Wda_port: %s\n" % (port, wda_port))
+            self.debug.info("Check! Port: %s; Wda_port: %s\n" % (port, wda_port))
             if port == [] or wda_port == []:
                 for i in appium_pid:
                     self.sc.kill_proc_by_pid(i)
+                    self.debug.info("Kill! Pid: %s\n" % i)
                 break
             else:
                 time.sleep(3)
-                files.write("%s: %s, %s\n" % (time.strftime("%Y-%m-%d %H-%M-%S"), self.port, port))
 
     def create_adb_folder(self):
         """
@@ -125,3 +134,18 @@ class LaunchAppiumServicesIos(object):
             shutil.rmtree("./screenshots/%s" % self.folder, True)
             if os.path.isdir("./screenshots/%s" % self.folder) is False:
                 os.makedirs("./screenshots/%s" % self.folder)
+
+    def init_log(self, log):
+        file_path = os.path.join(self.sc.set_appium_log_addr(), "appium_port_%s.log" % self.log_name)
+        logging.basicConfig(level=logging.INFO)  # 设置打印级别
+        formatter = logging.Formatter("[%(asctime)s]%(message)s", "%Y-%m-%d %X")  # log文件写入内容，此处为正文
+        handler = logging.FileHandler(file_path)
+        handler.setFormatter(formatter)
+        log.addHandler(handler)  # 初始化完毕
+        return log
+
+    def appium_port_debug(self):
+        file_name = "appium_port_%s" % self.log_name
+        self.debug = self.init_log(logging.getLogger(file_name))  # 初始化完毕
+
+        logging.shutdown()

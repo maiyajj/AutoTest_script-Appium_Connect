@@ -30,7 +30,7 @@ check_log(device_list, deviceName)
 check_debug(device_list, deviceName)
 logger = device_info["logger"]
 debug = device_info["debug"]
-widget_check_unit = WidgetCheckUnit(driver, page, logger, debug)
+widget_check_unit = WidgetCheckUnit(driver, device_info)
 widget_click = widget_check_unit.widget_click
 wait_widget = widget_check_unit.wait_widget
 

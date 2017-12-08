@@ -5,14 +5,14 @@ from src.testcase.common.WidgetCheckUnit import *
 
 
 class ToLoginPageHW(object):
-    def __init__(self, driver, logger, device_info, page_element):
+    def __init__(self, driver, device_info):
         self.driver = driver
-        self.logger = logger
-        self.device_info = device_info
-        self.page = page_element
-        self.debug = self.device_info["debug"]
+        self.page = device_info["page"]  # 页面元素库
+        self.logger = device_info["logger"]  # log日志
+        self.debug = device_info["debug"]  # debug日志
+        self.ac = device_info["ac"]  # appium command
         self.basename = os.path.basename(__file__).split(".")[0]
-        widget_check_unit = WidgetCheckUnit(driver, self.page, self.logger, self.debug)
+        widget_check_unit = WidgetCheckUnit(driver, device_info)
         self.widget_click = widget_check_unit.widget_click
         self.wait_widget = widget_check_unit.wait_widget
         self.case()

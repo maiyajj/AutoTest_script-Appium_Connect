@@ -8,7 +8,7 @@ from appium import webdriver
 
 from src.testcase.case.ToDevicePage import *
 from src.testcase.case.ToLoginPage import *
-from src.testcase.common.WidgetCheckUnit import *
+# from src.testcase.common.WidgetCheckUnit import *
 from src.utils.ScreenShot import *
 
 
@@ -30,10 +30,10 @@ def decor_launch_app(func):
                 self.success = False  # 初始化用例执行结果
 
                 if page_login is True:  # 执行用例前使APP进入登录页面
-                    ToLoginPage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到登录页面等待
+                    ToLoginPage(self.driver, self.device_info)  # 使APP跳转到登录页面等待
                     break
                 elif page_login is False:  # 执行用例前使APP进入APP主页面
-                    ToDevicePage(self.driver, self.logger, self.device_info, self.page)  # 使APP跳转到设备主页面等待
+                    ToDevicePage(self.driver, self.device_info)  # 使APP跳转到设备主页面等待
                     break
                 else:  # 待定
                     pass
@@ -132,19 +132,22 @@ def case_run(bool):
 
 
 class LaunchAppGN(object):
-    def __init__(self, **kwargs):
-        self.device_info = kwargs["device_info"]  # 设备信息集
-        self.page = kwargs["page_element"]  # 阿里智能APP页面元素集
-        self.logger = kwargs["logger"]  # log日志实例化
-        self.sc = kwargs["sc"]  # ShellCommand实例化
-        self.device_name = self.device_info["udid"]  # 设备名称
-        self.port = self.device_info["port"]  # appium服务端口
-        self.bp_port = self.device_info["bp_port"]  # appium返回Android端口
-        self.wda_port = self.device_info["wda_port"]  # appium返回iOS端口
-        self.app = self.device_info["app"]  # APP型号
-        self.ac = AppiumCommand(self.device_info["platformName"])  # AppiumCommand实例化
+    def __init__(self, device_info):
+        self.device_info = device_info  # 设备信息表
+        self.page = device_info["page"]  # APP页面元素库
+        self.logger = device_info["logger"]  # log日志实例化
+        self.debug = device_info["debug"]  # debug日志实例化
+        self.device_name = device_info["udid"]  # 设备名称
+        self.udid = device_info["udid"]  # 设备udid
+        self.port = device_info["port"]  # appium服务端口
+        self.bp_port = device_info["bp_port"]  # appium返回Android端口
+        self.wda_port = device_info["wda_port"]  # appium返回iOS端口
+        self.app = device_info["app"]  # APP型号
+        self.desired_caps = device_info["desired_caps"]  # APP参数
+        self.sc = device_info["sc"]  # ShellCommand实例化
+        self.ac = AppiumCommand(device_info["platformName"])  # AppiumCommand实例化
+        device_info["ac"] = self.ac
 
-        self.debug = self.device_info["debug"]  # debug日志实例化
         self.user = conf["user_and_pwd"][self.device_name][self.app]  # APP配置
         self.case_module = ""  # 用例所属模块
         self.case_title = ""  # 用例名称
@@ -182,8 +185,7 @@ class LaunchAppGN(object):
                     self.debug.warn("driver quit success")
                 except BaseException:
                     self.debug.warn("driver need not quit")
-                self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
-                                               self.device_info["desired_caps"])  # 启动APP
+                self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.port, self.desired_caps)  # 启动APP
                 self.init_operate()  # 初始化操作
                 break
             except WebDriverException:
@@ -205,20 +207,21 @@ class LaunchAppGN(object):
             # 主进程崩溃后有残留子进程，关闭当前子进程
             if not psutil.pid_exists(self.main_pid):
                 psutil.Process(os.getpid()).kill()
+                self.debug.info("launch_app_port: pid %s" % os.getpid())
             try:
                 self.sc.find_proc_and_pid_by_port(self.port)[0]
             except IndexError:
                 self.debug.info("Appium Sever is death! %s" % time.strftime("%Y-%m-%d %X"))
                 time.sleep(1)
                 if time.time() > end_time:  # 启动失败重置端口
-                    self.http_run_app(True)
+                    self.reset_port()  # 不能使用self.http_run_app(True),会递归调用错误
             else:
                 self.debug.info("Appium Sever launch Success! %s" % time.strftime("%Y-%m-%d %X"))
                 break
 
     # 实例化用例操作
     def init_operate(self):
-        widget_check_unit = WidgetCheckUnit(self.driver, self.page, self.logger, self.debug)  # 元素初始化
+        widget_check_unit = WidgetCheckUnit(self.driver, self.device_info)  # 元素初始化
         self.widget_click = widget_check_unit.widget_click  # 初始化self.widget_click
         self.wait_widget = widget_check_unit.wait_widget  # 初始化self.wait_widget
         self.debug.info("driver(init_operate success)")
@@ -247,9 +250,8 @@ class LaunchAppGN(object):
         # 记录调试信息
         with open("appium command %s.log" % self.device_name, "a") as files:
             files.write('''driver = webdriver.Remote('http://localhost:%s/wd/hub', %s)''' % (
-                self.device_info["port"], self.device_info["desired_caps"]) + "\n\n")
-        self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
-                                       self.device_info["desired_caps"])  # 启动APP
+                self.port, self.desired_caps) + "\n\n")
+        self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.port, self.desired_caps)  # 启动APP
 
     # 用例执行完毕
     def case_over(self, success):

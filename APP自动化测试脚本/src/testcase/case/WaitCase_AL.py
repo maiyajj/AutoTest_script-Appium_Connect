@@ -21,21 +21,21 @@ class WaitCaseAL(object):
     def __init__(self, device_list, device_name, m_queue):
         self.device_list = device_list  # 设备列表
         self.device_name = device_name  # 设备名称
-        self.device_info = device_list[device_name]  # 设备信息集
-        self.app = self.device_info["app"]  # 运行APP信息
+        self.device_info = device_list[device_name]  # 设备信息表
         database["m_queue"] = m_queue  # 用于主进程和子进程通讯的消息队列
 
         self.report = None  # 初始化结果报告模块
         self.logger = None  # 初始化log日志模块
         self.xls = None  # 初始化执行结果Excel文件模块
         self.debug = None  # 初始化debug日志模块
-        self.page_element = None  # 初始化元素库模块
+        self.page = None  # 初始化元素库模块
         self.device_info_list = {}  # 初始化设备信息
         self.script_init_success = False  # 脚本初始化结果标志位
         database["case_location"] = 1  # 用例执行次数
         self.row = 0  # Excel报告写入初始位置
 
         self.sc = ShellCommand()  # 实例化ShellCommand
+        self.device_info["sc"] = self.sc
         database[device_name] = {}  # 初始化设备数据库
 
         try:
@@ -45,7 +45,6 @@ class WaitCaseAL(object):
             self.write_xls()
             self.select_page_element()
             self.check_appium()
-            self.init_app()
             self.script_init_success = True
         except BaseException:
             self.debug.error(traceback.format_exc())
@@ -59,35 +58,27 @@ class WaitCaseAL(object):
 
     # 从元素库筛选对应APP元素库
     def select_page_element(self):
-        PageElement(self.device_list, self.device_info["platformName"], self.device_info["app"]).wrapper()
-        self.page_element = self.device_list["page"]
+        self.page = PageElement(self.device_info["platformName"], self.device_info["app"]).wrapper()
+        self.device_info["page"] = self.page
 
     # 生成log日志
     def create_log(self):
-        check_log(self.device_list, self.device_name)
-        self.logger = self.device_info["logger"]
+        self.logger = check_log(self.device_info)
+        self.device_info["logger"] = self.logger
 
     # 生成log格式运行结果
     def create_report(self):
-        check_report(self.device_list, self.device_name)
-        self.report = self.device_info["report"]
+        self.report = check_report(self.device_info)
+        self.device_info["report"] = self.report
 
     # 生成debug日志
     def create_debug(self):
-        check_debug(self.device_list, self.device_name)
-        self.debug = self.device_info["debug"]
+        self.debug = check_debug(self.device_info)
+        self.device_info["debug"] = self.debug
 
     # 实例化Excel文件
     def write_xls(self):
-        self.xls = WriteXls(self.device_list, self.device_name)
-
-    # 初始化启动APP
-    def init_app(self):
-        self.device_info_list = {"device_info": self.device_info,
-                                 "page_element": self.page_element,
-                                 "logger": self.logger,
-                                 "app": self.app,
-                                 "sc": self.sc}
+        self.xls = WriteXls(self.device_info)
 
     # 检查Appium服务是否启动
     def check_appium(self):
@@ -173,7 +164,7 @@ class WaitCaseAL(object):
     # 输出报告
     def write_report(self, case_name):
         try:
-            case = case_name(**self.device_info_list).run()
+            case = case_name(self.device_info).run()
 
             end_time = time.strftime("%Y-%m-%d %X")
             d = (u'[ZENTAO_ID=%s, RESULT=%s CASE_TITLE="%s", RUN_TIMES=%s, CASE_ID=%s, START=%s, CLOSE=%s]' % (

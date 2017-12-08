@@ -6,16 +6,16 @@ from ToDevicePage_JD import *
 
 
 class ToDevicePage(object):
-    def __init__(self, driver, logger, device_info, page_element):
+    def __init__(self, driver, device_info):
         self.app = device_info["app"]
 
         if self.app == "GN":
-            ToDevicePageGN(driver, logger, device_info, page_element)
+            ToDevicePageGN(driver, device_info)
         elif self.app == "JD":
-            ToDevicePageJD(driver, logger, device_info, page_element)
+            ToDevicePageJD(driver, device_info)
         elif self.app == "AL":
-            ToDevicePageAL(driver, logger, device_info, page_element)
+            ToDevicePageAL(driver, device_info)
         elif self.app == "HW":
-            ToDevicePageHW(driver, logger, device_info, page_element)
+            ToDevicePageHW(driver, device_info)
         else:
             raise KeyError("%s:No such App!" % self.app)

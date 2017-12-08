@@ -10,13 +10,13 @@ class AppInit(object):
         pass
 
     def app_init(self):
-        device = GetPhoneInfo().get_phone_info()
-        for k, v in device.items():
+        device_info = GetPhoneInfo().get_phone_info()
+        for k, v in device_info.items():
             if v["platformName"] == "Android":
-                AppInitAndroid(device, k).app_init_android()
+                AppInitAndroid(device_info, k).app_init_android()
             elif v["platformName"] == "iOS":
-                AppInitIos(device, k).app_init_ios()
+                AppInitIos(device_info, k).app_init_ios()
             else:
                 raise KeyError("The phone os is wrong")
 
-        return device
+        return device_info

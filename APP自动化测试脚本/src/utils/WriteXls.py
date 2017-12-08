@@ -33,16 +33,17 @@ style.alignment = alignment
 # report format is .xls
 # need some other functions, you can modified by yourself.
 class WriteXls(object):
-    def __init__(self, device_list, device_name):
-        self.device_list = device_list
-        self.device_name = device_name
-        self.device_info = device_list[device_name]
-        self.app = self.device_info["app"]
+    def __init__(self, device_info):
+        self.device_info = device_info
+        self.app = device_info["app"]
+        self.debug = device_info["debug"]
+        self.udid = device_info["udid"]
+        self.pn = device_info["platformName"]
+        self.pv = device_info["platformVersion"]
         self.user = conf["app_device_name"][self.app]
         self.app_name = self.user["app_name"]
         self.device_name = self.user["device_name"]
         self.app_ver = self.user["app_ver"]
-        self.debug = self.device_info["debug"]
         self.run()
 
     # 单元格格式
@@ -146,8 +147,7 @@ class WriteXls(object):
         self.sheet.write_merge(row, row, 0, 8, "", self.easyxf3)  # 写单元格(x, y)
         row += 1
 
-        self.phone_module = u"%s(%s%s)" % (conf["phone_name"][self.device_info["udid"]]["phone_module"],
-                                           self.device_info["platformName"], self.device_info["platformVersion"])
+        self.phone_module = u"%s(%s%s)" % (conf["phone_name"][self.udid]["phone_module"], self.pn, self.pv)
         self.sheet.write(row, 0, u"手机型号：", self.easyxf9)
         self.sheet.write_merge(row, row, 1, 8, self.phone_module, self.easyxf2)
         row += 1

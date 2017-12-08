@@ -16,9 +16,9 @@ def init_debug(file_name, log):
     return log
 
 
-def check_debug(device_list, device_name):
-    log_name = device_list[device_name]["log_name"]
-    udid = device_list[device_name]["udid"]
+def check_debug(device_info):
+    log_name = device_info["log_name"]
+    udid = device_info["udid"]
     current_time = time.strftime("%Y-%m-%d_%H.%M")
     debug_path = r"./debug/%s" % current_time
     if os.path.exists(debug_path) is False:
@@ -29,6 +29,8 @@ def check_debug(device_list, device_name):
             pass
 
     logger_name = r"%s/Debug_%s - [%s].log" % (debug_path, log_name, udid)
-    device_list[device_name]["debug"] = init_debug(logger_name, logging.getLogger("Debug_%s" % udid))
+    debug = init_debug(logger_name, logging.getLogger("Debug_%s" % udid))
 
     logging.shutdown()
+
+    return debug

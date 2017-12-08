@@ -13,11 +13,11 @@ class WidgetCheckUnit(object):
     copy = copy  # 初始化copy函数，避免import copy, traceback函数未使用被自动删除
     traceback = traceback
 
-    def __init__(self, driver, page_element, logger, debug):
+    def __init__(self, driver, device_info):
         self.driver = driver
-        self.logger = logger
-        self.debug = debug
-        self.page = page_element
+        self.page = device_info["page"]  # APP页面元素库
+        self.logger = device_info["logger"]  # log日志实例化
+        self.debug = device_info["debug"]  # debug日志实例化
         self.px = None
 
     # 等待元素出现，同于find_element_*

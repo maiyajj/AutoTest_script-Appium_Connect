@@ -16,9 +16,9 @@ def init_log(file_name, log):
     return log
 
 
-def check_log(device_list, device_name):
-    log_name = device_list[device_name]["log_name"]
-    udid = device_list[device_name]["udid"]
+def check_log(device_info):
+    log_name = device_info["log_name"]
+    udid = device_info["udid"]
     current_time = time.strftime("%Y-%m-%d_%H.%M")
     log_path = r"./log/%s" % current_time
     if os.path.exists(log_path) is False:
@@ -29,6 +29,8 @@ def check_log(device_list, device_name):
             pass
 
     logger_name = r"%s/Log_%s - [%s].log" % (log_path, log_name, udid)
-    device_list[device_name]["logger"] = init_log(logger_name, logging.getLogger("Log_%s" % udid))
+    logger = init_log(logger_name, logging.getLogger("Log_%s" % udid))
 
     logging.shutdown()
+
+    return logger
