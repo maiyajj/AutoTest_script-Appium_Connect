@@ -1,9 +1,4 @@
 # # coding=utf-8
-from multiprocessing import *
-import os
-import time, sys
-import subprocess as sp
-import psutil
 
 #
 # def aa():
@@ -45,7 +40,7 @@ result = a
 import psutil
 for i in a:
     child_proc = psutil.Process(i).children()
-    if child_proc != []:
+    if child_proc:
         for x in child_proc:
             b.append(x.pid)
             print x.pid, x.name(), x.parent()

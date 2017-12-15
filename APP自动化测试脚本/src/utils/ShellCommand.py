@@ -3,7 +3,7 @@ from ShellCommand_Mac import *
 from ShellCommand_Windows import *
 
 
-class PortBindError(Exception):
+class PidTerminalError(Exception):
     def __init__(self, value):
         self.value = value
 
@@ -16,12 +16,12 @@ class ShellCommand(object):
     API, shell command
     Compatible with Mac and Windows
     """
-    
+
     def __init__(self):
         self.scw = ShellCommandWindows()
         self.scm = ShellCommandMac()
         self.os = self.get_os()
-    
+
     def get_os(self):
         """
         get current system type
@@ -31,7 +31,7 @@ class ShellCommand(object):
             return "windows"
         if system == "posix":
             return "mac"
-    
+
     def kill_zombie_proc(self):
         """
         Kill zombie process.
@@ -43,7 +43,7 @@ class ShellCommand(object):
             self.scm.kill_zombie_proc()
         else:
             raise KeyError("The OS is wrong!")
-    
+
     def kill_other_python(self):
         """
         kill other python before launch this auto test tool.
@@ -55,7 +55,7 @@ class ShellCommand(object):
             self.scm.kill_other_python()
         else:
             raise KeyError("The OS is wrong!")
-    
+
     def get_phone_udid(self):
         """
         Auto get phone udid
@@ -65,9 +65,9 @@ class ShellCommand(object):
         b = self.get_phone_udid_for_ios()
         a[0:0] = b
         udid = a
-        
+
         return udid
-    
+
     def get_phone_udid_for_android(self):
         """
         Get android phone udid
@@ -75,9 +75,9 @@ class ShellCommand(object):
         """
         command = "adb devices -l"
         udid = re.findall("(.+?) {2,}.+?", os.popen(command).read())
-        
+
         return udid
-    
+
     def get_phone_udid_for_ios(self):
         """
         Get iphone udid
@@ -87,7 +87,7 @@ class ShellCommand(object):
         udid = re.findall("(.+)", os.popen(command).read())
 
         return udid
-    
+
     def find_proc_and_pid_by_port(self, port):
         """
         find process and pid by process port.
@@ -101,7 +101,7 @@ class ShellCommand(object):
         else:
             raise KeyError("The OS is wrong!")
         return find_by_port
-    
+
     def find_proc_and_pid_by_pid(self, pid):
         """
         find process and pid by process pid.
@@ -114,9 +114,9 @@ class ShellCommand(object):
             find_by_pid = self.scm.find_proc_and_pid_by_pid(pid)
         else:
             raise KeyError("The OS is wrong!")
-        
+
         return find_by_pid
-    
+
     def find_proc_and_pid_by_proc(self, proc):
         """
         find process and pid by process name.
@@ -129,31 +129,37 @@ class ShellCommand(object):
             find_by_proc = self.scm.find_proc_and_pid_by_proc(proc)
         else:
             raise KeyError("The OS is wrong!")
-        
+
         return find_by_proc
-    
+
     def kill_proc_by_proc(self, proc):
         """
         kill process by process name.
         """
-        if self.os == "windows":
-            self.scw.kill_proc_by_proc(proc)
-        elif self.os == "mac":
-            self.scm.kill_proc_by_proc(proc)
-        else:
-            raise KeyError("The OS is wrong!")
-    
+        try:
+            if self.os == "windows":
+                self.scw.kill_proc_by_proc(proc)
+            elif self.os == "mac":
+                self.scm.kill_proc_by_proc(proc)
+            else:
+                raise KeyError("The OS is wrong!")
+        except AssertionError, e:
+            raise PidTerminalError(e)
+
     def kill_proc_by_pid(self, pid):
         """
         kill process by process pid.
         """
-        if self.os == "windows":
-            self.scw.kill_proc_by_pid(pid)
-        elif self.os == "mac":
-            self.scm.kill_proc_by_pid(pid)
-        else:
-            raise KeyError("The OS is wrong!")
-    
+        try:
+            if self.os == "windows":
+                self.scw.kill_proc_by_pid(pid)
+            elif self.os == "mac":
+                self.scm.kill_proc_by_pid(pid)
+            else:
+                raise KeyError("The OS is wrong!")
+        except AssertionError, e:
+            raise PidTerminalError(e)
+
     def set_appium_log_addr(self):
         """
         set appium server log repository path.
@@ -164,5 +170,5 @@ class ShellCommand(object):
             addr = self.scm.set_appium_log_addr()
         else:
             raise KeyError("The OS is wrong!")
-        
+
         return addr

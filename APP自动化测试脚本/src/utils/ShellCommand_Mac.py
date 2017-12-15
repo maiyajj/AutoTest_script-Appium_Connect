@@ -3,23 +3,15 @@ import os
 import re
 
 
-class PortBindError(Exception):
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return repr(self.value)
-
-
 class ShellCommandMac(object):
     """
     API
     The shell command of Mac.
     """
-    
+
     def __init__(self):
         pass
-    
+
     def kill_zombie_proc(self):
         """
         Kill zombie process.
@@ -30,7 +22,7 @@ class ShellCommandMac(object):
         # 使用popen控制台会有大量 No matching processes belonging to you were found
         os.popen4("killall -9 idevicesyslog")
         os.popen4("killall -9 mdworker")
-    
+
     def kill_other_python(self):
         """
         kill other python before launch this auto test tool for Mac.
@@ -38,15 +30,15 @@ class ShellCommandMac(object):
         """
         port = re.findall(r"Python.+?(\d+) .+", os.popen("lsof -c Python").read())
         for i in [i for i in set(port) if str(os.getpid()) != i]:
-            os.popen("kill -9 %s" % i)
-        
+            os.system("kill -9 %s" % i)
+
         self.kill_zombie_proc()
-    
+
     def find_proc_and_pid_by_port(self, port):
         """
         find process and pid by process port for Mac.
         int -> list
-        :return:[(proc1, pid1), (proc2, pid2)]
+        :return:[(proc1, pid1), (proc2, pid2)] [str, int]
         """
         try:
             int(port)
@@ -56,15 +48,16 @@ class ShellCommandMac(object):
             raise KeyError("key must be port! Is int, but real %s!" % type(port))
         command = 'lsof -i:%s' % port  # 判断端口是否被占用
         find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+\(LISTEN.+?", os.popen(command).read())))
-        
+        find_pid = map(lambda x: (x[0], int(x[1])), find_pid)
+
         self.kill_zombie_proc()
         return find_pid
-    
+
     def find_proc_and_pid_by_pid(self, pid):
         """
         find process and pid by process pid for Mac.
         int -> list
-        :return:[(proc1, pid1), (proc2, pid2)]
+        :return:[(proc1, pid1), (proc2, pid2)] [str, int]
         """
         try:
             int(pid)
@@ -74,37 +67,39 @@ class ShellCommandMac(object):
             raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
         command = 'lsof -p %s' % pid
         find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())))
-        
+        find_pid = map(lambda x: (x[0], int(x[1])), find_pid)
+
         self.kill_zombie_proc()
         return find_pid
-    
+
     def find_proc_and_pid_by_proc(self, proc):
         """
         find process and pid by process name for Mac.
         str -> list
-        :return:[(proc1, pid1), (proc2, pid2)]
+        :return:[(proc1, pid1), (proc2, pid2)] [str, int]
         """
         command = 'lsof -c %s' % proc
         find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())))
-        
+        find_pid = map(lambda x: (x[0], int(x[1])), find_pid)
+
         self.kill_zombie_proc()
         return find_pid
-    
+
     def kill_proc_by_proc(self, proc):
         """
         kill process by process name for Mac.
         """
         if not isinstance(proc, str):
             raise KeyError("key must be process name! Is string, but real %s!" % type(proc))
-        
+
         command = 'killall -9 %s' % proc  # 通过进程名杀死进程
         os.popen(command)
         self.kill_zombie_proc()
-        if self.find_proc_and_pid_by_proc(proc) == []:
-            print(u"终止 %s 进程。" % proc)
+        if self.find_proc_and_pid_by_proc(proc):
+            raise AssertionError("kill %s fail." % proc)
         else:
-            raise PortBindError("kill %s fail." % proc)
-    
+            print(u"终止 %s 进程。" % proc)
+
     def kill_proc_by_pid(self, pid):
         """
         kill process by process pid for Mac.
@@ -115,15 +110,15 @@ class ShellCommandMac(object):
             raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
         except TypeError:
             raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
-        
+
         command = 'kill -9 %s' % pid  # 通过pid杀死进程
         os.popen(command)
         self.kill_zombie_proc()
-        if self.find_proc_and_pid_by_pid(pid) == []:
-            print(u"终止 PID %s。" % pid)
+        if self.find_proc_and_pid_by_pid(pid):
+            raise AssertionError("kill %s fail." % pid)
         else:
-            raise PortBindError("kill %s fail." % pid)
-    
+            print(u"终止 PID %s。" % pid)
+
     def set_appium_log_addr(self):
         """
         set appium server log repository path for Mac.
@@ -133,6 +128,7 @@ class ShellCommandMac(object):
         for i in code:
             try:
                 addr = os.getcwd().decode(i)
+                addr = os.path.join(addr, "debug")
                 break
             except UnicodeDecodeError:
                 pass

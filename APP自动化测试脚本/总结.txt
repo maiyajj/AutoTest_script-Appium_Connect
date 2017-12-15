@@ -242,3 +242,5 @@ INFO:selenium.webdriver.remote.remote_connection:Could not get IP address for ho
     报的错为WebDriverException，内容为Message: A new session could not be created. (Original error: Could not find a connected Android device.)
     所以监测WebDriverException这个错误即可，保留5037端口不被占用即可解决此问题。同时在脚本运行时手机不要安装任何手机助手类软件，特别是PP助手，
     杀掉进程后又会出现，循环启动他的服务，直接卸载。
+31、以前一直 存在的appium服务就一直死了的原因是appium服务再启动过程中，检查appium服务是否启动函数的时延太少，只有10S，超时reset_port函数直接又把appium服务杀死了，造成appium启动函数的端口检测陷入了死循环。
+先加入appium服务启动函数30S超时，检查appium服务函数超时时间改为60S。

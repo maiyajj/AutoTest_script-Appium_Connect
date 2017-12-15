@@ -18,7 +18,7 @@ def local_import(rootDir):
     with open(r"./config/WaitCase.yaml", "r") as wait_case:
         for i in wait_case.readlines():
             import_module = re.findall("^ .+\[(.+?),", i)
-            if import_module != []:
+            if import_module:
                 exe_str = "from %s import * " % import_module[0]
                 exec(exe_str, globals())
 
@@ -36,7 +36,7 @@ def global_import(rootDir):
     # 遍历文件夹找出app_开头的py文件，导入，注意globals，否则作用域只是在这个函数下
     for dirName, subdirList, fileList in os.walk(rootDir):
         for file_name in fileList:
-            if "GNAPP" in file_name and "pyc" not in file_name:
+            if "GN_APP" in file_name and "pyc" not in file_name:
                 impPath = ""
                 if dirName[-1:] != "/":
                     dirName = dirName.replace("\\", "/")

@@ -12,7 +12,7 @@ class GetPhoneInfo(ShellCommand):
 
     def select_port(self, selected_port):
         while True:
-            if self.find_proc_and_pid_by_port(selected_port) == []:
+            if not self.find_proc_and_pid_by_port(selected_port):
                 break
             else:
                 selected_port += 1  # 端口已被占用，端口号+1

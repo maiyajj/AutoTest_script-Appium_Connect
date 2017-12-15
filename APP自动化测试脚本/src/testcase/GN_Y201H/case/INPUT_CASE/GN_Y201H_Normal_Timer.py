@@ -1,0 +1,26 @@
+# coding=utf-8
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_001 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_002 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_003 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_004 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_005 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_006 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_007 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_008 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_009 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_010 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_011 import *
+from src.testcase.GN_Y201H.case.GN_Y201H_NORMAL_TIMER.GN_Y201H_NORMAL_TIMER_012 import *
+
+GNY201HNormalTimer1 = GNY201HNormalTimer1
+GNY201HNormalTimer2 = GNY201HNormalTimer2
+GNY201HNormalTimer3 = GNY201HNormalTimer3
+GNY201HNormalTimer4 = GNY201HNormalTimer4
+GNY201HNormalTimer5 = GNY201HNormalTimer5
+GNY201HNormalTimer6 = GNY201HNormalTimer6
+GNY201HNormalTimer7 = GNY201HNormalTimer7
+GNY201HNormalTimer8 = GNY201HNormalTimer8
+GNY201HNormalTimer9 = GNY201HNormalTimer9
+GNY201HNormalTimer10 = GNY201HNormalTimer10
+GNY201HNormalTimer11 = GNY201HNormalTimer11
+GNY201HNormalTimer12 = GNY201HNormalTimer12

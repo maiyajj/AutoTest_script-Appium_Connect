@@ -1,8 +1,9 @@
 # coding=utf-8
 from multiprocessing import *
 
-from src.testcase.common.AppInit import *
-from src.testcase.suite.ScanCaseName import *
+from src.common.AppInit import *
+from src.suite.ScanCaseName import *
+from src.testcase.WaitCase import *
 from src.utils.LaunchAppiumServices import *
 from src.utils.SendMail import *
 
@@ -20,8 +21,8 @@ class MainFunc(object):
         # These two functions cannot run on the same process and can only be run with multiple processes.
         appium = Process(target=LaunchAppiumServices, args=(device_list, device_name), name=device_name)
         appium.start()
-        # case = Process(target=WaitCase, args=(device_list, device_name, m_queue))
-        # case.start()
+        case = Process(target=WaitCase, args=(device_list, device_name, m_queue))
+        case.start()
 
     def send_mail(self, m_queue):
         """Send mail at set time every day.

@@ -41,7 +41,7 @@ class Mailer(object):
         while True:  # create root directory is faster than create files, maybe no files in mail.
             try:
                 self.file_path = os.listdir(parent_path)
-                if self.file_path != []:
+                if self.file_path:
                     self.file_path = map(f, self.file_path)
                     break
             except BaseException:

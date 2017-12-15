@@ -1,6 +1,6 @@
 # coding=utf-8
 try:
-    from src.testcase.case.WaitCase import *
+    from src.testcase.WaitCase import *
 except ImportError, e:
     print e
 from src.utils.SendMail import *
@@ -10,64 +10,56 @@ _build_version = ""
 
 
 class CreateFunc(object):
-    def create_ReadAPPElement(self, func1, func2):
-        app_list = {"AL": "阿里智能",
-                    "GN": "公牛智联",
-                    "JD": "京东微联",
-                    "HW": "智能家居"}
-        app = getattr(func1, "__name__")[-2:][-2:].upper()
-        a = []
-        b = []
+    def create_ReadAPPElement(self, func1, app):
+        app_list = {"GN_Y201S": "阿里智能-GN_Y201S",
+                    "GN_APP": "公牛智联-GN_APP",
+                    "GN_Y201J": "京东微联-GN_Y201J",
+                    "GN_Y201H": "智能家居-GN_Y201H"}
+        tmp_list = []
         for i in dir(func1):
             tmp = re.findall("__.+", i)
-            if tmp == []:
-                a.append(i)
-        for i in dir(func2):
-            tmp = re.findall("__.+", i)
-            if tmp == []:
-                b.append(i)
-        with open(r"./src/testcase/page/ReadAPPElement_%s.py" % app, "w") as files:
+            if not tmp and 'wrapper' not in i:
+                tmp_list.append(i)
+        a = [i for i in tmp_list if "_page" in i]
+        b = [i for i in tmp_list if "_popup" in i]
+        with open(r"./src/testcase/%s/page/ReadAPPElement.py" % app, "w") as files:
             files.write("# coding=utf-8\n")
             files.write("# 由CreateSomeFiles.py生成\n")
-            files.write("from src.testcase.page.AppPageElement import *\n\n\n")
-            files.write("class PageElement%s(object):\n" % app)
+            files.write("from src.testcase.%s.page.AppPageElement import *\n\n\n" % app)
+            files.write("class PageElement(object):\n")
             files.write('    """\n')
-            files.write('    %sApp all page element\n' % app_list[app])
+            files.write('    %s all page element\n' % app_list[app])
             files.write('    """\n\n')
-            files.write("    def __init__(self, device, phone_os, app):\n")
-            files.write("        self.mpw = MainPageWidget(phone_os, app).wrapper()\n")
-            files.write("        self.device = device\n\n")
+            files.write("    def __init__(self, phone_os):\n")
+            files.write("        self.mpw = MainPageWidget(phone_os)\n\n")
             files.write("    def get_page_element(self):\n")
-            files.write('''        self.device["page"] = {}\n''')
+            files.write('''        d = {}\n''')
             for i in a:
-                files.write('''        self.device["page"]["{0}"] = self.mpw.{0}()\n'''.format(i))
+                files.write('''        d["{0}"] = self.mpw.{0}()\n'''.format(i))
             files.write('''\n''')
             for i in b:
-                files.write('''        self.device["page"]["{0}"] = self.mpw.{0}()\n'''.format(i))
+                files.write('''        d["{0}"] = self.mpw.{0}()\n'''.format(i))
+            files.write('''\n        return d\n''')
 
-    def create_AppPageElement(self, func1, func2):
-        app = getattr(func1, "__name__")[-2:].upper()
-        a = []
-        b = []
+    def create_AppPageElement(self, func1, app):
+        tmp_list = []
         for i in dir(func1):
             tmp = re.findall("__.+", i)
-            if tmp == []:
-                a.append(i)
-        for i in dir(func2):
-            tmp = re.findall("__.+", i)
-            if tmp == []:
-                b.append(i)
-        with open(r"./src/testcase/page/AppPageElement_%s.py" % app, "w") as files:
+            if not tmp and 'wrapper' not in i:
+                tmp_list.append(i)
+        a = [i for i in tmp_list if "_page" in i]
+        b = [i for i in tmp_list if "_popup" in i]
+        with open(r"./src/testcase/%s/page/AppPageElement.py" % app, "w") as files:
             files.write("# coding=utf-8\n")
-            files.write("from AppPageElement_%s_Android import *\n" % app)
-            files.write("from AppPageElement_%s_iOS import *\n\n\n" % app)
-            files.write("class MainPageWidget%s(object):\n" % app)
+            files.write("from AppPageElement_Android import *\n")
+            files.write("from AppPageElement_iOS import *\n\n\n")
+            files.write("class MainPageWidget(object):\n")
             files.write("    def __init__(self, phone_os):\n")
             files.write("        self.phone_os = phone_os\n")
-            files.write("        self.mpwa = MainPageWidgetAndroid%s()\n" % app)
-            files.write("        self.mpwi = MainPageWidgetIos%s()\n" % app)
-            files.write("        self.pwa = PopupWidgetAndroid%s()\n" % app)
-            files.write("        self.pwi = PopupWidgetIos%s()\n" % app)
+            files.write("        self.mpwa = MainPageWidgetAndroid()\n")
+            files.write("        self.mpwi = MainPageWidgetIos()\n")
+            files.write("        self.pwa = PopupWidgetAndroid()\n")
+            files.write("        self.pwi = PopupWidgetIos()\n\n")
             files.write("    def wrapper(self, func1, func2):\n")
             files.write('''        if self.phone_os == "Android":\n''')
             files.write('''            return func1\n''')
@@ -92,55 +84,61 @@ class CreateFunc(object):
             for filename in filenames:
                 if ".DS_Store" in filename:
                     os.remove(os.path.join(parents, filename))
-        # 写INPUT_CASE文件夹内容
-        rootdir = r"./src/testcase/case/"  # 指明被遍历的文件夹
-        for parents, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
-            for dirname in [i for i in dirnames if "_" not in i and "APP" in i]:
-                name = dirname[:2]
-                app_name = name + "APP"
-                file_list = []
-                files_list = {}
-                with open(os.path.join(rootdir, "%s/__init__.py" % app_name), "w") as tmp:
-                    del tmp
-                file_path = os.path.join(rootdir, "%s/INPUT_CASE" % app_name)
-                if not os.path.exists(file_path):
-                    os.makedirs(file_path)
-                with open("%s/__init__.py" % file_path, "w") as tmp:
-                    del tmp
-                for parent, dirnames, filenames in os.walk(os.path.join(parents, dirname)):
-                    for dirname in [i for i in dirnames if "INPUT_CASE" not in i]:
-                        path_tmp = os.path.join(parent, dirname)
-                        with open("%s/__init__.py" % path_tmp, "w") as tmp:
-                            del tmp
-                        files = [i for i in os.listdir(path_tmp) if "pyc" not in i and "init" not in i]
-                        input_name = files[0][:-7]
-                        tmp = ""
-                        for i in [i.capitalize() for i in input_name.split("_")[1:]]:
-                            tmp = tmp + i
-                        input_names = "%sApp" % name + tmp + ".py"
-                        file_list.append(input_names)
-                        files_list[input_names] = files
-                print file_list
-                for k, v in files_list.items():
-                    vv = [i[:-3] for i in v]
-                    with open(os.path.join(file_path, k), "w") as files:
-                        files.write("# coding=utf-8" + "\n")
-                        vv = ["from src.testcase.case.%s.%s.%s import *" % (app_name, i[:-4], i) for i in vv]
-                        for i in vv:
-                            files.write(i + "\n")
-                        files.write("\n")
-                        vv = ["%s%s%s" % (i[:2], "".join([x.capitalize() for x in i[2:-7].split("_")]),
-                                          str(int(i[-6:-3]))) for i in v]
-                        for i in vv:
-                            files.write("{0} = {0}".format(i) + "\n")
 
-                with open(os.path.join(file_path, "%sAppInputCase.py" % name), "w") as files:
+        tmp_dir = r"./src/testcase"  # 指明被遍历的文件夹
+        tmp_dir = [i for i in os.listdir(tmp_dir) if "_" in i and "__init__" not in i]
+        # 写INPUT_CASE文件夹内容
+        for device_name in tmp_dir:
+            rootdir = r"./src/testcase/%s/case" % device_name  # 指明被遍历的文件夹
+            dirname_list = []
+            for parents, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
+                for dirname in [i for i in dirnames if device_name in i]:
+                    dirname_list.append(os.path.join(parents, dirname))
+                    with open(os.path.join(rootdir, "%s/__init__.py" % dirname), "w") as tmp:
+                        del tmp
+
+            file_path = os.path.join(rootdir, "INPUT_CASE")
+            if not os.path.exists(file_path):
+                os.makedirs(file_path)
+            with open("%s/__init__.py" % file_path, "w") as tmp:
+                del tmp
+
+            file_list = []
+            files_list = {}
+            for x in dirname_list:
+                files = [i for i in os.listdir(x) if "pyc" not in i and "init" not in i]
+                input_name = files[0][:-7]
+                tmp = device_name
+                for i in [i.capitalize() for i in input_name.split("_")[2:]]:
+                    tmp = tmp + "_" + i
+                input_names = tmp + ".py"
+                file_list.append(input_names)
+                files_list[input_names] = files
+
+            print file_list
+            for k, v in files_list.items():
+                vv = [i[:-3] for i in v]
+                with open(os.path.join(file_path, k), "w") as files:
                     files.write("# coding=utf-8" + "\n")
-                    for i in [i[:-3] for i in file_list]:
-                        files.write("from src.testcase.case.%s.INPUT_CASE.%s import *" % (app_name, i) + "\n")
+                    # from src.testcase.GN_Y201S.case.GN_Y201S_CMP.GN_Y201S_CMP_001 import *
+                    vv = ["from src.testcase.%s.case.%s.%s import *" % (device_name, i[:-4], i) for i in vv]
+                    for i in vv:
+                        files.write(i + "\n")
                     files.write("\n")
-                    for i in [i[:-3] + "1" for i in file_list]:
+                    vv = ["%s%s%s" % ("".join([x for x in i[:-7].split("_")[:2]]),
+                                      "".join([x.capitalize() for x in i[:-7].split("_")[2:]]),
+                                      str(int(i[-6:-3]))) for i in v]
+                    for i in vv:
                         files.write("{0} = {0}".format(i) + "\n")
+
+            with open(os.path.join(file_path, "%s_Input_Case.py" % device_name), "w") as files:
+                files.write("# coding=utf-8" + "\n")
+                for i in [i[:-3] for i in file_list]:
+                    files.write("from src.testcase.%s.case.INPUT_CASE.%s import *" % (device_name, i) + "\n")
+                files.write("\n")
+                for i in ["%s%s1" % ("".join([x for x in i[:-3].split("_")[:2]]),
+                                     "".join([x.capitalize() for x in i[:-3].split("_")[2:]]),) for i in file_list]:
+                    files.write("{0} = {0}".format(i) + "\n")
 
     def correct_func_name(self):
         result = []
@@ -176,14 +174,15 @@ class CreateFunc(object):
 
 
 CF = CreateFunc()
-CF.create_INPUT_CASE()
-CF.create_AppPageElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
-CF.create_AppPageElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
-CF.create_AppPageElement(MainPageWidgetAndroidAL, PopupWidgetAndroidAL)
-CF.create_AppPageElement(MainPageWidgetAndroidHW, PopupWidgetAndroidHW)
-CF.create_ReadAPPElement(MainPageWidgetAndroidGN, PopupWidgetAndroidGN)
-CF.create_ReadAPPElement(MainPageWidgetAndroidJD, PopupWidgetAndroidJD)
-CF.create_ReadAPPElement(MainPageWidgetAndroidAL, PopupWidgetAndroidAL)
-CF.create_ReadAPPElement(MainPageWidgetAndroidHW, PopupWidgetAndroidHW)
-CF.correct_func_name()
-CF.create_WaitCase()
+# CF.create_INPUT_CASE()
+CF.create_AppPageElement(gn_201s_wc.MainPageWidget, "GN_Y201S")
+CF.create_AppPageElement(gn_201j_wc.MainPageWidget, "GN_Y201J")
+CF.create_AppPageElement(gn_201h_wc.MainPageWidget, "GN_Y201H")
+CF.create_AppPageElement(gn_app_wc.MainPageWidget, "GN_APP")
+
+CF.create_ReadAPPElement(gn_201s_wc.MainPageWidget, "GN_Y201S")
+CF.create_ReadAPPElement(gn_201j_wc.MainPageWidget, "GN_Y201J")
+CF.create_ReadAPPElement(gn_201h_wc.MainPageWidget, "GN_Y201H")
+CF.create_ReadAPPElement(gn_app_wc.MainPageWidget, "GN_APP")
+# CF.correct_func_name()
+# CF.create_WaitCase()

@@ -1,0 +1,28 @@
+# coding=utf-8
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_001 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_002 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_003 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_004 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_005 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_006 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_007 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_008 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_009 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_010 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_011 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_012 import *
+from src.testcase.GN_Y201J.case.GN_Y201J_ELECTRICITY_METER.GN_Y201J_ELECTRICITY_METER_013 import *
+
+GNY201JElectricityMeter1 = GNY201JElectricityMeter1
+GNY201JElectricityMeter2 = GNY201JElectricityMeter2
+GNY201JElectricityMeter3 = GNY201JElectricityMeter3
+GNY201JElectricityMeter4 = GNY201JElectricityMeter4
+GNY201JElectricityMeter5 = GNY201JElectricityMeter5
+GNY201JElectricityMeter6 = GNY201JElectricityMeter6
+GNY201JElectricityMeter7 = GNY201JElectricityMeter7
+GNY201JElectricityMeter8 = GNY201JElectricityMeter8
+GNY201JElectricityMeter9 = GNY201JElectricityMeter9
+GNY201JElectricityMeter10 = GNY201JElectricityMeter10
+GNY201JElectricityMeter11 = GNY201JElectricityMeter11
+GNY201JElectricityMeter12 = GNY201JElectricityMeter12
+GNY201JElectricityMeter13 = GNY201JElectricityMeter13

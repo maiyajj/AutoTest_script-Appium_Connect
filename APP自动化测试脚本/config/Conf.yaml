@@ -95,9 +95,9 @@ phone_name:
     app: 'JD'
     phone_device: 'iphone 6sp'
   54a9608b:
-    app: 'AL'
+    app: 'JD'
     phone_module: 'vivo Y51A'
   ZTEC880U:
-    app: 'AL'
+    app: 'JD'
     phone_module: '中兴 C880U'
 

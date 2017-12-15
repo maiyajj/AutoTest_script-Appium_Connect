@@ -1,7 +1,6 @@
 # coding=utf-8
-from src.testcase.common.AppInit import *
-from src.testcase.common.WidgetOperation_HW import *
-from src.testcase.page.ReadAPPElement import *
+from src.common.AppInit import *
+from src.testcase.GN_Y201H.WidgetOperation import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
 
