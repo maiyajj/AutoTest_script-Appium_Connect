@@ -8,6 +8,7 @@ from appium import webdriver
 
 from src.testcase.GN_Y201J.ToDevicePage import *
 from src.testcase.GN_Y201J.ToLoginPage import *
+from src.utils.AppiumCommand import *
 from src.utils.ScreenShot import *
 from src.utils.ShellCommand import PidTerminalError
 
@@ -149,6 +150,7 @@ class LaunchApp(object):
         device_info["ac"] = self.ac
 
         self.user = conf["user_and_pwd"][self.device_name][self.app]  # APP配置
+        self.device_mac = conf["phone_name"][self.device_name]["devices_mac"]
         self.case_module = ""  # 用例所属模块
         self.case_title = ""  # 用例名称
         self.zentao_id = 0000  # 禅道ID

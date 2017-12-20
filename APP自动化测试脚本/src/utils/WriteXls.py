@@ -265,9 +265,9 @@ class WriteXls(object):
 
     def scan_case_files(self):
         row = self.row
-        rootdir = r"./src/testcase/case/%sAPP" % self.app  # 指明被遍历的文件夹
+        rootdir = r"./src/testcase/%s/case" % self.app  # 指明被遍历的文件夹
         for parent, dirnames, filenames in os.walk(rootdir):  # 三个参
-            for filename in (i for i in filenames if "%sAPP" % self.app in i and "pyc" not in i):
+            for filename in (i for i in filenames if "__init__" not in i and "pyc" not in i):
                 with open(os.path.join(parent, filename), "r") as files:
                     file = files.read()
                     case_name = re.findall(r"self.case_title = u'(.+)'", file)[0]

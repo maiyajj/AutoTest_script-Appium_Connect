@@ -8,21 +8,17 @@ class AppInitIos(object):
     def __init__(self, device_info, k):
         self.d = device_info
         self.k = k
-        self.app = conf["phone_name"][k]["app"].upper()
-        if self.app == "GN":
-            self.app = "GN_iOS"
-            self.d[k]["app"] = "GN"
-        elif self.app == "JD":
-            self.app = "JD_iOS"
-            self.d[k]["app"] = "JD"
-        elif self.app == "AL":
-            self.app = "AL_iOS"
-            self.d[k]["app"] = "AL"
-        elif self.app == "HW":
-            self.app = "HW_iOS"
-            self.d[k]["app"] = "HW"
-        else:
-            raise KeyError("%s:No such App!" % self.app)
+        app = conf["phone_name"][k]["app"].upper()
+        app_list = {"GN_APP": "GN_iOS",
+                    "GN_201S": "AL_iOS",
+                    "GN_201J": "JD_iOS",
+                    "GN_201H": "HW_iOS",
+                    "GN_F1331": "JD_iOS"}
+        try:
+            self.app = app_list[app]
+            self.d[k]["app"] = app
+        except KeyError:
+            raise
 
     def app_init_ios(self):
         self.d[self.k]["desired_caps"] = {}

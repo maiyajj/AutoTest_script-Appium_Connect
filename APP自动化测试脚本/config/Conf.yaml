@@ -10,18 +10,21 @@ offline_recovery_timeout: 10
 operate_wait_time: 0.1
 # 滚轮滑动等待时间
 roll_time:
-  GN: 0.3
-  AL: 0.3
-  JD: 0.3
-  HW: 0.3
-# 待添加的设备Mac
+  GN_APP: 0.4
+  GN_201S: 0.4
+  GN_201J: 0.4
+  GN_201H: 0.4
+  GN_F1331: 0.4
+## 待添加的设备Mac
 MAC:
-  JD:
-    0: 'C4-11-E0-00-BE-F6'
-  AL:
-    0: 'C4:11:E0:00:00:00'
-  HW:
-    0: 'C4:11:E0:01:45:7F'
+  GN_201J:
+    '0': 'C4:11:E0:00:BE:F6'
+  GN_201S:
+    '0': 'C4:11:E0:00:00:00'
+  GN_201H:
+    '0': 'C4:11:E0:01:45:7F'
+  GN_F1331:
+    '0': 'C4:11:E0:01:89:3C'
 # 电量计量设备备注名
 Elec_stat_mac: ['Elec_test_1', 'Elec_test_2', 'Elec_test_3', 'Elec_test_4', 'Elec_test_5', 'Elec_test_6', 'Elec_test_7', 'Elec_test_8', 'Elec_test_9', 'Elec_test_10']
 # 错误密码
@@ -57,47 +60,57 @@ Toast:
   login_password_mistake: [40, 1570, 1040, 1750]
 # 待测APP名称和设备名称
 app_device_name:
-  GN:
-    app_name: "公牛智联"
-    device_name: "GN-Y2010"
-    app_ver: "V0.0.1.0623"
-  AL:
-    app_name: "阿里智能"
-    device_name: "GN-Y201S"
-    app_ver: "V3.6.1.1"
-  JD:
-    app_name: "京东微联"
-    device_name: "GN-Y201J"
-    app_ver: "V4.4.0 build:57371"
-  HW:
-    app_name: "智能家居"
-    device_name: "GN-Y201H"
-    app_ver: "V1.0.5.307"
+  GN_F1331:
+    app_ver: 'V4.4.0 build:57371'
+    app_name: '京东微联'
+    device_name: 'GN-Y201J'
+  GN_201H:
+    app_ver: 'V1.0.5.307'
+    app_name: '智能家居'
+    device_name: 'GN-Y201H'
+  GN_APP:
+    app_ver: 'V0.0.1.0623'
+    app_name: '公牛智联'
+    device_name: 'GN-Y2010'
+  GN_201J:
+    app_ver: 'V4.4.0 build:57371'
+    app_name: '京东微联'
+    device_name: 'GN-Y201J'
+  GN_201S:
+    app_ver: 'V3.6.1.1'
+    app_name: '阿里智能'
+    device_name: 'GN-Y201S'
 # 手机型号及待运行APP
 phone_name:
   b9388cbb:
-    app: 'JD'
-    mac:
+    app: 'GN_201J'
     phone_module: '小米5'
-  8c710f0a2007635ea8d1124575a10038e7655c6e:
-    app: 'JD'
-    phone_module: 'iphone 6s'
-  85GABMN9UDD2:
-    app: 'AL'
-    phone_module: '魅族MX5'
-  8681-M02-0xa0a151df:
-    app: 'JD'
-    phone_module: '360奇酷'
-  1b010b2e0d07c07aba0490d20056ff6295ce727b:
-    app: 'JD'
-    phone_module: 'iphone 5s'
-  6910ec366b7e396410c2be813bff57ef1c9ccc7e:
-    app: 'JD'
-    phone_device: 'iphone 6sp'
+    devices_mac: '0'
   54a9608b:
-    app: 'JD'
+    app: 'GN_F1331'
     phone_module: 'vivo Y51A'
+    devices_mac: '0'
+  6910ec366b7e396410c2be813bff57ef1c9ccc7e:
+    phone_device: '0'
+    app: 'GN_201J'
+    devices_mac: '0'
+  85GABMN9UDD2:
+    app: 'GN_201S'
+    phone_module: '魅族MX5'
+    devices_mac: '0'
+  8681-M02-0xa0a151df:
+    app: 'GN_201J'
+    phone_module: '360奇酷'
+    devices_mac: '0'
+  8c710f0a2007635ea8d1124575a10038e7655c6e:
+    app: 'GN_201J'
+    phone_module: 'iphone 6s'
+    devices_mac: '0'
+  1b010b2e0d07c07aba0490d20056ff6295ce727b:
+    app: 'GN_201J'
+    phone_module: 'iphone 5s'
+    devices_mac: '0'
   ZTEC880U:
-    app: 'JD'
+    app: 'GN_F1331'
     phone_module: '中兴 C880U'
-
+    devices_mac: '0'

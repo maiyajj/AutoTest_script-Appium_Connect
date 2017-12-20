@@ -1,7 +1,7 @@
 # coding=utf-8
 import json
 
-from src.testcase.GN_APP.case.INPUT_CASE.GN_APP_Input_Case import *
+from src.testcase.GN_APP.input_case.GN_APP_Input_Case import *
 from src.testcase.GN_APP.page.ReadAPPElement import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
@@ -58,7 +58,7 @@ class WaitCase(object):
 
     # 从元素库筛选对应APP元素库
     def select_page_element(self):
-        self.page = PageElement(self.device_info["platformName"])
+        self.page = PageElement(self.device_info["platformName"]).get_page_element()
         self.device_info["page"] = self.page
 
     # 生成log日志

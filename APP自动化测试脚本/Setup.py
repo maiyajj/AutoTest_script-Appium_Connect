@@ -2,9 +2,9 @@
 from multiprocessing import *
 
 from src.common.AppInit import *
+from src.common.LaunchAppiumServices import *
 from src.suite.ScanCaseName import *
 from src.testcase.WaitCase import *
-from src.utils.LaunchAppiumServices import *
 from src.utils.SendMail import *
 
 __author__ = "Maiyajj"

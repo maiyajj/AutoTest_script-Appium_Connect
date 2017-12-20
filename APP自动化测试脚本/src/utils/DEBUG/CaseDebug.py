@@ -1,6 +1,7 @@
 # coding=utf-8
 from src.common.AppInit import *
-from src.testcase.GN_Y201H.WidgetOperation import *
+from src.testcase.GN_F1331.WidgetOperation import *
+from src.testcase.GN_F1331.page.ReadAPPElement import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
 
@@ -21,12 +22,12 @@ print('appium -a 127.0.0.1 -p %s -bp %s -U %s --no-reset --local-timezone' % (po
 
 driver = webdriver.Remote('http://localhost:%s/wd/hub' % port, device_info['desired_caps'])
 
-PageElement(device_list, app_os, app).wrapper()
-page = device_list["page"]
+page = PageElement(app_os).get_page_element()
+device_list["page"] = page
 
 ac = AppiumCommand(app_os)
-check_log(device_list, deviceName)
-check_debug(device_list, deviceName)
+check_log(device_info)
+check_debug(device_info)
 logger = device_info["logger"]
 debug = device_info["debug"]
 widget_check_unit = WidgetCheckUnit(driver, device_info)
@@ -34,7 +35,7 @@ widget_click = widget_check_unit.widget_click
 wait_widget = widget_check_unit.wait_widget
 
 
-class WidgetTest(WidgetOperationHW):
+class WidgetTest(WidgetOperation):
     def __init__(self):
         self.driver = driver
         self.ac = ac
@@ -47,22 +48,20 @@ class WidgetTest(WidgetOperationHW):
 
 class b(WidgetTest):
     def case(self):
-        self.set_power("power_on")
+        self.choose_home_device(conf["MAC"][self.app][self.device_mac])
 
-        self.widget_click(self.page["control_device_page"]["delay_timer"],
-                          self.page["delay_timer_roll_popup"]["title"])
+        self.set_power("main_button_on")
 
-        now = time.strftime("%H:%M")
+        tmp = 10
+        while tmp > 0:
+            self.widget_click(self.page["control_device_page"]["main_button"])
+            self.wait_widget(self.page["control_device_page"]["main_button_on"])
+            self.logger.info(u"[APP_INFO]Device info: main button on")
 
-        delay_time_1 = ["delay", "00:02"]
-        start_time_1, set_time_1 = self.create_delay_timer(now, delay_time_1)
-
-        time.sleep(60)
-
-        self.widget_click(self.page["control_device_page"]["power_button"],
-                          self.page["control_device_page"]["power_off"])
-
-        self.check_timer(start_time_1, set_time_1, u"电源已关闭", same_power=True)
+            self.widget_click(self.page["control_device_page"]["main_button"])
+            self.wait_widget(self.page["control_device_page"]["main_button_off"])
+            self.logger.info(u"[APP_INFO]Device info: main button off")
+            tmp -= 1
 
 
 b().case()

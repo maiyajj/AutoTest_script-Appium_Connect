@@ -6,8 +6,8 @@ from urllib2 import URLError
 import psutil
 from appium import webdriver
 
-from src.testcase.GN_Y201H.ToDevicePage import *
-from src.testcase.GN_Y201H.ToLoginPage import *
+from src.testcase.GN_F1331.ToDevicePage import *
+from src.testcase.GN_F1331.ToLoginPage import *
 from src.utils.AppiumCommand import *
 from src.utils.ScreenShot import *
 from src.utils.ShellCommand import PidTerminalError
@@ -110,9 +110,9 @@ def case_run(bool):
             except BaseException:
                 self.case_over("unknown")  # 用例执行错误
                 self.debug.error("case_error: %s\n" % traceback.format_exc())  # Message: ***
-                self.debug.error("Now page source: \n%s" % self.driver.page_source)
+                # self.debug.error("Now page source: \n%s" % self.driver.page_source)
                 database["unknown"] += 1  # 用例执行错误次数+1
-                if database["unknown"] > 5:  # 执行错误次数大于5次重置Appium服务
+                if database["unknown"] > 0:  # 执行错误次数大于5次重置Appium服务
                     database["unknown"] = 0
                     self.debug.error("Too many unknown case!: %s" % self.basename)
                     self.reset_port()
@@ -190,8 +190,8 @@ class LaunchApp(object):
                     self.debug.warn("driver quit success")
                 except BaseException:
                     self.debug.warn("driver need not quit")
-                self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.port,
-                                               self.device_info["desired_caps"])  # 启动APP
+                self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.device_info["port"],
+                                               self.desired_caps)  # 启动APP
                 self.init_operate()  # 初始化操作
                 break
             except WebDriverException:
@@ -256,9 +256,8 @@ class LaunchApp(object):
         # 记录调试信息
         with open("appium command %s.log" % self.device_name, "a") as files:
             files.write('''driver = webdriver.Remote('http://localhost:%s/wd/hub', %s)''' % (
-                self.port, self.device_info["desired_caps"]) + "\n\n")
-        self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.port,
-                                       self.device_info["desired_caps"])  # 启动APP
+                self.port, self.desired_caps) + "\n\n")
+        self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.port, self.desired_caps)  # 启动APP
 
     # 用例执行完毕
     def case_over(self, success):

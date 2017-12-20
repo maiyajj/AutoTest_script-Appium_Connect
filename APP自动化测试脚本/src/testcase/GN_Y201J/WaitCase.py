@@ -1,7 +1,7 @@
 # coding=utf-8
 import json
 
-from src.testcase.GN_Y201J.case.INPUT_CASE.GN_Y201J_Input_Case import *
+from src.testcase.GN_Y201J.input_case.GN_Y201J_Input_Case import *
 from src.testcase.GN_Y201J.page.ReadAPPElement import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
@@ -58,7 +58,7 @@ class WaitCase(object):
 
     # 从元素库筛选对应APP元素库
     def select_page_element(self):
-        self.page = PageElement(self.device_info["app"])
+        self.page = PageElement(self.device_info["platformName"]).get_page_element()
         self.device_info["page"] = self.page
 
     # 生成log日志
@@ -131,23 +131,23 @@ class WaitCase(object):
             # self.write_report(GNY201JElectricityMeter12)  # 1132, 实时功率检查_200W
             # self.write_report(GNY201JElectricityMeter13)  # 1130, 实时功率检查_50W
             self.write_report(GNY201JAppFunction1)  # 1170, 定时记录删除是否成功
-            # self.write_report(GNY201JAppFunction2)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
-            # self.write_report(GNY201JKeyMemory1)  # 1216, 开关操作及记忆功能
-            # # self.write_report(GNY201JModeTimer1)  # 1061, 热水器模式下设定的关闭时间早于开启时间的定时是否正确执行
-            # self.write_report(GNY201JModeTimer2)  # 1064, 热水器模式下当前时间在设定时间内的定时是否正确执行
-            # self.write_report(GNY201JModeTimer3)  # 1081, 充电保护模式下手动改变设备为关闭状态后，定时结束检查设备状态
-            # self.write_report(GNY201JModeTimer4)  # 1083, 充电保护模式下手动改变设备为开启状态后，定时结束检查设备状态
-            # self.write_report(GNY201JModeTimer5)  # 1086, 充电保护模式下延时关闭1分钟
-            # self.write_report(GNY201JModeTimer6)  # 1103, 鱼缸模式开启1分钟，关闭1分钟定时是否正确执行
-            # # self.write_report(GNY201JModeTimer7)  # 1105, 鱼缸模式开启1小时，关闭1小时定时是否正确执行
-            # self.write_report(GNY201JModeTimer8)  # 1108, 鱼缸模式开启2分钟，关闭2分钟定时是否正确执行
-            # self.write_report(GNY201JNormalTimer1)  # 1161, 普通定时设置后手动改变设备状态为开启
-            # self.write_report(GNY201JNormalTimer2)  # 1162, 普通定时设置后手动改变设备状态为关闭
-            # self.write_report(GNY201JNormalTimer3)  # 1164, 普通定时最大组数设定_设置12组
-            # self.write_report(GNY201JNormalTimer4)  # 1174, 普通定时_设置13组
-            # self.write_report(GNY201JNormalTimer5)  # 1181, 普通交叉定时_8分钟
-            # self.write_report(GNY201JNormalTimer6)  # 1184, 单次定时开_2分钟
-            # self.write_report(GNY201JNormalTimer7)  # 1185, 单次定时关_2分钟
+            self.write_report(GNY201JAppFunction2)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
+            self.write_report(GNY201JKeyMemory1)  # 1216, 开关操作及记忆功能
+            # self.write_report(GNY201JModeTimer1)  # 1061, 热水器模式下设定的关闭时间早于开启时间的定时是否正确执行
+            self.write_report(GNY201JModeTimer2)  # 1064, 热水器模式下当前时间在设定时间内的定时是否正确执行
+            self.write_report(GNY201JModeTimer3)  # 1081, 充电保护模式下手动改变设备为关闭状态后，定时结束检查设备状态
+            self.write_report(GNY201JModeTimer4)  # 1083, 充电保护模式下手动改变设备为开启状态后，定时结束检查设备状态
+            self.write_report(GNY201JModeTimer5)  # 1086, 充电保护模式下延时关闭1分钟
+            self.write_report(GNY201JModeTimer6)  # 1103, 鱼缸模式开启1分钟，关闭1分钟定时是否正确执行
+            # self.write_report(GNY201JModeTimer7)  # 1105, 鱼缸模式开启1小时，关闭1小时定时是否正确执行
+            self.write_report(GNY201JModeTimer8)  # 1108, 鱼缸模式开启2分钟，关闭2分钟定时是否正确执行
+            self.write_report(GNY201JNormalTimer1)  # 1161, 普通定时设置后手动改变设备状态为开启
+            self.write_report(GNY201JNormalTimer2)  # 1162, 普通定时设置后手动改变设备状态为关闭
+            self.write_report(GNY201JNormalTimer3)  # 1164, 普通定时最大组数设定_设置12组
+            self.write_report(GNY201JNormalTimer4)  # 1174, 普通定时_设置13组
+            self.write_report(GNY201JNormalTimer5)  # 1181, 普通交叉定时_8分钟
+            self.write_report(GNY201JNormalTimer6)  # 1184, 单次定时开_2分钟
+            self.write_report(GNY201JNormalTimer7)  # 1185, 单次定时关_2分钟
             # self.write_report(GNY201JOverDay1)  # 1299, 热水器模式设置每日循环
             # self.write_report(GNY201JOverDay2)  # 1300, 热水器模式在跨天循环下的跨天执行
             # self.write_report(GNY201JOverDay3)  # 1301, 定时时间早于当前时间的永不循环定时设置

@@ -22,7 +22,7 @@ def scan_case_name():
             case_attr.append([])
             for parent, dirnames, filenames in os.walk(scan_path):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
                 for filename in (i for i in filenames if "pyc" not in i and "__init__" not in i
-                                                         and "INPUT_CASE" not in os.path.join(parent, i)):
+                                                         and "input_case" not in os.path.join(parent, i)):
                     with open(os.path.join(parent, filename), "r") as files:
                         file = files.read()
                         case_module = re.findall(r'self.case_module = u"(.+)"', file)[0]

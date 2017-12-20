@@ -8,21 +8,17 @@ class AppInitAndroid(object):
     def __init__(self, device_info, k):
         self.d = device_info
         self.k = k
-        self.app = conf["phone_name"][k]["app"].upper()
-        if self.app == "GN":
-            self.app = "GN_Android"
-            self.d[k]["app"] = "GN"
-        elif self.app == "JD":
-            self.app = "JD_Android"
-            self.d[k]["app"] = "JD"
-        elif self.app == "AL":
-            self.app = "AL_Android"
-            self.d[k]["app"] = "AL"
-        elif self.app == "HW":
-            self.app = "HW_Android"
-            self.d[k]["app"] = "HW"
-        else:
-            raise KeyError("%s:No such App!" % self.app)
+        app = conf["phone_name"][k]["app"].upper()
+        app_list = {"GN_APP": "GN_Android",
+                    "GN_201S": "AL_Android",
+                    "GN_201J": "JD_Android",
+                    "GN_201H": "HW_Android",
+                    "GN_F1331": "JD_Android"}
+        try:
+            self.app = app_list[app]
+            self.d[k]["app"] = app
+        except KeyError:
+            raise
 
     def app_init_android(self):
         self.d[self.k]["desired_caps"] = {}

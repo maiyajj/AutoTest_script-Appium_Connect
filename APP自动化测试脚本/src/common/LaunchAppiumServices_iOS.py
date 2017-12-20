@@ -7,7 +7,7 @@ from subprocess import *
 
 import psutil
 
-from ShellCommand import *
+from src.utils.ShellCommand import *
 
 
 def launch_appium_error_log(func):

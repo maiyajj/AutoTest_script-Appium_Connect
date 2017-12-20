@@ -14,7 +14,8 @@ class CreateFunc(object):
         app_list = {"GN_Y201S": "阿里智能-GN_Y201S",
                     "GN_APP": "公牛智联-GN_APP",
                     "GN_Y201J": "京东微联-GN_Y201J",
-                    "GN_Y201H": "智能家居-GN_Y201H"}
+                    "GN_Y201H": "智能家居-GN_Y201H",
+                    "GN_F1331": "京东微联-GN_F1331"}
         tmp_list = []
         for i in dir(func1):
             tmp = re.findall("__.+", i)
@@ -97,7 +98,7 @@ class CreateFunc(object):
                     with open(os.path.join(rootdir, "%s/__init__.py" % dirname), "w") as tmp:
                         del tmp
 
-            file_path = os.path.join(rootdir, "INPUT_CASE")
+            file_path = os.path.join(r"./src/testcase/%s" % device_name, "input_case")
             if not os.path.exists(file_path):
                 os.makedirs(file_path)
             with open("%s/__init__.py" % file_path, "w") as tmp:
@@ -115,7 +116,6 @@ class CreateFunc(object):
                 file_list.append(input_names)
                 files_list[input_names] = files
 
-            print file_list
             for k, v in files_list.items():
                 vv = [i[:-3] for i in v]
                 with open(os.path.join(file_path, k), "w") as files:
@@ -134,7 +134,7 @@ class CreateFunc(object):
             with open(os.path.join(file_path, "%s_Input_Case.py" % device_name), "w") as files:
                 files.write("# coding=utf-8" + "\n")
                 for i in [i[:-3] for i in file_list]:
-                    files.write("from src.testcase.%s.case.INPUT_CASE.%s import *" % (device_name, i) + "\n")
+                    files.write("from %s import *" % i + "\n")
                 files.write("\n")
                 for i in ["%s%s1" % ("".join([x for x in i[:-3].split("_")[:2]]),
                                      "".join([x.capitalize() for x in i[:-3].split("_")[2:]]),) for i in file_list]:
@@ -159,30 +159,30 @@ class CreateFunc(object):
         print result
 
     def create_WaitCase(self):
-        rootdir = r"./src/testcase/case"
         CaseList = []
-        for parent, dirnames, filenames in os.walk(rootdir):
-            for filename in [i for i in filenames if "APP" in i and "pyc" not in i]:
-                with open(os.path.join(parent, filename), "r") as files:
-                    file = files.read()
-                    class_name = re.findall(r"class (.+)\(", file)[0]
-                    case_name = re.findall(r"self.case_title = u(.+) +\#", file)[0][1:-2]
-                    ZenTao_id = re.findall(r"self.zentao_id = (.+) +\#", file)[0][:-1]
-                    CaseList.append(["self.write_report(%s)" % class_name, " # %s," % ZenTao_id, case_name])
+        tmp_dir = r"./src/testcase"  # 指明被遍历的文件夹
+        tmp_dir = [i for i in os.listdir(tmp_dir) if "_" in i and "__init__" not in i]
+        for i in tmp_dir:
+            rootdir = r"./src/testcase/%s/case" % i
+            for parent, dirnames, filenames in os.walk(rootdir):
+                for filename in [i for i in filenames if "GN_" in i and "pyc" not in i]:
+                    with open(os.path.join(parent, filename), "r") as files:
+                        file = files.read()
+                        class_name = re.findall(r"class (.+)\(", file)[0]
+                        case_name = re.findall(r"self.case_title = u(.+) +\#", file)[0][1:-2]
+                        ZenTao_id = re.findall(r"self.zentao_id = (.+) +\#", file)[0][:-1]
+                        CaseList.append(["self.write_report(%s)" % class_name, " # %s," % ZenTao_id, case_name])
         for x, y, z in CaseList:
             print x, y, z
 
 
 CF = CreateFunc()
-# CF.create_INPUT_CASE()
-CF.create_AppPageElement(gn_201s_wc.MainPageWidget, "GN_Y201S")
-CF.create_AppPageElement(gn_201j_wc.MainPageWidget, "GN_Y201J")
-CF.create_AppPageElement(gn_201h_wc.MainPageWidget, "GN_Y201H")
-CF.create_AppPageElement(gn_app_wc.MainPageWidget, "GN_APP")
-
-CF.create_ReadAPPElement(gn_201s_wc.MainPageWidget, "GN_Y201S")
-CF.create_ReadAPPElement(gn_201j_wc.MainPageWidget, "GN_Y201J")
-CF.create_ReadAPPElement(gn_201h_wc.MainPageWidget, "GN_Y201H")
-CF.create_ReadAPPElement(gn_app_wc.MainPageWidget, "GN_APP")
+CF.create_INPUT_CASE()
+app_l = {"GN_Y201S": gn_201s_wc.MainPageWidget,
+         "GN_APP": gn_app_wc.MainPageWidget,
+         "GN_Y201J": gn_201j_wc.MainPageWidget,
+         "GN_Y201H": gn_201h_wc.MainPageWidget,
+         "GN_F1331": gn_f1331_wc.MainPageWidget}
+[CF.create_AppPageElement(v, k) or CF.create_ReadAPPElement(v, k) for k, v in app_l.items()]
 # CF.correct_func_name()
-# CF.create_WaitCase()
+CF.create_WaitCase()

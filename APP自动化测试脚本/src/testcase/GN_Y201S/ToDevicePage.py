@@ -2,7 +2,6 @@
 import os
 
 from src.common.WidgetCheckUnit import *
-from src.utils.AppiumCommand import *
 from src.utils.ReadConf import *
 
 
