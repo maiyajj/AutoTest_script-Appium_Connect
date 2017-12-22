@@ -112,7 +112,7 @@ def case_run(bool):
                 self.debug.error("case_error: %s\n" % traceback.format_exc())  # Message: ***
                 # self.debug.error("Now page source: \n%s" % self.driver.page_source)
                 database["unknown"] += 1  # 用例执行错误次数+1
-                if database["unknown"] > 0:  # 执行错误次数大于5次重置Appium服务
+                if database["unknown"] > 5:  # 执行错误次数大于5次重置Appium服务
                     database["unknown"] = 0
                     self.debug.error("Too many unknown case!: %s" % self.basename)
                     self.reset_port()

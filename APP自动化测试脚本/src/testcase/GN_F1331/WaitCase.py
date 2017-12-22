@@ -5,6 +5,7 @@ from src.testcase.GN_F1331.input_case.GN_F1331_Input_Case import *
 from src.testcase.GN_F1331.page.ReadAPPElement import *
 from src.utils.CollectLog import *
 from src.utils.Debug import *
+from src.utils.GetSerial import *
 from src.utils.OutputReport import *
 from src.utils.WriteXls import *
 
@@ -30,31 +31,43 @@ class WaitCase(object):
         self.debug = None  # 初始化debug日志模块
         self.page = None  # 初始化元素库模块
         self.device_info_list = {}  # 初始化设备信息
-        self.script_init_success = False  # 脚本初始化结果标志位
-        database["case_location"] = 1  # 用例执行次数
         self.row = 0  # Excel报告写入初始位置
+        self.device_name = self.device_info["udid"]  # 设备名称
+        self.app = self.device_info["app"]  # APP型号
+        self.serial_port = int(conf["phone_name"][self.device_name]["serial_port"])
+        self.serial_com = conf["phone_name"][self.device_name]["serial_com"]
 
         self.sc = ShellCommand()  # 实例化ShellCommand
         self.device_info["sc"] = self.sc
         database[device_name] = {}  # 初始化设备数据库
+        database["case_location"] = 1  # 用例执行次数
+        self.receive_serial = ReceiveSerial(self.serial_com, self.serial_port)
+
+        self.serial_receive_t = threading.Thread(target=self.launch_receive_serial)
+        self.serial_command_t = threading.Thread(target=self.receive_serial_command)
+
+        self.serial_command_queue = Queue.Queue()
+        self.serial_result_queue = Queue.Queue()
+        self.device_info["serial_command_queue"] = self.serial_command_queue
+        self.device_info["serial_result_queue"] = self.serial_result_queue
 
         try:
             self.create_debug()
             self.create_log()
+            self.serial_receive_t.start()
+            self.serial_command_t.start()
             self.create_report()
             self.write_xls()
             self.select_page_element()
             self.check_appium()
-            self.script_init_success = True
+
+            self.run()
         except BaseException:
             self.debug.error(traceback.format_exc())
-            raise
-        if self.script_init_success is True:
-            self.run()
-        else:
-            raise ScriptInitError("Script Init Error!!! "
-                                  "contain [create_debug(), create_log(), "
-                                  "create_report(), write_xls(), check_appium()]")
+            self.receive_serial.serial_sever.close()
+            self.serial_receive_t.join()
+            self.serial_command_t.join()
+            raise ScriptInitError("Script Init Error!!!")
 
     # 从元素库筛选对应APP元素库
     def select_page_element(self):
@@ -90,6 +103,14 @@ class WaitCase(object):
             else:
                 self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %X"))
                 break
+
+    # 接收设备串口log
+    def launch_receive_serial(self):
+        self.receive_serial.receive_log()
+
+    def receive_serial_command(self):
+        self.serial_command_queue.put_nowait((False, "", 0, 0, 0, self.serial_result_queue))
+        self.receive_serial.start_stop_filtrate_data(self.serial_command_queue)
 
     # 开始执行用例
     def run(self):
@@ -132,7 +153,6 @@ class WaitCase(object):
             self.report.info(d)
 
             zentao_id = case[0]
-            print(database)
             xls_datas = database[self.device_name]
             xls_data = xls_datas[zentao_id]
             xls_data["end_time"] = end_time

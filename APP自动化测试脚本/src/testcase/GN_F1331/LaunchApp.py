@@ -112,7 +112,7 @@ def case_run(bool):
                 self.debug.error("case_error: %s\n" % traceback.format_exc())  # Message: ***
                 # self.debug.error("Now page source: \n%s" % self.driver.page_source)
                 database["unknown"] += 1  # 用例执行错误次数+1
-                if database["unknown"] > 0:  # 执行错误次数大于5次重置Appium服务
+                if database["unknown"] > 5:  # 执行错误次数大于5次重置Appium服务
                     database["unknown"] = 0
                     self.debug.error("Too many unknown case!: %s" % self.basename)
                     self.reset_port()
@@ -160,6 +160,8 @@ class LaunchApp(object):
         self.widget_click = None  # 初始化
         self.wait_widget = None  # 初始化
         self.start_time = None  # 初始化
+        self.serial_command_queue = device_info["serial_command_queue"]
+        self.serial_result_queue = device_info["serial_result_queue"]
 
     # 关闭占用端口来停止相应服务
     def reset_port(self):

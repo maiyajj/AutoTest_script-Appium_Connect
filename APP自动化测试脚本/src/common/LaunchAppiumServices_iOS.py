@@ -117,7 +117,7 @@ class LaunchAppiumServicesIos(object):
 
         # 启动Appium服务，非阻塞式服务.
         appium_proc = Popen(command, shell=True)
-        print(appium_proc.pid)
+        self.debug.info("appium_proc.pid: %s" % appium_proc.pid)
         self.appium_pid = [appium_proc.pid]  # 保证属性一致，初始<subprocess.Popen object at 0x...>也有pid属性
         # 获取所有Appium调用的进程pid
         # appium_proc是非阻塞式，命令启动后轮询检测指定端口，检测端口已开启则判断Appium服务已开启。

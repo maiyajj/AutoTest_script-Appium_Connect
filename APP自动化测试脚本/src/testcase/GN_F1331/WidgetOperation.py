@@ -1,5 +1,8 @@
 # coding=utf-8
+import threading
+
 from src.testcase.GN_F1331.LaunchApp import *
+from src.utils.GetSerial import *
 
 
 class WidgetOperation(LaunchApp):
@@ -55,11 +58,32 @@ class WidgetOperation(LaunchApp):
             button = "mid_button"
         else:
             button = "down_button"
-        try:
-            self.wait_widget(self.page["control_device_page"][state])
-        except TimeoutException:
-            self.widget_click(self.page["control_device_page"][button],
-                              self.page["control_device_page"][state])
+        if "_on" in state:
+            btn = "on"
+        else:
+            btn = "off"
+        while True:
+            try:
+                self.wait_widget(self.page["control_device_page"][state])
+                try:
+                    self.wait_widget(self.page["control_device_page"]["up_button_%s" % btn])
+                except TimeoutException:
+                    self.widget_click(self.page["control_device_page"]["up_button"],
+                                      self.page["control_device_page"]["up_button_%s" % btn])
+                try:
+                    self.wait_widget(self.page["control_device_page"]["mid_button_%s" % btn])
+                except TimeoutException:
+                    self.widget_click(self.page["control_device_page"]["mid_button"],
+                                      self.page["control_device_page"]["mid_button_%s" % btn])
+                try:
+                    self.wait_widget(self.page["control_device_page"]["down_button_%s" % btn])
+                except TimeoutException:
+                    self.widget_click(self.page["control_device_page"]["down_button"],
+                                      self.page["control_device_page"]["down_button_%s" % btn])
+                break
+            except TimeoutException:
+                self.widget_click(self.page["control_device_page"][button],
+                                  self.page["control_device_page"][state])
 
     # 设置滚轮
     def set_roll(self, elem):
@@ -729,3 +753,31 @@ class WidgetOperation(LaunchApp):
                                 element1.click()
                 except BaseException:
                     self.debug.error(traceback.format_exc())
+
+    def launch_serial_button_state(self, now):
+        result_queue = Queue.Queue()
+        result_thread = threading.Thread(target=self.serial_button_state, args=(now, result_queue))
+        result_thread.start()
+        return result_thread, result_queue
+
+    def serial_button_state(self, now, result_queue):
+        command = "_f133u_uart_recv_event"
+        while True:
+            self.serial_command_queue.put_nowait((True, command, 1, now - 30, now + 30, self.serial_result_queue))
+            while True:
+                if self.serial_result_queue.qsize():
+                    serial_result = self.serial_result_queue.get_nowait()
+                    break
+                time.sleep(0.1)
+            btn_state = bin(int(serial_result[34:36], 16))[2:].zfill(4)
+            flag, up_btn, middle_btn, down_btn = btn_state
+            flag, up_btn, middle_btn, down_btn = int(flag), int(up_btn), int(middle_btn), int(down_btn)
+            if flag == 0:
+                result_queue.put_nowait((up_btn, middle_btn, down_btn))
+
+    def check_serial_button_state(self, result_queue):
+        while True:
+            if result_queue.qsize():
+                return result_queue.get_nowait()
+            else:
+                time.sleep(0.1)

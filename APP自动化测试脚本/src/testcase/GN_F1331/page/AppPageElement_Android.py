@@ -195,34 +195,34 @@ class MainPageWidgetAndroid(object):
         # 总电源开关
         d["main_button"] = ["//android.webkit.WebView/android.widget.Button", "xpath", u"总电源开关"]
         # 总电源状态开
-        d["main_button_on"] = [u"//android.view.View[@content-desc='电源已开启')]", "xpath", u"总电源状态开"]
+        d["main_button_on"] = [u"//android.view.View[@content-desc='电源已开启']", "xpath", u"总电源状态开"]
         # 总电源状态关
-        d["main_button_off"] = [u"//android.view.View[@content-desc='电源已关闭')]", "xpath", u"总电源状态关"]
+        d["main_button_off"] = [u"//android.view.View[@content-desc='电源已关闭']", "xpath", u"总电源状态关"]
         # 上层电源开关
         d["up_button"] = [u"//android.view.View[contains(@content-desc, '上层')]", "xpath", u"上层电源开关",
                           {"px": [3.8, 1]}]
         # 上层电源状态开
-        d["up_button_on"] = [u"//android.view.View[@content-desc='上层已开启')]", "xpath", u"上层电源状态开"]
+        d["up_button_on"] = [u"//android.view.View[@content-desc='上层已开启']", "xpath", u"上层电源状态开"]
         # 上层电源状态关
-        d["up_button_off"] = [u"//android.view.View[@content-desc='上层已关闭')]", "xpath", u"上层电源状态关"]
+        d["up_button_off"] = [u"//android.view.View[@content-desc='上层已关闭']", "xpath", u"上层电源状态关"]
         # 上层定时状态
         # d["up_timer_state"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"上层定时状态"]
         # 中层电源开关
         d["mid_button"] = [u"//android.view.View[contains(@content-desc, '中层')]", "xpath", u"中层电源开关",
                            {"px": [3.8, 1]}]
         # 中层电源状态开
-        d["mid_button_on"] = [u"//android.view.View[@content-desc='中层已开启')]", "xpath", u"中层电源状态开"]
+        d["mid_button_on"] = [u"//android.view.View[@content-desc='中层已开启']", "xpath", u"中层电源状态开"]
         # 中层电源状态关
-        d["mid_button_off"] = [u"//android.view.View[@content-desc='中层已关闭')]", "xpath", u"中层电源状态关"]
+        d["mid_button_off"] = [u"//android.view.View[@content-desc='中层已关闭']", "xpath", u"中层电源状态关"]
         # 中层定时状态
         # d["mid_timer_state"] = ["//android.webkit.WebView/android.view.View[6]", "xpath", u"中层定时状态"]
         # 下层电源开关
         d["down_button"] = [u"//android.view.View[contains(@content-desc, '下层')]", "xpath", u"下层电源开关",
                             {"px": [3.8, 1]}]
         # 下层电源状态开
-        d["down_button_on"] = [u"//android.view.View[@content-desc='下层已开启')]", "xpath", u"下层电源状态开"]
+        d["down_button_on"] = [u"//android.view.View[@content-desc='下层已开启']", "xpath", u"下层电源状态开"]
         # 下层电源状态关
-        d["down_button_off"] = [u"//android.view.View[@content-desc='下层已关闭')]", "xpath", u"下层电源状态关"]
+        d["down_button_off"] = [u"//android.view.View[@content-desc='下层已关闭']", "xpath", u"下层电源状态关"]
         # 下层定时状态
         # d["down_timer_state"] = ["//android.webkit.WebView/android.view.View[8]", "xpath", u"下层定时状态"]
         # 用电量

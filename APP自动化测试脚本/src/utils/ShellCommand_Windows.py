@@ -27,9 +27,10 @@ class ShellCommandWindows(object):
         kill other python before launch this auto test tool.
         maybe some conflict
         """
-        port = re.findall(r"python.exe.+?(\d+).+", os.popen("tasklist|findstr python").read())
-        for i in [i for i in set(port) if str(os.getpid()) != i]:
-            os.system("taskkill /f /t /pid %s" % i)
+        pass
+        # port = re.findall(r"python.exe.+?(\d+).+", os.popen("tasklist|findstr python").read())
+        # for i in [i for i in set(port) if str(os.getpid()) != i]:
+        #     os.system("taskkill /f /t /pid %s" % i)
 
     def find_proc_and_pid_by_port(self, port):
         """
@@ -48,7 +49,7 @@ class ShellCommandWindows(object):
         find_pid = []
         for i in bind_pid:
             command = 'tasklist|findstr %s' % i
-            find_pid.append(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read()))
+            find_pid.append(re.findall(r"(.+?) .+?(\d+).+?Console.+", os.popen(command).read()))
         find_pid = sum(find_pid, [])  # 递归列表[[(),()],[()]] → [(),(),()]
         find_pid = map(lambda x: (x[0], int(x[1])), find_pid)
 
@@ -67,7 +68,7 @@ class ShellCommandWindows(object):
         except TypeError:
             raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
         command = 'tasklist|findstr %s' % pid
-        find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())))
+        find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+?Console.+", os.popen(command).read())))
         find_pid = map(lambda x: (x[0], int(x[1])), find_pid)
 
         return find_pid
@@ -81,7 +82,7 @@ class ShellCommandWindows(object):
         if not isinstance(proc, str):
             raise KeyError("key must be process name! Is string, but real %s!" % type(proc))
         command = 'tasklist|findstr %s' % proc
-        find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())))
+        find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+?Console.+", os.popen(command).read())))
         find_pid = map(lambda x: (x[0], int(x[1])), find_pid)
 
         return find_pid

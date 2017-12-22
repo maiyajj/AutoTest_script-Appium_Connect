@@ -86,31 +86,47 @@ phone_name:
     app: 'GN_201J'
     phone_module: '小米5'
     devices_mac: '0'
+    serial_com: "COM12"
+    serial_port: '115200'
   54a9608b:
     app: 'GN_F1331'
     phone_module: 'vivo Y51A'
     devices_mac: '0'
+    serial_com: "COM12"
+    serial_port: '115200'
   6910ec366b7e396410c2be813bff57ef1c9ccc7e:
     phone_device: '0'
     app: 'GN_201J'
     devices_mac: '0'
+    serial_com: "COM12"
+    serial_port: '115200'
   85GABMN9UDD2:
     app: 'GN_201S'
     phone_module: '魅族MX5'
     devices_mac: '0'
+    serial_com: "COM12"
+    serial_port: '115200'
   8681-M02-0xa0a151df:
     app: 'GN_201J'
     phone_module: '360奇酷'
     devices_mac: '0'
+    serial_com: "COM12"
+    serial_port: '115200'
   8c710f0a2007635ea8d1124575a10038e7655c6e:
     app: 'GN_201J'
     phone_module: 'iphone 6s'
     devices_mac: '0'
+    serial_com: "COM12"
+    serial_port: '115200'
   1b010b2e0d07c07aba0490d20056ff6295ce727b:
     app: 'GN_201J'
     phone_module: 'iphone 5s'
     devices_mac: '0'
+    serial_com: "COM12"
+    serial_port: '115200'
   ZTEC880U:
     app: 'GN_F1331'
     phone_module: '中兴 C880U'
     devices_mac: '0'
+    serial_com: "COM12"
+    serial_port: '115200'
