@@ -138,7 +138,7 @@ class WidgetOperation(LaunchApp):
         :param elem_h: 滚轮控件“时”框架，用来获取“时”x坐标
         :param elem_m: 滚轮控件“分”框架，用来获取“分”x坐标
         :param elem_t: 滚轮当前的时间值，“HH:MM”格式
-        :param now_timer: 设置定时的当前时间
+        :param now_time: 设置定时的当前时间
         :param set_timer: 设置定时的目标时间
         :param cycle: 是否是类鱼缸模式的连续定时模式
         :param delay_s: 定时的设置时间和启动时间延迟
@@ -151,7 +151,7 @@ class WidgetOperation(LaunchApp):
         # 延迟定时为设置时间段区间执行的定时，多用于鱼缸模式或延迟定时模式，数据格式为以时间格式展现的str字符串型；
         # 时间格式str字符串型（"30:00"），用于设置时间段定时，关键字为“delay”
         # ps：delay_s函数关键词用于给设置定时预留时间，设置定时也需要时间，默认延迟2分钟，当前时间8:00，定时开始执行时间为8:02；
-        swipe_time = conf["roll_time"]["AL"]  # 阿里智能APP的滚轮滑动间隔时间
+        swipe_time = conf["roll_time"]["GN_Y201S"]  # 阿里智能APP的滚轮滑动间隔时间
         if isinstance(set_timer, int):
             if set_timer >= 0:
                 time_seg = "int"
@@ -284,7 +284,7 @@ class WidgetOperation(LaunchApp):
             end_y = start_y
 
         swipe = self.ac.swipe
-        swipe_time = conf["roll_time"]["AL"]
+        swipe_time = conf["roll_time"]["GN_Y201S"]
         while diff_a > 0:
             swipe(start_x, start_y, start_x, end_y, self.driver, percent=False)  # step=25
             print(diff_a)

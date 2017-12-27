@@ -15,12 +15,11 @@ class ReceiveSerial(object):
         self.sc = ShellCommand()
         self.log_path = os.path.join(self.sc.set_appium_log_addr(), "%s" % time.strftime("%Y-%m-%d_%H.%M"), "DeviceLog")
         self.log_name = "%s_%s" % (com, port)
-        self.serial_queue = Queue.Queue()
+        self.serial_main_data_queue = Queue.Queue()
         self.serial_sever = serial.Serial(str(com), int(port), timeout=3)
         self.device_serial()
 
     def receive_log(self):
-        self.serial_log.info("receive_log %s " % self.serial_queue)
         while True:
             if not self.serial_sever.is_open:
                 break
@@ -28,13 +27,11 @@ class ReceiveSerial(object):
                 try:
                     data = self.serial_sever.readline()  # 读取数据
                     if data is '':
-                        data_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')[:-3]
-                        data = "[%s]%s" % (data_time, data)
                         continue
                     data = data.strip()
                     data_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')[:-3]
                     data = "[%s]%s" % (data_time, data)
-                    self.serial_queue.put_nowait(data)
+                    self.serial_main_data_queue.put_nowait(data)
                     # self.serial_log.info(data)
                 except AttributeError:
                     break
@@ -44,58 +41,42 @@ class ReceiveSerial(object):
                     break
 
     # 分析设备log
-    def filtrate_data(self, re_serial, read_num, st=0, et=0):
+    def filtrate_data(self, command_queue):
+        start_stop, command, serial_result_queue = False, "", ""
         while True:
-            now = time.time()
-            if st > now:
-                if not self.serial_sever.is_open:
+            if command_queue.qsize():
+                start_stop, command, serial_result_queue = command_queue.get_nowait()
+                print(start_stop, command, serial_result_queue)
+                if start_stop is False:
                     break
-                while True:  # 清空消息队列
-                    if not self.serial_queue.qsize():
-                        break
-                    self.serial_queue.get_nowait()
-                time.sleep(0.1)
-            elif st <= now < et:
-                if self.serial_queue.qsize():
-                    serial_data = self.serial_queue.get_nowait()
-                    if re.findall(re_serial, serial_data):
+            if self.serial_main_data_queue.qsize():
+                serial_main_data = self.serial_main_data_queue.get_nowait()
+                for re_message, read_num in command.items():
+                    if re_message in serial_main_data:
+                        tmp = []
+                        tmp.append(serial_main_data)
                         while read_num:
-                            if self.serial_queue.qsize():
-                                serial_data = self.serial_queue.get_nowait()
+                            if self.serial_main_data_queue.qsize():
+                                tmp.append(self.serial_main_data_queue.get_nowait())
                                 read_num -= 1
-                        return serial_data
-                else:
-                    if not self.serial_sever.is_open:
+                        serial_data = " t".join(tmp + [""])
+                        serial_result_queue.put_nowait(serial_data)
+                        print("#####" + serial_data)
                         break
-                    time.sleep(0.1)
-            else:
-                if not self.serial_sever.is_open:
-                    break
-                while True:
-                    if not self.serial_queue.qsize():
-                        break
-                    self.serial_queue.get_nowait()
-                time.sleep(0.1)
 
     # 接收控制命令，开始/结束分析设备log
     def start_stop_filtrate_data(self, command_queue):
-        self.serial_log.info("start_stop_filtrate_data %s " % self.serial_queue)
         while True:
             if command_queue.qsize():
-                start_stop, re_serial, read_num, st, et, serial_result_queue = command_queue.get_nowait()
-                if start_stop:
-                    serial_result_queue.put_nowait(self.filtrate_data(re_serial, read_num, st, et))
-                elif start_stop is False:
-                    time.sleep(0.5)
-                else:
-                    break
+                self.filtrate_data(command_queue)
+                time.sleep(0.1)
             else:
                 if not self.serial_sever.is_open:
                     break
                 while True:
-                    if not self.serial_queue.qsize():
+                    if not self.serial_main_data_queue.qsize():
                         break
-                    self.serial_queue.get_nowait()
+                    self.serial_main_data_queue.get_nowait()
                 time.sleep(0.1)
 
     def init_log(self, log):

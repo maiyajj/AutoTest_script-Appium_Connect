@@ -49,8 +49,17 @@ class MainPageWidget(object):
     def control_device_page(self):
         return self.wrapper(self.mpwa.control_device_page(), self.mpwi.control_device_page())
 
+    def cycle_timer_page(self):
+        return self.wrapper(self.mpwa.cycle_timer_page(), self.mpwi.cycle_timer_page())
+
+    def delay_timer_page(self):
+        return self.wrapper(self.mpwa.delay_timer_page(), self.mpwi.delay_timer_page())
+
     def device_info_page(self):
         return self.wrapper(self.mpwa.device_info_page(), self.mpwi.device_info_page())
+
+    def down_timer_page(self):
+        return self.wrapper(self.mpwa.down_timer_page(), self.mpwi.down_timer_page())
 
     def elec_bill_page(self):
         return self.wrapper(self.mpwa.elec_bill_page(), self.mpwi.elec_bill_page())
@@ -66,6 +75,9 @@ class MainPageWidget(object):
 
     def login_page(self):
         return self.wrapper(self.mpwa.login_page(), self.mpwi.login_page())
+
+    def mid_timer_page(self):
+        return self.wrapper(self.mpwa.mid_timer_page(), self.mpwi.mid_timer_page())
 
     def peak_valley_price_page(self):
         return self.wrapper(self.mpwa.peak_valley_price_page(), self.mpwi.peak_valley_price_page())
@@ -88,8 +100,14 @@ class MainPageWidget(object):
     def timer_log_page(self):
         return self.wrapper(self.mpwa.timer_log_page(), self.mpwi.timer_log_page())
 
+    def timer_notes_page(self):
+        return self.wrapper(self.mpwa.timer_notes_page(), self.mpwi.timer_notes_page())
+
     def timer_repeat_page(self):
         return self.wrapper(self.mpwa.timer_repeat_page(), self.mpwi.timer_repeat_page())
+
+    def up_timer_page(self):
+        return self.wrapper(self.mpwa.up_timer_page(), self.mpwi.up_timer_page())
 
     def bind_device_fail_popup(self):
         return self.wrapper(self.pwa.bind_device_fail_popup(), self.pwi.bind_device_fail_popup())

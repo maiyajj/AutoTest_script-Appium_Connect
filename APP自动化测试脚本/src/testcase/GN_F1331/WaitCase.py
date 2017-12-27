@@ -109,7 +109,7 @@ class WaitCase(object):
         self.receive_serial.receive_log()
 
     def receive_serial_command(self):
-        self.serial_command_queue.put_nowait((False, "", 0, 0, 0, self.serial_result_queue))
+        self.serial_command_queue.put_nowait((False, "", ""))
         self.receive_serial.start_stop_filtrate_data(self.serial_command_queue)
 
     # 开始执行用例
@@ -138,7 +138,8 @@ class WaitCase(object):
             self.logger.info("run times [%s]" % database["program_loop_time"])
             # self.write_report(GNF1331AppFunction1)  # 1170, 定时记录删除是否成功
             # self.write_report(GNF1331AppFunction2)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
-            self.write_report(GNF1331KeyMemory1)  # 1216,   开关操作及记忆功能
+            # self.write_report(GNF1331KeyMemory1)  # 1216,   开关操作及记忆功能
+            self.write_report(GNF1331NormalTimer1)  # 1216, 上层循环定时
 
             database["program_loop_time"] += 1
 

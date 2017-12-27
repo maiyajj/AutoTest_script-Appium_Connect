@@ -17,7 +17,11 @@ class CreateFunc(object):
                     "GN_Y201H": "智能家居-GN_Y201H",
                     "GN_F1331": "京东微联-GN_F1331"}
         tmp_list = []
-        for i in dir(func1):
+        for i in dir(func1("Andriod").mpwa):
+            tmp = re.findall("__.+", i)
+            if not tmp and 'wrapper' not in i:
+                tmp_list.append(i)
+        for i in dir(func1("Andriod").pwa):
             tmp = re.findall("__.+", i)
             if not tmp and 'wrapper' not in i:
                 tmp_list.append(i)
@@ -44,7 +48,11 @@ class CreateFunc(object):
 
     def create_AppPageElement(self, func1, app):
         tmp_list = []
-        for i in dir(func1):
+        for i in dir(func1("Andriod").mpwa):
+            tmp = re.findall("__.+", i)
+            if not tmp and 'wrapper' not in i:
+                tmp_list.append(i)
+        for i in dir(func1("Andriod").pwa):
             tmp = re.findall("__.+", i)
             if not tmp and 'wrapper' not in i:
                 tmp_list.append(i)

@@ -348,10 +348,15 @@ case_table:
       'CASE_NAME': ['启动鱼缸模式定时，APP中开关状态检查']
       'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_APP_FUNCTION/GN_F1331_APP_FUNCTION_002.py']
     1216:
-      'CASE_MODULE': ['APP功能测试']
+      'CASE_MODULE': ['开关操作']
       'CODE_ID': ['GNF1331KeyMemory1']
       'CASE_NAME': ['开关操作及记忆功能']
       'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_KEY_MEMORY/GN_F1331_KEY_MEMORY_001.py']
+    1216:
+      'CASE_MODULE': ['APP功能测试']
+      'CODE_ID': ['GNF1331NormalTimer1']
+      'CASE_NAME': ['上层循环定时']
+      'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_001.py']
   GN_Y201H:
     2106:
       'CASE_MODULE': ['远程控制(#250)']

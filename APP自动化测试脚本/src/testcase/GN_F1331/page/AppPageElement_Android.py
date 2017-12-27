@@ -198,6 +198,8 @@ class MainPageWidgetAndroid(object):
         d["main_button_on"] = [u"//android.view.View[@content-desc='电源已开启']", "xpath", u"总电源状态开"]
         # 总电源状态关
         d["main_button_off"] = [u"//android.view.View[@content-desc='电源已关闭']", "xpath", u"总电源状态关"]
+        # 上层定时
+        d["up_timer"] = [u"//android.view.View[contains(@content-desc, '上层')]", "xpath", u"上层定时"]
         # 上层电源开关
         d["up_button"] = [u"//android.view.View[contains(@content-desc, '上层')]", "xpath", u"上层电源开关",
                           {"px": [3.8, 1]}]
@@ -206,7 +208,9 @@ class MainPageWidgetAndroid(object):
         # 上层电源状态关
         d["up_button_off"] = [u"//android.view.View[@content-desc='上层已关闭']", "xpath", u"上层电源状态关"]
         # 上层定时状态
-        # d["up_timer_state"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"上层定时状态"]
+        d["up_timer_state"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"上层定时状态"]
+        # 中层定时
+        d["mid_timer"] = [u"//android.view.View[contains(@content-desc, '中层')]", "xpath", u"中层定时"]
         # 中层电源开关
         d["mid_button"] = [u"//android.view.View[contains(@content-desc, '中层')]", "xpath", u"中层电源开关",
                            {"px": [3.8, 1]}]
@@ -215,7 +219,9 @@ class MainPageWidgetAndroid(object):
         # 中层电源状态关
         d["mid_button_off"] = [u"//android.view.View[@content-desc='中层已关闭']", "xpath", u"中层电源状态关"]
         # 中层定时状态
-        # d["mid_timer_state"] = ["//android.webkit.WebView/android.view.View[6]", "xpath", u"中层定时状态"]
+        d["mid_timer_state"] = ["//android.webkit.WebView/android.view.View[6]", "xpath", u"中层定时状态"]
+        # 下层定时
+        d["down_timer"] = [u"//android.view.View[contains(@content-desc, '下层')]", "xpath", u"下层定时"]
         # 下层电源开关
         d["down_button"] = [u"//android.view.View[contains(@content-desc, '下层')]", "xpath", u"下层电源开关",
                             {"px": [3.8, 1]}]
@@ -224,7 +230,7 @@ class MainPageWidgetAndroid(object):
         # 下层电源状态关
         d["down_button_off"] = [u"//android.view.View[@content-desc='下层已关闭']", "xpath", u"下层电源状态关"]
         # 下层定时状态
-        # d["down_timer_state"] = ["//android.webkit.WebView/android.view.View[8]", "xpath", u"下层定时状态"]
+        d["down_timer_state"] = ["//android.webkit.WebView/android.view.View[8]", "xpath", u"下层定时状态"]
         # 用电量
         d["elec"] = [u"//android.view.View[@content-desc='用电量']", "xpath", u"用电量"]
         # 电费
@@ -275,15 +281,15 @@ class MainPageWidgetAndroid(object):
         # 延时任务
         d["delay_timer"] = [u"//android.view.View[contains(@content-desc, '延时任务')]", "xpath", u"延时任务"]
         # 延时任务开关
-        d["delay_timer_button"] = ["//android.webkit.WebView/android.view.View[3]", "xpath", u"延时任务开关",
-                                   {"px": [1.1, 0.5]}]
+        d["delay_timer_button"] = [u"//android.view.View[contains(@content-desc, '延时定时')]", "xpath",
+                                   u"延时任务开关", {"px": [1.1, 0.5]}]
         # 延时任务状态
         d["delay_timer_state"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"延时任务状态"]
         # 循环任务
         d["cycle_timer"] = [u"//android.view.View[contains(@content-desc, '循环任务')]", "xpath", u"循环任务"]
         # 循环任务开关
-        d["cycle_timer_button"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"循环任务开关",
-                                   {"px": [1.1, 0.5]}]
+        d["cycle_timer_button"] = [u"//android.view.View[contains(@content-desc, '循环定时')]", "xpath",
+                                   u"循环任务开关", {"px": [1.1, 0.5]}]
         # 循环任务状态
         d["cycle_timer_state"] = ["//android.webkit.WebView/android.view.View[5]", "xpath", u"循环任务状态"]
         # 循环任务次数
@@ -383,11 +389,11 @@ class MainPageWidgetAndroid(object):
         # 关闭时长
         d["delay_time"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"关闭时长"]
         # 滚轮，时
-        d["roll_h"] = [u"//android.view.View[@content-desc='时']", "xpath", u"滚轮，时"]
+        d["roll_h"] = [u"//android.view.View[@content-desc='时']", "xpath", u"滚轮，时", {"px": [0.5, 0.5]}]
         # 滚轮，分
-        d["roll_m"] = [u"//android.view.View[@content-desc='分']", "xpath", u"滚轮，分"]
+        d["roll_m"] = [u"//android.view.View[@content-desc='分']", "xpath", u"滚轮，分", {"px": [0.5, 0.5]}]
         # 滚轮，数字
-        d["roll_n"] = ["//android.view.View[@content-desc='20']", "xpath", u"滚轮，数字"]
+        d["roll_n"] = ["//android.view.View[@content-desc='20']", "xpath", u"滚轮，数字", {"px": [0.5, 0.5]}]
         # 定时名称
         d["timer_name"] = ["//android.view.View[92]/android.view.View[2]", "xpath", u"定时名称"]
         return d
@@ -396,27 +402,27 @@ class MainPageWidgetAndroid(object):
     def cycle_timer_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.view.View[@content-desc='开启时长']", "xpath", u"延时任务设置页面"]
+        d["title"] = [u"//android.view.View[@content-desc='开启时长']", "xpath", u"循环任务设置页面"]
         # 保存
         d["saved"] = ["com.jd.smart:id/button4", "id", u"添加定时任务按钮"]
         # 返回按钮
         d["cancel"] = ["com.jd.smart:id/button1", "id", u"返回"]
         # 开启时长
-        d["open_time"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"关闭时长"]
+        d["open_time"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"开启时长"]
         # 关闭时长
         d["close_time"] = ["//android.webkit.WebView/android.view.View[6]", "xpath", u"关闭时长"]
         # 滚轮，时
-        d["roll_h"] = [u"//android.view.View[@content-desc='时']", "xpath", u"滚轮，时"]
+        d["roll_h"] = [u"//android.view.View[@content-desc='时']", "xpath", u"滚轮，时", {"px": [0.5, 0.5]}]
         # 滚轮，分
-        d["roll_m"] = [u"//android.view.View[@content-desc='分']", "xpath", u"滚轮，分"]
+        d["roll_m"] = [u"//android.view.View[@content-desc='分']", "xpath", u"滚轮，分", {"px": [0.5, 0.5]}]
         # 滚轮，数字
-        d["roll_n"] = ["//android.view.View[@content-desc='20']", "xpath", u"滚轮，数字"]
+        d["roll_n"] = ["//android.view.View[@content-desc='20']", "xpath", u"滚轮，数字", {"px": [0.5, 0.5]}]
         # 永久循环
-        d["cycle_always"] = [u"//android.view.View[@content-desc='永久循环']", "xpath", u"永久循环"]
+        d["cycle_forever"] = [u"//android.view.View[@content-desc='永久循环']", "xpath", u"永久循环"]
         # 循环次数
         d["cycle_time"] = ["//android.webkit.WebView/android.view.View[9]", "xpath", u"循环次数"]
         # 滚轮，次
-        d["roll_c"] = [u"//android.view.View[@content-desc='次']", "xpath", u"滚轮，次"]
+        d["roll_c"] = [u"//android.view.View[@content-desc='次']", "xpath", u"滚轮，次", {"px": [0.5, 0.5]}]
         # 定时名称
         d["timer_name"] = ["//android.webkit.WebView/android.view.View[61]", "xpath", u"定时名称"]
         return d
