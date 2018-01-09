@@ -22,7 +22,7 @@ class GNAPPRegister5(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["用户名"] input success')
+        self.debug.info(u'[APP_INPUT] ["用户名"] input success')
         time.sleep(0.5)
 
         self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
@@ -33,7 +33,7 @@ class GNAPPRegister5(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         pwd.clear()
         self.ac.send_keys(pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["注册密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["注册密码"] input success')
         time.sleep(0.5)
 
         check_code = self.widget_click(self.page["register_page"]["check_code"],
@@ -42,12 +42,12 @@ class GNAPPRegister5(WidgetOperation):
         data = "1234"
         check_code.clear()
         self.ac.send_keys(check_code, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
+        self.debug.info(u'[APP_INPUT] ["注册验证码"] input success')
         time.sleep(0.5)
 
         widget_px = self.ac.get_location(self.wait_widget(self.page["register_page"]["register_button"]))
         self.driver.tap([widget_px["centre"]])
-        self.logger.info(u'[APP_CLICK] operate_widget success')
+        self.debug.info(u'[APP_CLICK] operate_widget success')
 
         while True:
             try:
@@ -56,6 +56,6 @@ class GNAPPRegister5(WidgetOperation):
                 break
 
             # 截屏获取设备toast消息
-            ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
+            ScreenShot(self.device_info, self.zentao_id, self.basename, self.debug)
 
         self.case_over("screen")

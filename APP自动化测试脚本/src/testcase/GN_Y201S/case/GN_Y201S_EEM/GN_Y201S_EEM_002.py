@@ -27,7 +27,7 @@ class GNY201SEem2(WidgetOperation):
 
         elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
         elec_elements = self.ac.get_attribute(elec_elements, "name")
-        self.logger.info("[ELEC_INFO]%s" % elec_elements)
+        self.debug.info("[ELEC_INFO]%s" % elec_elements)
         if not re.findall(u"日总电量", elec_elements):
             raise TimeoutException("day elec time is wrong, current: %s" % [elec_elements])
 
@@ -36,7 +36,7 @@ class GNY201SEem2(WidgetOperation):
 
         elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
         elec_elements = self.ac.get_attribute(elec_elements, "name")
-        self.logger.info("[ELEC_INFO]%s" % elec_elements)
+        self.debug.info("[ELEC_INFO]%s" % elec_elements)
         if not re.findall(u"周总电量", elec_elements):
             raise TimeoutException("week elec time is wrong, current: %s" % [elec_elements])
 
@@ -45,7 +45,7 @@ class GNY201SEem2(WidgetOperation):
 
         elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
         elec_elements = self.ac.get_attribute(elec_elements, "name")
-        self.logger.info("[ELEC_INFO]%s" % elec_elements)
+        self.debug.info("[ELEC_INFO]%s" % elec_elements)
         if not re.findall(u"月总电量", elec_elements):
             raise TimeoutException("month elec time is wrong, current: %s" % [elec_elements])
 
@@ -54,7 +54,7 @@ class GNY201SEem2(WidgetOperation):
 
         elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
         elec_elements = self.ac.get_attribute(elec_elements, "name")
-        self.logger.info("[ELEC_INFO]%s" % elec_elements)
+        self.debug.info("[ELEC_INFO]%s" % elec_elements)
         if not re.findall(u"年总电量", elec_elements):
             raise TimeoutException("year elec time is wrong, current: %s" % [elec_elements])
 
@@ -66,6 +66,6 @@ class GNY201SEem2(WidgetOperation):
 
         elec_elements = self.wait_widget(self.page["elec_page"]["elec_time"])
         elec_elements = self.ac.get_attribute(elec_elements, "name")
-        self.logger.info("[ELEC_INFO]%s" % elec_elements)
+        self.debug.info("[ELEC_INFO]%s" % elec_elements)
         if not re.findall(u"日总电量", elec_elements):
             raise TimeoutException("day elec time2 is wrong, current: %s" % [elec_elements])

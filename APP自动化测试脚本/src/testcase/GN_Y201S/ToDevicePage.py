@@ -9,7 +9,6 @@ class ToDevicePage(object):
     def __init__(self, driver, device_info):
         self.driver = driver
         self.page = device_info["page"]  # 页面元素库
-        self.logger = device_info["logger"]  # log日志
         self.debug = device_info["debug"]  # debug日志
         self.ac = device_info["ac"]  # appium command
         self.user = conf["user_and_pwd"][device_info["udid"]][device_info["app"]]
@@ -23,10 +22,10 @@ class ToDevicePage(object):
     def app_error_fix(self):
         try:
             self.wait_widget(self.page["exit_error"]["title"])
-            self.logger.info(u"[APP_INF] APP异常修复")
+            self.debug.info(u"[APP_INF] APP异常修复")
             self.widget_click(self.page["exit_error"]["skip"],
                               log_record=0)
-            self.logger.info(u"[APP_INF] 跳过")
+            self.debug.info(u"[APP_INF] 跳过")
         except TimeoutException:
             pass
 
@@ -34,10 +33,10 @@ class ToDevicePage(object):
     def check_update(self):
         try:
             self.wait_widget(self.page["update_popup"]["title"])
-            self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
+            self.debug.info(u"[APP_INF] APP有最新版本，可以更新")
             self.widget_click(self.page["update_popup"]["cancel"],
                               log_record=0)
-            self.logger.info(u"[APP_INF] 取消更新")
+            self.debug.info(u"[APP_INF] 取消更新")
         except TimeoutException:
             pass
 
@@ -45,7 +44,7 @@ class ToDevicePage(object):
     def skip_welcome(self):
         try:
             self.wait_widget(self.page["welcome_page"]["title"])
-            self.logger.info(u"[APP_INF] 页面有欢迎页，跳过")
+            self.debug.info(u"[APP_INF] 页面有欢迎页，跳过")
             self.widget_click(self.page["welcome_page"]["skip"],
                               self.page["app_home_page"]["title"],
                               log_record=0)
@@ -78,16 +77,16 @@ class ToDevicePage(object):
 
         try:
             if now_page == "wait_login_page" or now_page == "login_page":
-                self.logger.info(u"[APP_INF] 当前APP未登录，开始重新登录")
+                self.debug.info(u"[APP_INF] 当前APP未登录，开始重新登录")
                 self.check_user_pwd()
             else:
-                self.logger.info(u"[APP_INF] 当前APP已登录")
+                self.debug.info(u"[APP_INF] 当前APP已登录")
                 if wait_action == "2":
                     self.widget_click(self.page["app_home_page"]["my_home"],
                                       self.page["app_home_page"]["title"],
                                       log_record=0)
         except TimeoutException:
-            self.logger.info(u"[APP_INF] APP进入设备主页失败，退出")
+            self.debug.info(u"[APP_INF] APP进入设备主页失败，退出")
             self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
             raise TimeoutException("ToDevicePage Error!")
 
@@ -151,4 +150,4 @@ class ToDevicePage(object):
         self.skip_welcome()
         self.login_to_device()
         self.wait_widget(self.page["app_home_page"]["title"])
-        self.logger.info(u"[APP_INF] APP当前页面为app主页面")
+        self.debug.info(u"[APP_INF] APP当前页面为app主页面")

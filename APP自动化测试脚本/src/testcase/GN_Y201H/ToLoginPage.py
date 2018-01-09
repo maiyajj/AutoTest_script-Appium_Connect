@@ -8,7 +8,6 @@ class ToLoginPage(object):
     def __init__(self, driver, device_info):
         self.driver = driver
         self.page = device_info["page"]  # 页面元素库
-        self.logger = device_info["logger"]  # log日志
         self.debug = device_info["debug"]  # debug日志
         self.ac = device_info["ac"]  # appium command
         self.basename = os.path.basename(__file__).split(".")[0]
@@ -21,11 +20,11 @@ class ToLoginPage(object):
     def close_ad(self):
         try:
             self.wait_widget(self.page["ad_popup"]["title"])
-            self.logger.info(u"[APP_INF] APP有广告")
+            self.debug.info(u"[APP_INF] APP有广告")
             self.widget_click(self.page["ad_popup"]["skip"],
                               wait_time1=5,
                               log_record=0)
-            self.logger.info(u"[APP_INF] 关闭广告")
+            self.debug.info(u"[APP_INF] 关闭广告")
         except TimeoutException:
             pass
 
@@ -33,10 +32,10 @@ class ToLoginPage(object):
     def check_update(self):
         try:
             self.wait_widget(self.page["update_popup"]["title"])
-            self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
+            self.debug.info(u"[APP_INF] APP有最新版本，可以更新")
             self.widget_click(self.page["update_popup"]["cancel"],
                               log_record=0)
-            self.logger.info(u"[APP_INF] 取消更新")
+            self.debug.info(u"[APP_INF] 取消更新")
         except TimeoutException:
             pass
 
@@ -51,4 +50,4 @@ class ToLoginPage(object):
         self.check_update()
         self.device_to_login()
         self.wait_widget(self.page["login_page"]["title"])
-        self.logger.info(u"[APP_INF] APP当前页面为登录页面")
+        self.debug.info(u"[APP_INF] APP当前页面为登录页面")

@@ -15,7 +15,7 @@ class GNAPPDevicePage1(WidgetOperation):
 
         element = self.wait_widget(self.page["device_page"]["welcome"])
         now_time = self.ac.get_attribute(element, "name")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (now_time, len(now_time)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (now_time, len(now_time)))
         if 0 < int(time.strftime("%H")) < 12:
             if now_time != u"上午好":
                 raise TimeoutException("now time is not a.m. and now time is %s" % [now_time])
@@ -25,7 +25,7 @@ class GNAPPDevicePage1(WidgetOperation):
 
         element = self.wait_widget(self.page["device_page"]["city"])
         city = self.ac.get_attribute(element, "name")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (city, len(city)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (city, len(city)))
         if city != u"上海市":
             raise TimeoutException("city is not ShangHai and current city is %s" % [city])
 

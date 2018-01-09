@@ -16,14 +16,15 @@ class WidgetCheckUnit(object):
     def __init__(self, driver, device_info):
         self.driver = driver
         self.page = device_info["page"]  # APP页面元素库
-        self.logger = device_info["logger"]  # log日志实例化
         self.debug = device_info["debug"]  # debug日志实例化
         self.px = None
 
     # 等待元素出现，同于find_element_*
     def wait_widget(self, main_widget, timeout=3.0, interval=1.0, log_record=1):
         self.px = plural = False  # 元素在屏幕的像素坐标
-        if not isinstance(main_widget, list):
+        if main_widget is None:
+            return True
+        elif not isinstance(main_widget, list):
             raise TypeError("main_widget must be list! [widget, locate method...]")
         locate = main_widget[1]  # page函数中的元素查找方式，例："xpath","name","id"，etc
         widget = main_widget[0]  # page函数中的元素查找名称，例："//XCUIElementTypeTextField","btn_skip"，etc
@@ -93,15 +94,12 @@ class WidgetCheckUnit(object):
                 # 根据需要开启log日志记录
                 log_tmp = '[APP_INFO] wait_widget ["%s"] success' % main_widget[2]
                 if log_record != 0:
-                    self.logger.info(log_tmp)
-                    self.debug.info(log_tmp)
-                else:
                     self.debug.info(log_tmp)
 
                 return element
-            except NoSuchElementException:
+            except NoSuchElementException, e:
                 if time.time() > end_time:
-                    raise TimeoutException("[ERROR]Failed to wait element.UiSelector[RESOURCE_ID=%s]\n" % [widget])
+                    raise TimeoutException("%s;%s" % (e, [widget]))
                 time.sleep(interval)
 
     # 点击元素，同于element.click()
@@ -150,16 +148,16 @@ class WidgetCheckUnit(object):
                         pxx, pxy = int(lc["x"] + px[0] * sz["width"]), int(lc["y"] + px[1] * sz["height"])
                         try:
                             self.driver.tap([(pxx, pxy)])
-                        except WebDriverException:
-                            raise TimeoutException()
+                        except WebDriverException, e:
+                            raise TimeoutException(e)
                     else:  # 使用pxw方式点击屏幕坐标
                         px = self.px[0]
                         ws = self.driver.get_window_size()
                         pxx, pxy = int(ws["width"] * px[0]), int(ws["height"] * px[1])
                         try:
                             self.driver.tap([(pxx, pxy)])
-                        except WebDriverException:
-                            raise TimeoutException()
+                        except WebDriverException, e:
+                            raise TimeoutException(e)
 
                     # 点击元素后会有页面跳转加载动画，等待页面加载完成
                     while True:
@@ -178,9 +176,6 @@ class WidgetCheckUnit(object):
                     # 根据需要开启log日志记录
                     log_tmp = '[APP_CLICK] operate_widget ["%s"] success' % operate_widget[2]
                     if log_record != 0:
-                        self.logger.info(log_tmp)
-                        self.debug.info(log_tmp)
-                    else:
                         self.debug.info(log_tmp)
                     time.sleep(0.1)
                 # 点击元素后等待页面加载
@@ -190,30 +185,24 @@ class WidgetCheckUnit(object):
                     self.wait_widget(wait_page, wait_time2, interval, 0)
                 return widget
             except TimeoutException:
+                if wait_page is None:
+                    raise
                 run_times -= 1
                 if run_times == 0:
                     if flag == 0:  # 点击操作未完成
-                        error_info = "[ERROR]Failed to operate element.UiSelector[RESOURCE_ID=%s]" % [operate_widget[0]]
                         logger_info = '[APP_CLICK] operate_widget ["%s"] error' % operate_widget[2]
                     else:  # 完成点击操作，等待页面加载失败
-                        error_info = "[ERROR]Failed to wait element.UiSelector[RESOURCE_ID=%s]" % [wait_page[0]]
                         logger_info = '[APP_CLICK] wait_page ["%s"] error' % wait_page[2]
 
                     if log_record != 0:
-                        self.logger.info(logger_info)
-                        self.debug.info(logger_info)
-                    else:
                         self.debug.info(logger_info)
                     database["err_request_timeout_count"] += 1
 
-                    raise TimeoutException(error_info)
+                    raise
                 else:  # 第一次元素操作未完成
                     try:  # 若页面仍停留在待点击元素页面
                         self.wait_widget(operate_widget, wait_time1, interval, 0)
                         click_flag = True
-                    except TimeoutException:
-                        try:  # 页面已跳转
-                            self.wait_widget(wait_page, wait_time2, interval, 0)
-                            click_flag = False  # 若页面已跳转，则下次操作不会再点击元素
-                        except TimeoutException:
-                            raise TimeoutException("run times: %s" % run_times)
+                    except TimeoutException:  # 页面已跳转
+                        self.wait_widget(wait_page, wait_time2, interval, 0)
+                        click_flag = False  # 若页面已跳转，则下次操作不会再点击元素

@@ -25,7 +25,7 @@ class GNAPPDevicePage3(WidgetOperation):
         data = str(conf["wifi_pwd"]).decode('hex').replace(" ", "")
         wifi_pwd.clear()
         self.ac.send_keys(wifi_pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["WiFi密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["WiFi密码"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["set_network_page"]["prepare_next"],

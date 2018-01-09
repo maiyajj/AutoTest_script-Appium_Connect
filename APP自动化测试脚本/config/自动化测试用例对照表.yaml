@@ -357,6 +357,51 @@ case_table:
       'CODE_ID': ['GNF1331NormalTimer1']
       'CASE_NAME': ['上层循环定时']
       'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_001.py']
+    1216:
+      'CASE_MODULE': ['APP功能测试']
+      'CODE_ID': ['GNF1331NormalTimer2']
+      'CASE_NAME': ['上、中层循环定时']
+      'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_002.py']
+    1216:
+      'CASE_MODULE': ['APP功能测试']
+      'CODE_ID': ['GNF1331NormalTimer3']
+      'CASE_NAME': ['上、中、下层循环定时']
+      'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_003.py']
+    1216:
+      'CASE_MODULE': ['APP功能测试']
+      'CODE_ID': ['GNF1331NormalTimer4']
+      'CASE_NAME': ['上层延迟定时']
+      'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_004.py']
+    1216:
+      'CASE_MODULE': ['APP功能测试']
+      'CODE_ID': ['GNF1331NormalTimer5']
+      'CASE_NAME': ['上、中层延迟定时']
+      'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_005.py']
+    1216:
+      'CASE_MODULE': ['APP功能测试']
+      'CODE_ID': ['GNF1331NormalTimer6']
+      'CASE_NAME': ['上、中、下层延迟定时']
+      'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_006.py']
+    1216:
+      'CASE_MODULE': ['APP功能测试']
+      'CODE_ID': ['GNF1331NormalTimer7']
+      'CASE_NAME': ['上层普通定时']
+      'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_007.py']
+    1216:
+      'CASE_MODULE': ['APP功能测试']
+      'CODE_ID': ['GNF1331NormalTimer8']
+      'CASE_NAME': ['上、中层普通定时']
+      'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_008.py']
+    1216:
+      'CASE_MODULE': ['APP功能测试']
+      'CODE_ID': ['GNF1331NormalTimer9']
+      'CASE_NAME': ['上、中、下层普通定时']
+      'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_009.py']
+    1216:
+      'CASE_MODULE': ['APP功能测试']
+      'CODE_ID': ['GNF1331NormalTimer10']
+      'CASE_NAME': ['上层延迟、中层循环定时、下层普通定时开、关']
+      'CODE_PATH': ['./src/testcase/GN_F1331/case/GN_F1331_NORMAL_TIMER/GN_F1331_NORMAL_TIMER_010.py']
   GN_Y201H:
     2106:
       'CASE_MODULE': ['远程控制(#250)']

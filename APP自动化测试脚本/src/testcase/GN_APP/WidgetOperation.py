@@ -20,5 +20,5 @@ class WidgetOperation(LaunchApp):
         while i <= 31:
             time.sleep(10)
             print("time sleep %sS" % (i * 10))
-            self.logger.info("time sleep %sS" % (i * 10))
+            self.debug.info("time sleep %sS" % (i * 10))
             i += 1

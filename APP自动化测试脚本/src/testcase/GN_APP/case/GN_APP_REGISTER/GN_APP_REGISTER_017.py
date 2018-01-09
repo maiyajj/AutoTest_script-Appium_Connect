@@ -21,7 +21,7 @@ class GNAPPRegister17(WidgetOperation):
         data = "19912345678"
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["非正确的手机号码用户名"] input success')
+        self.debug.info(u'[APP_INPUT] ["非正确的手机号码用户名"] input success')
         time.sleep(0.5)
 
         self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
@@ -31,12 +31,12 @@ class GNAPPRegister17(WidgetOperation):
         data = "12345678"
         register_pwd.clear()
         self.ac.send_keys(register_pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["密码"] input success')
         time.sleep(0.5)
 
         widget_px = self.ac.get_location(self.wait_widget(self.page["register_page"]["register_button"]))
         self.driver.tap([widget_px["centre"]])
-        self.logger.info(u'[APP_CLICK] operate_widget success')
+        self.debug.info(u'[APP_CLICK] operate_widget success')
 
         while True:
             try:
@@ -45,6 +45,6 @@ class GNAPPRegister17(WidgetOperation):
                 break
 
             # 截屏获取设备toast消息
-            ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
+            ScreenShot(self.device_info, self.zentao_id, self.basename, self.debug)
 
         self.case_over("screen")

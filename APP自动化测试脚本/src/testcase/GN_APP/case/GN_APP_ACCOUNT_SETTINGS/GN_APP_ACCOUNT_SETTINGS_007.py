@@ -24,11 +24,11 @@ class GNAPPAccountSettings7(WidgetOperation):
                                      self.page["change_nickname_page"]["title"])
         nickname.clear()
         # 全选
-        self.logger.info(u'[APP_INPUT] ["昵称"] delete success')
+        self.debug.info(u'[APP_INPUT] ["昵称"] delete success')
         time.sleep(0.5)
 
         element = self.wait_widget(self.page["change_nickname_page"]["commit"])
         state = self.ac.get_attribute(element, "enabled")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (state, len(state)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (state, len(state)))
         if state != "false":
             raise TimeoutException("nickname commit state is not false, current state is %s" % state)

@@ -22,7 +22,7 @@ class GNAPPRegister3(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["用户名"] input success')
+        self.debug.info(u'[APP_INPUT] ["用户名"] input success')
         time.sleep(0.5)
 
         self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
@@ -33,7 +33,7 @@ class GNAPPRegister3(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         pwd.clear()
         self.ac.send_keys(pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["密码"] input success')
         time.sleep(0.5)
 
         check_code = self.widget_click(self.page["register_page"]["check_code"],
@@ -42,12 +42,12 @@ class GNAPPRegister3(WidgetOperation):
         data = "1234567"  # 传入超过6位的验证码
         check_code.clear()
         self.ac.send_keys(check_code, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
+        self.debug.info(u'[APP_INPUT] ["注册验证码"] input success')
         time.sleep(0.5)
 
         element = self.page["register_page"]["check_code"]
         check_code = self.ac.get_attribute(self.wait_widget(element), "name")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (check_code, len(check_code)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (check_code, len(check_code)))
         check_code = check_code.replace(element[3]["default_text"], "")
         if len(check_code) != 6:  # 检测验证码长度
             raise TimeoutException("check code len is not 6, current is %s" % len(check_code))

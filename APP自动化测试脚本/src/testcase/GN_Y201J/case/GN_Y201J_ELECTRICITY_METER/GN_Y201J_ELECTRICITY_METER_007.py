@@ -32,7 +32,7 @@ class GNY201JElectricityMeter7(WidgetOperation):
         peak_data = "5"
         peak_price.clear()
         self.ac.send_keys(peak_price, peak_data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["峰电价"] input success')
+        self.debug.info(u'[APP_INPUT] ["峰电价"] input success')
         time.sleep(0.5)
 
         valley_price = self.widget_click(self.page["peak_valley_price_page"]["set_valley_price"],
@@ -41,7 +41,7 @@ class GNY201JElectricityMeter7(WidgetOperation):
         valley_data = "2"
         valley_price.clear()
         self.ac.send_keys(valley_price, valley_data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["谷电价"] input success')
+        self.debug.info(u'[APP_INPUT] ["谷电价"] input success')
         time.sleep(0.5)
 
         now = time.strftime("%H:%M")
@@ -90,7 +90,7 @@ class GNY201JElectricityMeter7(WidgetOperation):
 
         elec_bill_info = ("current [elec_bill: %s, peak_price: %s, peak_data: %s, valley_price: %s, valley_data: %s]"
                           % (sum(elec_bill.values()), sum(peak_price), peak_data, sum(valley_price), valley_data))
-        self.logger.info(elec_bill_info)
+        self.debug.info(elec_bill_info)
 
         if sum(elec_bill.values()) != sum(peak_price) * int(peak_data) + sum(valley_price) * int(valley_data):
             raise TimeoutException(elec_bill_info)

@@ -21,12 +21,12 @@ class GNAPPRegister14(WidgetOperation):
         data = "abcdefg"
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["英文用户名"] input success')
+        self.debug.info(u'[APP_INPUT] ["英文用户名"] input success')
         time.sleep(0.5)
 
         element = self.page["register_page"]["username"]
         user_name = self.ac.get_attribute(self.wait_widget(element), "name")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (user_name, len(user_name)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (user_name, len(user_name)))
         user_name = user_name.replace(element[3]["default_text"], "")
         if len(user_name) != 0:
             raise TimeoutException("user name len is not 0, current is %s" % len(user_name))

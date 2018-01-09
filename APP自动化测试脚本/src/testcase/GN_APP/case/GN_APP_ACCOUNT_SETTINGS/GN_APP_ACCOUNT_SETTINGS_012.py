@@ -27,7 +27,7 @@ class GNAPPAccountSettings12(WidgetOperation):
         data = ""
         old_pwd.clear()
         self.ac.send_keys(old_pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["旧密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["旧密码"] input success')
         time.sleep(0.5)
 
         new_pwd = self.widget_click(self.page["change_pwd_page"]["new_pwd"],
@@ -38,7 +38,7 @@ class GNAPPAccountSettings12(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         new_pwd.clear()
         self.ac.send_keys(new_pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["新密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["新密码"] input success')
         time.sleep(0.5)
 
         conform_new_pwd = self.widget_click(self.page["change_pwd_page"]["conform_pwd"],
@@ -49,12 +49,12 @@ class GNAPPAccountSettings12(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         conform_new_pwd.clear()
         self.ac.send_keys(conform_new_pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["新密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["新密码"] input success')
         time.sleep(0.5)
 
         widget_px = self.ac.get_location(self.wait_widget(self.page["change_pwd_page"]["commit"]))
         self.driver.tap([widget_px["centre"]])
-        self.logger.info(u'[APP_CLICK] operate_widget success')
+        self.debug.info(u'[APP_CLICK] operate_widget success')
 
         while True:
             try:
@@ -63,6 +63,6 @@ class GNAPPAccountSettings12(WidgetOperation):
                 break
 
             # 截屏获取设备toast消息
-            ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
+            ScreenShot(self.device_info, self.zentao_id, self.basename, self.debug)
 
         self.case_over("screen")

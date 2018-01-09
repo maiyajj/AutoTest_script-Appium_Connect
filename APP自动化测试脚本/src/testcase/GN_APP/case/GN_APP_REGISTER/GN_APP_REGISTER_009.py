@@ -22,7 +22,7 @@ class GNAPPRegister9(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["用户名"] input success')
+        self.debug.info(u'[APP_INPUT] ["用户名"] input success')
         time.sleep(0.5)
 
         self.show_pwd(self.wait_widget(self.page["register_page"]["check_box"]))
@@ -32,7 +32,7 @@ class GNAPPRegister9(WidgetOperation):
         data = "1234"
         check_code.clear()
         self.ac.send_keys(check_code, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
+        self.debug.info(u'[APP_INPUT] ["注册验证码"] input success')
         time.sleep(0.5)
 
         pwd = self.widget_click(self.page["register_page"]["password"],
@@ -41,12 +41,12 @@ class GNAPPRegister9(WidgetOperation):
         data = "12345678901234567"
         pwd.clear()
         self.ac.send_keys(pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["密码"] input success')
         time.sleep(0.5)
 
         element = self.page["register_page"]["check_code"]
         pwd = self.ac.get_attribute(self.wait_widget(element), "name")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (pwd, len(pwd)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (pwd, len(pwd)))
         pwd = pwd.replace(element[3]["default_text"], "")
         if len(pwd) != 0:
             raise TimeoutException("pwd len is not 0, current is %s" % len(pwd))

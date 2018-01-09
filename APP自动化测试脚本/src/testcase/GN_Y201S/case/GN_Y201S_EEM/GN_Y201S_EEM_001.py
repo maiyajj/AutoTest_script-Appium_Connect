@@ -40,7 +40,7 @@ class GNY201SEem1(WidgetOperation):
         peak_data = "5"
         peak_price.clear()
         self.ac.send_keys(peak_price, peak_data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["峰电价"] input success')
+        self.debug.info(u'[APP_INPUT] ["峰电价"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["set_peak_price_page"]["confirm"],
@@ -59,7 +59,7 @@ class GNY201SEem1(WidgetOperation):
         valley_data = "2"
         valley_price.clear()
         self.ac.send_keys(valley_price, valley_data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["谷电价"] input success')
+        self.debug.info(u'[APP_INPUT] ["谷电价"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["set_valley_price_page"]["confirm"],

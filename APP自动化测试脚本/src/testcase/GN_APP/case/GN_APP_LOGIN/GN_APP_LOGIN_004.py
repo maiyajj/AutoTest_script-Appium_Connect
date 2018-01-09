@@ -19,7 +19,7 @@ class GNAPPLogin4(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["用户名"] input success')
+        self.debug.info(u'[APP_INPUT] ["用户名"] input success')
         time.sleep(0.5)
 
         self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
@@ -30,7 +30,7 @@ class GNAPPLogin4(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         login_pwd.clear()
         self.ac.send_keys(login_pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["密码"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["login_page"]["login_button"],
@@ -38,23 +38,23 @@ class GNAPPLogin4(WidgetOperation):
 
         self.driver.close_app()  # 关闭App
         self.debug.warn("(%s)self.driver.close_app() App close" % self.basename)
-        self.logger.info(u"[APP_INF] APP退出")
+        self.debug.info(u"[APP_INF] APP退出")
         time.sleep(1)
 
         self.launch_app(None)
-        self.logger.info(u"[APP_INF] APP重新启动")
+        self.debug.info(u"[APP_INF] APP重新启动")
         while True:
             try:
                 self.wait_widget(self.page["update_popup"]["title"])
-                self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
+                self.debug.info(u"[APP_INF] APP有最新版本，可以更新")
                 self.widget_click(self.page["update_popup"]["cancel"],
                                   log_record=0)
-                self.logger.info(u"[APP_INF] 取消更新")
+                self.debug.info(u"[APP_INF] 取消更新")
             except TimeoutException:
                 pass
             try:
                 self.wait_widget(self.page["login_popup"]["title"])
-                self.logger.info(u"[APP_INF] APP需要重新登陆，等待重新登录")
+                self.debug.info(u"[APP_INF] APP需要重新登陆，等待重新登录")
                 self.widget_click(self.page["login_popup"]["confirm"],
                                   self.page["login_page"]["title"],
                                   log_record=0)
@@ -63,7 +63,7 @@ class GNAPPLogin4(WidgetOperation):
 
             try:
                 self.wait_widget(self.page["login_page"]["title"])
-                self.logger.info(u"[APP_INF] APP当前页面为登录页面， 错误！")
+                self.debug.info(u"[APP_INF] APP当前页面为登录页面， 错误！")
                 raise NoSuchElementException()
             except TimeoutException:
                 pass
@@ -72,7 +72,7 @@ class GNAPPLogin4(WidgetOperation):
 
             try:
                 self.wait_widget(self.page["device_page"]["title"])
-                self.logger.info(u"[APP_INF] APP当前页面为主页面")
+                self.debug.info(u"[APP_INF] APP当前页面为主页面")
                 break
             except TimeoutException:
                 pass

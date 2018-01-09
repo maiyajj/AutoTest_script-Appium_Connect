@@ -32,7 +32,7 @@ class GNY201JCompatibility1(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         pwd.clear()
         self.ac.send_keys(pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["wifi密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["wifi密码"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["input_wifi_password_page"]["confirm"],
@@ -85,7 +85,7 @@ class GNY201JCompatibility1(WidgetOperation):
         data = conf["MAC"]["JD"][0]
         nickname.clear()
         self.ac.send_keys(nickname, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["设备备注"] input success')
+        self.debug.info(u'[APP_INPUT] ["设备备注"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["change_nickname_page"]["saved"],

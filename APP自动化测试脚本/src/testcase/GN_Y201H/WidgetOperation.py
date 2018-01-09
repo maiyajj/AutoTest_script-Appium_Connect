@@ -171,8 +171,8 @@ class WidgetOperation(LaunchApp):
             delay_time = "None"
             time_delay = "None"
             set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
-        self.logger.info("[APP_TIMER]start_time: %s, set_time: %s, delay_time: %s" % (start_time, set_time, delay_time))
-        self.logger.info("[APP_TIMER]time_start: %s, time_set: %s, time_delay: %s" % (time_start, time_set, time_delay))
+        self.debug.info("[APP_TIMER]start_time: %s, set_time: %s, delay_time: %s" % (start_time, set_time, delay_time))
+        self.debug.info("[APP_TIMER]time_start: %s, time_set: %s, time_delay: %s" % (time_start, time_set, time_delay))
         time.sleep(1)
 
         # 判断设置后的滚轮是否与设定一致
@@ -197,7 +197,7 @@ class WidgetOperation(LaunchApp):
         if time_on is not False:
             elem = self.wait_widget(self.page["add_normal_timer_page"]["time_on"])
             start_roll = self.ac.get_attribute(elem, "name")
-            self.logger.info("[APP_TIMER]Start roll: %s" % start_roll)
+            self.debug.info("[APP_TIMER]Start roll: %s" % start_roll)
 
             self.widget_click(self.page["add_normal_timer_page"]["time_on"],
                               self.page["normal_timer_roll_popup"]["title"])
@@ -209,7 +209,7 @@ class WidgetOperation(LaunchApp):
 
             if start_set_time <= now:
                 start_set_time = start_set_time + 3600 * 24
-            self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+            self.debug.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
                 time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
                 time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
@@ -231,7 +231,7 @@ class WidgetOperation(LaunchApp):
         if time_off is not False:
             elem = self.wait_widget(self.page["add_normal_timer_page"]["time_off"])
             end_roll = self.ac.get_attribute(elem, "name")
-            self.logger.info("[APP_TIMER]End roll: %s" % end_roll)
+            self.debug.info("[APP_TIMER]End roll: %s" % end_roll)
 
             self.widget_click(self.page["add_normal_timer_page"]["time_off"],
                               self.page["normal_timer_roll_popup"]["title"])
@@ -243,7 +243,7 @@ class WidgetOperation(LaunchApp):
 
             if end_set_time <= now:
                 end_set_time = end_set_time + 3600 * 24
-            self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
+            self.debug.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
                 time.strftime("%Y-%m-%d %X", time.localtime(end_time)),
                 time.strftime("%Y-%m-%d %X", time.localtime(end_set_time))))
 
@@ -264,7 +264,7 @@ class WidgetOperation(LaunchApp):
 
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
-        self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
+        self.debug.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
 
         if time_on is False:
             return end_time, end_set_time, cycle2
@@ -291,7 +291,7 @@ class WidgetOperation(LaunchApp):
         start_time, start_set_time = self.set_timer_roll(self.page["delay_timer_roll_popup"]["roll_h"],
                                                          self.page["delay_timer_roll_popup"]["roll_m"],
                                                          "00:00", time_now, set_timer, cycle, delay_s)
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+        self.debug.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
             time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
             time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
@@ -300,7 +300,7 @@ class WidgetOperation(LaunchApp):
         while True:
             if int(time.time()) == start_time:
                 self.widget_click(self.page["delay_timer_roll_popup"]["confirm"])
-                self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%Y-%m-%d %X"), time.time()))
+                self.debug.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%Y-%m-%d %X"), time.time()))
                 self.wait_widget(self.page["control_device_page"]["title"], log_record=0)
                 break
             else:
@@ -389,7 +389,7 @@ class WidgetOperation(LaunchApp):
         # 开始时间, 设置时间
         start_times = time.strftime("%Y-%m-%d %X", time.localtime(start_time))
         # now = time.time()
-        self.logger.info("[APP_CHECK_TIMER]Now time: %s. Start time: %s" % (time.strftime("%Y-%m-%d %X"), start_times))
+        self.debug.info("[APP_CHECK_TIMER]Now time: %s. Start time: %s" % (time.strftime("%Y-%m-%d %X"), start_times))
         now_week = time.strftime("%A").lower()
         if cycle is None:
             set_week = now_week
@@ -398,7 +398,7 @@ class WidgetOperation(LaunchApp):
                 set_week = cycle[0]
             else:
                 set_week = ",".join(cycle)
-        self.logger.info("[APP_CHECK_TIMER]Now week: %s, Set week: %s" % (now_week, set_week))
+        self.debug.info("[APP_CHECK_TIMER]Now week: %s, Set week: %s" % (now_week, set_week))
         while True:
             now_week = time.strftime("%A").lower()
             if now_week in set_week:
@@ -408,7 +408,7 @@ class WidgetOperation(LaunchApp):
                 break
             else:
                 if time.strftime("%M") == "00":
-                    self.logger.info("now week: %s" % now_week)
+                    self.debug.info("now week: %s" % now_week)
                 else:
                     print("********************")
                     print("now week: %s" % now_week)
@@ -416,22 +416,22 @@ class WidgetOperation(LaunchApp):
                     time.sleep(1)
 
         delay_times = set_times - start_time
-        self.logger.info("[APP_CHECK_TIMER]Delay Time: %s" % delay_times)
+        self.debug.info("[APP_CHECK_TIMER]Delay Time: %s" % delay_times)
         if delay_times < 0:
             raise TimeoutException("Set time is before now time, delay time is: %s" % delay_times)
 
         element = self.wait_widget(self.page["control_device_page"]["power_state"])
         end_time = set_times + 30
-        self.logger.info("[APP_CHECK_TIMER]End Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(end_time)))
-        self.logger.info("[APP_CHECK_TIMER]Set Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(set_times)))
+        self.debug.info("[APP_CHECK_TIMER]End Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(end_time)))
+        self.debug.info("[APP_CHECK_TIMER]Set Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(set_times)))
         while True:
             current_time = int(time.time())
             if current_time >= set_times:
                 while True:
                     state = self.ac.get_attribute(element, "name")
                     if state == power_state:
-                        self.logger.info("[APP_CHECK_TIMER]Current Time: %s" % time.strftime("%Y-%m-%d %X"))
-                        self.logger.info("[APP_CHECK_TIMER]Device Info: %s" % power_state)
+                        self.debug.info("[APP_CHECK_TIMER]Current Time: %s" % time.strftime("%Y-%m-%d %X"))
+                        self.debug.info("[APP_CHECK_TIMER]Device Info: %s" % power_state)
                         break
                     else:
                         time.sleep(1)
@@ -450,10 +450,10 @@ class WidgetOperation(LaunchApp):
         while True:
             try:
                 self.wait_widget(self.page["normal_timer_page"]["no_timer"])
-                self.logger.info("It has no timer~")
+                self.debug.info("It has no timer~")
                 break
             except TimeoutException:
-                self.logger.info("It has normal timer.")
+                self.debug.info("It has normal timer.")
                 self.widget_click(self.page["normal_timer_page"]["timer_edit"],
                                   self.page["add_normal_timer_page"]["title"])
 
@@ -471,14 +471,14 @@ class WidgetOperation(LaunchApp):
                                   self.page["delay_timer_roll_popup"]["title"])
 
                 self.wait_widget(self.page["delay_timer_roll_popup"]["stop"])
-                self.logger.info("It has delay timer.")
+                self.debug.info("It has delay timer.")
 
                 self.widget_click(self.page["delay_timer_roll_popup"]["stop"],
                                   self.page["control_device_page"]["title"])
             except TimeoutException:
                 self.widget_click(self.page["delay_timer_roll_popup"]["cancel"],
                                   self.page["control_device_page"]["title"])
-                self.logger.info("It has no timer~")
+                self.debug.info("It has no timer~")
                 break
 
     # 显示密码

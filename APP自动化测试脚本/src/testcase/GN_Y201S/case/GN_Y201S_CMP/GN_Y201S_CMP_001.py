@@ -55,7 +55,7 @@ class GNY201SCmp1(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         pwd.clear()
         self.ac.send_keys(pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["wifi密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["wifi密码"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["input_wifi_password_page"]["confirm"],

@@ -1,9 +1,9 @@
 # coding=utf-8
 import json
+import threading
 
 from src.testcase.GN_F1331.input_case.GN_F1331_Input_Case import *
 from src.testcase.GN_F1331.page.ReadAPPElement import *
-from src.utils.CollectLog import *
 from src.utils.Debug import *
 from src.utils.GetSerial import *
 from src.utils.OutputReport import *
@@ -26,7 +26,6 @@ class WaitCase(object):
         database["m_queue"] = m_queue  # 用于主进程和子进程通讯的消息队列
 
         self.report = None  # 初始化结果报告模块
-        self.logger = None  # 初始化log日志模块
         self.xls = None  # 初始化执行结果Excel文件模块
         self.debug = None  # 初始化debug日志模块
         self.page = None  # 初始化元素库模块
@@ -53,7 +52,6 @@ class WaitCase(object):
 
         try:
             self.create_debug()
-            self.create_log()
             self.serial_receive_t.start()
             self.serial_command_t.start()
             self.create_report()
@@ -73,11 +71,6 @@ class WaitCase(object):
     def select_page_element(self):
         self.page = PageElement(self.device_info["platformName"]).get_page_element()
         self.device_info["page"] = self.page
-
-    # 生成log日志
-    def create_log(self):
-        self.logger = check_log(self.device_info)
-        self.device_info["logger"] = self.logger
 
     # 生成log格式运行结果
     def create_report(self):
@@ -101,7 +94,7 @@ class WaitCase(object):
             except IndexError:
                 time.sleep(1)
             else:
-                self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %X"))
+                self.debug.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %X"))
                 break
 
     # 接收设备串口log
@@ -115,31 +108,37 @@ class WaitCase(object):
     # 开始执行用例
     def run(self):
         # 填写设备信息日志
-        self.logger.info("*" * 30)
-        self.logger.info(u"[APP_INF]deviceName：.....%s" % self.device_info["deviceName"])
-        self.logger.info(u"[APP_INF]UDID：...........%s" % self.device_info["udid"])
-        self.logger.info(u"[APP_INF]platformName：...%s" % self.device_info["platformName"])
-        self.logger.info(u"[APP_INF]platformVersion：%s" % self.device_info["platformVersion"])
+        self.debug.info("*" * 30)
+        self.debug.info(u"[APP_INF]deviceName：.....%s" % self.device_info["deviceName"])
+        self.debug.info(u"[APP_INF]UDID：...........%s" % self.device_info["udid"])
+        self.debug.info(u"[APP_INF]platformName：...%s" % self.device_info["platformName"])
+        self.debug.info(u"[APP_INF]platformVersion：%s" % self.device_info["platformVersion"])
 
-        # self.logger.info(u"[APP_INF]appPackage：.....%s" % self.device_info["desired_caps"]["appPackage"])
-        # self.logger.info(u"[APP_INF]appActivity：....%s" % self.device_info["desired_caps"]["appActivity"])
-        # self.logger.info(u"[APP_INF]waitActivity：...%s" % self.device_info["desired_caps"]["waitActivity"])
-        # self.logger.info(u"[APP_INF]bundleId：.......%s" % self.device_info["desired_caps"]["bundleId"])
-        # self.logger.info("******************************")
+        # self.debug.info(u"[APP_INF]appPackage：.....%s" % self.device_info["desired_caps"]["appPackage"])
+        # self.debug.info(u"[APP_INF]appActivity：....%s" % self.device_info["desired_caps"]["appActivity"])
+        # self.debug.info(u"[APP_INF]waitActivity：...%s" % self.device_info["desired_caps"]["waitActivity"])
+        # self.debug.info(u"[APP_INF]bundleId：.......%s" % self.device_info["desired_caps"]["bundleId"])
+        # self.debug.info("******************************")
         for name, blank in [["appPackage", 5], ["appActivity", 4], ["waitActivity", 3], ["bundleId", 7]]:
             try:
-                self.logger.info(u"[APP_INF]%s：%s%s" % (name, "." * blank, self.device_info["desired_caps"][name]))
+                self.debug.info(u"[APP_INF]%s：%s%s" % (name, "." * blank, self.device_info["desired_caps"][name]))
             except KeyError:
                 pass
-        self.logger.info("*" * 30)
+        self.debug.info("*" * 30)
 
         # 执行用例
         while True:
-            self.logger.info("run times [%s]" % database["program_loop_time"])
-            # self.write_report(GNF1331AppFunction1)  # 1170, 定时记录删除是否成功
-            # self.write_report(GNF1331AppFunction2)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
-            # self.write_report(GNF1331KeyMemory1)  # 1216,   开关操作及记忆功能
-            self.write_report(GNF1331NormalTimer1)  # 1216, 上层循环定时
+            self.debug.info("run times [%s]" % database["program_loop_time"])
+            # self.write_report(GNF1331NormalTimer1)  # 1216, 上层循环定时
+            # self.write_report(GNF1331NormalTimer2)  # 1216, 上、中层循环定时
+            # self.write_report(GNF1331NormalTimer3)  # 1216, 上、中、下层循环定时
+            # self.write_report(GNF1331NormalTimer4)  # 1216, 上层延迟定时
+            # self.write_report(GNF1331NormalTimer5)  # 1216, 上、中层延迟定时
+            # self.write_report(GNF1331NormalTimer6)  # 1216, 上、中、下层延迟定时
+            # self.write_report(GNF1331NormalTimer7)  # 1216, 上层普通定时
+            self.write_report(GNF1331NormalTimer8)  # 1216, 上、中层普通定时
+            # self.write_report(GNF1331NormalTimer9)  # 1216, 上、中、下层普通定时
+            # self.write_report(GNF1331NormalTimer10)  # 1216, 上层延迟、中层循环定时、下层普通定时开、关
 
             database["program_loop_time"] += 1
 

@@ -8,7 +8,6 @@ class ToLoginPage(object):
     def __init__(self, driver, device_info):
         self.driver = driver
         self.page = device_info["page"]  # 页面元素库
-        self.logger = device_info["logger"]  # log日志
         self.debug = device_info["debug"]  # debug日志
         self.ac = device_info["ac"]  # appium command
         self.basename = os.path.basename(__file__).split(".")[0]
@@ -21,10 +20,10 @@ class ToLoginPage(object):
     def check_update(self):
         try:
             self.wait_widget(self.page["update_popup"]["title"])
-            self.logger.info(u"[APP_INF] APP有最新版本，可以更新")
+            self.debug.info(u"[APP_INF] APP有最新版本，可以更新")
             self.widget_click(self.page["update_popup"]["cancel"],
                               log_record=0)
-            self.logger.info(u"[APP_INF] 取消更新")
+            self.debug.info(u"[APP_INF] 取消更新")
         except TimeoutException:
             pass
 
@@ -32,7 +31,7 @@ class ToLoginPage(object):
     def close_ad(self):
         try:
             self.wait_widget(self.page["close_ad_popup"]["title"])
-            self.logger.info(u"[APP_INF] 页面有广告，关闭广告")
+            self.debug.info(u"[APP_INF] 页面有广告，关闭广告")
             self.widget_click(self.page["close_ad_popup"]["confirm"],
                               self.page["app_home_page"]["title"],
                               log_record=0)
@@ -48,12 +47,12 @@ class ToLoginPage(object):
         try:
             element = self.wait_widget(self.page["account_setting_page"]["username"])
             if self.ac.get_attribute(element, "name") == u'点击登录':
-                self.logger.info(u"[APP_INF] 当前APP未登录，直接进入登录页")
+                self.debug.info(u"[APP_INF] 当前APP未登录，直接进入登录页")
                 self.widget_click(self.page["account_setting_page"]["username"],
                                   self.page["login_page"]["title"],
                                   log_record=0)
             else:
-                self.logger.info(u"[APP_INF] 当前APP已登录，退出进入登录页")
+                self.debug.info(u"[APP_INF] 当前APP已登录，退出进入登录页")
                 self.widget_click(self.page["account_setting_page"]["help_setting"],
                                   self.page["help_setting_page"]["title"],
                                   log_record=0)
@@ -67,7 +66,7 @@ class ToLoginPage(object):
                                   self.page["login_page"]["title"],
                                   log_record=0)
         except TimeoutException:
-            self.logger.info(u"[APP_INF] APP进入登录页面失败")
+            self.debug.info(u"[APP_INF] APP进入登录页面失败")
             self.driver.close_app()
             self.debug.warn("(%s)self.driver.close_app() App closed" % self.basename)
             raise TimeoutException("ToLoginPage Error!")
@@ -78,4 +77,4 @@ class ToLoginPage(object):
         self.close_ad()
         self.device_to_login()
         self.wait_widget(self.page["login_page"]["title"])
-        self.logger.info(u"[APP_INF] APP当前页面为登录页面")
+        self.debug.info(u"[APP_INF] APP当前页面为登录页面")

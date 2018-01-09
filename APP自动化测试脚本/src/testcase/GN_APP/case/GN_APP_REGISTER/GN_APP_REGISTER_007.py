@@ -21,12 +21,12 @@ class GNAPPRegister7(WidgetOperation):
         data = u"测试"
         check_code.clear()
         self.ac.send_keys(check_code, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["注册验证码"] input success')
+        self.debug.info(u'[APP_INPUT] ["注册验证码"] input success')
         time.sleep(0.5)
 
         element = self.page["register_page"]["check_code"]
         check_code = self.ac.get_attribute(self.wait_widget(element), "name")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (check_code, len(check_code)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (check_code, len(check_code)))
         check_code = check_code.replace(element[3]["default_text"], "")
         if len(check_code) != 0:
             raise TimeoutException("check code len is not 0, current is %s" % len(check_code))

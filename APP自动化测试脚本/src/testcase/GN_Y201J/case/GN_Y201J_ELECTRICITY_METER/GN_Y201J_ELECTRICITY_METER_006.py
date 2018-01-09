@@ -32,7 +32,7 @@ class GNY201JElectricityMeter6(WidgetOperation):
         elec_price_data = "5"
         elec_price.clear()
         self.ac.send_keys(elec_price, elec_price_data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["单一电价"] input success')
+        self.debug.info(u'[APP_INPUT] ["单一电价"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["single_price_page"]["to_return"],
@@ -52,7 +52,7 @@ class GNY201JElectricityMeter6(WidgetOperation):
 
         elec_bill_info = ("elec bill is wrong, current [elec_bill: %s, elec: %s, elec_price: %s]"
                           % (sum(elec_bill[now_h + 1]), sum(elec[now_h + 1]), elec_price_data))
-        self.logger.info(elec_bill_info)
+        self.debug.info(elec_bill_info)
 
         if sum(elec_bill[now_h + 1]) != sum(elec[now_h + 1]) * int(elec_price_data):
             raise TimeoutException(elec_bill_info)

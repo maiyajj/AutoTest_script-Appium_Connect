@@ -19,15 +19,15 @@ class GNAPPVersion1(WidgetOperation):
 
         element = self.wait_widget(self.page["upgrade_page"]["current_version"])
         current_version = self.ac.get_attribute(element, "name")[-10:]
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (current_version, len(current_version)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (current_version, len(current_version)))
 
         element = self.wait_widget(self.page["upgrade_page"]["new_version"])
         new_version = self.ac.get_attribute(element, "name")[-10:]
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (new_version, len(new_version)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (new_version, len(new_version)))
 
         element = self.wait_widget(self.page["upgrade_page"]["upgrade_button"])
         btn_state = self.ac.get_attribute(element, "enabled")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (btn_state, len(btn_state)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (btn_state, len(btn_state)))
 
         if current_version == new_version and btn_state != "false":
             raise TimeoutException("btn state state is not false, current is %s" % btn_state)

@@ -28,7 +28,7 @@ class GNAPPMessageClassify3(WidgetOperation):
 
         element = self.wait_widget(self.page["home_message_page"]["message_activity"])
         state = self.ac.get_attribute(element, "checked")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (state, len(state)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (state, len(state)))
         if state is True:
             self.wait_widget(self.page["home_message_page"]["no_message"])
         else:

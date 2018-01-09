@@ -19,7 +19,7 @@ class GNY201JLogin1(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["用户名"] input success')
+        self.debug.info(u'[APP_INPUT] ["用户名"] input success')
         time.sleep(0.5)
 
         # self.show_pwd(self.wait_widget(self.page["login_page"]["password"]),
@@ -31,7 +31,7 @@ class GNY201JLogin1(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         login_pwd.clear()
         self.ac.send_keys(login_pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["密码"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["login_page"]["login_button"],

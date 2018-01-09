@@ -29,7 +29,7 @@ class ReceiveSerial(object):
                     if data is '':
                         continue
                     data = data.strip()
-                    data_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')[:-3]
+                    data_time = datetime.datetime.now().strftime('%Y-%m-%d %X:%f')[:-3]
                     data = "[%s]%s" % (data_time, data)
                     self.serial_main_data_queue.put_nowait(data)
                     # self.serial_log.info(data)
@@ -59,13 +59,18 @@ class ReceiveSerial(object):
                             if self.serial_main_data_queue.qsize():
                                 tmp.append(self.serial_main_data_queue.get_nowait())
                                 read_num -= 1
-                        serial_data = " t".join(tmp + [""])
+                        serial_data = " cha_ru ".join(tmp + [""])
                         serial_result_queue.put_nowait(serial_data)
                         print("#####" + serial_data)
                         break
 
     # 接收控制命令，开始/结束分析设备log
     def start_stop_filtrate_data(self, command_queue):
+        """
+        事件驱动，接收command命令，返回log结果
+        :param command_queue:
+        :return:
+        """
         while True:
             if command_queue.qsize():
                 self.filtrate_data(command_queue)
@@ -73,10 +78,13 @@ class ReceiveSerial(object):
             else:
                 if not self.serial_sever.is_open:
                     break
+
                 while True:
-                    if not self.serial_main_data_queue.qsize():
+                    try:
+                        self.serial_main_data_queue.get_nowait()
+                    except Queue.Empty:
                         break
-                    self.serial_main_data_queue.get_nowait()
+
                 time.sleep(0.1)
 
     def init_log(self, log):

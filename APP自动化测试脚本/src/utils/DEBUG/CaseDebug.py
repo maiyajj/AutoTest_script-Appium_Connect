@@ -1,8 +1,9 @@
 # coding=utf-8
+import threading
+
 from src.common.AppInit import *
 from src.testcase.GN_F1331.WidgetOperation import *
 from src.testcase.GN_F1331.page.ReadAPPElement import *
-from src.utils.CollectLog import *
 from src.utils.Debug import *
 
 device_list = AppInit().app_init()
@@ -45,10 +46,8 @@ page = PageElement(app_os).get_page_element()
 device_info["page"] = page
 
 ac = AppiumCommand(app_os)
-logger = check_log(device_info)
 debug = check_debug(device_info)
 
-device_info["logger"] = logger
 device_info["debug"] = debug
 widget_check_unit = WidgetCheckUnit(driver, device_info)
 widget_click = widget_check_unit.widget_click
@@ -65,7 +64,6 @@ class WidgetTest(WidgetOperation):
         self.app = app
         self.page = page
         self.driver = driver
-        self.logger = logger
         self.debug = debug
         self.widget_click = widget_click
         self.wait_widget = wait_widget
@@ -78,77 +76,77 @@ class b(WidgetTest):
     def case(self):
         self.choose_home_device(conf["MAC"][self.app][self.device_mac])
 
+        self.delete_out_date_timer()
+
         self.set_power("main_button_off")
 
-        self.input_serial_command("power", "set_cycle_timer", "launch_cylce_timer")
+        self.input_serial_command("power", "set_normal_timer", "launch_normal_timer_once")
 
+        # 上层
         self.widget_click(self.page["control_device_page"]["up_timer"],
                           self.page["up_timer_page"]["title"])
 
-        self.widget_click(self.page["up_timer_page"]["cycle_timer"],
-                          self.page["up_timer_page"]["cycle_timer_button"])
+        self.delete_normal_timer("up")
 
         now = time.strftime("%H:%M")
 
-        delay_time_1, delay_time_2 = ["delay", "00:01"], ["delay", "00:01"]
-        tmp = self.create_cycle_timer("up_timer_page", now, delay_time_1, delay_time_2, u"永久循环")
-        start_time_1, set_time_1, start_time_2, set_time_2 = tmp[0]
+        normal_time_1 = 1
+        normal_time_2 = 3
+        start_time_1, set_time_1, cycle_1 = self.create_normal_timer("up_timer_page", now, normal_time_1, "power_on")
+        # start_time_2, set_time_2, cycle_2 = self.create_normal_timer("up_timer_page", now, normal_time_2, "power_off")
+
+        self.widget_click(self.page["up_timer_page"]["to_return"],
+                          self.page["control_device_page"]["title"])
+
+        # 中层
+        self.widget_click(self.page["control_device_page"]["mid_timer"],
+                          self.page["mid_timer_page"]["title"])
+
+        self.delete_normal_timer("mid")
+
+        now = time.strftime("%H:%M")
+
+        normal_time_3 = 1
+        normal_time_4 = 3
+        start_time_3, set_time_3, cycle_3 = self.create_normal_timer("mid_timer_page", now, normal_time_3, "power_on")
+        # start_time_4, set_time_4, cycle_4 = self.create_normal_timer("mid_timer_page", now, normal_time_4, "power_off")
+
+        self.widget_click(self.page["mid_timer_page"]["to_return"],
+                          self.page["control_device_page"]["title"])
+
+        # 下层
+        self.widget_click(self.page["control_device_page"]["down_timer"],
+                          self.page["down_timer_page"]["title"])
+
+        self.delete_normal_timer("down")
+
+        now = time.strftime("%H:%M")
+
+        normal_time_5 = 1
+        normal_time_6 = 3
+        start_time_5, set_time_5, cycle_5 = self.create_normal_timer("down_timer_page", now, normal_time_5, "power_on")
+        # start_time_6, set_time_6, cycle_6 = self.create_normal_timer("down_timer_page", now, normal_time_6, "power_off")
 
         while True:
-            if time.time() > set_time_2 + 10:
+            if time.time() > set_time_5 + 10:
                 break
             print(time.time())
             time.sleep(1)
 
-        #
-        btn_state_list = self.check_serial_button_state()
-
-        btn_state = btn_state_list[0]
-        if start_time_1 - 15 <= btn_state[0] <= start_time_1 + 15 and [1, 0, 0] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
-        else:
-            raise TimeoutException("device state error, current: %s" % btn_state)
-
-        btn_state = btn_state_list[1]
-        if set_time_1 - 15 <= btn_state[0] <= set_time_1 + 15 and [0, 0, 0] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
-        else:
-            raise TimeoutException("device state error, current: %s" % btn_state)
-
-        btn_state = btn_state_list[2]
-        if set_time_2 - 15 <= btn_state[0] <= set_time_2 + 15 and [1, 0, 0] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
-        else:
-            raise TimeoutException("device state error, current: %s" % btn_state)
-
-        #
-        set_cycle_timer_list = self.check_serial_set_cycle_timer()
-
-        set_cycle_timer = set_cycle_timer_list[0]
-        set_cycle_timer_name = set_cycle_timer[-2]
-        if start_time_1 - 15 <= set_cycle_timer[0] <= start_time_1 + 15:
-            self.logger.info(u"[APP_INFO]device state: %s" % set_cycle_timer)
-        else:
-            raise TimeoutException("device state error, current: %s" % set_cycle_timer)
-
-        #
-        launch_cycle_timer_list = self.check_serial_launch_cycle_timer()
-
-        launch_cycle_timer = launch_cycle_timer_list[0]
-        launch_cycle_timer_name = launch_cycle_timer[-2]
-        if (set_time_1 - 15 <= launch_cycle_timer[0] <= set_time_1 + 15
-                and launch_cycle_timer_name == set_cycle_timer_name):
-            self.logger.info(u"[APP_INFO]device state: %s" % launch_cycle_timer)
-        else:
-            raise TimeoutException("device state error, current: %s" % launch_cycle_timer)
-
-        launch_cycle_timer = launch_cycle_timer_list[1]
-        launch_cycle_timer_name = launch_cycle_timer[-2]
-        if (set_time_2 - 15 <= launch_cycle_timer[0] <= set_time_2 + 15
-                and launch_cycle_timer_name == set_cycle_timer_name):
-            self.logger.info(u"[APP_INFO]device state: %s" % launch_cycle_timer)
-        else:
-            raise TimeoutException("device state error, current: %s" % launch_cycle_timer)
+        #####
+        btn_state_list = self.check_serial_button_state()  # 开关
+        set_normal_timer_list = self.check_serial_set_normal_timer()  # 定时设置
+        launch_normal_timer_once_list = self.check_serial_launch_normal_timer_once()  # 定时执行开
+        timer_list = self.get_timer_id_from_set(set_normal_timer_list)
+        result = self.get_layer_timer_from_launch(timer_list,
+                                                  launch_normal_timer_once_list)
+        self.debug.info(u"[APP_INFO]device state: \n"
+                        u"btn_state_list: %s;\n"
+                        u"set_timer_list: %s;\n"
+                        u"launch_timer_once_list: %s;\n"
+                        u"timer_list： %s;\n"
+                        u"result: %s;"
+                        % (btn_state_list, set_normal_timer_list, launch_normal_timer_once_list, timer_list, result))
 
 
 b().case()

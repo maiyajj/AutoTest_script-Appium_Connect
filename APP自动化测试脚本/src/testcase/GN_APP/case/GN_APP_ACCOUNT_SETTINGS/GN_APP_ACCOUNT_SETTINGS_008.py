@@ -26,7 +26,7 @@ class GNAPPAccountSettings8(WidgetOperation):
         # 全选
         nickname.clear()
         self.ac.send_keys(nickname, u"被修改的昵称", self.driver)
-        self.logger.info(u'[APP_INPUT] ["昵称"] input success')
+        self.debug.info(u'[APP_INPUT] ["昵称"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["change_nickname_page"]["commit"],

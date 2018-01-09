@@ -25,7 +25,7 @@ class GNAPPMessageClassify1(WidgetOperation):
 
         element = self.wait_widget(self.page["message_classify_page"]["all_device"])
         result = self.ac.get_attribute(element, "checked")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
             raise TimeoutException("all device state is not true, current is %s" % result)
 
@@ -37,7 +37,7 @@ class GNAPPMessageClassify1(WidgetOperation):
 
         element = self.wait_widget(self.page["message_classify_page"]["experience_data"])
         result = self.ac.get_attribute(element, "checked")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
             raise TimeoutException("experience data state is not true, current is %s" % result)
 
@@ -49,7 +49,7 @@ class GNAPPMessageClassify1(WidgetOperation):
 
         element = self.wait_widget(self.page["message_classify_page"]["A2"])
         result = self.ac.get_attribute(element, "checked")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
             raise TimeoutException("A2 state is not true, current is %s" % result)
 
@@ -61,7 +61,7 @@ class GNAPPMessageClassify1(WidgetOperation):
 
         element = self.wait_widget(self.page["message_classify_page"]["A3"])
         result = self.ac.get_attribute(element, "checked")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
             raise TimeoutException("A3 state is not true, current is %s" % result)
 
@@ -73,7 +73,7 @@ class GNAPPMessageClassify1(WidgetOperation):
 
         element = self.wait_widget(self.page["message_classify_page"]["A4"])
         result = self.ac.get_attribute(element, "checked")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
             raise TimeoutException("A4 state is not true, current is %s" % result)
 
@@ -85,6 +85,6 @@ class GNAPPMessageClassify1(WidgetOperation):
 
         element = self.wait_widget(self.page["message_classify_page"]["A5"])
         result = self.ac.get_attribute(element, "checked")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (result, len(result)))
         if result != "true":
             raise TimeoutException("A5 state is not true, current is %s" % result)

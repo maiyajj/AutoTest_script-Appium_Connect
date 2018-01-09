@@ -21,7 +21,7 @@ class GNAPPForgetPassword2(WidgetOperation):
         data = "13811111111"
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["未注册用户名"] input success')
+        self.debug.info(u'[APP_INPUT] ["未注册用户名"] input success')
         time.sleep(0.5)
 
         check_code = self.widget_click(self.page["find_password_page"]["check_code"],
@@ -30,12 +30,12 @@ class GNAPPForgetPassword2(WidgetOperation):
         data = "123456"
         check_code.clear()
         self.ac.send_keys(check_code, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["验证码"] input success')
+        self.debug.info(u'[APP_INPUT] ["验证码"] input success')
         time.sleep(0.5)
 
         widget_px = self.ac.get_location(self.wait_widget(self.page["find_password_page"]["to_next"]))
         self.driver.tap([widget_px["centre"]])
-        self.logger.info(u'[APP_CLICK] operate_widget success')
+        self.debug.info(u'[APP_CLICK] operate_widget success')
 
         while True:
             try:
@@ -44,6 +44,6 @@ class GNAPPForgetPassword2(WidgetOperation):
                 break
 
             # 截屏获取设备toast消息
-            ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
+            ScreenShot(self.device_info, self.zentao_id, self.basename, self.debug)
 
         self.case_over("screen")

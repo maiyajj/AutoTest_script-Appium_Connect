@@ -26,7 +26,7 @@ class GNAPPAccountSettings4(WidgetOperation):
         self.show_pwd(self.wait_widget(self.page["login_page"]["check_box"]))
         element = self.page["login_page"]["password"]
         pwd = self.ac.get_attribute(self.wait_widget(element), "name")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (pwd, len(pwd)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (pwd, len(pwd)))
         pwd = pwd.replace(element[3]["default_text"], "")
         if len(pwd) != 0:
             raise TimeoutException("pwd len is wrong, current len is %s" % len(pwd))

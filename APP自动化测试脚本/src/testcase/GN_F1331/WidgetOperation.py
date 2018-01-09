@@ -220,13 +220,15 @@ class WidgetOperation(LaunchApp):
             add_h, add_m = delay_time.split(":")
             time_delay = int(add_h) * 3600 + int(add_m) * 60
             time_set = time_now + time_delay + delay_s
-            set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
-        else:
-            delay_time = "None"
-            time_delay = "None"
-            set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
-        self.logger.info("[APP_TIMER]start_time: %s, set_time: %s, delay_time: %s" % (start_time, set_time, delay_time))
-        self.logger.info("[APP_TIMER]time_start: %s, time_set: %s, time_delay: %s" % (time_start, time_set, time_delay))
+        #     set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
+        # else:
+        #     delay_time = "None"
+        #     time_delay = "None"
+        #     set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
+        # self.debug.info(
+        #     "[APP_TIMER]Roll: start_time: %s, set_time: %s, delay_time: %s" % (start_time, set_time, delay_time))
+        # self.debug.info(
+        #     "[APP_TIMER]Roll: time_start: %s, time_set: %s, time_delay: %s" % (time_start, time_set, time_delay))
         time.sleep(1)
 
         return int(time_start), int(time_set)
@@ -255,13 +257,14 @@ class WidgetOperation(LaunchApp):
             diff_a -= 1
             time.sleep(swipe_time)
 
-        self.logger.info("roll_value: %s, set_value: %s" % (roll_value, set_value))
+        self.debug.info("roll_value: %s, set_value: %s" % (roll_value, set_value))
 
         time.sleep(1)
 
     # 创建普通定时
-    def create_normal_timer(self, now_time, delay_time, power, delay_s=120, loop=u"执行一次"):
+    def create_normal_timer(self, page, now_time, delay_time, power, delay_s=120, loop=u"执行一次"):
         """
+        :param page: 设置定时层
         :param now_time: now time
         :param delay_time: delay time
         :param power: power state power on/off
@@ -269,23 +272,37 @@ class WidgetOperation(LaunchApp):
         :param loop: everyday/monday etc
         :return: start_time, set_time
         """
-        self.widget_click(self.page["normal_timer_page"]["add_timer"],
+        try:
+            self.wait_widget(self.page[page]["delay_timer_button"])
+            self.widget_click(self.page[page]["delay_timer"])
+        except TimeoutException:
+            pass
+
+        try:
+            self.wait_widget(self.page[page]["cycle_timer_button"])
+            self.widget_click(self.page[page]["cycle_timer"])
+        except TimeoutException:
+            pass
+
+        while True:  # 避免设置时时间跳变
+            if 1 <= int(time.strftime("%S")) <= 50:
+                break
+            time.sleep(1)
+
+        self.widget_click(self.page[page]["add_normal_timer"],
                           self.page["add_normal_timer_page"]["title"])
+
+        elem_t = time.strftime("%H:%M")
 
         start_time, start_set_time = self.set_timer_roll(self.page["add_normal_timer_page"]["roll_h"],
                                                          self.page["add_normal_timer_page"]["roll_m"],
-                                                         self.page["add_normal_timer_page"]["set_timer"],
-                                                         now_time, delay_time, delay_s=delay_s)
+                                                         elem_t, now_time, delay_time, delay_s=delay_s)
         now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X"))
 
         if start_set_time <= now:
             start_set_time = start_set_time + 3600 * 24
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
-            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
-            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
-        self.widget_click(self.page["add_normal_timer_page"][power],
-                          self.page["add_normal_timer_page"]["title"])
+        self.widget_click(self.page["add_normal_timer_page"][power])
 
         cycle = self.set_timer_loop("add_normal_timer_page", loop)
 
@@ -293,14 +310,21 @@ class WidgetOperation(LaunchApp):
             cycle = [time.strftime("%A", time.localtime(start_set_time)).lower()]
 
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
-                          self.page["normal_timer_page"]["title"])
-        self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
+                          self.page[page]["title"])
+
+        start_time = int(time.time())
+        self.debug.info("[APP_TIMER]Start_time: %s[%s], Start_set_time: %s[%s]" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)), start_time,
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time)), start_set_time))
+
+        self.debug.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
 
         return start_time, start_set_time, cycle
 
     # 创建循环定时
     def create_cycle_timer(self, page, now_time, set_start_time, set_end_time, loop, delay_s=120, cycle=False, loops=1):
         """
+        :param page: 设置定时层
         :param now_time: 当前时间
         :param set_start_time: 启动时间时长
         :param set_end_time: 关闭时间时长
@@ -310,6 +334,18 @@ class WidgetOperation(LaunchApp):
         :param loops: 循环为永久循环时需要产出的时间对个数
         :return:
         """
+        try:
+            self.wait_widget(self.page[page]["delay_timer_button"])
+            self.widget_click(self.page[page]["delay_timer"])
+        except TimeoutException:
+            pass
+
+        try:
+            self.wait_widget(self.page[page]["cycle_timer_button"])
+        except TimeoutException:
+            self.widget_click(self.page[page]["cycle_timer"],
+                              self.page[page]["cycle_timer_button"])
+
         self.widget_click(self.page[page]["cycle_timer_state"],
                           self.page["cycle_timer_page"]["title"])
 
@@ -320,9 +356,9 @@ class WidgetOperation(LaunchApp):
                                                          self.page["cycle_timer_page"]["roll_m"],
                                                          self.page["cycle_timer_page"]["open_time"],
                                                          now_time, set_start_time, cycle, delay_s)
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
-            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
-            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
+        self.debug.info("[APP_TIMER]Start_time: %s[%s], Start_set_time: %s[%s]" % (
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)), start_time,
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time)), start_set_time))
 
         # 判断设置后的滚轮是否与设定一致
         attr = self.ac.get_attribute(self.wait_widget(self.page["cycle_timer_page"]["open_time"]), "name")
@@ -332,9 +368,7 @@ class WidgetOperation(LaunchApp):
         else:
             attr = "00:%02d" % int(start_m[0])
         self.debug.info("attr: %s; set start time: %s" % (attr, set_start_time[1]))
-        if attr == set_start_time[1]:
-            pass
-        else:
+        if attr != set_start_time[1]:
             raise TimeoutException("timer set error")
 
         self.widget_click(self.page["cycle_timer_page"]["open_time"])
@@ -352,11 +386,12 @@ class WidgetOperation(LaunchApp):
         end_time, end_set_time = self.set_timer_roll(self.page["cycle_timer_page"]["roll_h"],
                                                      self.page["cycle_timer_page"]["roll_m"],
                                                      self.page["cycle_timer_page"]["close_time"],
-                                                     time.strftime("%H:%M", time.localtime(start_set_time)),
+                                                     time.strftime("%X", time.localtime(start_set_time)),
                                                      set_end_time, True)
-        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
+        self.debug.info("[APP_TIMER][%s, %s]End_time: %s, End_set_time: %s" % (
+            end_time, end_set_time,
             time.strftime("%Y-%m-%d %X", time.localtime(end_time)),
-            time.strftime("%Y-%m-%d %X", time.localtime(end_set_time))))
+            time.strftime("%Y-%m-%d  %X", time.localtime(end_set_time))))
 
         # 判断设置后的滚轮是否与设定一致
         attr = self.ac.get_attribute(self.wait_widget(self.page["cycle_timer_page"]["open_time"]), "name")
@@ -366,9 +401,7 @@ class WidgetOperation(LaunchApp):
         else:
             attr = "00:%02d" % int(start_m[0])
         self.debug.info("attr: %s; set start time: %s" % (attr, set_start_time[1]))
-        if attr == set_start_time[1]:
-            pass
-        else:
+        if attr != set_start_time[1]:
             raise TimeoutException("timer set error")
 
         self.widget_click(self.page["cycle_timer_page"]["close_time"])
@@ -389,7 +422,7 @@ class WidgetOperation(LaunchApp):
             set_value = int(re.findall(u"(\d)次", loop)[0])
             self.set_count_roll(self.page["cycle_timer_page"]["roll_c"], roll_value, set_value)
 
-        self.logger.info("[APP_TIMER]Set loop: %s" % loop)
+        self.debug.info("[APP_TIMER]Set loop: %s" % loop)
         if loop == u"永久循环":
             loop_count = loops  # 生成指定数量的时间对个数
         else:
@@ -415,6 +448,47 @@ class WidgetOperation(LaunchApp):
 
         return loop_list
 
+    # 创建延迟定时
+    def create_delay_timer(self, page, now_time, set_timer, delay_s=120, cycle=False):
+        """
+        return: None
+        """
+        try:
+            self.wait_widget(self.page[page]["delay_timer_button"])
+        except TimeoutException:
+            self.widget_click(self.page[page]["delay_timer"],
+                              self.page[page]["delay_timer_button"])
+
+        self.widget_click(self.page[page]["delay_timer_state"],
+                          self.page["delay_timer_page"]["title"])
+
+        self.widget_click(self.page["delay_timer_page"]["delay_time"],
+                          self.page["delay_timer_page"]["roll_h"])
+
+        start_time, start_set_time = self.set_timer_roll(self.page["delay_timer_page"]["roll_h"],
+                                                         self.page["delay_timer_page"]["roll_m"],
+                                                         self.page["delay_timer_page"]["delay_time"],
+                                                         now_time, set_timer, cycle, delay_s)
+        self.debug.info("[APP_TIMER][%s, %s]Start_time: %s, Start_set_time: %s" % (
+            start_time, start_set_time,
+            time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
+            time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
+
+        # 判断设置后的滚轮是否与设定一致
+        attr = self.ac.get_attribute(self.wait_widget(self.page["delay_timer_page"]["delay_time"]), "name")
+        start_h, start_m = re.findall(u"(\d+)小时", attr), re.findall(u"(\d+)分钟", attr)
+        if start_h:
+            attr = "%02d:%02d" % (int(start_h[0]), int(start_m[0]))
+        else:
+            attr = "00:%02d" % int(start_m[0])
+        self.debug.info("attr: %s; set start time: %s" % (attr, set_timer[1]))
+        if attr != set_timer[1]:
+            raise TimeoutException("timer set error")
+
+        self.launch_mode_timer("delay_timer_page", page, False, start_time)
+
+        return start_time, start_set_time
+
     # 设置普通/模式定时循环模式
     def set_timer_loop(self, page, loop):
         loop_mode = {u"执行一次": "once",
@@ -426,26 +500,39 @@ class WidgetOperation(LaunchApp):
                      u"周四": "thursday",
                      u"周五": "friday",
                      u"周六": "saturday",
-                     u"周日": "weekday",
-                     u"永久循环": "forever"}
-        cycle = ["None"]
+                     u"周日": "weekday"}
 
-        attribute = self.ac.get_attribute(self.wait_widget(self.page[page]["repeat"]), "name")
+        attribute = self.ac.get_attribute(self.wait_widget(self.page[page]["repeat"]), "name").replace(u"\ue909", "")
+
+        # 自定义模式显示为：周一、周三、周五...etc
+        # loop传参为[u"周一", u"周三", u"周五"]
         if isinstance(loop, list):
-            tmp = " ".join(loop)
+            tmp = u"、".join(loop)  # list → str
         else:
             tmp = loop
-        if tmp not in attribute:
+        self.debug.info("[APP_INFO]Repeat set attr: %s, %s" % (tmp, [tmp]))
+
+        # 若定时已存在循环模式与设定不同则需要重新设置，若相同则不会设置
+        if tmp != attribute:
+            if u"每天" in attribute:
+                attribute = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
+            elif u"工作日" in attribute:
+                attribute = [u"周一", u"周二", u"周三", u"周四", u"周五"]
+            elif u"执行一次" in attribute:
+                attribute = []
+            elif u"周" in attribute:
+                attribute = attribute.split(u"、")
+            else:
+                pass
+
             self.widget_click(self.page[page]["repeat"],
                               self.page["timer_repeat_page"]["title"])
             if loop == u"执行一次":
-                self.widget_click(self.page["timer_repeat_page"]["repeat_button"],
-                                  self.page["timer_repeat_page"]["once"])
-                cycle = ["None"]
-            elif loop == u"永久循环":
-                self.widget_click(self.page["timer_repeat_page"]["fish_repeat_button"],
-                                  self.page["timer_repeat_page"]["forever"])
-                cycle = [u"0次"]
+                self.widget_click(self.page["timer_repeat_page"]["repeat_button"])
+                try:
+                    self.wait_widget(self.page["timer_repeat_page"]["everyday"])
+                except TimeoutException:
+                    pass
             else:
                 if u"每天" in loop:
                     loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
@@ -461,16 +548,15 @@ class WidgetOperation(LaunchApp):
                     self.widget_click(self.page["timer_repeat_page"]["repeat_button"],
                                       self.page["timer_repeat_page"]["everyday"])
 
-                try:
-                    self.wait_widget(self.page["timer_repeat_page"]["monday"])
-                except TimeoutException:
-                    self.widget_click(self.page["timer_repeat_page"]["define"],
-                                      self.page["timer_repeat_page"]["monday"])
-
-                for i in loop_attr:
-                    self.widget_click(self.page["timer_repeat_page"][loop_mode[i]],
-                                      self.page["timer_repeat_page"]["title"])
-                    cycle = [loop_mode[i] for i in loop]
+                # 选择星期时，已存在的星期数是已经被勾选的，要取消需要再次点击；
+                # 例：已有周期为周一，周五，需要设置的周期为周三，周五
+                # 则实际操作为点击周一和周三，而周五不需要点击，因为周五已被选中，再点击周五则周五就会被取消选中
+                # 代码通过下述公式计算，输入当前循环周期和需要设定的周期，输出为需要待操作的周期
+                # 输入：当前[u"周一", u"周五"]，设定[u"周三", u"周五"]；
+                # 输出：[u"周一", u"周三"]；
+                result = list((set(attribute) | set(loop_attr)) - (set(attribute) & set(loop_attr)))
+                for i in result:  # 根据计算元素点击
+                    self.widget_click(self.page["timer_repeat_page"][loop_mode[i]])
 
             self.widget_click(self.page["timer_repeat_page"]["to_return"],
                               self.page[page]["title"])
@@ -480,8 +566,6 @@ class WidgetOperation(LaunchApp):
 
         if loop == u"执行一次":
             cycle = ["None"]
-        elif loop == u"永久循环":
-            cycle = [u"0次"]
         else:
             if u"每天" in loop:
                 loop_attr = [u"周一", u"周二", u"周三", u"周四", u"周五", u"周六", u"周日"]
@@ -498,7 +582,7 @@ class WidgetOperation(LaunchApp):
     def check_timer(self, start_time, set_time, power_state, cycle=None):
         # 开始时间, 设置时间
         start_times = time.strftime("%Y-%m-%d %X", time.localtime(start_time))
-        self.logger.info("[APP_CHECK_TIMER]Now time: %s. Start time: %s" % (time.strftime("%Y-%m-%d %X"), start_times))
+        self.debug.info("[APP_CHECK_TIMER]Now time: %s. Start time: %s" % (time.strftime("%Y-%m-%d %X"), start_times))
         now_week = time.strftime("%A").lower()
         if cycle is None:
             set_week = now_week
@@ -507,7 +591,7 @@ class WidgetOperation(LaunchApp):
                 set_week = cycle[0]
             else:
                 set_week = ",".join(cycle)
-        self.logger.info("[APP_CHECK_TIMER]Now week: %s, Set week: %s" % (now_week, set_week))
+        self.debug.info("[APP_CHECK_TIMER]Now week: %s, Set week: %s" % (now_week, set_week))
         while True:
             now_week = time.strftime("%A").lower()
             if now_week in set_week:
@@ -517,7 +601,7 @@ class WidgetOperation(LaunchApp):
                 break
             else:
                 if time.strftime("%M") == "00":
-                    self.logger.info("now week: %s" % now_week)
+                    self.debug.info("now week: %s" % now_week)
                 else:
                     print("********************")
                     print("now week: %s" % now_week)
@@ -525,22 +609,22 @@ class WidgetOperation(LaunchApp):
                     time.sleep(1)
 
         delay_times = set_times - start_time
-        self.logger.info("[APP_CHECK_TIMER]Delay Time: %s" % delay_times)
+        self.debug.info("[APP_CHECK_TIMER]Delay Time: %s" % delay_times)
         if delay_times < 0:
             raise TimeoutException("Set time is before now time, delay time is: %s" % delay_times)
 
         element = self.wait_widget(self.page["control_device_page"]["power_state"])
         end_time = set_times + 30
-        self.logger.info("[APP_CHECK_TIMER]End Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(end_time)))
-        self.logger.info("[APP_CHECK_TIMER]Set Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(set_times)))
+        self.debug.info("[APP_CHECK_TIMER]End Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(end_time)))
+        self.debug.info("[APP_CHECK_TIMER]Set Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(set_times)))
         while True:
             current_time = int(time.time())
             if current_time >= set_times:
                 while True:
                     state = self.ac.get_attribute(element, "name")
                     if state == power_state:
-                        self.logger.info("[APP_CHECK_TIMER]Current Time: %s" % time.strftime("%Y-%m-%d %X"))
-                        self.logger.info("[APP_CHECK_TIMER]Device Info: %s" % power_state)
+                        self.debug.info("[APP_CHECK_TIMER]Current Time: %s" % time.strftime("%Y-%m-%d %X"))
+                        self.debug.info("[APP_CHECK_TIMER]Device Info: %s" % power_state)
                         break
                     else:
                         time.sleep(1)
@@ -553,47 +637,84 @@ class WidgetOperation(LaunchApp):
                 print("[APP_CHECK_TIMER]Out Time %s" % time.strftime("%Y-%m-%d %X"))
 
     # 删除普通定时
-    def delete_normal_timer(self):
+    def delete_normal_timer(self, layer):
         while True:
             try:
-                self.wait_widget(self.page["normal_timer_page"]["no_timer"])
-                self.logger.info("It has no timer~")
-                break
-            except TimeoutException:
-                self.logger.info("It has normal timer.")
-                self.widget_click(self.page["normal_timer_page"]["timer_edit"],
-                                  self.page["timer_edit_popup"]["title"])
+                self.wait_widget(self.page["%s_timer_page" % layer]["has_normal_timer"])
+                self.debug.info("[APP_INFO]%s has normal timer" % layer)
 
-                self.widget_click(self.page["timer_edit_popup"]["delete"],
-                                  self.page["normal_timer_page"]["title"])
+                index = 0
+                elements = self.wait_widget(self.page["%s_timer_page" % layer]["normal_timer_modify"])
+                for i, element in elements.items():
+                    if element is not None and self.ac.get_attribute(element, "name") == u"定时开启":
+                        index = i
+                    elif element is not None and self.ac.get_attribute(element, "name") == u"定时关闭":
+                        index = i
+
+                new_value = copy.copy(self.page["%s_timer_page" % layer]["normal_timer_modify"])
+                new_value[0] = new_value[0][index]
+                self.widget_click(new_value)
+                self.widget_click(self.page["timer_edit_popup"]["delete"])
+            except TimeoutException:
+                self.debug.info("[APP_INFO]%s has not normal timer" % layer)
+                break
 
     # 关闭模式定时
-    def close_mode_timer(self):
-        element = self.wait_widget(self.page["control_device_page"]["mode_timer"])
-        while True:
-            attribute = self.ac.get_attribute(element, "name")
-            if u"未启用" not in attribute:
-                self.logger.info("[APP_INFO]Mode timer is run")
-                self.widget_click(self.page["control_device_page"]["mode_timer"],
-                                  self.page["mode_timer_page"]["title"])
+    def delete_out_date_timer(self):
+        page_elem = ["up", "mid", "down"]
+        # 上层
+        for layer in page_elem:
+            while True:
+                element = self.wait_widget(self.page["control_device_page"]["%s_timer_state" % layer])
+                attribute = self.ac.get_attribute(element, "name")
+                if u"今日无定时" not in attribute:
+                    self.debug.info("[APP_INFO]%s has timer" % layer)
+                    self.widget_click(self.page["control_device_page"]["%s_timer" % layer],
+                                      self.page["%s_timer_page" % layer]["title"])
 
-                if u"热水器模式" in attribute:
-                    self.widget_click(self.page["mode_timer_page"]["water_button"],
-                                      self.page["mode_timer_page"]["title"])
-                elif u"鱼缸模式" in attribute:
-                    self.widget_click(self.page["mode_timer_page"]["fish_button"],
-                                      self.page["mode_timer_page"]["title"])
+                    # 删除已经执行的普通定时（仍会显示今日无定时）
+                    self.delete_normal_timer(layer)
+
+                    if u"循环定时" in attribute:
+                        self.debug.info("[APP_INFO]%s has cycle timer" % layer)
+                        self.widget_click(self.page["%s_timer_page" % layer]["cycle_timer"],
+                                          self.page["%s_timer_page" % layer]["cycle_timer_button"])
+
+                        try:
+                            self.widget_click(self.page["%s_timer_page" % layer]["cycle_timer_button"])
+                        except TimeoutException:
+                            self.widget_click(self.page["%s_timer_page" % layer]["cycle_timer"],
+                                              self.page["%s_timer_page" % layer]["cycle_timer_button"])
+
+                            self.widget_click(self.page["%s_timer_page" % layer]["cycle_timer_button"])
+
+                        self.widget_click(self.page["%s_timer_page" % layer]["cycle_timer"])
+
+                        self.widget_click(self.page["%s_timer_page" % layer]["to_return"],
+                                          self.page["control_device_page"]["title"])
+                    elif u"延时定时" in attribute:
+                        self.debug.info("[APP_INFO]%s has delay timer" % layer)
+                        self.widget_click(self.page["%s_timer_page" % layer]["delay_timer"],
+                                          self.page["%s_timer_page" % layer]["delay_timer_button"])
+
+                        try:
+                            self.widget_click(self.page["%s_timer_page" % layer]["delay_timer_button"])
+                        except TimeoutException:
+                            self.widget_click(self.page["%s_timer_page" % layer]["delay_timer"],
+                                              self.page["%s_timer_page" % layer]["delay_timer_button"])
+
+                            self.widget_click(self.page["%s_timer_page" % layer]["delay_timer_button"])
+
+                        self.widget_click(self.page["%s_timer_page" % layer]["delay_timer"])
+
+                        self.widget_click(self.page["%s_timer_page" % layer]["to_return"],
+                                          self.page["control_device_page"]["title"])
+                    else:
+                        self.widget_click(self.page["%s_timer_page" % layer]["to_return"],
+                                          self.page["control_device_page"]["title"])
                 else:
-                    self.widget_click(self.page["mode_timer_page"]["piocc_button"],
-                                      self.page["mode_timer_page"]["title"])
-
-                time.sleep(5)
-
-                self.widget_click(self.page["mode_timer_page"]["to_return"],
-                                  self.page["control_device_page"]["title"])
-            else:
-                self.logger.info("[APP_INFO]Mode timer don't run")
-                break
+                    self.debug.info("[APP_INFO]%s has no timer" % layer)
+                    break
 
     # 启动模式定时
     def launch_mode_timer(self, page, to_page, start_now, start_time=None):
@@ -606,7 +727,7 @@ class WidgetOperation(LaunchApp):
             except KeyError:
                 self.widget_click(self.page[page]["saved"],
                                   self.page[to_page]["title"])
-            self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
+            self.debug.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
         else:
             if start_time is None:
                 raise KeyError("if start_now is False, start_time can`t be None type")
@@ -619,7 +740,7 @@ class WidgetOperation(LaunchApp):
                     except KeyError:
                         self.widget_click(self.page[page]["saved"],
                                           self.page[to_page]["title"])
-                    self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
+                    self.debug.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
                     break
                 else:
                     if time.time() > end_time:
@@ -657,7 +778,7 @@ class WidgetOperation(LaunchApp):
                     elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                     # if index >= now_h + 2:
                     elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-            self.logger.info("[APP_INFO]23:01_elec_bill: %s" % elec_bill)
+            self.debug.info("[APP_INFO]23:01_elec_bill: %s" % elec_bill)
 
             self.widget_click(self.page["elec_bill_page"]["to_return"],
                               self.page["control_device_page"]["title"])
@@ -672,7 +793,7 @@ class WidgetOperation(LaunchApp):
                     elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                     # if index >= now_h + 2:
                     elec[index] = self.ac.get_attribute(elec_value, "name")
-            self.logger.info("[APP_INFO]23:01_elec: %s" % elec)
+            self.debug.info("[APP_INFO]23:01_elec: %s" % elec)
 
             self.widget_click(self.page["elec_page"]["to_return"],
                               self.page["control_device_page"]["title"])
@@ -693,7 +814,7 @@ class WidgetOperation(LaunchApp):
                 elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                 # if index <= now_h + 1:
                 elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-        self.logger.info("[APP_INFO]%02d:01_elec_bill: %s" % (check_time, elec_bill))
+        self.debug.info("[APP_INFO]%02d:01_elec_bill: %s" % (check_time, elec_bill))
 
         self.widget_click(self.page["elec_bill_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -707,7 +828,7 @@ class WidgetOperation(LaunchApp):
                 elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                 # if index <= now_h + 1:
                 elec[index] = self.ac.get_attribute(elec_value, "name")
-        self.logger.info("[APP_INFO]%02d:01_elec: %s" % (check_time, elec))
+        self.debug.info("[APP_INFO]%02d:01_elec: %s" % (check_time, elec))
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -763,9 +884,15 @@ class WidgetOperation(LaunchApp):
     # 启动按钮log检测线程启动函数
     def input_serial_command(self, *args):
         self.command_dict = {"power": [{"_f133u_uart_recv_event": 1}],
-                             "set_cycle_timer": [{"JL_CROND_CYCLE SET": 1},
-                                                 {"bull_timer_pluse_exe Pluse Timer": 1}],
-                             "launch_cylce_timer": [{"]Pluse Timer": 1}]}
+                             "set_cycle_timer": [{"bull_timer_pluse_start": 1}],
+                             "launch_cycle_timer_on": [{"bull_timer_pluse_exe Pluse Timer": 0}],
+                             "launch_cycle_timer_off": [{"]Pluse Timer": 0}],
+                             "set_delay_timer": [{"bull_joy_countdown_timer_set countdown_timer": 0}],
+                             "launch_delay_timer": [{"Count_Down_Time": 1}],
+                             "set_normal_timer": [{"bull_joy_base_timer_set base_timer": 3}],
+                             "launch_normal_timer_once": [{"Once Timer exe over": 0}],
+                             "launch_normal_timer": [{"Repeat Timer exe over": 0}],
+                             "device_info": [{"control data send buf": 1}]}
         tmp = {}
         command = {}
         command_list = []
@@ -785,10 +912,19 @@ class WidgetOperation(LaunchApp):
         # command = [dict(command, **command_list[i]) for i in args][0]
 
         while True:
-            if not self.serial_command_queue.qsize():
+            try:
+                self.serial_command_queue.get_nowait()
+            except Queue.Empty:
                 break
-            self.serial_command_queue.get_nowait()
+
         self.serial_command_queue.put_nowait((False, "", ""))  # 待机log分析
+        for k, v in self.queue_dict.items():
+            while True:
+                try:
+                    v.get_nowait()
+                except Queue.Empty:
+                    break
+
         self.serial_command_queue.put_nowait((True, command, self.serial_result_queue))
 
         self.check_flag = 1
@@ -802,9 +938,11 @@ class WidgetOperation(LaunchApp):
 
         if self.check_flag:
             while True:
-                if not self.serial_result_queue.qsize():
+                try:
+                    tmp = self.serial_result_queue.get_nowait()
+                except Queue.Empty:
                     break
-                tmp = self.serial_result_queue.get_nowait()
+
                 for k, v in self.queue_dict.items():
                     if k in tmp:
                         v.put_nowait(tmp)
@@ -813,6 +951,11 @@ class WidgetOperation(LaunchApp):
 
     # 检查启动按钮状态
     def check_serial_button_state(self):
+        """
+        使用消息队列提取所有继电器状态并进行筛选，返回按照时间顺序排列的开关状态列表
+        :return: [time, 3层开关状态"000"]
+        list消息etc：[([2018-01-03 09:47:25:957]_f133u_uart_recv_event: cha_ru [2018-01-03 09:47:25:957]FF 02 00 07 09 FE cha_ru )]
+        """
         key = "power"
         self.check_serial_result()
         result_queue = Queue.Queue()
@@ -824,62 +967,34 @@ class WidgetOperation(LaunchApp):
         print(command, tmp_queue.qsize())
 
         while True:
-            if not tmp_queue.qsize():
+            try:
+                serial_result = tmp_queue.get_nowait()
+            except Queue.Empty:
                 break
-            serial_result = tmp_queue.get_nowait()
-            print("check_serial_button_state", serial_result)
+
+            print(sys._getframe().f_code.co_name, serial_result)
             btn_state = bin(int(re.findall("FF .+ (.+?) .+? FE", serial_result)[0], 16))[2:].zfill(4)
-            now_time = time.mktime(time.strptime(re.findall("\[(.+?:\d+:\d+):.+]", serial_result)[0], "%Y-%m-%d %X"))
-            flag, up_btn, middle_btn, down_btn = btn_state
-            flag, up_btn, middle_btn, down_btn = int(flag), int(up_btn), int(middle_btn), int(down_btn)
-            if flag == 0:
-                result_queue.put_nowait([now_time, up_btn, middle_btn, down_btn])
+            now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
+            if btn_state[0] == "0":
+                result_queue.put_nowait([now_time, btn_state[1:]])
 
-        btn_state = []
+        result = []
         while True:
-            if not result_queue.qsize():
+            try:
+                result.append(result_queue.get_nowait())
+            except Queue.Empty:
                 break
-            btn_state.append(result_queue.get_nowait())
 
-        return btn_state
+        return result
 
     # 检查循环定时设置状态
     def check_serial_set_cycle_timer(self):
+        """
+        使用消息队列提取所有循环定时设置状态并进行筛选，返回按照时间顺序排列的循环定时设置状态列表
+        :return: [time, id, times]
+        list消息etc：[([2018-01-03 09:47:25:957]bull_timer_pluse_start : cha_ru [2018-01-03 09:47:25:957]the 2 timer,  the timer ID 145991072,keep_ontime 0:1 set time 60s , keep_offtime  0:1 set time 60s, times 255 cha_ru )]
+        """
         key = "set_cycle_timer"
-        self.check_serial_result()
-        result_queue = Queue.Queue()
-
-        command1 = self.command_dict[key][0].keys()[0]
-        command2 = self.command_dict[key][1].keys()[0]
-
-        tmp_queue1 = self.queue_dict[command1]
-        tmp_queue2 = self.queue_dict[command2]
-
-        print(command1, tmp_queue1.qsize())
-        print(command2, tmp_queue2.qsize())
-
-        while True:
-            if (not tmp_queue1.qsize()) or (not tmp_queue2.qsize()):
-                break
-
-            serial_result = tmp_queue1.get_nowait() + tmp_queue2.get_nowait()
-            print("check_serial_set_cycle_timer", serial_result)
-            timer_state = re.findall("id : (.+?), state : (.+?), version: (.+?), times: (.+?)"
-                                     " .+the (.+?) timer.+times (.+?) cha_ru ", serial_result)[0]
-            now_time = time.mktime(time.strptime(re.findall("\[(.+?:\d+:\d+):.+]", serial_result)[0], "%Y-%m-%d %X"))
-            result_queue.put_nowait([now_time] + list(timer_state))
-
-        set_cycle_timer = []
-        while True:
-            if not result_queue.qsize():
-                break
-            set_cycle_timer.append(result_queue.get_nowait())
-
-        return set_cycle_timer
-
-    # 检查循环定时执行状态
-    def check_serial_launch_cycle_timer(self):
-        key = "launch_cylce_timer"
         self.check_serial_result()
         result_queue = Queue.Queue()
 
@@ -890,18 +1005,323 @@ class WidgetOperation(LaunchApp):
         print(command, tmp_queue.qsize())
 
         while True:
-            if not tmp_queue.qsize():
+            try:
+                serial_result = tmp_queue.get_nowait()
+            except Queue.Empty:
                 break
-            serial_result = tmp_queue.get_nowait()
-            print("check_serial_set_cycle_timer", serial_result)
-            timer_state = re.findall("the (.+?) timer, times (.+?) cha_ru ", serial_result)[0]
-            now_time = time.mktime(time.strptime(re.findall("\[(.+?:\d+:\d+):.+]", serial_result)[0], "%Y-%m-%d %X"))
+
+            print(sys._getframe().f_code.co_name, serial_result)
+            timer_state = re.findall("ID (.+?),.+times (.+?) cha_ru ", serial_result)[0]
+            now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             result_queue.put_nowait([now_time] + list(timer_state))
 
-        launch_cycle_timer = []
+        result = []
         while True:
-            if not result_queue.qsize():
+            try:
+                result.append(result_queue.get_nowait())
+            except Queue.Empty:
                 break
-            launch_cycle_timer.append(result_queue.get_nowait())
 
-        return launch_cycle_timer
+        return result
+
+    # 检查循环定时执行开状态
+    def check_serial_launch_cycle_timer_on(self):
+        """
+        使用消息队列提取所有循环定时执行开状态并进行筛选，返回按照时间顺序排列的循环定时执行开状态列表
+        :return: [time, id, times]
+        list消息etc：[([2018-01-03 09:47:25:957]bull_timer_pluse_exe Pluse Timer: the 2 timer, the timer ID 145991072,times 255 cha_ru )]
+        """
+        key = "launch_cycle_timer_on"
+        self.check_serial_result()
+        result_queue = Queue.Queue()
+
+        command = self.command_dict[key][0].keys()[0]
+
+        tmp_queue = self.queue_dict[command]
+
+        print(command, tmp_queue.qsize())
+
+        while True:
+            try:
+                serial_result = tmp_queue.get_nowait()
+            except Queue.Empty:
+                break
+
+            print(sys._getframe().f_code.co_name, serial_result)
+            timer_state = re.findall("ID (.+?),times (.+?) cha_ru ", serial_result)[0]
+            now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
+            result_queue.put_nowait([now_time] + list(timer_state))
+
+        result = []
+        while True:
+            try:
+                result.append(result_queue.get_nowait())
+            except Queue.Empty:
+                break
+
+        return result
+
+    # 检查循环定时执行关状态
+    def check_serial_launch_cycle_timer_off(self):
+        """
+        使用消息队列提取所有循环定时执行关状态并进行筛选，返回按照时间顺序排列的循环定时执行关状态列表
+        :return: [time, id, times]
+        list消息etc：[([2018-01-03 09:47:25:957]Pluse Timer: the 2 timer, the timer ID 145991072,times 255 cha_ru )]
+        """
+        key = "launch_cycle_timer_off"
+        self.check_serial_result()
+        result_queue = Queue.Queue()
+
+        command = self.command_dict[key][0].keys()[0]
+
+        tmp_queue = self.queue_dict[command]
+
+        print(command, tmp_queue.qsize())
+
+        while True:
+            try:
+                serial_result = tmp_queue.get_nowait()
+            except Queue.Empty:
+                break
+
+            print(sys._getframe().f_code.co_name, serial_result)
+            timer_state = re.findall("ID (.+?),times (.+?) cha_ru ", serial_result)[0]
+            now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
+            result_queue.put_nowait([now_time] + list(timer_state))
+
+        result = []
+        while True:
+            try:
+                result.append(result_queue.get_nowait())
+            except Queue.Empty:
+                break
+
+        return result
+
+    # 检查延迟定时设置状态
+    def check_serial_set_delay_timer(self):
+        """
+        使用消息队列提取所有延迟定时设置状态并进行筛选，返回按照时间顺序排列的延迟定时设置状态列表
+        :return: [time, id]
+        list消息etc：[([2018-01-03 09:47:25:957]bull_joy_countdown_timer_set countdown_timer: id : 177483693, state : 1, version: 18, interval : 60 cha_ru )]
+        """
+        key = "set_delay_timer"
+        self.check_serial_result()
+        result_queue = Queue.Queue()
+
+        command = self.command_dict[key][0].keys()[0]
+
+        tmp_queue = self.queue_dict[command]
+
+        print(command, tmp_queue.qsize())
+
+        while True:
+            try:
+                serial_result = tmp_queue.get_nowait()
+            except Queue.Empty:
+                break
+
+            print(sys._getframe().f_code.co_name, serial_result)
+            timer_state = re.findall("id : (.+?),", serial_result)
+            now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
+            result_queue.put_nowait([now_time] + timer_state)
+
+        result = []
+        while True:
+            try:
+                result.append(result_queue.get_nowait())
+            except Queue.Empty:
+                break
+
+        return result
+
+    # 检查延迟定时执行状态
+    def check_serial_launch_delay_timer(self):
+        """
+        使用消息队列提取所有延迟定时执行状态并进行筛选，返回按照时间顺序排列的延迟定时执行状态列表
+        :return: [time, id]
+        list消息etc：[([2018-01-03 09:47:25:957]Count_Down_Time cha_ru [2018-01-03 09:47:25:957]the 3 timer ,the timer ID 177483693 cha_ru )]
+        """
+        key = "launch_delay_timer"
+        self.check_serial_result()
+        result_queue = Queue.Queue()
+
+        command = self.command_dict[key][0].keys()[0]
+
+        tmp_queue = self.queue_dict[command]
+
+        print(command, tmp_queue.qsize())
+
+        while True:
+            try:
+                serial_result = tmp_queue.get_nowait()
+            except Queue.Empty:
+                break
+
+            print(sys._getframe().f_code.co_name, serial_result)
+            timer_state = re.findall("ID (.+?) cha_ru ", serial_result)
+            now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
+            result_queue.put_nowait([now_time] + timer_state)
+
+        result = []
+        while True:
+            try:
+                result.append(result_queue.get_nowait())
+            except Queue.Empty:
+                break
+
+        return result
+
+    # 检查普通定时设置状态
+    def check_serial_set_normal_timer(self):
+        """
+        使用消息队列提取所有普通定时设置状态并进行筛选，返回按照时间顺序排列的普通定时设置状态列表
+        :return: [time, id, set_time, week, 3层定时开关状态"0FF"]
+        list消息etc：[([2018-01-03 09:47:25:957]bull_joy_base_timer_set base_timer:  id : 201033350, state : 1, version: 1 cha_ru [
+        2018-01-03 09:47:25:957]2018-1-4  9:58:0  week:0 cha_ru [
+        2018-01-03 09:47:25:957]BASE TIMER TRANK BUF: cha_ru [
+        2018-01-03 09:47:25:957]01 FF FF 00 00 00 00 00 00 00 00 00 00 00 00 00 cha_ru )]
+        """
+        key = "set_normal_timer"
+        self.check_serial_result()
+        result_queue = Queue.Queue()
+
+        command = self.command_dict[key][0].keys()[0]
+
+        tmp_queue = self.queue_dict[command]
+
+        print(command, tmp_queue.qsize())
+
+        while True:
+            try:
+                serial_result = tmp_queue.get_nowait()
+            except Queue.Empty:
+                break
+
+            print(sys._getframe().f_code.co_name, serial_result)
+            timer_state = list(re.findall("id : (.+?),.+](.+?) +week:(.+?) cha_ru .+](.+? .+? .+?) .+",
+                                          serial_result)[0])
+            timer_state[1] = timer_state[1].replace("  ", " ")
+            timer_state[3] = timer_state[3].replace("FF", "").replace("00", "0").replace("01", "1").replace(" ", "")
+            now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
+            result_queue.put_nowait([now_time] + timer_state)
+
+        result = []
+        while True:
+            try:
+                result.append(result_queue.get_nowait())
+            except Queue.Empty:
+                break
+
+        return result
+
+    # 检查普通定时执行状态
+    def check_serial_launch_normal_timer(self):
+        """
+        :param once: 循环
+        使用消息队列提取所有普通定时执行状态并进行筛选，返回按照时间顺序排列的普通定时执行状态列表
+        :return: [time, id, launch_time, week]
+        list消息etc：[([2018-01-03 09:47:25:957]Repeat Timer exe over: the 1 timer,the timer ID 110458020, start time 10:1  , week:4 cha_ru )]
+        """
+        key = "launch_normal_timer"
+        self.check_serial_result()
+        result_queue = Queue.Queue()
+
+        command = self.command_dict[key][0].keys()[0]
+
+        tmp_queue = self.queue_dict[command]
+
+        print(command, tmp_queue.qsize())
+
+        while True:
+            try:
+                serial_result = tmp_queue.get_nowait()
+            except Queue.Empty:
+                break
+
+            print(sys._getframe().f_code.co_name, serial_result)
+            timer_state = list(re.findall("ID (.+?), start time (.+?) +, week:(.+?) cha_ru ", serial_result)[0])
+            timer_state[1] = "%s%s%s" % ("0-0-0 ", timer_state[1][2:], ":0")
+            now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
+            result_queue.put_nowait([now_time] + timer_state)
+
+        result = []
+        while True:
+            try:
+                result.append(result_queue.get_nowait())
+            except Queue.Empty:
+                break
+
+        return result
+
+    # 检查普通定时执行状态单次
+    def check_serial_launch_normal_timer_once(self):
+        """
+        :param once: 执行一次/循环
+        使用消息队列提取所有普通定时执行状态并进行筛选，返回按照时间顺序排列的普通定时执行状态列表
+        :return: [time, id, launch_time, week/None]
+        list消息etc：[([2018-01-03 09:47:25:957]Once Timer exe over  the 1 timer, the timer ID 150954030, start time 18-1-4 9:58 cha_ru )]
+        """
+        key = "launch_normal_timer_once"
+        self.check_serial_result()
+        result_queue = Queue.Queue()
+
+        command = self.command_dict[key][0].keys()[0]
+
+        tmp_queue = self.queue_dict[command]
+
+        print(command, tmp_queue.qsize())
+
+        while True:
+            try:
+                serial_result = tmp_queue.get_nowait()
+            except Queue.Empty:
+                break
+
+            print(sys._getframe().f_code.co_name, serial_result)
+            timer_state = list(re.findall("ID (.+?), start time (.+) cha_ru ", serial_result)[0])
+            timer_state[1] = "%s%s%s" % (time.strftime("%Y"), timer_state[1][2:], ":0")
+            now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
+            result_queue.put_nowait([now_time] + timer_state)
+
+        result = []
+        while True:
+            try:
+                result.append(result_queue.get_nowait())
+            except Queue.Empty:
+                break
+
+        return result
+
+    # 传入定时设置信息，获取定时ID
+    def get_timer_id_from_set(self, *args):
+        """
+        从设置定时获取定时id
+        :param args:
+        :return: ["id_1", "id_2", "id_3",...]
+        """
+        timer_list = []
+        for tmp in args:
+            for i in tmp:
+                timer_list.append(i[1])
+        return timer_list
+
+    # 传入定时ID列表和定时执行信息，获取ID对应执行信息
+    def get_layer_timer_from_launch(self, timer_list, **kwargs):
+        """
+        根据定时id获取执行结果
+        :param timer_id:
+        :return: {timer_id: {"delay": [[args1],[args2],...]...}}
+        """
+        result = {}
+        for timer_id in timer_list:
+            result[timer_id] = {}
+            for k in kwargs:
+                result[timer_id][k] = []
+
+        for k, v in kwargs.items():
+            for i in v:
+                timer_id = i[1]
+                result[timer_id][k].append(i)
+
+        return result

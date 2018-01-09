@@ -94,7 +94,7 @@ class GNY201SNormalTimer9(WidgetOperation):
                                   self.page["add_normal_timer_page"]["title"])
                 raise KeyError()
             except TimeoutException:
-                self.logger.info("[APP_INFO]add normal timer already 20")
+                self.debug.info("[APP_INFO]add normal timer already 20")
             except KeyError:
                 raise TimeoutException("[APP_INFO]add normal timer already 20,but it can add timer yet!\n%s"
                                        % self.driver.page_source)

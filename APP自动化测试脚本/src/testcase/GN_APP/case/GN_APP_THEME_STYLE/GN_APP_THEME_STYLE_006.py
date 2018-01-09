@@ -18,4 +18,4 @@ class GNAPPThemeStyle6(WidgetOperation):
                           self.page["theme_style_page"]["title"])
 
         # 截取屏幕信息
-        ScreenShot(self.device_info, self.zentao_id, self.basename, self.logger)
+        ScreenShot(self.device_info, self.zentao_id, self.basename, self.debug)

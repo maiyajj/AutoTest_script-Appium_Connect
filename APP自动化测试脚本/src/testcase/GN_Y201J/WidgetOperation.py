@@ -184,8 +184,8 @@ class WidgetOperation(LaunchApp):
             delay_time = "None"
             time_delay = "None"
             set_time = time.strftime("%Y-%m-%d %X", time.localtime(time_set))
-        self.logger.info("[APP_TIMER]start_time: %s, set_time: %s, delay_time: %s" % (start_time, set_time, delay_time))
-        self.logger.info("[APP_TIMER]time_start: %s, time_set: %s, time_delay: %s" % (time_start, time_set, time_delay))
+        self.debug.info("[APP_TIMER]start_time: %s, set_time: %s, delay_time: %s" % (start_time, set_time, delay_time))
+        self.debug.info("[APP_TIMER]time_start: %s, time_set: %s, time_delay: %s" % (time_start, time_set, time_delay))
         time.sleep(1)
 
         # 判断设置后的滚轮是否与设定一致
@@ -217,7 +217,7 @@ class WidgetOperation(LaunchApp):
 
         if start_set_time <= now:
             start_set_time = start_set_time + 3600 * 24
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+        self.debug.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
             time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
             time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
@@ -231,7 +231,7 @@ class WidgetOperation(LaunchApp):
 
         self.widget_click(self.page["add_normal_timer_page"]["saved"],
                           self.page["normal_timer_page"]["title"])
-        self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
+        self.debug.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
 
         return start_time, start_set_time, cycle
 
@@ -251,7 +251,7 @@ class WidgetOperation(LaunchApp):
 
         if start_set_time <= now:
             start_set_time = start_set_time + 3600 * 24
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+        self.debug.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
             time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
             time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
@@ -272,7 +272,7 @@ class WidgetOperation(LaunchApp):
 
         if end_set_time <= start_set_time:
             end_set_time = end_set_time + 3600 * 24
-        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
+        self.debug.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
             time.strftime("%Y-%m-%d %X", time.localtime(end_time)),
             time.strftime("%Y-%m-%d %X", time.localtime(end_set_time))))
 
@@ -296,7 +296,7 @@ class WidgetOperation(LaunchApp):
                                                          self.page["piocc_mode_timer_page"]["end_m"],
                                                          self.page["piocc_mode_timer_page"]["end_time_text"],
                                                          now_time, set_timer, cycle, delay_s)
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+        self.debug.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
             time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
             time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
@@ -327,7 +327,7 @@ class WidgetOperation(LaunchApp):
                                                          self.page["fish_mode_timer_page"]["roll_m"],
                                                          self.page["fish_mode_timer_page"]["start_time_text"],
                                                          now_time, set_start_time)
-        self.logger.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
+        self.debug.info("[APP_TIMER]Start_time: %s, Start_set_time: %s" % (
             time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
             time.strftime("%Y-%m-%d %X", time.localtime(start_set_time))))
 
@@ -341,7 +341,7 @@ class WidgetOperation(LaunchApp):
                                                      self.page["fish_mode_timer_page"]["end_m"],
                                                      self.page["fish_mode_timer_page"]["end_time_text"],
                                                      now_time, set_end_time, True)
-        self.logger.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
+        self.debug.info("[APP_TIMER]End_time: %s, End_set_time: %s" % (
             time.strftime("%Y-%m-%d %X", time.localtime(end_time)),
             time.strftime("%Y-%m-%d %X", time.localtime(end_set_time))))
 
@@ -350,7 +350,7 @@ class WidgetOperation(LaunchApp):
 
         # 设定循环次数
         set_loop = self.set_timer_loop("fish_mode_timer_page", loop)[0]
-        self.logger.info("[APP_TIMER]Set loop: %s" % set_loop)
+        self.debug.info("[APP_TIMER]Set loop: %s" % set_loop)
         if loop == u"永久循环":
             loop_count = loops  # 生成指定数量的时间对个数
         else:
@@ -458,7 +458,7 @@ class WidgetOperation(LaunchApp):
     def check_timer(self, start_time, set_time, power_state, cycle=None):
         # 开始时间, 设置时间
         start_times = time.strftime("%Y-%m-%d %X", time.localtime(start_time))
-        self.logger.info("[APP_CHECK_TIMER]Now time: %s. Start time: %s" % (time.strftime("%Y-%m-%d %X"), start_times))
+        self.debug.info("[APP_CHECK_TIMER]Now time: %s. Start time: %s" % (time.strftime("%Y-%m-%d %X"), start_times))
         now_week = time.strftime("%A").lower()
         if cycle is None:
             set_week = now_week
@@ -467,7 +467,7 @@ class WidgetOperation(LaunchApp):
                 set_week = cycle[0]
             else:
                 set_week = ",".join(cycle)
-        self.logger.info("[APP_CHECK_TIMER]Now week: %s, Set week: %s" % (now_week, set_week))
+        self.debug.info("[APP_CHECK_TIMER]Now week: %s, Set week: %s" % (now_week, set_week))
         while True:
             now_week = time.strftime("%A").lower()
             if now_week in set_week:
@@ -477,7 +477,7 @@ class WidgetOperation(LaunchApp):
                 break
             else:
                 if time.strftime("%M") == "00":
-                    self.logger.info("now week: %s" % now_week)
+                    self.debug.info("now week: %s" % now_week)
                 else:
                     print("********************")
                     print("now week: %s" % now_week)
@@ -485,22 +485,22 @@ class WidgetOperation(LaunchApp):
                     time.sleep(1)
 
         delay_times = set_times - start_time
-        self.logger.info("[APP_CHECK_TIMER]Delay Time: %s" % delay_times)
+        self.debug.info("[APP_CHECK_TIMER]Delay Time: %s" % delay_times)
         if delay_times < 0:
             raise TimeoutException("Set time is before now time, delay time is: %s" % delay_times)
 
         element = self.wait_widget(self.page["control_device_page"]["power_state"])
         end_time = set_times + 30
-        self.logger.info("[APP_CHECK_TIMER]End Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(end_time)))
-        self.logger.info("[APP_CHECK_TIMER]Set Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(set_times)))
+        self.debug.info("[APP_CHECK_TIMER]End Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(end_time)))
+        self.debug.info("[APP_CHECK_TIMER]Set Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(set_times)))
         while True:
             current_time = int(time.time())
             if current_time >= set_times:
                 while True:
                     state = self.ac.get_attribute(element, "name")
                     if state == power_state:
-                        self.logger.info("[APP_CHECK_TIMER]Current Time: %s" % time.strftime("%Y-%m-%d %X"))
-                        self.logger.info("[APP_CHECK_TIMER]Device Info: %s" % power_state)
+                        self.debug.info("[APP_CHECK_TIMER]Current Time: %s" % time.strftime("%Y-%m-%d %X"))
+                        self.debug.info("[APP_CHECK_TIMER]Device Info: %s" % power_state)
                         break
                     else:
                         time.sleep(1)
@@ -517,10 +517,10 @@ class WidgetOperation(LaunchApp):
         while True:
             try:
                 self.wait_widget(self.page["normal_timer_page"]["no_timer"])
-                self.logger.info("It has no timer~")
+                self.debug.info("It has no timer~")
                 break
             except TimeoutException:
-                self.logger.info("It has normal timer.")
+                self.debug.info("It has normal timer.")
                 self.widget_click(self.page["normal_timer_page"]["timer_edit"],
                                   self.page["timer_edit_popup"]["title"])
 
@@ -533,7 +533,7 @@ class WidgetOperation(LaunchApp):
         while True:
             attribute = self.ac.get_attribute(element, "name")
             if u"未启用" not in attribute:
-                self.logger.info("[APP_INFO]Mode timer is run")
+                self.debug.info("[APP_INFO]Mode timer is run")
                 self.widget_click(self.page["control_device_page"]["mode_timer"],
                                   self.page["mode_timer_page"]["title"])
 
@@ -552,7 +552,7 @@ class WidgetOperation(LaunchApp):
                 self.widget_click(self.page["mode_timer_page"]["to_return"],
                                   self.page["control_device_page"]["title"])
             else:
-                self.logger.info("[APP_INFO]Mode timer don't run")
+                self.debug.info("[APP_INFO]Mode timer don't run")
                 break
 
     # 启动模式定时
@@ -563,7 +563,7 @@ class WidgetOperation(LaunchApp):
             try:
                 self.widget_click(self.page[page]["launch"],
                                   self.page["mode_timer_page"]["title"])
-                self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
+                self.debug.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
             except TimeoutException:
                 self.wait_widget(self.page["mode_timer_conflict_popup"]["title"])
                 self.widget_click(self.page["mode_timer_conflict_popup"]["confirm"],
@@ -577,7 +577,7 @@ class WidgetOperation(LaunchApp):
                     try:
                         self.widget_click(self.page[page]["launch"],
                                           self.page["mode_timer_page"]["title"])
-                        self.logger.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
+                        self.debug.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
                     except TimeoutException:
                         self.wait_widget(self.page["mode_timer_conflict_popup"]["title"])
                         self.widget_click(self.page["mode_timer_conflict_popup"]["confirm"],
@@ -619,7 +619,7 @@ class WidgetOperation(LaunchApp):
                     elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                     # if index >= now_h + 2:
                     elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-            self.logger.info("[APP_INFO]23:01_elec_bill: %s" % elec_bill)
+            self.debug.info("[APP_INFO]23:01_elec_bill: %s" % elec_bill)
 
             self.widget_click(self.page["elec_bill_page"]["to_return"],
                               self.page["control_device_page"]["title"])
@@ -634,7 +634,7 @@ class WidgetOperation(LaunchApp):
                     elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                     # if index >= now_h + 2:
                     elec[index] = self.ac.get_attribute(elec_value, "name")
-            self.logger.info("[APP_INFO]23:01_elec: %s" % elec)
+            self.debug.info("[APP_INFO]23:01_elec: %s" % elec)
 
             self.widget_click(self.page["elec_page"]["to_return"],
                               self.page["control_device_page"]["title"])
@@ -655,7 +655,7 @@ class WidgetOperation(LaunchApp):
                 elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                 # if index <= now_h + 1:
                 elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-        self.logger.info("[APP_INFO]%02d:01_elec_bill: %s" % (check_time, elec_bill))
+        self.debug.info("[APP_INFO]%02d:01_elec_bill: %s" % (check_time, elec_bill))
 
         self.widget_click(self.page["elec_bill_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -669,7 +669,7 @@ class WidgetOperation(LaunchApp):
                 elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                 # if index <= now_h + 1:
                 elec[index] = self.ac.get_attribute(elec_value, "name")
-        self.logger.info("[APP_INFO]%02d:01_elec: %s" % (check_time, elec))
+        self.debug.info("[APP_INFO]%02d:01_elec: %s" % (check_time, elec))
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])

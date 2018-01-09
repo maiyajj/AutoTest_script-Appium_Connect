@@ -24,11 +24,11 @@ class ReceiveSerial(object):
                 try:
                     data = self.serial_sever.readline()  # 读取数据
                     if data is '':
-                        data_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')[:-3]
+                        data_time = datetime.datetime.now().strftime('%Y-%m-%d %X:%f')[:-3]
                         data = "[%s]%s" % (data_time, data)
                         continue
                     data = data.strip()
-                    data_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')[:-3]
+                    data_time = datetime.datetime.now().strftime('%Y-%m-%d %X:%f')[:-3]
                     data = "[%s]%s" % (data_time, data)
                     self.serial_data_queue.put_nowait(data)
                 except AttributeError:

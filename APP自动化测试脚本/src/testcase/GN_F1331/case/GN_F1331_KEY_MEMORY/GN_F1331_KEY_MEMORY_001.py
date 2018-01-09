@@ -13,6 +13,8 @@ class GNF1331KeyMemory1(WidgetOperation):
     def case(self):
         self.choose_home_device(conf["MAC"][self.app][self.device_mac])
 
+        self.delete_out_date_timer()
+
         self.set_power("main_button_off")
 
         self.input_serial_command("power")
@@ -45,49 +47,49 @@ class GNF1331KeyMemory1(WidgetOperation):
 
         btn_state = btn_state_list[0]
         if [1, 1, 1] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
+            self.debug.info(u"[APP_INFO]device state: %s" % btn_state)
         else:
             raise TimeoutException("device state error, current: %s" % btn_state)
 
         btn_state = btn_state_list[1]
         if [0, 0, 0] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
+            self.debug.info(u"[APP_INFO]device state: %s" % btn_state)
         else:
             raise TimeoutException("device state error, current: %s" % btn_state)
 
         btn_state = btn_state_list[2]
         if [1, 0, 0] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
+            self.debug.info(u"[APP_INFO]device state: %s" % btn_state)
         else:
             raise TimeoutException("device state error, current: %s" % btn_state)
 
         btn_state = btn_state_list[3]
         if [1, 1, 0] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
+            self.debug.info(u"[APP_INFO]device state: %s" % btn_state)
         else:
             raise TimeoutException("device state error, current: %s" % btn_state)
 
         btn_state = btn_state_list[4]
         if [1, 1, 1] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
+            self.debug.info(u"[APP_INFO]device state: %s" % btn_state)
         else:
             raise TimeoutException("device state error, current: %s" % btn_state)
 
         btn_state = btn_state_list[5]
         if [0, 1, 1] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
+            self.debug.info(u"[APP_INFO]device state: %s" % btn_state)
         else:
             raise TimeoutException("device state error, current: %s" % btn_state)
 
         btn_state = btn_state_list[6]
         if [0, 0, 1] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
+            self.debug.info(u"[APP_INFO]device state: %s" % btn_state)
 
         else:
             raise TimeoutException("device state error, current: %s" % btn_state)
 
         btn_state = btn_state_list[7]
         if [0, 0, 0] == btn_state[1:]:
-            self.logger.info(u"[APP_INFO]device state: %s" % btn_state)
+            self.debug.info(u"[APP_INFO]device state: %s" % btn_state)
         else:
             raise TimeoutException("device state error, current: %s" % btn_state)

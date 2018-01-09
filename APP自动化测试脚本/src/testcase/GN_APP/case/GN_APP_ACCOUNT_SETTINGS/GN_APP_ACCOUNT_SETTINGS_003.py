@@ -35,7 +35,7 @@ class GNAPPAccountSettings3(WidgetOperation):
                           self.page["account_setting_page"]["title"])
         try:
             self.wait_widget(self.page["logout_popup"]["title"])
-            self.logger.info(u"[CHECK_PAGE]登出弹窗未消失")
+            self.debug.info(u"[CHECK_PAGE]登出弹窗未消失")
             raise ValueError()
         except TimeoutException:
             pass

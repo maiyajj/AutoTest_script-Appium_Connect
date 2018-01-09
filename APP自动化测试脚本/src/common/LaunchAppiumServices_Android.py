@@ -144,14 +144,14 @@ class LaunchAppiumServicesAndroid(object):
         self.appium_pid = reduce(lambda x, y: x if y in x else x + [y], [[], ] + self.appium_pid)
 
         # 将int(pid)转换成psutil.Process(pid)并记录log
-        [self.debug.info("child_proc: %s" % x) for x in map(lambda x: psutil.Process(x), self.appium_pid)]
+        [self.debug.info("child_proc: %s" % x)
+         for x in map(lambda x: psutil.Process(x) if psutil.pid_exists(x) else None, self.appium_pid)]
 
         # 记录自动化测试工具进程pid和当前appium服务主pid
         self.debug.info("Pid!Main: %s; Current: %s" % (psutil.Process(self.main_pid), psutil.Process(self.current_pid)))
 
         # 优先关闭子进程，关闭所有子进程后再关闭主进程。
         self.appium_pid = list(reversed(self.appium_pid))  # 将主进程pid换至表尾
-
 
     def create_adb_folder(self):
         """

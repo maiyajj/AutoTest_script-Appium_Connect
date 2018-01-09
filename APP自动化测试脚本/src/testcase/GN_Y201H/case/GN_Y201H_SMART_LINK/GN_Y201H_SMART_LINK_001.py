@@ -40,7 +40,7 @@ class GNY201HSmartLink1(WidgetOperation):
         data = str(data).decode('hex').replace(" ", "")
         pwd.clear()
         self.ac.send_keys(pwd, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["wifi密码"] input success')
+        self.debug.info(u'[APP_INPUT] ["wifi密码"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["input_wifi_password_page"]["confirm"],
@@ -52,7 +52,7 @@ class GNY201HSmartLink1(WidgetOperation):
         data = "test_device"
         nickname.clear()
         self.ac.send_keys(nickname, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["设备备注"] input success')
+        self.debug.info(u'[APP_INPUT] ["设备备注"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["set_name_addr_page"]["next"],
@@ -86,7 +86,7 @@ class GNY201HSmartLink1(WidgetOperation):
         # data = nickname_value
         # nickname.clear()
         # self.ac.send_keys(nickname, data, self.driver)
-        # self.logger.info(u'[APP_INPUT] ["设备备注"] input success')
+        # self.debug.info(u'[APP_INPUT] ["设备备注"] input success')
         # time.sleep(0.5)
         #
         # self.widget_click(self.page["change_nickname_popup"]["confirm"],

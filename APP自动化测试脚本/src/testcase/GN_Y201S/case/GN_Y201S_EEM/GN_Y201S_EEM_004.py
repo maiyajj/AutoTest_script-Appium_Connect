@@ -41,7 +41,7 @@ class GNY201SEem4(WidgetOperation):
         power = map(lambda x: float(x.replace("W", "")), power)
 
         power_error = sum(power) / len(power) / 50
-        self.logger.info("[ELEC_INFO]power_error is %s" % power_error)
+        self.debug.info("[ELEC_INFO]power_error is %s" % power_error)
 
         if power_error > 0.01:
             raise TimeoutException("the battery error is over 0.01, current is %s" % power_error)

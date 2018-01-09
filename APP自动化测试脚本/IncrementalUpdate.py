@@ -266,7 +266,6 @@ def create_WaitCase():
         WaitCase.write('''from src.testcase.case.input_case.GNAppRegister import *\n''')
         WaitCase.write('''from src.testcase.case.input_case.GNAppUsingHelp import *\n''')
         WaitCase.write('''from src.testcase.case.input_case.GNAppVersion import *\n''')
-        WaitCase.write('''from src.utils.CollectLog import *\n''')
         WaitCase.write('''from src.utils.OutputReport import *\n\n\n''')
 
         WaitCase.write('''class WaitCase(object):\n''')
@@ -275,7 +274,7 @@ def create_WaitCase():
         WaitCase.write('''        self.device_name = device_name\n''')
         WaitCase.write('''        self.device_info = device_list[device_name]\n''')
         WaitCase.write('''        self.report = None\n''')
-        WaitCase.write('''        self.logger = None\n''')
+        WaitCase.write('''        self.debug = None\n''')
         WaitCase.write('''        self.No = 1\n''')
         WaitCase.write('''\n''')
         WaitCase.write('''        self.create_log()\n''')
@@ -289,7 +288,7 @@ def create_WaitCase():
         WaitCase.write('''\n''')
         WaitCase.write('''    def create_log(self):\n''')
         WaitCase.write('''        check_log(self.device_list, self.device_name)\n''')
-        WaitCase.write('''        self.logger = self.device_info["logger"]\n''')
+        WaitCase.write('''        self.debug = self.device_info["debug"]\n''')
         WaitCase.write('''\n''')
         WaitCase.write('''    def check_appium(self):\n''')
         WaitCase.write('''        while True:\n''')
@@ -299,24 +298,24 @@ def create_WaitCase():
         WaitCase.write('''                time.sleep(1)\n''')
         WaitCase.write('''            else:\n''')
         WaitCase.write(
-            '''                self.logger.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %X"))\n''')
+            '''                self.debug.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %X"))\n''')
         WaitCase.write('''                break\n''')
         WaitCase.write('''\n''')
         WaitCase.write('''    def run(self):\n''')
-        WaitCase.write('''        self.logger.info("*" * 30)\n''')
+        WaitCase.write('''        self.debug.info("*" * 30)\n''')
         WaitCase.write(
-            '''        self.logger.info(u"[APP_INF]deviceName：.....%s" % self.device_info["deviceName"])\n''')
-        WaitCase.write('''        self.logger.info(u"[APP_INF]UDID：...........%s" % self.device_info["udid"])\n''')
+            '''        self.debug.info(u"[APP_INF]deviceName：.....%s" % self.device_info["deviceName"])\n''')
+        WaitCase.write('''        self.debug.info(u"[APP_INF]UDID：...........%s" % self.device_info["udid"])\n''')
         WaitCase.write(
-            '''        self.logger.info(u"[APP_INF]platformName：...%s" % self.device_info["platformName"])\n''')
+            '''        self.debug.info(u"[APP_INF]platformName：...%s" % self.device_info["platformName"])\n''')
         WaitCase.write(
-            '''        self.logger.info(u"[APP_INF]platformVersion：%s" % self.device_info["platformVersion"])\n''')
-        WaitCase.write('''        self.logger.info(u"[APP_INF]appPackage：.....%s" % conf["App"]["GN"][0])\n''')
-        WaitCase.write('''        self.logger.info(u"[APP_INF]appActivity：....%s" % conf["App"]["GN"][1])\n''')
-        WaitCase.write('''        self.logger.info("*" * 30)\n''')
+            '''        self.debug.info(u"[APP_INF]platformVersion：%s" % self.device_info["platformVersion"])\n''')
+        WaitCase.write('''        self.debug.info(u"[APP_INF]appPackage：.....%s" % conf["App"]["GN"][0])\n''')
+        WaitCase.write('''        self.debug.info(u"[APP_INF]appActivity：....%s" % conf["App"]["GN"][1])\n''')
+        WaitCase.write('''        self.debug.info("*" * 30)\n''')
         WaitCase.write('''        database["case_location"] = self.No\n''')
         WaitCase.write('''        while True:\n''')
-        WaitCase.write('''            self.logger.info("run times [%s]" % database["program_loop_time"])\n''')
+        WaitCase.write('''            self.debug.info("run times [%s]" % database["program_loop_time"])\n''')
         for i in CaseList:
             if "Version" in i[0]:
                 WaitCase.write('''            self.write_report(%s)  # %s, %s\n''' % (i[0], i[2], i[1]))
@@ -351,7 +350,7 @@ def create_WaitCase():
         WaitCase.write('''\n            database["program_loop_time"] += 1\n\n''')
 
         WaitCase.write('''    def write_report(self, case_name):\n''')
-        WaitCase.write('''        case = case_name(self.device_list, self.device_name, self.logger).result()\n''')
+        WaitCase.write('''        case = case_name(self.device_list, self.device_name, self.debug).result()\n''')
         WaitCase.write(
             '''        data = u'[RUN_TIMES=%s, CASE_ID=%s, CASE_NAME="%s", RESULT=%s, START=%s, CLOSE=%s]' % \\\n''')
         WaitCase.write(
@@ -458,7 +457,7 @@ def add_ZenTao_id():
                         elif '[CASE_ID="%s", CASE_TITLE="%s"]' in linecache.getline(filepath, i):
                             print i, linecache.getline(filepath, i),
                             files.write(
-                                '''        self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s"]'\n''')
+                                '''        self.debug.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s"]'\n''')
                         elif "os.path.basename" in linecache.getline(filepath, i):
                             print i, linecache.getline(filepath, i),
                             files.write(
@@ -547,6 +546,18 @@ def add_notes():
                             files.write(linecache.getline(filepath, i))
 
 
+def scan_repet():
+    rootdir = r"./"
+    tmp = []
+    for parent, dirnames, filenames in os.walk(rootdir):
+        for filename in filenames:
+            if "pyc" not in filename:
+                filepath = os.path.join(parent, filename)
+                lines = len(linecache.getlines(filepath))
+                tmp.append(lines)
+    print(len(tmp))
+    # print(lines)
+
 def src_line():
     rootdir = r"./"
     line = 0
@@ -572,7 +583,8 @@ def src_line():
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
-add_notes()
+# add_notes()
+scan_repet()
 # check_AppPageElement()
 # a = []
 # b = []

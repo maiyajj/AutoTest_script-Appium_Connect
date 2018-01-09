@@ -56,7 +56,7 @@ class GNF1331AppFunction1(WidgetOperation):
         set_time_date = u"%s%s月%s日" % (set_time_1, month, day)
         element = self.wait_widget(self.page["timer_log_page"]["has_log"])
         if self.ac.get_attribute(element, "name") == set_time_date:
-            self.logger.info(u"[APP_INFO]存在定时记录%s" % set_time_date)
+            self.debug.info(u"[APP_INFO]存在定时记录%s" % set_time_date)
         else:
             raise TimeoutException("don`t have timing records: %s" % set_time_date)
 

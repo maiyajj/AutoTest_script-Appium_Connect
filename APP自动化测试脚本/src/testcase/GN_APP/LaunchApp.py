@@ -26,7 +26,6 @@ def decor_launch_app(func):
                 self.init_operate()  # 初始化控件操作
                 self.start_time = time.strftime("%Y-%m-%d %X")
                 log_tmp = 'app start [time=%s]' % self.start_time
-                self.logger.info(log_tmp)  # 记录log，APP打开时间
                 self.debug.info(log_tmp)  # 记录log，APP打开时间
                 self.success = False  # 初始化用例执行结果
 
@@ -95,8 +94,8 @@ def case_run(bool):
         def _wrapper(self):
             func(self)  # 用例相关所属模块，标题，禅道ID
             self.basename = re.findall(r"\((.+?)\)", inspect.stack()[2][4][0])[0]  # 获取用例的文件名称:GNAPP_LOGIN_001
-            self.logger.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
-                             % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
+            self.debug.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
+                            % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
             try:
                 self.launch_app(bool)  # 启动APP并使APP跳转到指定页面
                 try:
@@ -136,7 +135,6 @@ class LaunchApp(object):
     def __init__(self, device_info):
         self.device_info = device_info  # 设备信息表
         self.page = device_info["page"]  # APP页面元素库
-        self.logger = device_info["logger"]  # log日志实例化
         self.debug = device_info["debug"]  # debug日志实例化
         self.device_name = device_info["udid"]  # 设备名称
         self.udid = device_info["udid"]  # 设备udid
@@ -270,6 +268,6 @@ class LaunchApp(object):
                     "unknown": ["unknown", "test_error"],
                     "screen": ["wait", "test_wait"]}
         result = d_result[self.success]
-        self.logger.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
+        self.debug.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
         database[self.device_name][self.zentao_id][result[1]] += 1
         return self.zentao_id, "%s,%s" % (result[0], " " * (7 - len(result[0]))), self.case_title, self.start_time

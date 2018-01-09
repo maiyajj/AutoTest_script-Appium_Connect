@@ -27,12 +27,12 @@ class GNAPPAccountSettings13(WidgetOperation):
         data = "12345678901234567"
         nickname.clear()
         self.ac.send_keys(nickname, data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["17位用户名"] input success')
+        self.debug.info(u'[APP_INPUT] ["17位用户名"] input success')
         time.sleep(0.5)
 
         element = self.page["change_nickname_page"]["nickname"]
         nick_name = self.ac.get_attribute(self.wait_widget(element), "name")
-        self.logger.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (nick_name, len(nick_name)))
+        self.debug.info(u"[PAGE_INFO]内容为：[%s], 长度为：[%s]" % (nick_name, len(nick_name)))
         nick_name = nick_name.replace(element[3]["default_text"], "")
         if len(nick_name) != 16:
             raise TimeoutException("nick name len is not 16, current len is %s" % len(nick_name))

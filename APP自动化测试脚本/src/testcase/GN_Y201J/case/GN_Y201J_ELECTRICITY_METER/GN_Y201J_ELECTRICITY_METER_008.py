@@ -32,7 +32,7 @@ class GNY201JElectricityMeter8(WidgetOperation):
         signal_price_data = "5"
         signal_price.clear()
         self.ac.send_keys(signal_price, signal_price_data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["单一电价"] input success')
+        self.debug.info(u'[APP_INPUT] ["单一电价"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["single_price_page"]["to_return"],
@@ -71,7 +71,7 @@ class GNY201JElectricityMeter8(WidgetOperation):
                 elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                 # if index >= now_h + 2:
                 elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-                self.logger.info("[APP_INFO]23:01_elec_bill: %s" % elec_bill)
+                self.debug.info("[APP_INFO]23:01_elec_bill: %s" % elec_bill)
 
         self.widget_click(self.page["elec_bill_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -86,7 +86,7 @@ class GNY201JElectricityMeter8(WidgetOperation):
                 elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                 # if index >= now_h + 2:
                 elec[index] = self.ac.get_attribute(elec_value, "name")
-                self.logger.info("[APP_INFO]23:01_elec: %s" % elec)
+                self.debug.info("[APP_INFO]23:01_elec: %s" % elec)
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -110,7 +110,7 @@ class GNY201JElectricityMeter8(WidgetOperation):
                 elec_bill_value[0] = self.page["elec_bill_page"]["price_value"][0][index]
                 # if index <= now_h + 1:
                 elec_bill[index] = self.ac.get_attribute(elec_bill_value, "name")
-                self.logger.info("[APP_INFO]%s:01_elec_bill: %s" % (time.strftime("%H"), elec_bill))
+                self.debug.info("[APP_INFO]%s:01_elec_bill: %s" % (time.strftime("%H"), elec_bill))
 
         self.widget_click(self.page["elec_bill_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -123,14 +123,14 @@ class GNY201JElectricityMeter8(WidgetOperation):
                 elec_value[0] = self.page["elec_page"]["elec_value"][0][index]
                 # if index <= now_h + 1:
                 elec[index] = self.ac.get_attribute(elec_value, "name")
-                self.logger.info("[APP_INFO]%s:01_elec: %s" % (time.strftime("%H"), elec))
+                self.debug.info("[APP_INFO]%s:01_elec: %s" % (time.strftime("%H"), elec))
 
         self.widget_click(self.page["elec_page"]["to_return"],
                           self.page["control_device_page"]["title"])
 
         elec_bill_info = ("elec bill is wrong, current [elec_bill: %s, elec: %s, elec_price: %s]"
                           % (sum(elec_bill.values()), sum(elec.values()), signal_price_data))
-        self.logger.info(elec_bill_info)
+        self.debug.info(elec_bill_info)
 
         if sum(elec_bill.values()) != sum(elec.values()) * int(signal_price_data):
             raise TimeoutException(elec_bill_info)
@@ -150,7 +150,7 @@ class GNY201JElectricityMeter8(WidgetOperation):
         peak_data = "5"
         peak_price.clear()
         self.ac.send_keys(peak_price, peak_data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["峰电价"] input success')
+        self.debug.info(u'[APP_INPUT] ["峰电价"] input success')
         time.sleep(0.5)
 
         valley_price = self.widget_click(self.page["peak_valley_price_page"]["set_valley_price"],
@@ -159,7 +159,7 @@ class GNY201JElectricityMeter8(WidgetOperation):
         valley_data = "2"
         valley_price.clear()
         self.ac.send_keys(valley_price, valley_data, self.driver)
-        self.logger.info(u'[APP_INPUT] ["谷电价"] input success')
+        self.debug.info(u'[APP_INPUT] ["谷电价"] input success')
         time.sleep(0.5)
 
         now = time.strftime("%H:%M")
@@ -208,7 +208,7 @@ class GNY201JElectricityMeter8(WidgetOperation):
 
         elec_bill_info = ("current [elec_bill: %s, peak_price: %s, peak_data: %s, valley_price: %s, valley_data: %s]"
                           % (sum(elec_bill.values()), sum(peak_price), peak_data, sum(valley_price), valley_data))
-        self.logger.info(elec_bill_info)
+        self.debug.info(elec_bill_info)
 
         if sum(elec_bill.values()) != sum(peak_price) * int(peak_data) + sum(valley_price) * int(valley_data):
             raise TimeoutException(elec_bill_info)
