@@ -63,7 +63,6 @@ Android 2.3+:谷歌的Instrumentation（已被selendroid取代）
     Appium官方网站：http://appium.io/
     > Tips:<br>
         Appium建议使用版本为v1.4.16(Windows)，v1.7.1(Mac)，建议使用最新版本。<br>
-        node v4.5.0下载地址: https://nodejs.org/dist/v4.5.0/
 
 安装教程参考：https://www.cnblogs.com/fnng/p/4540731.html
 
