@@ -1,0 +1,18 @@
+# 邮箱用户名密码
+mail_pwd:
+  '163':
+    pwd: ''
+    user_name: ''
+# 用户名，（登录密码/旧密码）， 新密码
+user_and_pwd:
+  xxxxxxx:
+    GN_201J:
+      precise_pwd: ['', '']
+      new_pwd: ''
+      login_pwd: ''
+      user_name: ''
+    GN_201S:
+      precise_pwd: ['', '']
+      new_pwd: ''
+      login_pwd: ''
+      user_name: ''
