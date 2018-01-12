@@ -71,8 +71,7 @@ Android 2.3+:谷歌的Instrumentation（已被selendroid取代）
 1. cmd输入appium-doctor错误提示：“appium不是内部或外部命令”
 
     * 假设Appium安装路径为C:\Program Files (x86)\Appium<br>
-    在path变量添加C:\Program Files (x86)\Appium\node_modules\.bin\\
-    之后关掉cmd重新打开，再输入appium-doctor即正常。
+    在path变量添加C:\Program Files (x86)\Appium\node_modules\\.bin\之后关掉cmd重新打开，再输入appium-doctor即正常。
 
 2. 本脚本只针对真机测试，上步参考教程只需参考章节如下：
 
