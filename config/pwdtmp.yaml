@@ -6,11 +6,11 @@ mail_pwd:
 # 用户名，（登录密码/旧密码）， 新密码
 user_and_pwd:
   xxxxxxx:
-    GN_201J:
-      precise_pwd: ['', '']
-      new_pwd: ''
-      login_pwd: ''
-      user_name: ''
+    GN_201J:  # "12345678".encode("hex")
+      precise_pwd: ['3132333435363738', '3837363534333231']
+      new_pwd: '3837363534333231'
+      login_pwd: '3132333435363738'
+      user_name: '3131313131313131314078782e636f6d'
     GN_201S:
       precise_pwd: ['', '']
       new_pwd: ''
