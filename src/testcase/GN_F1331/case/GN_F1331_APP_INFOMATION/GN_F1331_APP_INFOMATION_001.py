@@ -5,21 +5,16 @@ from src.testcase.GN_F1331.WidgetOperation import *
 class GNF1331AppFunction1(WidgetOperation):
     @case_run("")
     def run(self):
-        self.case_module = u"APP功能测试"  # 用例所属模块
-        self.case_title = u'定时记录删除是否成功'  # 用例名称
-        self.zentao_id = 1170  # 禅道ID
+        self.case_module = u"APP检查(#2)"  # 用例所属模块
+        self.case_title = u'设备详细界面，信息检测'  # 用例名称
+        self.zentao_id = 007  # 禅道ID
 
     # 用例动作
     def case(self):
-        raise KeyError("dsffffffffffffffffffffffffffffffffffffffffffffff")
-        self.choose_home_device(conf["MAC"]["JD"][0])
+        self.choose_home_device(conf["MAC"][self.app][self.device_mac])
 
-        self.set_power("power_off")
-
-        self.close_mode_timer()
-        self.widget_click(self.page["control_device_page"]["normal_timer"],
-                          self.page["normal_timer_page"]["title"])
-        self.delete_normal_timer()
+        self.widget_click(self.page["control_device_page"]["device_info"],
+                          self.page["device_info_page"]["title"])
 
         self.widget_click(self.page["normal_timer_page"]["timer_log"],
                           self.page["timer_log_page"]["title"])

@@ -165,66 +165,57 @@ class GNF1331NormalTimer3(WidgetOperation):
         # 100, 000, 100, 110, 010, 000, 100, 110, 111, 011, 001, 000, 100, 110, 111
         # 上层初始开关,先跳开
         btn_state = btn_state_list[0]
-        btn_all_layer = btn_state[1]
         result = [start_time_1 - 15 <= btn_state[0] <= start_time_1 + 15,
-                  btn_all_layer == "100"]
+                  btn_state[1] == "100"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
         # 上层开→关开关
         btn_state = btn_state_list[1]
-        btn_all_layer = btn_state[1]
         result = [set_time_1 - 15 <= btn_state[0] <= set_time_1 + 15,
-                  btn_all_layer == "000"]
+                  btn_state[1] == "000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
         # 上层关→开开关
         btn_state = btn_state_list[2]
-        btn_all_layer = btn_state[1]
         result = [set_time_2 - 15 <= btn_state[0] <= set_time_2 + 15,
-                  btn_all_layer == "100"]
+                  btn_state[1] == "100"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
 
         # 中层初始开关,先跳开
         btn_state = btn_state_list[3]
-        btn_all_layer = btn_state[1]
         result = [start_time_3 - 15 <= btn_state[0] <= start_time_3 + 15,
-                  btn_all_layer == "110"]
+                  btn_state[1] == "110"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
         # 中层开→关开关
         btn_state = btn_state_list[5]
-        btn_all_layer = btn_state[1]
         result = [set_time_3 - 15 <= btn_state[0] <= set_time_3 + 15,
-                  btn_all_layer == "000"]
+                  btn_state[1] == "000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
         # 中层关→开开关
         btn_state = btn_state_list[7]
-        btn_all_layer = btn_state[1]
         result = [set_time_4 - 15 <= btn_state[0] <= set_time_4 + 15,
-                  btn_all_layer == "110"]
+                  btn_state[1] == "110"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
 
         # 下层初始开关,先跳开
         btn_state = btn_state_list[8]
-        btn_all_layer = btn_state[1]
         result = [start_time_5 - 15 <= btn_state[0] <= start_time_5 + 15,
-                  btn_all_layer == "111"]
+                  btn_state[1] == "111"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
         # 下层开→关开关
         btn_state = btn_state_list[11]
-        btn_all_layer = btn_state[1]
         result = [set_time_5 - 15 <= btn_state[0] <= set_time_5 + 15,
-                  btn_all_layer == "000"]
+                  btn_state[1] == "000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
         # 下层关→开开关
         btn_state = btn_state_list[14]
-        btn_all_layer = btn_state[1]
         result = [set_time_6 - 15 <= btn_state[0] <= set_time_6 + 15,
-                  btn_all_layer == "111"]
+                  btn_state[1] == "111"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))

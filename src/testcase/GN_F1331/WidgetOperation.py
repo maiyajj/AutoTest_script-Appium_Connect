@@ -131,12 +131,10 @@ class WidgetOperation(LaunchApp):
         # 时滚轮
         lcx_h, lcy_h, szw_h, szh_h = self.set_roll(elem_h)
         pxx_h, pxy_h = elem_h[3]["px"]
-        aszh_h = int(szh_h * 1.5)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度，默认为5
         start_x_h, start_y_h = int(lcx_h + pxx_h * szw_h), int(lcy_h + szh_h / 2)  # “时”滚轮的操作起始点
         # 分滚轮
         lcx_m, lcy_m, szw_m, szh_m = self.set_roll(elem_m)
         pxx_m, pxy_m = elem_m[3]["px"]
-        aszh_m = int(szh_m * 1.5)
         start_x_m, start_y_m = int(lcx_m + pxx_m * szw_m), int(lcy_m + szh_m / 2)  # “分”滚轮的操作起始点
         """"""
 
@@ -189,12 +187,22 @@ class WidgetOperation(LaunchApp):
 
         try:  # 若time_et不相等
             # time_et / time_et_a计算结果为1/-1，获取“时”滚轮滑动目的坐标值，用于计算时间滚轮是往上滑还是往下滑
-            end_y_h = start_y_h - time_et_h / time_et_h_a * aszh_h
+            pm_value = time_et_h / time_et_h_a
+            if pm_value > 0:  # 往下滑
+                aszh_h = int(szh_h * 1.9)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度
+            else:  # 往上滑
+                aszh_h = int(szh_h * 1.4)
+            end_y_h = start_y_h - pm_value * aszh_h
         except ZeroDivisionError:  # 若time_et相等
             end_y_h = start_y_h
         try:
             # 获取“分”滚轮滑动目的坐标值
-            end_y_m = start_y_m - time_et_m / time_et_m_a * aszh_m
+            pm_value = time_et_m / time_et_m_a
+            if pm_value > 0:  # 往下滑
+                aszh_m = int(szh_m * 1.9)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度
+            else:  # 往上滑
+                aszh_m = int(szh_m * 1.4)
+            end_y_m = start_y_m - pm_value * aszh_m
         except ZeroDivisionError:
             end_y_m = start_y_m
 
@@ -238,14 +246,18 @@ class WidgetOperation(LaunchApp):
         # 滚轮
         lcx, lcy, szw, szh = self.set_roll(elem)
         pxx, pxy = elem[3]["px"]
-        aszh = int(szh * 1.5)
         start_x, start_y = int(lcx + pxx * szw), int(lcy + pxy * szh)  # 获取滚轮滑动开始坐标值
 
         diff = set_value - roll_value
         diff_a = abs(diff)
         try:
             # 计算滚轮滑动目标坐标值
-            end_y = start_y - diff / diff_a * aszh
+            pm_value = diff / diff_a
+            if pm_value > 0:  # 往下滑
+                aszh = int(szh * 1.9)
+            else:  # 往上滑
+                aszh = int(szh * 1.4)
+            end_y = start_y - pm_value * aszh
         except ZeroDivisionError:
             end_y = start_y
 
@@ -895,7 +907,8 @@ class WidgetOperation(LaunchApp):
                              "set_normal_timer": [{"bull_joy_base_timer_set base_timer": 3}],
                              "launch_normal_timer_once": [{"Once Timer exe over": 0}],
                              "launch_normal_timer": [{"Repeat Timer exe over": 0}],
-                             "device_info": [{"]control data send buf": 1}]}
+                             "device_info": [{"]control data send buf": 1}],
+                             "device_mac": [{"<MAC": 0}]}
         tmp = {}
         command = {}
         command_list = []

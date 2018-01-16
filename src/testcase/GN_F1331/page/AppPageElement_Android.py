@@ -114,10 +114,10 @@ class MainPageWidgetAndroid(object):
         LinearLayout = "/android.widget.LinearLayout"
         TextView = "/android.widget.TextView"
         self.xpath = "".join(("/", FrameLayout, FrameLayout, LinearLayout, LinearLayout, TextView))
-        TextValue = "[@text='1']"
-        self.add_specification = "".join((self.xpath, TextValue))
         d = {}
         # 标题
+        TextValue = "[@text='1']"
+        self.add_specification = "".join((self.xpath, TextValue))
         d["title"] = [self.add_specification, "xpath", u"搜索设备页"]
         # 下一步
         d["next"] = ["com.jd.smart:id/tv_action", "id", u"下一步"]
@@ -125,10 +125,10 @@ class MainPageWidgetAndroid(object):
 
     # 进入输入密码页面
     def input_wifi_password_page(self):
-        TextValue = "[@text='2']"
-        self.input_wifi_password = "".join((self.xpath, TextValue))
         d = {}
         # 标题
+        TextValue = "[@text='2']"
+        self.input_wifi_password = "".join((self.xpath, TextValue))
         d["title"] = [self.input_wifi_password, "xpath", u"进入输入密码页面"]
         # 确认wifi密码按钮
         d["confirm"] = ["com.jd.smart:id/tv_action", "id", u"确认wifi密码按钮"]
@@ -140,10 +140,10 @@ class MainPageWidgetAndroid(object):
 
     # 搜索设备等待页面
     def search_device_loading_page(self):
-        TextValue = "[@text='3']"
-        self.search_device_loading = "".join((self.xpath, TextValue))
         d = {}
         # 标题
+        TextValue = "[@text='3']"
+        self.search_device_loading = "".join((self.xpath, TextValue))
         d["title"] = [self.search_device_loading, "xpath", u"搜索设备等待页面"]
         return d
 
@@ -157,11 +157,10 @@ class MainPageWidgetAndroid(object):
         device_box = {}
         confirm_box = {}
         for i in xrange(4):
-            device_box[i] = "//android.widget.ListView/android.widget.LinearLayout[%s]//android.widget.TextView[2]" % (
-                    i + 1)
-            confirm_box[
-                i] = "//android.widget.ListView/android.widget.LinearLayout[%s]/android.widget.LinearLayout/android.widget.TextView" % (
-                    i + 1)
+            device_box[i] = "//android.widget.ListView/android.widget.LinearLayout[%s]//" \
+                            "android.widget.TextView[2]" % (i + 1)
+            confirm_box[i] = "//android.widget.ListView/android.widget.LinearLayout[%s]/" \
+                             "android.widget.LinearLayout/android.widget.TextView" % (i + 1)
         # 设备路径
         d["device_box"] = [device_box, "xpath", u"设备等待添加"]
         # 使用
@@ -183,7 +182,7 @@ class MainPageWidgetAndroid(object):
         # 标题
         d["title"] = [u"//android.view.View[@content-desc='电子过载']", "xpath", u"设备控制页面"]
         # 设备信息进入按钮
-        d["device_info"] = ["com.jd.smart:id/i_more", "id", u"设备信息进入按钮"]
+        d["device_setting"] = ["com.jd.smart:id/i_more", "id", u"设备信息进入按钮"]
         # 设备离线标志
         # d["offline"] = [u"设备不在线", "name", u"设备离线标志"]
         # 功率
@@ -245,15 +244,35 @@ class MainPageWidgetAndroid(object):
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
 
-    # 设备信息页面
-    def device_info_page(self):
+    # 设备设置页面
+    def device_setting_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='设置']", "xpath", u"设备信息页面"]
+        d["title"] = [u"//android.widget.TextView[@text='设置']", "xpath", u"设备设置页面"]
+        # 设备详情按钮
+        d["device_info"] = ["com.jd.smart:id/ads_logo", "id", u"设备详情按钮"]
         # 删除设备按钮
         d["unbind"] = ["com.jd.smart:id/btn_unbind", "id", u"删除设备按钮"]
         # 编辑设备备注
         d["nickname"] = ["com.jd.smart:id/ads_edit_name", "id", u"编辑设备备注"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
+        return d
+
+    # 设备信息页面
+    def device_info_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='关于设备']", "xpath", u"设备信息页面"]
+        # 产品名称
+        d["name"] = ["//android.widget.RelativeLayout//android.widget.TextView[2]", "id", u"删除设备按钮"]
+        # 设备编号
+        d["mac"] = ["//android.widget.RelativeLayout[2]//android.widget.TextView[2]", "id", u"编辑设备备注"]
+        # 序列号
+        d["serial_number"] = ["//android.widget.RelativeLayout[3]//android.widget.TextView[2]", "id", u"编辑设备备注"]
+        # 设备编号
+        d["mac"] = ["//android.widget.RelativeLayout[2]//android.widget.TextView[2]", "id", u"编辑设备备注"]
+
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
         return d

@@ -1,5 +1,6 @@
 # coding=utf-8
 # 由Conf.py生成
+import os
 import sys
 
 import yaml
@@ -8,8 +9,12 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 conf_path = r"config/Conf.yaml"
+base_pwd_path = r"config/basepwd.yaml"
 pwd_path = r"config/pwd.yaml"
-conf = dict(yaml.load(file(conf_path)), **yaml.load(file(pwd_path)))
+if os.path.isfile(pwd_path):
+    conf = dict(yaml.load(file(conf_path)), **yaml.load(file(pwd_path)))
+else:
+    conf = dict(yaml.load(file(conf_path)), **yaml.load(file(base_pwd_path)))
 
 
 def modified_conf(config, pwd=False):

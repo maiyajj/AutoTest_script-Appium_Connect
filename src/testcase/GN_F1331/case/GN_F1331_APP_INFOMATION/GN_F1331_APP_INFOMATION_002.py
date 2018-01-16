@@ -5,9 +5,9 @@ from src.testcase.GN_F1331.WidgetOperation import *
 class GNF1331AppFunction2(WidgetOperation):
     @case_run(False)
     def run(self):
-        self.case_module = u"APP功能测试"  # 用例所属模块
-        self.case_title = u'启动鱼缸模式定时，APP中开关状态检查'  # 用例名称
-        self.zentao_id = 1307  # 禅道ID
+        self.case_module = u"APP检查"  # 用例所属模块
+        self.case_title = u'设备详细界面，信息检测'  # 用例名称
+        self.zentao_id = 007  # 禅道ID
 
     # 用例动作
     def case(self):

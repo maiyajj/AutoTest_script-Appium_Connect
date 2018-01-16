@@ -134,47 +134,41 @@ class GNF1331NormalTimer8(WidgetOperation):
             # 110, 000
             # 定时1、定时3执行关→开
             btn_state = btn_state_list[0]
-            btn_all_layer = btn_state[1]
             result = [set_time_1 - 15 <= btn_state[0] <= set_time_1 + 15,
                       set_time_3 - 15 <= btn_state[0] <= set_time_3 + 15,
-                      btn_all_layer == "110"]
+                      btn_state[1] == "110"]
             if False in result:
                 raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
             # 定时2、定时4执行开→关
             btn_state = btn_state_list[1]
-            btn_all_layer = btn_state[1]
             result = [set_time_2 - 15 <= btn_state[0] <= set_time_2 + 15,
                       set_time_4 - 15 <= btn_state[0] <= set_time_4 + 15,
-                      btn_all_layer == "000"]
+                      btn_state[1] == "000"]
             if False in result:
                 raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
         else:  # 执行时间不同的情况
             # 100, 000, 010, 000
             # 定时1执行关→开
             btn_state = btn_state_list[0]
-            btn_all_layer = btn_state[1]
             result = [set_time_1 - 15 <= btn_state[0] <= set_time_1 + 15,
-                      btn_all_layer == "100"]
+                      btn_state[1] == "100"]
             if False in result:
                 raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
             # 定时2执行开→关
             btn_state = btn_state_list[1]
-            btn_all_layer = btn_state[1]
             result = [set_time_2 - 15 <= btn_state[0] <= set_time_2 + 15,
-                      btn_all_layer == "000"]
+                      btn_state[1] == "000"]
             if False in result:
                 raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
             # 定时3执行开→关
             btn_state = btn_state_list[2]
-            btn_all_layer = btn_state[1]
             result = [set_time_3 - 15 <= btn_state[0] <= set_time_3 + 15,
-                      btn_all_layer == "010"]
+                      btn_state[1] == "010"]
             if False in result:
                 raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
             # 定时4执行开→关
             btn_state = btn_state_list[3]
-            btn_all_layer = btn_state[1]
             result = [set_time_4 - 15 <= btn_state[0] <= set_time_4 + 15,
-                      btn_all_layer == "000"]
+                      btn_state[1] == "000"]
             if False in result:
                 raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))

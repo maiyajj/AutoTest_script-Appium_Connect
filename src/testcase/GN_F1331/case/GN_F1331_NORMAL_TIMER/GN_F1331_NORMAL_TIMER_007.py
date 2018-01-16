@@ -51,7 +51,7 @@ class GNF1331NormalTimer7(WidgetOperation):
                   set_normal_timer_state == "1"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (set_normal_timer, result))
-        # 执行
+        # 执行关→开
         launch_normal_timer = launch_normal_timer_once_list[0]
         launch_normal_timer_id = launch_normal_timer[1]
         launch_normal_timer_launch_time = launch_normal_timer[2]
@@ -71,7 +71,7 @@ class GNF1331NormalTimer7(WidgetOperation):
                   set_normal_timer_state == "0"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (set_normal_timer, result))
-        # 执行
+        # 执行开→关
         launch_normal_timer = launch_normal_timer_once_list[1]
         launch_normal_timer_id = launch_normal_timer[1]
         launch_normal_timer_launch_time = launch_normal_timer[2]
@@ -82,17 +82,16 @@ class GNF1331NormalTimer7(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_normal_timer, result))
 
         # 开关
-        # 第一定时开关
+        # 100, 000
+        # 定时1执行关→开
         btn_state = btn_state_list[0]
-        btn_all_layer = btn_state[1]
         result = [set_time_1 - 15 <= btn_state[0] <= set_time_1 + 15,
-                  btn_all_layer == "100"]
+                  btn_state[1] == "100"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
-        # 第二定时开关
+        # 定时2执行开→关
         btn_state = btn_state_list[1]
-        btn_all_layer = btn_state[1]
         result = [set_time_2 - 15 <= btn_state[0] <= set_time_2 + 15,
-                  btn_all_layer == "000"]
+                  btn_state[1] == "000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn_state, result))
