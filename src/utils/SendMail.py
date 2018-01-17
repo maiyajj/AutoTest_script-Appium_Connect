@@ -14,13 +14,21 @@ class Mailer(object):
     The function of sending an email.
     """
 
-    def __init__(self, m_queue, conf):
+    def __init__(self, m_queue, conf, send_now=False, sendTo="all"):
         # Receiver/Sender for mail.
-        self.mail_list = ["chenghao@gongniu.cn",
-                          "zhulei@gongniu.cn",
-                          "fanrt@gongniu.cn",
-                          "sunsy@gongniu.cn",
-                          "dongjz@gongniu.cn"]
+        mail_list = ["chenghao@gongniu.cn",
+                     "zhulei@gongniu.cn",
+                     "fanrt@gongniu.cn",
+                     "sunsy@gongniu.cn",
+                     "dongjz@gongniu.cn"]
+
+        if sendTo == "all":
+            self.mail_list = mail_list
+        else:
+            if isinstance(sendTo, list):
+                self.mail_list = sendTo
+            else:
+                self.mail_list = [sendTo]
 
         self.mail_pwd = conf["mail_pwd"]
         self.mail_host = "smtp.163.com"
@@ -35,6 +43,7 @@ class Mailer(object):
 
         # Get report xls from child process, is blocking!
         parent_path = m_queue.get()
+        m_queue.put(parent_path)
 
         # Scan the root directory to get the files you want to send by mail.
         f = lambda x: os.path.join(parent_path, x)
@@ -49,11 +58,14 @@ class Mailer(object):
 
         # Refresh time per second.
         # When time is 7 a.m, send the scanned files in the mail.
-        while True:
-            now_time = time.strftime("%X")
-            if "07:00:00" in now_time:
-                self.send_mail()
-            time.sleep(1)
+        if send_now:
+            self.send_mail()
+        else:
+            while True:
+                now_time = time.strftime("%X")
+                if "07:00:00" in now_time:
+                    self.send_mail()
+                time.sleep(1)
 
     def send_mail(self):
         me = "%s<%s@%s>" % (self.mail_user, self.mail_user, self.mail_postfix)
@@ -101,6 +113,7 @@ class Mailer(object):
             s.login(self.mail_user, self.mail_pass)  # 登录到你邮箱
             s.sendmail(me, self.mail_list, msg.as_string())  # 发送内容
             s.close()
+            print("send mail success !!")
             return True
         except Exception, e:
             with open(self.mail_error, "a") as files:

@@ -11,6 +11,9 @@ class AppInit(object):
 
     def app_init(self):
         device_info = GetPhoneInfo().get_phone_info()
+        if not device_info:
+            print(u"ERROR! 未检测到设备，请检查手机链接。")
+            exit(-1)
         for k, v in device_info.items():
             if v["platformName"] == "Android":
                 AppInitAndroid(device_info, k).app_init_android()

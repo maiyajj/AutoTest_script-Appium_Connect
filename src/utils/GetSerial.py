@@ -16,8 +16,15 @@ class ReceiveSerial(object):
         self.log_path = os.path.join(self.sc.set_appium_log_addr(), "%s" % time.strftime("%Y-%m-%d_%H.%M"), "DeviceLog")
         self.log_name = "%s_%s" % (com, port)
         self.serial_main_data_queue = Queue.Queue()
-        self.serial_sever = serial.Serial(str(com), int(port), timeout=3)
-        self.device_serial()
+        try:
+            self.serial_sever = serial.Serial(str(com), int(port), timeout=3)
+            self.device_serial()
+        except serial.SerialException, e:
+            # e: '\\xcf\\xb5\\xcd...'
+            # 需要通过decode("string-escape")转义\\，结果'\xcf\xb5\xcd...'
+            print(u"%s打开失败，%s请检查串口设置。" % (com,
+                                          re.findall(".+'(.+?)'", str(e))[0].decode("string-escape").decode("gbk")))
+            exit(-1)
 
     def receive_log(self):
         while True:

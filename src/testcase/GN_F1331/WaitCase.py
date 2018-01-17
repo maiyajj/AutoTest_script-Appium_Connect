@@ -7,6 +7,7 @@ from src.testcase.GN_F1331.page.ReadAPPElement import *
 from src.utils.Debug import *
 from src.utils.GetSerial import *
 from src.utils.OutputReport import *
+from src.utils.SendMail import *
 from src.utils.WriteXls import *
 
 
@@ -23,7 +24,8 @@ class WaitCase(object):
         self.device_list = device_list  # 设备列表
         self.device_name = device_name  # 设备名称
         self.device_info = device_list[device_name]  # 设备信息表
-        database["m_queue"] = m_queue  # 用于主进程和子进程通讯的消息队列
+        self.m_queue = m_queue  # 用于主进程和子进程通讯的消息队列
+        database["m_queue"] = m_queue
 
         self.report = None  # 初始化结果报告模块
         self.xls = None  # 初始化执行结果Excel文件模块
@@ -65,7 +67,7 @@ class WaitCase(object):
             self.receive_serial.serial_sever.close()
             self.serial_receive_t.join()
             self.serial_command_t.join()
-            raise ScriptInitError("Script Init Error!!!")
+            exit(-1)
 
     # 从元素库筛选对应APP元素库
     def select_page_element(self):
@@ -127,7 +129,8 @@ class WaitCase(object):
         self.debug.info("*" * 30)
 
         # 执行用例
-        while True:
+        times = 1
+        while times:
             self.debug.info("run times [%s]" % database["program_loop_time"])
             # self.write_report(GNF1331NormalTimer1)  # 1216, 上层循环定时
             # self.write_report(GNF1331NormalTimer2)  # 1216, 上、中层循环定时
@@ -136,11 +139,14 @@ class WaitCase(object):
             # self.write_report(GNF1331NormalTimer5)  # 1216, 上、中层延迟定时
             # self.write_report(GNF1331NormalTimer6)  # 1216, 上、中、下层延迟定时
             # self.write_report(GNF1331NormalTimer7)  # 1216, 上层普通定时
-            self.write_report(GNF1331NormalTimer8)  # 1216, 上、中层普通定时
+            # self.write_report(GNF1331NormalTimer8)  # 1216, 上、中层普通定时
             # self.write_report(GNF1331NormalTimer9)  # 1216, 上、中、下层普通定时
             # self.write_report(GNF1331NormalTimer10)  # 1216, 上层延迟、中层循环定时、下层普通定时开、关
 
             database["program_loop_time"] += 1
+            times -= 1
+
+        Mailer(self.m_queue, conf, True, "chenghao@gongniu.cn")
 
     # 输出报告
     def write_report(self, case_name):

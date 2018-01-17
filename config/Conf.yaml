@@ -128,5 +128,5 @@ phone_name:
     app: 'GN_F1331'
     phone_module: '中兴 C880U'
     devices_mac: '0'
-    serial_com: "COM12"
+    serial_com: "COM1"
     serial_port: '115200'

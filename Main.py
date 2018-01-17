@@ -20,9 +20,11 @@ class MainFunc(object):
         """
         # These two functions cannot run on the same process and can only be run with multiple processes.
         appium = Process(target=LaunchAppiumServices, args=(device_list, device_name), name=device_name)
+        appium.daemon = True  # this process will be killed when 'case' is over
         appium.start()
         case = Process(target=WaitCase, args=(device_list, device_name, m_queue))
         case.start()
+        case.join()
 
     def send_mail(self, m_queue):
         """Send mail at set time every day.
@@ -48,6 +50,7 @@ if __name__ == '__main__':
 
     # Start send mail process.
     mail = Process(target=mf.send_mail, args=(m_queue,))
+    mail.daemon = True
     mail.start()
 
     # Start app auto test process.
@@ -55,3 +58,6 @@ if __name__ == '__main__':
     process = [Process(target=mf.run, args=(device_list, device_name, m_queue)) for device_name in device_list.keys()]
     for i in process:
         i.start()
+
+    for i in process:
+        i.join()
