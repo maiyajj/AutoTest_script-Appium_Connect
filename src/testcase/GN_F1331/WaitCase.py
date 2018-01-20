@@ -132,6 +132,11 @@ class WaitCase(object):
         times = 1
         while times:
             self.debug.info("run times [%s]" % database["program_loop_time"])
+            # self.write_report(GNF1331AppInfomation1)  # 007, 设备详细界面，信息检测
+            # self.write_report(GNF1331AppInfomation2)  # 007, 设备详细界面，信息检测
+            # self.write_report(GNF1331DeviceInfo1)  # 1170, 设置记忆模式
+            # self.write_report(GNF1331DeviceInfo2)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
+            self.write_report(GNF1331KeyMemory1)  # 1216, 开关操作及记忆功能
             # self.write_report(GNF1331NormalTimer1)  # 1216, 上层循环定时
             # self.write_report(GNF1331NormalTimer2)  # 1216, 上、中层循环定时
             # self.write_report(GNF1331NormalTimer3)  # 1216, 上、中、下层循环定时

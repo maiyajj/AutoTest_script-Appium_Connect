@@ -26,6 +26,7 @@ class PageElement(object):
         d["cycle_timer_page"] = self.mpw.cycle_timer_page()
         d["delay_timer_page"] = self.mpw.delay_timer_page()
         d["device_info_page"] = self.mpw.device_info_page()
+        d["device_setting_page"] = self.mpw.device_setting_page()
         d["down_timer_page"] = self.mpw.down_timer_page()
         d["elec_bill_page"] = self.mpw.elec_bill_page()
         d["elec_page"] = self.mpw.elec_page()
@@ -50,7 +51,6 @@ class PageElement(object):
         d["logout_popup"] = self.mpw.logout_popup()
         d["mode_timer_conflict_popup"] = self.mpw.mode_timer_conflict_popup()
         d["timer_edit_popup"] = self.mpw.timer_edit_popup()
-        d["timer_log_clear_popup"] = self.mpw.timer_log_clear_popup()
         d["unbind_device_popup"] = self.mpw.unbind_device_popup()
         d["update_popup"] = self.mpw.update_popup()
 

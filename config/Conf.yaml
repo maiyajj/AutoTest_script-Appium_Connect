@@ -107,7 +107,7 @@ phone_name:
     serial_com: "COM12"
     serial_port: '115200'
   8681-M02-0xa0a151df:
-    app: 'GN_201J'
+    app: 'GN_F1331'
     phone_module: '360奇酷'
     devices_mac: '0'
     serial_com: "COM12"
@@ -129,4 +129,16 @@ phone_name:
     phone_module: '中兴 C880U'
     devices_mac: '0'
     serial_com: "COM1"
+    serial_port: '115200'
+  7EYNW17B17003643:
+    app: 'GN_F1331'
+    phone_module: '华为畅享7Plus'
+    devices_mac: '0'
+    serial_com: "COM12"
+    serial_port: '115200'
+  '301258140704':
+    app: 'GN_F1331'
+    phone_module: '红米note4X'
+    devices_mac: '0'
+    serial_com: "COM12"
     serial_port: '115200'

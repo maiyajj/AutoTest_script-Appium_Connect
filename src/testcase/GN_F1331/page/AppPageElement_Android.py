@@ -200,8 +200,7 @@ class MainPageWidgetAndroid(object):
         # 上层定时
         d["up_timer"] = [u"//android.view.View[contains(@content-desc, '上层')]", "xpath", u"上层定时"]
         # 上层电源开关
-        d["up_button"] = [u"//android.view.View[contains(@content-desc, '上层')]", "xpath", u"上层电源开关",
-                          {"px": [3.8, 1]}]
+        d["up_button"] = ["//android.webkit.WebView/android.view.View[5]", "xpath", u"上层电源开关"]
         # 上层电源状态开
         d["up_button_on"] = [u"//android.view.View[@content-desc='上层已开启']", "xpath", u"上层电源状态开"]
         # 上层电源状态关
@@ -211,8 +210,7 @@ class MainPageWidgetAndroid(object):
         # 中层定时
         d["mid_timer"] = [u"//android.view.View[contains(@content-desc, '中层')]", "xpath", u"中层定时"]
         # 中层电源开关
-        d["mid_button"] = [u"//android.view.View[contains(@content-desc, '中层')]", "xpath", u"中层电源开关",
-                           {"px": [3.8, 1]}]
+        d["mid_button"] = ["//android.webkit.WebView/android.view.View[8]", "xpath", u"中层电源开关"]
         # 中层电源状态开
         d["mid_button_on"] = [u"//android.view.View[@content-desc='中层已开启']", "xpath", u"中层电源状态开"]
         # 中层电源状态关
@@ -222,8 +220,7 @@ class MainPageWidgetAndroid(object):
         # 下层定时
         d["down_timer"] = [u"//android.view.View[contains(@content-desc, '下层')]", "xpath", u"下层定时"]
         # 下层电源开关
-        d["down_button"] = [u"//android.view.View[contains(@content-desc, '下层')]", "xpath", u"下层电源开关",
-                            {"px": [3.8, 1]}]
+        d["down_button"] = ["//android.webkit.WebView/android.view.View[11]", "xpath", u"下层电源开关"]
         # 下层电源状态开
         d["down_button_on"] = [u"//android.view.View[@content-desc='下层已开启']", "xpath", u"下层电源状态开"]
         # 下层电源状态关
@@ -265,14 +262,15 @@ class MainPageWidgetAndroid(object):
         # 标题
         d["title"] = [u"//android.widget.TextView[@text='关于设备']", "xpath", u"设备信息页面"]
         # 产品名称
-        d["name"] = ["//android.widget.RelativeLayout//android.widget.TextView[2]", "id", u"删除设备按钮"]
+        d["name"] = ["//android.widget.RelativeLayout//android.widget.TextView[2]", "xpath", u"产品名称"]
         # 设备编号
-        d["mac"] = ["//android.widget.RelativeLayout[2]//android.widget.TextView[2]", "id", u"编辑设备备注"]
+        d["mac"] = ["//android.widget.RelativeLayout[2]//android.widget.TextView[2]", "xpath", u"设备编号"]
         # 序列号
-        d["serial_number"] = ["//android.widget.RelativeLayout[3]//android.widget.TextView[2]", "id", u"编辑设备备注"]
+        d["serial_number"] = ["//android.widget.RelativeLayout[3]//android.widget.TextView[2]", "xpath", u"序列号"]
         # 设备编号
-        d["mac"] = ["//android.widget.RelativeLayout[2]//android.widget.TextView[2]", "id", u"编辑设备备注"]
-
+        d["mac"] = ["//android.widget.RelativeLayout[3]//android.widget.TextView[2]", "xpath", u"设备编号"]
+        # 设备状态
+        d["state"] = ["//android.widget.RelativeLayout[4]//android.widget.TextView[2]", "xpath", u"设备状态"]
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
         return d
@@ -300,15 +298,13 @@ class MainPageWidgetAndroid(object):
         # 延时任务
         d["delay_timer"] = [u"//android.view.View[contains(@content-desc, '延时任务')]", "xpath", u"延时任务"]
         # 延时任务开关
-        d["delay_timer_button"] = [u"//android.view.View[contains(@content-desc, '延时定时')]", "xpath",
-                                   u"延时任务开关", {"px": [1.1, 0.5]}]
+        d["delay_timer_button"] = ["//android.webkit.WebView/android.view.View[5]", "xpath", u"延时任务开关"]
         # 延时任务状态
         d["delay_timer_state"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"延时任务状态"]
         # 循环任务
         d["cycle_timer"] = [u"//android.view.View[contains(@content-desc, '循环任务')]", "xpath", u"循环任务"]
         # 循环任务开关
-        d["cycle_timer_button"] = [u"//android.view.View[contains(@content-desc, '循环定时')]", "xpath",
-                                   u"循环任务开关", {"px": [1.1, 0.5]}]
+        d["cycle_timer_button"] = ["//android.webkit.WebView/android.view.View[7]", "xpath", u"循环任务开关"]
         # 循环任务状态
         d["cycle_timer_state"] = ["//android.webkit.WebView/android.view.View[5]", "xpath", u"循环任务状态"]
         # 循环任务次数
@@ -316,9 +312,8 @@ class MainPageWidgetAndroid(object):
         # 添加定时任务按钮
         d["add_normal_timer_button"] = [u"//android.widget.Button[@content-desc='添加']", "xpath", u"添加定时任务按钮"]
         # 普通定时跳转修改按钮
-        normal_timer_modify = {0: u"//android.view.View[@content-desc='定时开启']",
-                               1: u"//android.view.View[@content-desc='定时关闭']"}
-        d["normal_timer_modify"] = [normal_timer_modify, "xpath", u"普通定时跳转修改按钮", {"px": [1.15, 0.5]}]
+        d["normal_timer_modify"] = ["//android.webkit.WebView/android.view.View[7]/android.view.View[2]", "xpath",
+                                    u"普通定时跳转修改按钮"]
         # 有普通定时
         d["has_normal_timer"] = [u"//android.view.View[contains(@content-desc, ':')]", "xpath", u"有普通定时"]
         # 备注
@@ -337,15 +332,13 @@ class MainPageWidgetAndroid(object):
         # 延时任务
         d["delay_timer"] = [u"//android.view.View[contains(@content-desc, '延时任务')]", "xpath", u"延时任务"]
         # 延时任务开关
-        d["delay_timer_button"] = [u"//android.view.View[contains(@content-desc, '延时定时')]", "xpath",
-                                   u"延时任务开关", {"px": [1.1, 0.5]}]
+        d["delay_timer_button"] = ["//android.webkit.WebView/android.view.View[5]", "xpath", u"延时任务开关"]
         # 延时任务状态
         d["delay_timer_state"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"延时任务状态"]
         # 循环任务
         d["cycle_timer"] = [u"//android.view.View[contains(@content-desc, '循环任务')]", "xpath", u"循环任务"]
         # 循环任务开关
-        d["cycle_timer_button"] = [u"//android.view.View[contains(@content-desc, '循环定时')]", "xpath",
-                                   u"循环任务开关", {"px": [1.1, 0.5]}]
+        d["cycle_timer_button"] = ["//android.webkit.WebView/android.view.View[7]", "xpath", u"循环任务开关"]
         # 循环任务状态
         d["cycle_timer_state"] = ["//android.webkit.WebView/android.view.View[5]", "xpath", u"循环任务状态"]
         # 循环任务次数
@@ -353,9 +346,8 @@ class MainPageWidgetAndroid(object):
         # 添加定时任务按钮
         d["add_normal_timer_button"] = [u"//android.widget.Button[@content-desc='添加']", "xpath", u"添加定时任务按钮"]
         # 普通定时跳转修改按钮
-        normal_timer_modify = {0: u"//android.view.View[@content-desc='定时开启']",
-                               1: u"//android.view.View[@content-desc='定时关闭']"}
-        d["normal_timer_modify"] = [normal_timer_modify, "xpath", u"普通定时跳转修改按钮", {"px": [1.15, 0.5]}]
+        d["normal_timer_modify"] = ["//android.webkit.WebView/android.view.View[7]/android.view.View[2]", "xpath",
+                                    u"普通定时跳转修改按钮"]
         # 有普通定时
         d["has_normal_timer"] = [u"//android.view.View[contains(@content-desc, ':')]", "xpath", u"有普通定时"]
         # 备注
@@ -374,15 +366,13 @@ class MainPageWidgetAndroid(object):
         # 延时任务
         d["delay_timer"] = [u"//android.view.View[contains(@content-desc, '延时任务')]", "xpath", u"延时任务"]
         # 延时任务开关
-        d["delay_timer_button"] = [u"//android.view.View[contains(@content-desc, '延时定时')]", "xpath",
-                                   u"延时任务开关", {"px": [1.1, 0.5]}]
+        d["delay_timer_button"] = ["//android.webkit.WebView/android.view.View[5]", "xpath", u"延时任务开关"]
         # 延时任务状态
         d["delay_timer_state"] = ["//android.webkit.WebView/android.view.View[4]", "xpath", u"延时任务状态"]
         # 循环任务
         d["cycle_timer"] = [u"//android.view.View[contains(@content-desc, '循环任务')]", "xpath", u"循环任务"]
         # 循环任务开关
-        d["cycle_timer_button"] = [u"//android.view.View[contains(@content-desc, '循环定时')]", "xpath",
-                                   u"循环任务开关", {"px": [1.1, 0.5]}]
+        d["cycle_timer_button"] = ["//android.webkit.WebView/android.view.View[7]", "xpath", u"循环任务开关"]
         # 循环任务状态
         d["cycle_timer_state"] = ["//android.webkit.WebView/android.view.View[5]", "xpath", u"循环任务状态"]
         # 循环任务次数
@@ -390,9 +380,8 @@ class MainPageWidgetAndroid(object):
         # 添加定时任务按钮
         d["add_normal_timer_button"] = [u"//android.widget.Button[@content-desc='添加']", "xpath", u"添加定时任务按钮"]
         # 普通定时跳转修改按钮
-        normal_timer_modify = {0: u"//android.view.View[@content-desc='定时开启']",
-                               1: u"//android.view.View[@content-desc='定时关闭']"}
-        d["normal_timer_modify"] = [normal_timer_modify, "xpath", u"普通定时跳转修改按钮", {"px": [1.15, 0.5]}]
+        d["normal_timer_modify"] = ["//android.webkit.WebView/android.view.View[7]/android.view.View[2]", "xpath",
+                                    u"普通定时跳转修改按钮"]
         # 有普通定时
         d["has_normal_timer"] = [u"//android.view.View[contains(@content-desc, ':')]", "xpath", u"有普通定时"]
         # 备注
@@ -705,17 +694,6 @@ class PopupWidgetAndroid(object):
         d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
         return d
 
-    # 定时执行记录清除弹窗
-    def timer_log_clear_popup(self):
-        d = {}
-        # 标题
-        d["title"] = [u"//android.view.View[@content-desc='是否清空记录']", "xpath", u"是否清空记录"]
-        # 确认
-        d["confirm"] = [u"//android.widget.Button[@content-desc='是']", "xpath", u"确认"]
-        # 取消
-        d["cancel"] = [u"//android.widget.Button[@content-desc='否']", "xpath", u"取消"]
-        return d
-
     # 过期定时删除弹窗
     def timer_edit_popup(self):
         d = {}
@@ -729,13 +707,13 @@ class PopupWidgetAndroid(object):
         d["cancel"] = [u"//android.view.View[@content-desc='取消']", "xpath", u"取消", {"pxw": [0.5, 0.95]}]
         return d
 
-    # 模式定时冲突弹窗
+    # 普通定时冲突弹窗
     def mode_timer_conflict_popup(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.view.View[@content-desc='开启新定时，将会自动关闭其他定时，是否确认开启？']", "xpath", u"模式定时冲突弹窗"]
+        d["title"] = [u"//android.view.View[contains(@content-desc, '添加定时，')]", "xpath", u"模式定时冲突弹窗"]
         # 确定
-        d["confirm"] = [u"//android.widget.Button[@content-desc='是']", "xpath", u"确定"]
+        d["confirm"] = ["//android.view.View[99]", "xpath", u"确定"]
         # 取消
-        d["cancel"] = [u"//android.widget.Button[@content-desc='否']", "xpath", u"取消"]
+        d["cancel"] = ["//android.view.View[98]", "xpath", u"取消"]
         return d

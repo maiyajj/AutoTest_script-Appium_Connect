@@ -136,3 +136,32 @@ class ShellCommandMac(object):
             raise UnicodeDecodeError("%s codec can't decode bytes in os.getcwd()" % code)
         else:
             return addr
+
+    def push_appium_app(self):
+        """
+        代替appium安装三大APP
+        """
+        command = r"adb install .\apk\unlock_apk-debug.apk"
+        os.system(command)
+
+        command = r"adb install .\apk\settings_apk-debug.apk"
+        os.system(command)
+
+        command = r"adb install .\apk\UnicodeIME-debug.apk"
+        os.system(command)
+
+    def replace_appium_js(self):
+        """
+        appium每次都会安装setting.apk和unlock.apk，复制已经取消安装的代码至源appium路径
+        """
+        appium_path = os.popen("where appium").read().split("\n")[0].split(".bin")[0]
+        appium_js_path = os.path.join(appium_path, r"appium\lib\devices\android")
+
+        for i in ["android", "android-common"]:
+            try:
+                old_path = os.path.join(appium_js_path, "%s.js" % i)
+                os.renames(old_path, os.path.join(appium_js_path, "%s.bak" % i))
+                os.system("copy %s %s" % (r".\apk\%s.js", old_path))
+                print("%s.js copy finished" % i)
+            except WindowsError:
+                pass

@@ -245,15 +245,35 @@ class MainPageWidgetIos(object):
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         return d
 
-    # 设备信息页面
-    def device_info_page(self):
+    # 设备设置页面
+    def device_setting_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='设置']", "xpath", u"设备信息页面"]
+        d["title"] = [u"//android.widget.TextView[@text='设置']", "xpath", u"设备设置页面"]
+        # 设备详情按钮
+        d["device_info"] = ["com.jd.smart:id/ads_logo", "id", u"设备详情按钮"]
         # 删除设备按钮
         d["unbind"] = ["com.jd.smart:id/btn_unbind", "id", u"删除设备按钮"]
         # 编辑设备备注
         d["nickname"] = ["com.jd.smart:id/ads_edit_name", "id", u"编辑设备备注"]
+        # 返回按钮
+        d["to_return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
+        return d
+
+    # 设备信息页面
+    def device_info_page(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.widget.TextView[@text='关于设备']", "xpath", u"设备信息页面"]
+        # 产品名称
+        d["name"] = ["//android.widget.RelativeLayout//android.widget.TextView[2]", "id", u"删除设备按钮"]
+        # 设备编号
+        d["mac"] = ["//android.widget.RelativeLayout[2]//android.widget.TextView[2]", "id", u"编辑设备备注"]
+        # 序列号
+        d["serial_number"] = ["//android.widget.RelativeLayout[3]//android.widget.TextView[2]", "id", u"编辑设备备注"]
+        # 设备编号
+        d["mac"] = ["//android.widget.RelativeLayout[2]//android.widget.TextView[2]", "id", u"编辑设备备注"]
+
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/iv_left", "id", u"返回"]
         return d
@@ -674,17 +694,6 @@ class PopupWidgetIos(object):
         d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
         # 取消
         d["cancel"] = ["com.jd.smart:id/cancel", "id", u"取消"]
-        return d
-
-    # 定时执行记录清除弹窗
-    def timer_log_clear_popup(self):
-        d = {}
-        # 标题
-        d["title"] = [u"//android.view.View[@content-desc='是否清空记录']", "xpath", u"是否清空记录"]
-        # 确认
-        d["confirm"] = [u"//android.widget.Button[@content-desc='是']", "xpath", u"确认"]
-        # 取消
-        d["cancel"] = [u"//android.widget.Button[@content-desc='否']", "xpath", u"取消"]
         return d
 
     # 过期定时删除弹窗

@@ -21,6 +21,7 @@ def check_debug(device_info):
     udid = device_info["udid"]
     current_time = time.strftime("%Y-%m-%d_%H.%M")
     debug_path = r"./debug/%s" % current_time
+    device_info["debug_path"] = debug_path
     if os.path.exists(debug_path) is False:
         # 多进程打印可能存在冲突，忽略即可
         try:

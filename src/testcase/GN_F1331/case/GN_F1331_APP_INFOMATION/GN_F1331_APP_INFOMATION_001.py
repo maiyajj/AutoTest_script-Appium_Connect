@@ -2,7 +2,7 @@
 from src.testcase.GN_F1331.WidgetOperation import *
 
 
-class GNF1331AppFunction1(WidgetOperation):
+class GNF1331AppInfomation1(WidgetOperation):
     @case_run("")
     def run(self):
         self.case_module = u"APP检查(#2)"  # 用例所属模块
@@ -13,50 +13,18 @@ class GNF1331AppFunction1(WidgetOperation):
     def case(self):
         self.choose_home_device(conf["MAC"][self.app][self.device_mac])
 
-        self.widget_click(self.page["control_device_page"]["device_info"],
+        self.widget_click(self.page["control_device_page"]["device_setting"],
+                          self.page["device_setting_page"]["title"])
+
+        self.widget_click(self.page["device_setting_page"]["device_info"],
                           self.page["device_info_page"]["title"])
 
-        self.widget_click(self.page["normal_timer_page"]["timer_log"],
-                          self.page["timer_log_page"]["title"])
-        try:
-            self.wait_widget(self.page["timer_log_page"]["no_log"])
-        except TimeoutException:
-            self.widget_click(self.page["timer_log_page"]["clear"],
-                              self.page["timer_log_clear_popup"]["title"])
+        attr = self.wait_widget(self.page["device_info_page"]["name"])
+        name = self.ac.get_attribute(attr, "name")
+        if not name == u"公牛智立方USB插座（WiFi版）":
+            raise TimeoutException("device state error, current: %s" % name)
 
-            self.widget_click(self.page["timer_log_clear_popup"]["confirm"],
-                              self.page["timer_log_page"]["no_log"])
-
-        self.widget_click(self.page["timer_log_page"]["to_return"],
-                          self.page["normal_timer_page"]["title"])
-
-        now = time.strftime("%H:%M")
-
-        delay_time_1 = 1
-        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, delay_time_1, "power_on")
-
-        self.widget_click(self.page["normal_timer_page"]["to_return"],
-                          self.page["control_device_page"]["title"])
-
-        self.check_timer(start_time_1, set_time_1, u"设备已开启", cycle1)
-
-        self.widget_click(self.page["control_device_page"]["normal_timer"],
-                          self.page["normal_timer_page"]["title"])
-
-        time.sleep(3)
-        self.widget_click(self.page["normal_timer_page"]["timer_log"],
-                          self.page["timer_log_page"]["title"])
-
-        month, day = time.strftime("%m-%d").split("-")
-        set_time_date = u"%s%s月%s日" % (set_time_1, month, day)
-        element = self.wait_widget(self.page["timer_log_page"]["has_log"])
-        if self.ac.get_attribute(element, "name") == set_time_date:
-            self.debug.info(u"[APP_INFO]存在定时记录%s" % set_time_date)
-        else:
-            raise TimeoutException("don`t have timing records: %s" % set_time_date)
-
-        self.widget_click(self.page["timer_log_page"]["clear"],
-                          self.page["timer_log_clear_popup"]["title"])
-
-        self.widget_click(self.page["timer_log_clear_popup"]["confirm"],
-                          self.page["timer_log_page"]["no_log"])
+        attr = self.wait_widget(self.page["device_info_page"]["mac"])
+        name = self.ac.get_attribute(attr, "name")
+        if not name == conf["MAC"][self.app][self.device_mac].replace(":", "-"):
+            raise TimeoutException("device state error, current: %s" % name)

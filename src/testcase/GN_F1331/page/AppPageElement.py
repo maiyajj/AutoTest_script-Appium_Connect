@@ -58,6 +58,9 @@ class MainPageWidget(object):
     def device_info_page(self):
         return self.wrapper(self.mpwa.device_info_page(), self.mpwi.device_info_page())
 
+    def device_setting_page(self):
+        return self.wrapper(self.mpwa.device_setting_page(), self.mpwi.device_setting_page())
+
     def down_timer_page(self):
         return self.wrapper(self.mpwa.down_timer_page(), self.mpwi.down_timer_page())
 
@@ -126,9 +129,6 @@ class MainPageWidget(object):
 
     def timer_edit_popup(self):
         return self.wrapper(self.pwa.timer_edit_popup(), self.pwi.timer_edit_popup())
-
-    def timer_log_clear_popup(self):
-        return self.wrapper(self.pwa.timer_log_clear_popup(), self.pwi.timer_log_clear_popup())
 
     def unbind_device_popup(self):
         return self.wrapper(self.pwa.unbind_device_popup(), self.pwi.unbind_device_popup())

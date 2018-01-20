@@ -5,6 +5,10 @@ from src.utils.GetSerial import *
 
 
 class WidgetOperation(LaunchApp):
+    def __init__(self, device_info):
+        super(WidgetOperation, self).__init__(device_info)
+        self.check_flag = 1
+
     # 获取元素索引
     def get_index(self, device, element1):
         while True:
@@ -933,13 +937,20 @@ class WidgetOperation(LaunchApp):
             except Queue.Empty:
                 break
 
-        self.serial_command_queue.put_nowait((False, "", ""))  # 待机log分析
+        self.serial_command_queue.put_nowait((False, "", ""))  # 待机log分析，清空多余数据
         for k, v in self.queue_dict.items():
             while True:
                 try:
                     v.get_nowait()
                 except Queue.Empty:
                     break
+
+        while True:
+            try:
+                self.serial_result_queue.get_nowait()
+            except Queue.Empty:
+                break
+
 
         self.serial_command_queue.put_nowait((True, command, self.serial_result_queue))
 

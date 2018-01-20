@@ -7,8 +7,10 @@ class GetPhoneInfoAndroid(ShellCommand):
         self.os = self.get_os()
         # 判断adb端口是否被占用
         try:
-            for i in self.find_proc_and_pid_by_port(5037):  # 查找占用5037端口进程
-                self.kill_proc_by_pid(i[1])  # 杀死占用5037端口进程
+            port = self.find_proc_and_pid_by_port(5037)
+            if not (len(port) == 1 and "adb" in port[0][0]):
+                for i in port:  # 查找占用5037端口进程
+                    self.kill_proc_by_pid(i[1])  # 杀死占用5037端口进程
         except IndexError:
             print(u"5037端口未占用")
 
@@ -33,18 +35,18 @@ class GetPhoneInfoAndroid(ShellCommand):
 
         # 获取多个设备的信息
         for k, v in device.items():
+            command = "adb -s %s shell getprop" % v["udid"]
+            value = os.popen(command).read()
+
             # 系统版本号 #
-            command = "adb -s %s shell getprop ro.build.version.release" % v["udid"]
-            device[k]["platformVersion"] = os.popen(command).read().split()[0]
+            device[k]["platformVersion"] = re.findall("\[ro.build.version.release]: \[(.+?)]\n", value)[0]
 
             # 设备型号 #
-            command = "adb -s %s shell getprop ro.product.model" % v["udid"]
-            device[k]["deviceName"] = os.popen(command).read().split()[0]
+            device[k]["deviceName"] = re.findall("\[ro.product.model]: \[(.+?)]\n", value)[0]
             device[k]["model"] = device[k]["deviceName"]
 
             # 系统名称 IOS/ANDROID #
-            command = "adb -s %s shell getprop net.bt.name" % v["udid"]
-            device[k]["platformName"] = os.popen(command).read().split()[0]
+            device[k]["platformName"] = re.findall("\[net.bt.name]: \[(.+?)]\n", value)[0]
 
             # 设备分辨率 #
             device[k]["dpi"] = {}

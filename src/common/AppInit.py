@@ -1,5 +1,6 @@
 # coding=utf-8
-# from src.testcase.suite.DiffImg import *
+import multiprocessing
+
 from AppInit_Android import *
 from AppInit_iOS import *
 from src.utils.GetPhoneInfo import *
@@ -10,6 +11,11 @@ class AppInit(object):
         pass
 
     def app_init(self):
+        replace_appium_js = multiprocessing.Process(target=ShellCommand().replace_appium_js)
+        push_appium_app = multiprocessing.Process(target=ShellCommand().push_appium_app)
+        replace_appium_js.start()
+        push_appium_app.start()
+
         device_info = GetPhoneInfo().get_phone_info()
         if not device_info:
             print(u"ERROR! 未检测到设备，请检查手机链接。")
@@ -22,4 +28,6 @@ class AppInit(object):
             else:
                 raise KeyError("The phone os is wrong")
 
+        replace_appium_js.join()
+        push_appium_app.join()
         return device_info

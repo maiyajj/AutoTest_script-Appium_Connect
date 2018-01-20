@@ -9,7 +9,7 @@ from appium import webdriver
 from src.testcase.GN_APP.ToDevicePage import *
 from src.testcase.GN_APP.ToLoginPage import *
 from src.utils.AppiumCommand import *
-from src.utils.ScreenShot import *
+from src.utils.ScreenShots import *
 from src.utils.ShellCommand import PidTerminalError
 
 

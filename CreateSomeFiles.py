@@ -1,6 +1,10 @@
 # coding=utf-8
 try:
-    from src.testcase.WaitCase import *
+    import src.testcase.GN_APP.WaitCase as gn_app_wc
+    import src.testcase.GN_F1331.WaitCase as gn_f1331_wc
+    import src.testcase.GN_Y201H.WaitCase as gn_201h_wc
+    import src.testcase.GN_Y201J.WaitCase as gn_201j_wc
+    import src.testcase.GN_Y201S.WaitCase as gn_201s_wc
 except ImportError, e:
     print e
 from src.utils.SendMail import *
@@ -58,7 +62,7 @@ class CreateFunc(object):
                 tmp_list.append(i)
         a = [i for i in tmp_list if "_page" in i]
         b = [i for i in tmp_list if "_popup" in i]
-        with open(r"./src/testcase/%s/page/AppPageElement.py" % app, "w") as files:
+        with open("./src/testcase/%s/page/AppPageElement.py" % app, "w") as files:
             files.write("# coding=utf-8\n")
             files.write("from AppPageElement_Android import *\n")
             files.write("from AppPageElement_iOS import *\n\n\n")
@@ -88,17 +92,17 @@ class CreateFunc(object):
                     files.write("        return self.wrapper(self.pwa.{0}(), self.pwi.{0}())\n".format(i))
 
     def create_INPUT_CASE(self):
-        rootdir = r"./"
+        rootdir = r"../"
         for parents, dirnames, filenames in os.walk(rootdir):
             for filename in filenames:
                 if ".DS_Store" in filename:
                     os.remove(os.path.join(parents, filename))
 
-        tmp_dir = r"./src/testcase"  # 指明被遍历的文件夹
+        tmp_dir = "./src/testcase"  # 指明被遍历的文件夹
         tmp_dir = [i for i in os.listdir(tmp_dir) if "_" in i and "__init__" not in i]
         # 写INPUT_CASE文件夹内容
         for device_name in tmp_dir:
-            rootdir = r"./src/testcase/%s/case" % device_name  # 指明被遍历的文件夹
+            rootdir = "./src/testcase/%s/case" % device_name  # 指明被遍历的文件夹
             dirname_list = []
             for parents, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
                 for dirname in [i for i in dirnames if device_name in i]:
@@ -106,7 +110,7 @@ class CreateFunc(object):
                     with open(os.path.join(rootdir, "%s/__init__.py" % dirname), "w") as tmp:
                         del tmp
 
-            file_path = os.path.join(r"./src/testcase/%s" % device_name, "input_case")
+            file_path = os.path.join("./src/testcase/%s" % device_name, "input_case")
             if not os.path.exists(file_path):
                 os.makedirs(file_path)
             with open("%s/__init__.py" % file_path, "w") as tmp:
@@ -150,7 +154,7 @@ class CreateFunc(object):
 
     def correct_func_name(self):
         result = []
-        rootdir = r"./src/testcase/case/"  # 指明被遍历的文件夹
+        rootdir = "./src/testcase/case/"  # 指明被遍历的文件夹
         for parents, dirnamess, filenamess in os.walk(rootdir):
             for dirnames in dirnamess:
                 for parent, dirnames, filenames in os.walk(os.path.join(parents, dirnames)):
@@ -168,7 +172,7 @@ class CreateFunc(object):
 
     def create_WaitCase(self):
         CaseList = []
-        tmp_dir = r"./src/testcase"  # 指明被遍历的文件夹
+        tmp_dir = "./src/testcase"  # 指明被遍历的文件夹
         tmp_dir = [i for i in os.listdir(tmp_dir) if "_" in i and "__init__" not in i]
         for i in tmp_dir:
             rootdir = r"./src/testcase/%s/case" % i

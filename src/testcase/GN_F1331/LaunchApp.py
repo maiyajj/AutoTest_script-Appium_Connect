@@ -9,7 +9,7 @@ from appium import webdriver
 from src.testcase.GN_F1331.ToDevicePage import *
 from src.testcase.GN_F1331.ToLoginPage import *
 from src.utils.AppiumCommand import *
-from src.utils.ScreenShot import *
+from src.utils.CompareImg import *
 from src.utils.ShellCommand import PidTerminalError
 
 
@@ -145,6 +145,7 @@ class LaunchApp(object):
         self.desired_caps = device_info["desired_caps"]  # APP参数
         self.sc = device_info["sc"]  # ShellCommand实例化
         self.ac = AppiumCommand(device_info["platformName"])  # AppiumCommand实例化
+        self.cimg = CompareImg(device_info)
         device_info["ac"] = self.ac
 
         self.user = conf["user_and_pwd"][self.device_name][self.app]  # APP配置

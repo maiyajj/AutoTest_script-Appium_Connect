@@ -172,3 +172,25 @@ class ShellCommand(object):
             raise KeyError("The OS is wrong!")
 
         return addr
+
+    def push_appium_app(self):
+        """
+        代替appium安装三大APP
+        """
+        if self.os == "windows":
+            self.scw.push_appium_app()
+        elif self.os == "mac":
+            self.scm.push_appium_app()
+        else:
+            raise KeyError("The OS is wrong!")
+
+    def replace_appium_js(self):
+        """
+        appium每次都会安装setting.apk和unlock.apk，复制已经取消安装的代码至源appium路径
+        """
+        if self.os == "windows":
+            self.scw.replace_appium_js()
+        elif self.os == "mac":
+            self.scm.replace_appium_js()
+        else:
+            raise KeyError("The OS is wrong!")
