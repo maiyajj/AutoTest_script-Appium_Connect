@@ -28,9 +28,11 @@ class ReceiveSerial(object):
             # 需要通过decode("string-escape")转义\\，结果'\xcf\xb5\xcd...'
             py2_3 = str(e)
             try:
-                exec (u'''py2_3 = re.findall(".+'(.+?)'", str(e))[0].decode("string-escape").decode("gbk")''')
+                # Python3 报错，Pycharm针对decode关键词会提示 Unresolved attribute reference 'decode' for class 'str'。
+                # 使用exec语法避免提示错误，无其他含义
+                exec(u'''py2_3 = re.findall(".+'(.+?)'", str(e))[0].decode("string-escape").decode("gbk")''')
             except AttributeError:
-                exec (u'''py2_3 = re.findall(".+'(.+?)'", str(e))[0]''')
+                exec(u'''py2_3 = re.findall(".+'(.+?)'", str(e))[0]''')
             print(u"%s打开失败，%s请检查串口设置。" % (com, py2_3))
             os._exit(-1)
 

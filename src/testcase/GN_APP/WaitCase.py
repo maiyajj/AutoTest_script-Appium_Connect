@@ -205,7 +205,12 @@ class WaitCase(object):
                                 xls_data["test_error"],
                                 xls_data["test_wait"])
             # 列表中的中文能以汉字的形式写入日志中
-            self.debug.info("write_data: %s" % json.dumps(xls_data, encoding='UTF-8', ensure_ascii=False))
+            try:
+                # Python2
+                self.debug.info("write_data: %s" % json.dumps(xls_data, encoding='UTF-8', ensure_ascii=False))
+            except TypeError:
+                # Python3
+                self.debug.info("write_data: %s" % xls_data)
             database["case_location"] += 1
         except BaseException:
             self.debug.error(traceback.format_exc())

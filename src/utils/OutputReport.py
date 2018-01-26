@@ -10,7 +10,7 @@ import time
 def init_report(file_name, report1):
     logging.basicConfig(level=logging.INFO)  # 设置打印级别
     formatter = logging.Formatter("%(message)s")  # log文件写入内容，此处为正文
-    handler = logging.FileHandler(file_name)
+    handler = logging.FileHandler(file_name, encoding="utf-8")  # encoding，Python3无此log会乱码
     handler.setFormatter(formatter)
     report1.addHandler(handler)  # 初始化完毕
     return report1

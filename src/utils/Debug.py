@@ -10,7 +10,8 @@ import time
 def init_debug(file_name, log):
     logging.basicConfig(level=logging.INFO)  # 设置打印级别
     formatter = logging.Formatter("[%(asctime)s] %(levelname)s:%(message)s", "%Y-%m-%d %X")  # log文件写入内容，此处为正文
-    handler = logging.handlers.RotatingFileHandler(file_name, maxBytes=100 * 1024 * 1024)
+    # encoding，Python3无此log会乱码
+    handler = logging.handlers.RotatingFileHandler(file_name, encoding="utf-8", maxBytes=100 * 1024 * 1024)
     handler.setFormatter(formatter)
     log.addHandler(handler)  # 初始化完毕
     return log
