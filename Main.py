@@ -8,8 +8,7 @@ from src.testcase.WaitCase import *
 from src.utils.SendMail import *
 
 __author__ = "Maiyajj"
-__version__ = ""
-__build_version__ = ""
+__version__ = "3.2.2.180126"
 
 
 class MainFunc(object):
