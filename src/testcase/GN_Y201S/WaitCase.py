@@ -167,7 +167,7 @@ class WaitCase(object):
             xls_data = database[self.device_name]
             xls_data = xls_data[zentao_id]
             xls_data["end_time"] = end_time
-            xls_data["row"] = database["case_row"][zentao_id]
+            xls_data["row"] = database["case_row"][int(zentao_id)]
             xls_data["run"] = "Y"
             self.debug.info("row: %s" % xls_data["row"])
             self.xls.write_data(xls_data["row"],
