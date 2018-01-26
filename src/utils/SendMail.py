@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import parseaddr, formataddr
 
-from ShellCommand import *
+from .ShellCommand import *
 
 
 class Mailer(object):
@@ -32,8 +32,8 @@ class Mailer(object):
 
         self.mail_pwd = conf["mail_pwd"]
         self.mail_host = "smtp.163.com"
-        self.mail_user = self.mail_pwd["163"]["user_name"].decode("hex")
-        self.mail_pass = self.mail_pwd["163"]["pwd"].decode("hex")
+        self.mail_user = bytearray.fromhex(self.mail_pwd["163"]["user_name"]).decode("utf-8")
+        self.mail_pass = bytearray.fromhex(self.mail_pwd["163"]["pwd"]).decode("utf-8")
         self.mail_postfix = self.mail_user.split("@")[1]
 
         self.sc = ShellCommand()
@@ -51,7 +51,7 @@ class Mailer(object):
             try:
                 self.file_path = os.listdir(parent_path)
                 if self.file_path:
-                    self.file_path = map(f, self.file_path)
+                    self.file_path = list(map(f, self.file_path))
                     break
             except BaseException:
                 time.sleep(1)
@@ -115,12 +115,11 @@ class Mailer(object):
             s.close()
             print("send mail success !!")
             return True
-        except Exception, e:
-            with open(self.mail_error, "a") as files:
+        except Exception as e:
+            with open(self.mail_error, "a", encoding="utf-8") as files:
                 files.write(str(e))
             return False
 
     def format_addr(self, s):
         name, addr = parseaddr(s)
-        return formataddr(
-            (Header(name, 'utf-8').encode(), addr.encode('utf-8') if isinstance(addr, unicode) else addr))
+        return formataddr((Header(name, 'utf-8').encode("utf-8"), addr))

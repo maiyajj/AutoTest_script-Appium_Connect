@@ -7,7 +7,7 @@ class GNY201JOverDay1(WidgetOperation):
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
         self.case_title = u'热水器模式设置每日循环'  # 用例名称
-        self.zentao_id = 1299  # 禅道ID
+        self.zentao_id = "1299"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -25,8 +25,8 @@ class GNY201JOverDay1(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1, delay_time_2 = 1, 5
-        tmp, cycle = self.create_water_mode_timer(now, delay_time_1, delay_time_2, u"每天")
+        time_1, time_2 = 1, 5
+        tmp, cycle = self.create_water_mode_timer(now, time_1, time_2, u"每天")
         start_time_1, set_time_1 = tmp[0]
         start_time_2, set_time_2 = tmp[1]
 

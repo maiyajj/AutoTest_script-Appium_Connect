@@ -1,5 +1,5 @@
 # coding=utf-8
-from ShellCommand import *
+from .ShellCommand import *
 
 
 class GetPhoneInfoIos(ShellCommand):

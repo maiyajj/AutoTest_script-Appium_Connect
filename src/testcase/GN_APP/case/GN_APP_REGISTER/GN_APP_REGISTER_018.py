@@ -7,7 +7,7 @@ class GNAPPRegister18(WidgetOperation):
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-已经注册过的用户名，再次注册验证'  # 用例名称
-        self.zentao_id = 1768  # 禅道ID
+        self.zentao_id = "1768"  # 禅道ID
 
     # 用例动作
     def case(self):

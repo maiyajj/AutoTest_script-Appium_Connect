@@ -1,10 +1,11 @@
 # coding=utf-8
 import math
 import operator
+from functools import reduce
 
 from PIL import Image
 
-from ScreenShots import *
+from .ScreenShots import *
 
 
 class CompareImg(object):
@@ -14,9 +15,11 @@ class CompareImg(object):
         self.tmp = os.path.join(self.path, "screenshots.png")
         self.tmp_1 = os.path.join(self.path, "screenshots1.png")
 
-    def compare(self, start_x, start_y, end_x, end_y, baseimg, percent=100):
+    def compare(self, start_x, start_y, end_x, end_y, app, phone, img, percent=100):
         self.get_screenshot_by_custom_size(start_x, start_y, end_x, end_y)
+        baseimg = r".\src\testcase\%s\page\pageImg\%s\%s.png" % (app, phone, img)
         results = self.same_as(baseimg, percent)
+        print(results)
         return results
 
     def same_as(self, baseimg, percent):
@@ -29,9 +32,9 @@ class CompareImg(object):
 
         differ = math.sqrt(
             reduce(operator.add, list(map(lambda a, b: (a - b) ** 2, histogram1, histogram2))) / len(histogram1))
-        os.remove(self.tmp)
-        os.remove(self.tmp_1)
-        print differ
+        # os.remove(self.tmp)
+        # os.remove(self.tmp_1)
+        print(differ)
         if differ <= percent:
             return True
         else:

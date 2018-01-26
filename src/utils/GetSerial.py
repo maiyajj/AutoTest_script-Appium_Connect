@@ -1,5 +1,4 @@
 # coding:utf-8
-import Queue
 import datetime
 import logging
 import logging.handlers
@@ -7,6 +6,11 @@ import logging.handlers
 import serial
 
 from src.utils.ShellCommand import *
+
+try:
+    import Queue
+except ImportError:
+    import queue as Queue
 
 
 # 读取串口log
@@ -19,12 +23,16 @@ class ReceiveSerial(object):
         try:
             self.serial_sever = serial.Serial(str(com), int(port), timeout=3)
             self.device_serial()
-        except serial.SerialException, e:
+        except serial.SerialException as e:
             # e: '\\xcf\\xb5\\xcd...'
             # 需要通过decode("string-escape")转义\\，结果'\xcf\xb5\xcd...'
-            print(u"%s打开失败，%s请检查串口设置。" % (com,
-                                          re.findall(".+'(.+?)'", str(e))[0].decode("string-escape").decode("gbk")))
-            exit(-1)
+            py2_3 = str(e)
+            try:
+                exec (u'''py2_3 = re.findall(".+'(.+?)'", str(e))[0].decode("string-escape").decode("gbk")''')
+            except AttributeError:
+                exec (u'''py2_3 = re.findall(".+'(.+?)'", str(e))[0]''')
+            print(u"%s打开失败，%s请检查串口设置。" % (com, py2_3))
+            os._exit(-1)
 
     def receive_log(self):
         while True:

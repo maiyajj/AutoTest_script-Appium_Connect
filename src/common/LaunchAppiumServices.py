@@ -1,6 +1,6 @@
 # coding=utf-8
-from LaunchAppiumServices_Android import *
-from LaunchAppiumServices_iOS import *
+from .LaunchAppiumServices_Android import *
+from .LaunchAppiumServices_iOS import *
 
 
 class LaunchAppiumServices(object):

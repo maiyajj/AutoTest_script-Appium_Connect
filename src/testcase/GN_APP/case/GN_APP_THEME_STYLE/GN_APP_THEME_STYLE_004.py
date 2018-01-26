@@ -7,7 +7,7 @@ class GNAPPThemeStyle4(WidgetOperation):
     def run(self):
         self.case_module = u"主题风格"  # 用例所属模块
         self.case_title = u'切换为红色后，查看风格'  # 用例名称
-        self.zentao_id = 1988  # 禅道ID
+        self.zentao_id = "1988"  # 禅道ID
 
     # 用例动作
     def case(self):

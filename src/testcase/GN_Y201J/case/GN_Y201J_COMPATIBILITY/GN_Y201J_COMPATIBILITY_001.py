@@ -7,7 +7,7 @@ class GNY201JCompatibility1(WidgetOperation):
     def run(self):
         self.case_module = u"兼容性测试"  # 用例所属模块
         self.case_title = u'在TP-link品牌的路由器下添加设备检查'  # 用例名称
-        self.zentao_id = 1272  # 禅道ID
+        self.zentao_id = "1272"  # 禅道ID
 
     # 用例动作
     def case(self):

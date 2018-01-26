@@ -7,7 +7,7 @@ class GNY201HNormalTimer4(WidgetOperation):
     def run(self):
         self.case_module = u"普通定时(#246)"  # 用例所属模块
         self.case_title = u'在线状态，4组开与4组关按工作日方式执行的定时执行状态检查'  # 用例名称
-        self.zentao_id = 2062  # 禅道ID
+        self.zentao_id = "2062"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -24,29 +24,29 @@ class GNY201HNormalTimer4(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1 = ["point", "09:00"]
-        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, time_on=delay_time_1, loop=u"工作日")
+        time_1 = ["point", "09:00"]
+        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, time_on=time_1, loop=u"工作日")
 
-        delay_time_2 = ["point", "10:00"]
-        start_time_2, set_time_2, cycle2 = self.create_normal_timer(now, time_off=delay_time_2, loop=u"工作日")
+        time_2 = ["point", "10:00"]
+        start_time_2, set_time_2, cycle2 = self.create_normal_timer(now, time_off=time_2, loop=u"工作日")
 
-        delay_time_3 = ["point", "11:00"]
-        start_time_3, set_time_3, cycle3 = self.create_normal_timer(now, time_on=delay_time_3, loop=u"工作日")
+        time_3 = ["point", "11:00"]
+        start_time_3, set_time_3, cycle3 = self.create_normal_timer(now, time_on=time_3, loop=u"工作日")
 
-        delay_time_4 = ["point", "12:00"]
-        start_time_4, set_time_4, cycle4 = self.create_normal_timer(now, time_off=delay_time_4, loop=u"工作日")
+        time_4 = ["point", "12:00"]
+        start_time_4, set_time_4, cycle4 = self.create_normal_timer(now, time_off=time_4, loop=u"工作日")
 
-        delay_time_5 = ["point", "13:00"]
-        start_time_5, set_time_5, cycle5 = self.create_normal_timer(now, time_on=delay_time_5, loop=u"工作日")
+        time_5 = ["point", "13:00"]
+        start_time_5, set_time_5, cycle5 = self.create_normal_timer(now, time_on=time_5, loop=u"工作日")
 
-        delay_time_6 = ["point", "14:00"]
-        start_time_6, set_time_6, cycle6 = self.create_normal_timer(now, time_off=delay_time_6, loop=u"工作日")
+        time_6 = ["point", "14:00"]
+        start_time_6, set_time_6, cycle6 = self.create_normal_timer(now, time_off=time_6, loop=u"工作日")
 
-        delay_time_7 = ["point", "15:00"]
-        start_time_7, set_time_7, cycle7 = self.create_normal_timer(now, time_on=delay_time_7, loop=u"工作日")
+        time_7 = ["point", "15:00"]
+        start_time_7, set_time_7, cycle7 = self.create_normal_timer(now, time_on=time_7, loop=u"工作日")
 
-        delay_time_8 = ["point", "16:00"]
-        start_time_8, set_time_8, cycle8 = self.create_normal_timer(now, time_off=delay_time_8, loop=u"工作日")
+        time_8 = ["point", "16:00"]
+        start_time_8, set_time_8, cycle8 = self.create_normal_timer(now, time_off=time_8, loop=u"工作日")
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

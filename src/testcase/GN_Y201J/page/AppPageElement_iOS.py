@@ -1,4 +1,10 @@
 # coding=utf-8
+import sys
+
+if sys.version_info[:1] > (2,):  # python3
+    xrange = range
+
+
 class MainPageWidgetIos(object):
     # 账户设置页
     def account_setting_page(self):

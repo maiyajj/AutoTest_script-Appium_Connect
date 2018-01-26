@@ -218,7 +218,7 @@ class WriteXls(object):
         self.sheet.write(row, 6, Error, self.easyxf10)
         self.sheet.write(row, 7, Wait, self.easyxf10)
         formula = ('IF({3}{0}>0,"Error",IF({2}{0}>0,"Fail",IF({4}{0}>0,"Wait",IF({1}{0}>0,"Pass",""))))'.
-            format(row + 1, chr(69), chr(70), chr(71), chr(72)))  # 写excel公式，由Excel软件设计好再写入代码, chr(69)="E"
+                   format(row + 1, chr(69), chr(70), chr(71), chr(72)))  # 写excel公式，由Excel软件设计好再写入代码, chr(69)="E"
         self.sheet.write(row, 8, Formula(formula), self.easyxf6)
 
         self.book.save(self.xls_file)
@@ -242,7 +242,7 @@ class WriteXls(object):
             self.sheet.write(total_row, i, Formula(formula), self.easyxf8)
 
         formula = ('COUNTIF({0}{2}:{0}{1},"Pass")/(COUNTA({0}{2}:{0}{1})-COUNTIF({0}{2}:{0}{1},""))'.
-            format(chr(73), total_row, total_row_min))
+                   format(chr(73), total_row, total_row_min))
         self.sheet.write(total_row, 8, Formula(formula), self.easyxf13)
 
         self.sheet.write_merge(6, 6, 1, 8, end_times, self.easyxf2)
@@ -254,13 +254,13 @@ class WriteXls(object):
 
         formula = (u'"通过 "&COUNTIF({0}{2}:{0}{1},"Pass")&"； 失败 "&COUNTIF({0}{2}:{0}{1},"Fail")&"； 执行错误 "&'
                    u'COUNTIF({0}{2}:{0}{1},"Error")&"； 人工检查 "&COUNTIF({0}{2}:{0}{1},"Wait")&"；"'.
-            format(chr(73), total_row, total_row_min))
+                   format(chr(73), total_row, total_row_min))
         self.sheet.write_merge(8, 8, 1, 8, Formula(formula), self.easyxf2)
 
         self.book.save(self.xls_file)
 
         # 写入运行时长
-        with open(r"./runTime.log", "w") as run_time:
+        with open(r"./runTime.log", "w", encoding="utf-8") as run_time:
             run_time.write(str(continue_time))
 
     def scan_case_files(self):
@@ -268,10 +268,10 @@ class WriteXls(object):
         rootdir = r"./src/testcase/%s/case" % self.app  # 指明被遍历的文件夹
         for parent, dirnames, filenames in os.walk(rootdir):  # 三个参
             for filename in (i for i in filenames if "__init__" not in i and "pyc" not in i):
-                with open(os.path.join(parent, filename), "r") as files:
+                with open(os.path.join(parent, filename), "r", encoding="utf-8") as files:
                     file = files.read()
                     case_name = re.findall(r"self.case_title = u'(.+)'", file)[0]
-                    zentao_id = re.findall(r'self.zentao_id = (\d+)', file)[0]
+                    zentao_id = re.findall(r'self.zentao_id = "(\d+)"', file)[0]
                     self.write_data(row, zentao_id, case_name, time.strftime("%Y-%m-%d %X"), "N", 0, 0, 0, 0, 0)
                     self.case_row[int(zentao_id)] = row
                     row += 1

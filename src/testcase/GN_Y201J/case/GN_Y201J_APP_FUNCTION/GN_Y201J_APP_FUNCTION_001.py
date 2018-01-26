@@ -7,7 +7,7 @@ class GNY201JAppFunction1(WidgetOperation):
     def run(self):
         self.case_module = u"APP功能测试"  # 用例所属模块
         self.case_title = u'定时记录删除是否成功'  # 用例名称
-        self.zentao_id = 1170  # 禅道ID
+        self.zentao_id = "1170"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -37,8 +37,8 @@ class GNY201JAppFunction1(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1 = 1
-        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, delay_time_1, "power_on")
+        time_1 = 1
+        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, time_1, "power_on")
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

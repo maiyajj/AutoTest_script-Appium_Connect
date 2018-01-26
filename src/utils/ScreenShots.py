@@ -8,10 +8,9 @@ class ScreenShots(object):
         self.path = device_info["debug_path"]
 
     def screenshots(self):
-        adb_screen = r"%s/screenshots.png" % self.udid
+        adb_screen = "screenshots.png"
 
-        os.system("adb shell mkdir /sdcard/Appium")
-        os.system("adb shell mkdir /sdcard/Appium/%s" % self.udid)
+        os.system("adb -s %s shell mkdir /sdcard/Appium" % self.udid)
 
         command = "adb -s %s shell /system/bin/screencap -p /sdcard/Appium/%s" % (self.udid, adb_screen)
         os.system(command)

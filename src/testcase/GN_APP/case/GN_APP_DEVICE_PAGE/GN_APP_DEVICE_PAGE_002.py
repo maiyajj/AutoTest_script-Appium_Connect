@@ -7,7 +7,7 @@ class GNAPPDevicePage2(WidgetOperation):
     def run(self):
         self.case_module = u"设备页"  # 用例所属模块
         self.case_title = u'设备配网过程中，返回按钮功能检查'  # 用例名称
-        self.zentao_id = 1798  # 禅道ID
+        self.zentao_id = "1798"  # 禅道ID
 
     # 用例动作
     def case(self):

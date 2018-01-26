@@ -1,6 +1,7 @@
 # coding=utf-8
-import re
 import time
+
+from lxml import etree
 
 
 class AppiumCommandAndroid(object):
@@ -14,7 +15,7 @@ class AppiumCommandAndroid(object):
         time.sleep(0.1)
         self.hide_keyboard(element, driver)
 
-    def get_attribute(self, element, name, driver=None):
+    def get_attribute(self, element, name, driver=None, elem=None):
         if name == "enabled":
             attribute_value = str(element.is_enabled()).lower()
         elif name == "is_displayed":
@@ -25,13 +26,12 @@ class AppiumCommandAndroid(object):
             else:
                 attribute_value = "false"
                 # attribute_value = str(element.is_displayed()).lower()
-        elif name in ["password", "index", "focusable", "focused", "scrollable", "long-clickable", "selected"]:
-            if not isinstance(element, list):
-                raise KeyError("If attribute is password. The 'element' must be id of elements,is list,not WebElement")
-            page_src = driver.page_source
-            attribute_value = re.findall(r'.+%s="(.+?)".+?"%s"' % (name, element[0]), page_src)[0]
         else:
-            attribute_value = element.get_attribute(name)
+            try:
+                attribute_value = element.get_attribute(name)
+            except BaseException:
+                tree = etree.HTML(driver.page_source.encode("utf-8"))
+                attribute_value = tree.xpath(elem[0].lower())[0].get(name.lower())
         return attribute_value
 
     def hide_keyboard(self, element, driver):
@@ -43,14 +43,16 @@ class AppiumCommandAndroid(object):
         """
         location = element.location
         size = element.size
+        px = element.px_attr["px"]
         location = dict(location, **size)
         x = int(location["x"])
         y = int(location["y"])
         height = int(location["height"])
         width = int(location["width"])
-        centre = (x + width / 2, y + height / 2)
-        location["centre"] = centre
-        return location
+        if px:
+            x, y, width, height = int(x + width * px[0]), int(y + height * px[1]), 20, 20
+        centre = (int(x + width / 2), int(y + height / 2))
+        return x, y, width, height, centre
 
     def swipe(self, x1, y1, x2, y2, driver, step, percent):
         if percent:

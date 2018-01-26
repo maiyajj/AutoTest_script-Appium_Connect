@@ -7,7 +7,7 @@ class GNY201JElectricityMeter8(WidgetOperation):
     def run(self):
         self.case_module = u"APP功能测试"  # 用例所属模块
         self.case_title = u'电价设置验证'  # 用例名称
-        self.zentao_id = 1155  # 禅道ID
+        self.zentao_id = "1155"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -164,26 +164,26 @@ class GNY201JElectricityMeter8(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1 = ["06:00", "point"]
+        time_1 = ["06:00", "point"]
         self.widget_click(self.page["peak_valley_price_page"]["start_time"],
                           self.page["peak_valley_price_page"]["roll_h"])
 
         self.set_timer_roll(self.page["peak_valley_price_page"]["roll_h"],
                             self.page["peak_valley_price_page"]["roll_m"],
                             self.page["peak_valley_price_page"]["start_time_text"],
-                            delay_time_1, now)
+                            time_1, now)
 
         self.widget_click(self.page["peak_valley_price_page"]["start_time"],
                           self.page["peak_valley_price_page"]["title"])
 
-        delay_time_2 = ["22:00", "point"]
+        time_2 = ["22:00", "point"]
         self.widget_click(self.page["peak_valley_price_page"]["end_time"],
                           self.page["peak_valley_price_page"]["end_h"])
 
         self.set_timer_roll(self.page["peak_valley_price_page"]["end_h"],
                             self.page["peak_valley_price_page"]["end_m"],
                             self.page["peak_valley_price_page"]["end_time_text"],
-                            delay_time_2, now)
+                            time_2, now)
 
         self.widget_click(self.page["peak_valley_price_page"]["end_time"],
                           self.page["peak_valley_price_page"]["title"])

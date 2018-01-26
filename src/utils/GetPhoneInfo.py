@@ -1,6 +1,10 @@
 # coding=utf-8
-from GetPhoneInfo_Android import *
-from GetPhoneInfo_iOS import *
+
+from .GetPhoneInfo_Android import *
+from .GetPhoneInfo_iOS import *
+
+if sys.version_info[:1] > (2,):  # python3
+    xrange = range
 
 
 class GetPhoneInfo(ShellCommand):

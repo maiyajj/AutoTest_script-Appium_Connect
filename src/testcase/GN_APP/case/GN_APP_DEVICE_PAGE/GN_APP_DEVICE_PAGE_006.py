@@ -7,7 +7,7 @@ class GNAPPDevicePage6(WidgetOperation):
     def run(self):
         self.case_module = u"设备页"  # 用例所属模块
         self.case_title = u'配网失败页面，取消按钮功能检查'  # 用例名称
-        self.zentao_id = 1808  # 禅道ID
+        self.zentao_id = "1808"  # 禅道ID
 
     # 用例动作
     def case(self):

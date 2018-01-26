@@ -7,7 +7,7 @@ class GNY201JModeTimer7(WidgetOperation):
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
         self.case_title = u'鱼缸模式开启1小时，关闭1小时定时是否正确执行'  # 用例名称
-        self.zentao_id = 1105  # 禅道ID
+        self.zentao_id = "1105"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -25,8 +25,8 @@ class GNY201JModeTimer7(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1, delay_time_2 = ["delay", "01:00"], ["delay", "01:00"]
-        tmp = self.create_fish_timer(now, delay_time_1, delay_time_2, u"永久循环")
+        time_1, time_2 = ["delay", "01:00"], ["delay", "01:00"]
+        tmp = self.create_fish_timer(now, time_1, time_2, u"永久循环")
         start_time_1, set_time_1 = tmp[0]
         start_time_2, set_time_2 = tmp[1]
 

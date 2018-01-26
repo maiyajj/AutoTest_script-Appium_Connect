@@ -7,7 +7,7 @@ class GNY201SNormalTimer9(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_NTIMER_普通定时(#48)"  # 用例所属模块
         self.case_title = u'FUT_NTIMER_普通定时最大组数设定'  # 用例名称
-        self.zentao_id = 494  # 禅道ID
+        self.zentao_id = "494"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -28,65 +28,65 @@ class GNY201SNormalTimer9(WidgetOperation):
 
             now = time.strftime("%H:%M")
 
-            delay_time_1 = 1
-            start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, delay_time_1, "power_on", u"永不")
+            time_1 = 1
+            start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, time_1, "power_on", u"永不")
 
-            delay_time_2 = 2
-            start_time_2, set_time_2, cycle2 = self.create_normal_timer(now, delay_time_2, "power_off", u"永不")
+            time_2 = 2
+            start_time_2, set_time_2, cycle2 = self.create_normal_timer(now, time_2, "power_off", u"永不")
 
-            delay_time_3 = 3
-            start_time_3, set_time_3, cycle3 = self.create_normal_timer(now, delay_time_3, "power_on", u"永不")
+            time_3 = 3
+            start_time_3, set_time_3, cycle3 = self.create_normal_timer(now, time_3, "power_on", u"永不")
 
-            delay_time_4 = 4
-            start_time_4, set_time_4, cycle4 = self.create_normal_timer(now, delay_time_4, "power_off", u"永不")
+            time_4 = 4
+            start_time_4, set_time_4, cycle4 = self.create_normal_timer(now, time_4, "power_off", u"永不")
 
-            delay_time_5 = 5
-            start_time_5, set_time_5, cycle5 = self.create_normal_timer(now, delay_time_5, "power_on", u"永不")
+            time_5 = 5
+            start_time_5, set_time_5, cycle5 = self.create_normal_timer(now, time_5, "power_on", u"永不")
 
-            delay_time_6 = 6
-            start_time_6, set_time_6, cycle6 = self.create_normal_timer(now, delay_time_6, "power_off", u"永不")
+            time_6 = 6
+            start_time_6, set_time_6, cycle6 = self.create_normal_timer(now, time_6, "power_off", u"永不")
 
-            delay_time_7 = 7
-            start_time_7, set_time_7, cycle7 = self.create_normal_timer(now, delay_time_7, "power_on", u"永不")
+            time_7 = 7
+            start_time_7, set_time_7, cycle7 = self.create_normal_timer(now, time_7, "power_on", u"永不")
 
-            delay_time_8 = 8
-            start_time_8, set_time_8, cycle8 = self.create_normal_timer(now, delay_time_8, "power_off", u"永不")
+            time_8 = 8
+            start_time_8, set_time_8, cycle8 = self.create_normal_timer(now, time_8, "power_off", u"永不")
 
-            delay_time_9 = 9
-            start_time_9, set_time_9, cycle9 = self.create_normal_timer(now, delay_time_9, "power_on", u"永不")
+            time_9 = 9
+            start_time_9, set_time_9, cycle9 = self.create_normal_timer(now, time_9, "power_on", u"永不")
 
-            delay_time_10 = 10
-            start_time_10, set_time_10, cycle10 = self.create_normal_timer(now, delay_time_10, "power_off", u"永不")
+            time_10 = 10
+            start_time_10, set_time_10, cycle10 = self.create_normal_timer(now, time_10, "power_off", u"永不")
 
-            delay_time_11 = 11
-            start_time_11, set_time_11, cycle11 = self.create_normal_timer(now, delay_time_11, "power_on", u"永不")
+            time_11 = 11
+            start_time_11, set_time_11, cycle11 = self.create_normal_timer(now, time_11, "power_on", u"永不")
 
-            delay_time_12 = 12
-            start_time_12, set_time_12, cycle12 = self.create_normal_timer(now, delay_time_12, "power_off", u"永不")
+            time_12 = 12
+            start_time_12, set_time_12, cycle12 = self.create_normal_timer(now, time_12, "power_off", u"永不")
 
-            delay_time_13 = 13
-            start_time_13, set_time_13, cycle13 = self.create_normal_timer(now, delay_time_13, "power_on", u"永不")
+            time_13 = 13
+            start_time_13, set_time_13, cycle13 = self.create_normal_timer(now, time_13, "power_on", u"永不")
 
-            delay_time_14 = 14
-            start_time_14, set_time_14, cycle14 = self.create_normal_timer(now, delay_time_14, "power_off", u"永不")
+            time_14 = 14
+            start_time_14, set_time_14, cycle14 = self.create_normal_timer(now, time_14, "power_off", u"永不")
 
-            delay_time_15 = 15
-            start_time_15, set_time_15, cycle15 = self.create_normal_timer(now, delay_time_15, "power_on", u"永不")
+            time_15 = 15
+            start_time_15, set_time_15, cycle15 = self.create_normal_timer(now, time_15, "power_on", u"永不")
 
-            delay_time_16 = 16
-            start_time_16, set_time_16, cycle16 = self.create_normal_timer(now, delay_time_16, "power_off", u"永不")
+            time_16 = 16
+            start_time_16, set_time_16, cycle16 = self.create_normal_timer(now, time_16, "power_off", u"永不")
 
-            delay_time_17 = 17
-            start_time_17, set_time_17, cycle17 = self.create_normal_timer(now, delay_time_17, "power_on", u"永不")
+            time_17 = 17
+            start_time_17, set_time_17, cycle17 = self.create_normal_timer(now, time_17, "power_on", u"永不")
 
-            delay_time_18 = 18
-            start_time_18, set_time_18, cycle18 = self.create_normal_timer(now, delay_time_18, "power_off", u"永不")
+            time_18 = 18
+            start_time_18, set_time_18, cycle18 = self.create_normal_timer(now, time_18, "power_off", u"永不")
 
-            delay_time_19 = 19
-            start_time_19, set_time_19, cycle19 = self.create_normal_timer(now, delay_time_19, "power_on", u"永不")
+            time_19 = 19
+            start_time_19, set_time_19, cycle19 = self.create_normal_timer(now, time_19, "power_on", u"永不")
 
-            delay_time_20 = 20
-            start_time_20, set_time_20, cycle20 = self.create_normal_timer(now, delay_time_20, "power_off", u"永不")
+            time_20 = 20
+            start_time_20, set_time_20, cycle20 = self.create_normal_timer(now, time_20, "power_off", u"永不")
 
             try:
                 time.sleep(3)

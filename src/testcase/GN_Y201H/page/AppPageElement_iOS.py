@@ -1,4 +1,10 @@
 # coding=utf-8
+import sys
+
+if sys.version_info[:1] > (2,):  # python3
+    xrange = range
+
+
 class MainPageWidgetIos(object):
     # APP主页面
     def app_home_page(self):

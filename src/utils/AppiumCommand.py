@@ -1,6 +1,6 @@
 # coding=utf-8
-from AppiumCommand_Android import *
-from AppiumCommand_iOS import *
+from .AppiumCommand_Android import *
+from .AppiumCommand_iOS import *
 
 
 class AppiumCommand(object):
@@ -20,11 +20,11 @@ class AppiumCommand(object):
         else:
             raise KeyError("The OS is wrong!")
 
-    def get_attribute(self, element, name):
+    def get_attribute(self, element, name, driver=None, elem=None):
         if self.phone_os == "Android":
-            attribute_value = AppiumCommandAndroid().get_attribute(element, name)
+            attribute_value = AppiumCommandAndroid().get_attribute(element, name, driver, elem)
         elif self.phone_os == "iOS":
-            attribute_value = AppiumCommandIos().get_attribute(element, name)
+            attribute_value = AppiumCommandIos().get_attribute(element, name, driver, elem)
         else:
             raise KeyError("The OS is wrong!")
         return attribute_value

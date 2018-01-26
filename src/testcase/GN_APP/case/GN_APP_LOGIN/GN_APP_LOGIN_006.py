@@ -7,7 +7,7 @@ class GNAPPLogin6(WidgetOperation):
     def run(self):
         self.case_module = u"登录"  # 用例所属模块
         self.case_title = u'登录页面—错误密码输入次数超过5次后，账号锁定1分钟验证'  # 用例名称
-        self.zentao_id = 1899  # 禅道ID
+        self.zentao_id = "1899"  # 禅道ID
 
     # 用例动作
     def case(self):

@@ -7,7 +7,7 @@ class GNY201JElectricityMeter10(WidgetOperation):
     def run(self):
         self.case_module = u"APP功能测试"  # 用例所属模块
         self.case_title = u'实时功率检查_1500W'  # 用例名称
-        self.zentao_id = 1135  # 禅道ID
+        self.zentao_id = "1135"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -33,7 +33,7 @@ class GNY201JElectricityMeter10(WidgetOperation):
                 end_time = time.time() + 60
                 i -= 1
 
-        power = map(lambda x: float(x.replace(" W", "")), power)
+        power = list(map(lambda x: float(x.replace(" W", "")), power))
 
         power_error = sum(power) / len(power) / 1500
         self.debug.info("[ELEC_INFO]power_error is %s" % power_error)

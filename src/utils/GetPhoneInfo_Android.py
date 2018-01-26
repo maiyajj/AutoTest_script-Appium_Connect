@@ -1,5 +1,5 @@
 # coding=utf-8
-from ShellCommand import *
+from .ShellCommand import *
 
 
 class GetPhoneInfoAndroid(ShellCommand):
@@ -36,22 +36,22 @@ class GetPhoneInfoAndroid(ShellCommand):
         # 获取多个设备的信息
         for k, v in device.items():
             command = "adb -s %s shell getprop" % v["udid"]
-            value = os.popen(command).read()
+            value = subprocess.check_output(command).decode("utf-8")
 
             # 系统版本号 #
-            device[k]["platformVersion"] = re.findall("\[ro.build.version.release]: \[(.+?)]\n", value)[0]
+            device[k]["platformVersion"] = re.findall("\[ro.build.version.release]: \[(.+?)]", value)[0]
 
             # 设备型号 #
-            device[k]["deviceName"] = re.findall("\[ro.product.model]: \[(.+?)]\n", value)[0]
+            device[k]["deviceName"] = re.findall("\[ro.product.model]: \[(.+?)]", value)[0]
             device[k]["model"] = device[k]["deviceName"]
 
             # 系统名称 IOS/ANDROID #
-            device[k]["platformName"] = re.findall("\[net.bt.name]: \[(.+?)]\n", value)[0]
+            device[k]["platformName"] = re.findall("\[net.bt.name]: \[(.+?)]", value)[0]
 
             # 设备分辨率 #
             device[k]["dpi"] = {}
             command = "adb -s %s shell dumpsys window displays" % v["udid"]
-            dpi = re.findall("init=(.+?) ", os.popen(command).read())[0].split("x")
+            dpi = re.findall("init=(.+?) ", subprocess.check_output(command).decode("utf-8"))[0].split("x")
             device[k]["dpi"]['width'] = dpi[0]
             device[k]["dpi"]['height'] = dpi[1]
 

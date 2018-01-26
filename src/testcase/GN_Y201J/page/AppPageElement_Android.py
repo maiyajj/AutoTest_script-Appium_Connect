@@ -1,4 +1,10 @@
 # coding=utf-8
+import sys
+
+if sys.version_info[:1] > (2,):  # python3
+    xrange = range
+
+
 class MainPageWidgetAndroid(object):
     # 账户设置页
     def account_setting_page(self):
@@ -157,10 +163,10 @@ class MainPageWidgetAndroid(object):
         confirm_box = {}
         for i in xrange(4):
             device_box[i] = "//android.widget.ListView/android.widget.LinearLayout[%s]//android.widget.TextView[2]" % (
-                i + 1)
+                    i + 1)
             confirm_box[
                 i] = "//android.widget.ListView/android.widget.LinearLayout[%s]/android.widget.LinearLayout/android.widget.TextView" % (
-                i + 1)
+                    i + 1)
         # 设备路径
         d["device_box"] = [device_box, "xpath", u"设备等待添加"]
         # 使用

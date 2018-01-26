@@ -7,7 +7,7 @@ class GNAPPRegister1(WidgetOperation):
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-已有账户登录按钮，跳转页面检查'  # 用例名称
-        self.zentao_id = 1888  # 禅道ID
+        self.zentao_id = "1888"  # 禅道ID
 
     # 用例动作
     def case(self):

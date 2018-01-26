@@ -7,7 +7,7 @@ class GNAPPForgetPassword3(WidgetOperation):
     def run(self):
         self.case_module = u"忘记密码"  # 用例所属模块
         self.case_title = u'忘记密码页面-点击返回登入界面按钮，页面检查'  # 用例名称
-        self.zentao_id = 1907  # 禅道ID
+        self.zentao_id = "1907"  # 禅道ID
 
     # 用例动作
     def case(self):

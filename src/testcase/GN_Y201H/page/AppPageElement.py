@@ -1,6 +1,6 @@
 # coding=utf-8
-from AppPageElement_Android import *
-from AppPageElement_iOS import *
+from .AppPageElement_Android import *
+from .AppPageElement_iOS import *
 
 
 class MainPageWidget(object):

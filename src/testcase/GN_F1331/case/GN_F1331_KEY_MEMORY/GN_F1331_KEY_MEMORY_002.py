@@ -7,7 +7,7 @@ class GNF1331KeyMemory2(WidgetOperation):
     def run(self):
         self.case_module = u"远程开关(#18)"  # 用例所属模块
         self.case_title = u'手机APP远程总开关功能检查'  # 用例名称
-        self.zentao_id = 193  # 禅道ID
+        self.zentao_id = "193"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -74,76 +74,90 @@ class GNF1331KeyMemory2(WidgetOperation):
                           self.page["control_device_page"]["main_button_off"])
 
         #####
-        btn_state_list = self.check_serial_button_state()  # 开关
+        btn_list = self.check_button_state()  # 开关
 
         # 开关
         # 111, 000, 100, 000, 010, 000, 001, 000, 100, 110, 000, 100, 101, 000, 010, 011, 000
-        btn_state = btn_state_list[0]
-        result = [btn_state[1] == "111"]
+        btn = btn_list[0]
+        btn_all = btn[1]
+        result = [btn_all == "111"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[1]
-        result = [btn_state[1] == "000"]
+        btn = btn_list[1]
+        btn_all = btn[1]
+        result = [btn_all == "000"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[2]
-        result = [btn_state[1] == "100"]
+        btn = btn_list[2]
+        btn_all = btn[1]
+        result = [btn_all == "100"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[3]
-        result = [btn_state[1] == "000"]
+        btn = btn_list[3]
+        btn_all = btn[1]
+        result = [btn_all == "000"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[4]
-        result = [btn_state[1] == "010"]
+        btn = btn_list[4]
+        btn_all = btn[1]
+        result = [btn_all == "010"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[5]
-        result = [btn_state[1] == "000"]
+        btn = btn_list[5]
+        btn_all = btn[1]
+        result = [btn_all == "000"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[6]
-        result = [btn_state[1] == "001"]
+        btn = btn_list[6]
+        btn_all = btn[1]
+        result = [btn_all == "001"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[7]
-        result = [btn_state[1] == "000"]
+        btn = btn_list[7]
+        btn_all = btn[1]
+        result = [btn_all == "000"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[9]
-        result = [btn_state[1] == "110"]
+        btn = btn_list[9]
+        btn_all = btn[1]
+        result = [btn_all == "110"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[10]
-        result = [btn_state[1] == "000"]
+        btn = btn_list[10]
+        btn_all = btn[1]
+        result = [btn_all == "000"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[12]
-        result = [btn_state[1] == "101"]
+        btn = btn_list[12]
+        btn_all = btn[1]
+        result = [btn_all == "101"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[13]
-        result = [btn_state[1] == "000"]
+        btn = btn_list[13]
+        btn_all = btn[1]
+        result = [btn_all == "000"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[15]
-        result = [btn_state[1] == "011"]
+        btn = btn_list[15]
+        btn_all = btn[1]
+        result = [btn_all == "011"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)
 
-        btn_state = btn_state_list[16]
-        result = [btn_state[1] == "000"]
+        btn = btn_list[16]
+        btn_all = btn[1]
+        result = [btn_all == "000"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s" % btn)

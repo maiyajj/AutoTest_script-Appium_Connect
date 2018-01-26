@@ -7,7 +7,7 @@ class GNY201HDelayTimer1(WidgetOperation):
     def run(self):
         self.case_module = u"延时定时(#249)"  # 用例所属模块
         self.case_title = u'延时定时设置后，改变设备状态后查看延时定时的执行状态'  # 用例名称
-        self.zentao_id = 2100  # 禅道ID
+        self.zentao_id = "2100"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -24,8 +24,8 @@ class GNY201HDelayTimer1(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1 = ["delay", "00:02"]
-        start_time_1, set_time_1 = self.create_delay_timer(now, delay_time_1)
+        time_1 = ["delay", "00:02"]
+        start_time_1, set_time_1 = self.create_delay_timer(now, time_1)
 
         time.sleep(60)
 

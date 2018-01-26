@@ -1,7 +1,5 @@
 # coding=utf-8
 import inspect
-from httplib import BadStatusLine
-from urllib2 import URLError
 
 import psutil
 from appium import webdriver
@@ -11,6 +9,15 @@ from src.testcase.GN_Y201J.ToLoginPage import *
 from src.utils.AppiumCommand import *
 from src.utils.ScreenShots import *
 from src.utils.ShellCommand import PidTerminalError
+
+try:
+    from httplib import BadStatusLine
+except ImportError:
+    from http.client import BadStatusLine
+try:
+    from urllib2 import URLError
+except ImportError:
+    from urllib.request import URLError
 
 
 # launch()启动APP
@@ -37,7 +44,7 @@ def decor_launch_app(func):
                     break
                 else:  # 待定
                     break
-            except BaseException, e:
+            except BaseException as e:
                 self.debug.error("case_over: %s" % traceback.format_exc())  # 出了错误就一定要记录
                 i += 1
                 if i >= 3:  # 启动3次失败
@@ -56,7 +63,7 @@ def launch_fail_fix(func):
             try:
                 func(self)  # 启动APP相关，launch()启动或http启动
                 break
-            except WebDriverException, e:  # 抛出WebDriverException可能是偶然启动失败
+            except WebDriverException as e:  # 抛出WebDriverException可能是偶然启动失败
                 e = "".join(str(e).split())
                 # 错误信息只有"Message:"则表示Appium服务已停止，手机端发送信息无返回
                 # "Message: A session is either terminated or not started"表示PC与手机的连接已变更，Launch_App无法启动
@@ -94,7 +101,7 @@ def case_run(bool):
         def _wrapper(self):
             func(self)  # 用例相关所属模块，标题，禅道ID
             self.basename = re.findall(r"\((.+?)\)", inspect.stack()[2][4][0])[0]  # 获取用例的文件名称:GNAPP_LOGIN_001
-            self.debug.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
+            self.debug.info(u'[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s", CASE_MODULE="%s"]'
                             % (self.basename, self.case_title, self.zentao_id, self.case_module))  # 记录log
             try:
                 self.launch_app(bool)  # 启动APP并使APP跳转到指定页面
@@ -252,7 +259,7 @@ class LaunchApp(object):
     def launch_app(self):
         self.check_appium_launch()  # 判断Appium服务是否已启动
         # 记录调试信息
-        with open("appium command %s.log" % self.device_name, "a") as files:
+        with open("./test/appium command %s.log" % self.device_name, "a", encoding="utf-8") as files:
             files.write('''driver = webdriver.Remote('http://localhost:%s/wd/hub', %s)''' % (
                 self.port, self.desired_caps) + "\n\n")
         self.driver = webdriver.Remote('http://localhost:%s/wd/hub' % self.port, self.desired_caps)  # 启动APP
@@ -269,6 +276,6 @@ class LaunchApp(object):
                     "unknown": ["unknown", "test_error"],
                     "screen": ["wait", "test_wait"]}
         result = d_result[self.success]
-        self.debug.info('[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
+        self.debug.info(u'[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
         database[self.device_name][self.zentao_id][result[1]] += 1
         return self.zentao_id, "%s,%s" % (result[0], " " * (7 - len(result[0]))), self.case_title, self.start_time

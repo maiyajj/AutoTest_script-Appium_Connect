@@ -7,7 +7,7 @@ class GNAPPUsingHelp1(WidgetOperation):
     def run(self):
         self.case_module = u"使用帮助"  # 用例所属模块
         self.case_title = u'返回按钮功能确认'  # 用例名称
-        self.zentao_id = 1975  # 禅道ID
+        self.zentao_id = "1975"  # 禅道ID
 
     # 用例动作
     def case(self):

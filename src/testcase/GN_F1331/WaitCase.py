@@ -1,6 +1,5 @@
 # coding=utf-8
 import json
-import threading
 
 from src.testcase.GN_F1331.input_case.GN_F1331_Input_Case import *
 from src.testcase.GN_F1331.page.ReadAPPElement import *
@@ -67,7 +66,7 @@ class WaitCase(object):
             self.receive_serial.serial_sever.close()
             self.serial_receive_t.join()
             self.serial_command_t.join()
-            exit(-1)
+            os._exit(-1)
 
     # 从元素库筛选对应APP元素库
     def select_page_element(self):
@@ -129,24 +128,44 @@ class WaitCase(object):
         self.debug.info("*" * 30)
 
         # 执行用例
-        times = 1
+        times = 3
         while times:
             self.debug.info("run times [%s]" % database["program_loop_time"])
-            # self.write_report(GNF1331AppInfomation1)  # 007, 设备详细界面，信息检测
-            # self.write_report(GNF1331AppInfomation2)  # 007, 设备详细界面，信息检测
-            # self.write_report(GNF1331DeviceInfo1)  # 1170, 设置记忆模式
+            self.write_report(GNF1331AppInfomation1)  # 007, 设备详细界面，信息检测
+            self.write_report(GNF1331DeviceInfo1)  # 1170, 设置记忆模式
             # self.write_report(GNF1331DeviceInfo2)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
-            self.write_report(GNF1331KeyMemory1)  # 1216, 开关操作及记忆功能
-            # self.write_report(GNF1331NormalTimer1)  # 1216, 上层循环定时
-            # self.write_report(GNF1331NormalTimer2)  # 1216, 上、中层循环定时
-            # self.write_report(GNF1331NormalTimer3)  # 1216, 上、中、下层循环定时
-            # self.write_report(GNF1331NormalTimer4)  # 1216, 上层延迟定时
-            # self.write_report(GNF1331NormalTimer5)  # 1216, 上、中层延迟定时
-            # self.write_report(GNF1331NormalTimer6)  # 1216, 上、中、下层延迟定时
-            # self.write_report(GNF1331NormalTimer7)  # 1216, 上层普通定时
-            # self.write_report(GNF1331NormalTimer8)  # 1216, 上、中层普通定时
-            # self.write_report(GNF1331NormalTimer9)  # 1216, 上、中、下层普通定时
-            # self.write_report(GNF1331NormalTimer10)  # 1216, 上层延迟、中层循环定时、下层普通定时开、关
+            self.write_report(GNF1331KeyMemory1)  # 194, 手机APP远程频繁操作总开关，设备状态检查
+            self.write_report(GNF1331KeyMemory2)  # 193, 手机APP远程总开关功能检查
+            self.write_report(GNF1331KeyMemory3)  # 192, 手机APP远程频繁操作分层开关，设备状态检查
+            self.write_report(GNF1331KeyMemory4)  # 191, 手机APP远程分层开关功能检查
+            self.write_report(GNF1331Timer1)  # 142, 设备设置多模式多定时同层，设备执行检查
+            self.write_report(GNF1331Timer2)  # 141, 设备设置多模式多定时不同层，设备执行状态检查
+            self.write_report(GNF1331Timer3)  # 140, 设备连接大功率设备，定时执行状态检查
+            self.write_report(GNF1331Timer4)  # 139, 设备当前状态和循环定时输出状态相同，循环定时执行状态检查
+            self.write_report(GNF1331Timer5)  # 134, 在线状态，多层循环定时执行状态检查
+            self.write_report(GNF1331Timer6)  # 131, 在线状态，单层多次循环定时执行状态检查
+            self.write_report(GNF1331Timer7)  # 130, 在线状态，单层单次循环定时执行状态检查
+            self.write_report(GNF1331Timer8)  # 121, 设备当前状态和延时定时输出状态相同，延时定时执行状态检查
+            self.write_report(GNF1331Timer9)  # 116, 在线状态，各层定时单关延时定时执行状态检查
+            self.write_report(GNF1331Timer10)  # 114, 在线状态，单层定时单关延时定时执行状态检查
+            self.write_report(GNF1331Timer11)  # 111, 设备当前状态和普通定时输出状态相同，定时执行状态检查
+            self.write_report(GNF1331Timer12)  # 106, 在线状态，定时设置时选择执行均不通知，定时执行成功，检查APP是否通知
+            self.write_report(GNF1331Timer13)  # 101, 随机各层设置9组普通定时，执行完成后删除原有定时，再次设置9组普通定时
+            # self.write_report(GNF1331Timer14)  # 97, 在线状态，随机各层设置9组普通定时，周末执行的定时执行状态检查
+            # self.write_report(GNF1331Timer15)  # 96, 在线状态，随机各层设置9组普通定时，工作日执行的定时执行状态检查
+            # self.write_report(GNF1331Timer16)  # 95, 在线状态，随机各层设置9组普通定时，单次执行的定时执行状态检查
+            # self.write_report(GNF1331Timer17)  # 90, 在线状态，4组开与3组关按自定义方式执行的普通定时执行状态检查
+            # self.write_report(GNF1331Timer18)  # 89, 在线状态，4组开与3组关按周末方式方式执行的普通定时执行状态检查
+            # self.write_report(GNF1331Timer19)  # 88, 在线状态，4组开与3组关按工作日方式执行的普通定时执行状态检查
+            self.write_report(GNF1331Timer20)  # 87, 在线状态，单层4组开与3组关单次执行的普通定时执行状态检查
+            # self.write_report(GNF1331Timer21)  # 80, 在线状态，单层1组开与1组关按自定义执行的普通定时执行状态检查
+            # self.write_report(GNF1331Timer22)  # 79, 在线状态，单层1组开与1组关按工作日执行的普通定时执行状态检查
+            self.write_report(GNF1331Timer23)  # 78, 在线状态，单层临界点1组开与1组关的普通定时执行状态检查
+            self.write_report(GNF1331Timer24)  # 77, 在线状态，单层定时1组开与1组关普通定时执行状态检查
+            self.write_report(GNF1331Timer25)  # 76, 在线状态，单层定时单关普通定时执行状态检查
+            self.write_report(GNF1331Timer26)  # 75, 在线状态，单层定时单开普通定时执行状态检查
+            self.write_report(GNF1331Timer27)  # 73, 设备可接受最大额外定时组数检测
+            self.write_report(GNF1331Timer28)  # 72, APP默认定时数组检测
 
             database["program_loop_time"] += 1
             times -= 1

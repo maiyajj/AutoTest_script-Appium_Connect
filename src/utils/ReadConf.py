@@ -1,24 +1,21 @@
 # coding=utf-8
 # 由Conf.py生成
 import os
-import sys
+from codecs import open
 
 import yaml
-
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 conf_path = r"config/Conf.yaml"
 base_pwd_path = r"config/basepwd.yaml"
 pwd_path = r"config/pwd.yaml"
 if os.path.isfile(pwd_path):
-    conf = dict(yaml.load(file(conf_path)), **yaml.load(file(pwd_path)))
+    conf = dict(yaml.load(open(conf_path, encoding="utf-8")), **yaml.load(open(pwd_path, encoding="utf-8")))
 else:
-    conf = dict(yaml.load(file(conf_path)), **yaml.load(file(base_pwd_path)))
+    conf = dict(yaml.load(open(conf_path, encoding="utf-8")), **yaml.load(open(base_pwd_path, encoding="utf-8")))
 
 
 def modified_conf(config, pwd=False):
-    with open(conf_path, "w") as conf_yaml:
+    with open(conf_path, "w", encoding="utf-8") as conf_yaml:
         conf_yaml.write("# 打开APP超时时间\n")
         conf_yaml.write("open_app_timeout: %s\n" % config["search_device_timeout"])
 
@@ -81,7 +78,7 @@ def modified_conf(config, pwd=False):
                 conf_yaml.write("    %s: '%s'\n" % (v1, v2))
 
         if pwd is True:
-            with open(pwd_path, "w") as conf_yaml:
+            with open(pwd_path, "w", encoding="utf-8") as conf_yaml:
                 conf_yaml.write("# 邮箱用户名密码\n")
                 conf_yaml.write("mail_pwd:\n")
                 for k, v in config["mail_pwd"].items():

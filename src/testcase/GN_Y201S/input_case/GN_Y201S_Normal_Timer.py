@@ -1,24 +1,15 @@
 # coding=utf-8
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_001 import *
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_002 import *
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_003 import *
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_004 import *
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_005 import *
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_006 import *
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_007 import *
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_008 import *
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_009 import *
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_010 import *
-from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_011 import *
-
-GNY201SNormalTimer1 = GNY201SNormalTimer1
-GNY201SNormalTimer2 = GNY201SNormalTimer2
-GNY201SNormalTimer3 = GNY201SNormalTimer3
-GNY201SNormalTimer4 = GNY201SNormalTimer4
-GNY201SNormalTimer5 = GNY201SNormalTimer5
-GNY201SNormalTimer6 = GNY201SNormalTimer6
-GNY201SNormalTimer7 = GNY201SNormalTimer7
-GNY201SNormalTimer8 = GNY201SNormalTimer8
-GNY201SNormalTimer9 = GNY201SNormalTimer9
-GNY201SNormalTimer10 = GNY201SNormalTimer10
-GNY201SNormalTimer11 = GNY201SNormalTimer11
+try:
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_001 import *
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_002 import *
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_003 import *
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_004 import *
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_005 import *
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_006 import *
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_007 import *
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_008 import *
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_009 import *
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_010 import *
+    from src.testcase.GN_Y201S.case.GN_Y201S_NORMAL_TIMER.GN_Y201S_NORMAL_TIMER_011 import *
+except ImportError as e:
+    print(e)

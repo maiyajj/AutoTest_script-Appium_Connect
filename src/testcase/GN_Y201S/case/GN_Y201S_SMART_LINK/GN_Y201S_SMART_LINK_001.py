@@ -7,7 +7,7 @@ class GNY201SSmartLink1(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_SMTLNK_一键配网(#52)"  # 用例所属模块
         self.case_title = u'FUT_SMTLNK_app能正常添加设备_按分类查找'  # 用例名称
-        self.zentao_id = 498  # 禅道ID
+        self.zentao_id = "498"  # 禅道ID
 
     # 用例动作
     def case(self):

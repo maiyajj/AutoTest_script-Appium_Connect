@@ -1,4 +1,5 @@
 # coding=utf-8
+import os
 import traceback
 
 
@@ -24,10 +25,8 @@ class WaitCase(object):
                     "GN_201H": "import src.testcase.GN_Y201H.WaitCase as gn_wc",
                     "GN_F1331": "import src.testcase.GN_F1331.WaitCase as gn_wc"}
         try:
-            gn_wc = None
-            exec (app_list[app])
-            gn_wc.WaitCase(device_list, device_name, m_queue)
+            exec (app_list[app] + "; gn_wc.WaitCase(device_list, device_name, m_queue)")
             # app_list[app](device_list, device_name, m_queue)
         except BaseException:
             print(traceback.format_exc())
-            exit(-1)
+            os._exit(-1)

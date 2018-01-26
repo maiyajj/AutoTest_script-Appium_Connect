@@ -7,7 +7,7 @@ class GNY201SCmp1(WidgetOperation):
     def run(self):
         self.case_module = u"CMP_兼容性测试(#54)"  # 用例所属模块
         self.case_title = u'FUT_CMP_不同型号手机是否能正常添加设备'  # 用例名称
-        self.zentao_id = 431  # 禅道ID
+        self.zentao_id = "431"  # 禅道ID
 
     # 用例动作
     def case(self):

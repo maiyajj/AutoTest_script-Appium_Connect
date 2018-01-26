@@ -7,7 +7,7 @@ class GNY201HTimerFunc2(WidgetOperation):
     def run(self):
         self.case_module = u"定时功能(#240)"  # 用例所属模块
         self.case_title = u'普通定时的定时数量检查'  # 用例名称
-        self.zentao_id = 2022  # 禅道ID
+        self.zentao_id = "2022"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -24,29 +24,29 @@ class GNY201HTimerFunc2(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1 = 1
-        self.create_normal_timer(now, delay_time_1)
+        time_1 = 1
+        self.create_normal_timer(now, time_1)
 
-        delay_time_2 = 2
-        self.create_normal_timer(now, delay_time_2)
+        time_2 = 2
+        self.create_normal_timer(now, time_2)
 
-        delay_time_3 = 3
-        self.create_normal_timer(now, delay_time_3)
+        time_3 = 3
+        self.create_normal_timer(now, time_3)
 
-        delay_time_4 = 4
-        self.create_normal_timer(now, delay_time_4)
+        time_4 = 4
+        self.create_normal_timer(now, time_4)
 
-        delay_time_5 = 5
-        self.create_normal_timer(now, delay_time_5)
+        time_5 = 5
+        self.create_normal_timer(now, time_5)
 
-        delay_time_6 = 6
-        self.create_normal_timer(now, delay_time_6)
+        time_6 = 6
+        self.create_normal_timer(now, time_6)
 
-        delay_time_7 = 7
-        self.create_normal_timer(now, delay_time_7)
+        time_7 = 7
+        self.create_normal_timer(now, time_7)
 
-        delay_time_8 = 8
-        self.create_normal_timer(now, delay_time_8)
+        time_8 = 8
+        self.create_normal_timer(now, time_8)
 
         try:
             self.wait_widget(self.page["normal_timer_page"]["add_timer"])

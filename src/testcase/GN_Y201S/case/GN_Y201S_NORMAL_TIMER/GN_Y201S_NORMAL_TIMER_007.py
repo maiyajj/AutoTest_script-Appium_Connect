@@ -7,7 +7,7 @@ class GNY201SNormalTimer7(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_NTIMER_普通定时(#48)"  # 用例所属模块
         self.case_title = u'FUT_NTIMER_普通交叉定时'  # 用例名称
-        self.zentao_id = 505  # 禅道ID
+        self.zentao_id = "505"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -27,17 +27,17 @@ class GNY201SNormalTimer7(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1 = 2
-        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, delay_time_1, "power_on", u"永不")
+        time_1 = 2
+        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, time_1, "power_on", u"永不")
 
-        delay_time_2 = 4
-        start_time_2, set_time_2, cycle2 = self.create_normal_timer(now, delay_time_2, "power_off", u"永不")
+        time_2 = 4
+        start_time_2, set_time_2, cycle2 = self.create_normal_timer(now, time_2, "power_off", u"永不")
 
-        delay_time_3 = 6
-        start_time_3, set_time_3, cycle3 = self.create_normal_timer(now, delay_time_3, "power_on", u"永不")
+        time_3 = 6
+        start_time_3, set_time_3, cycle3 = self.create_normal_timer(now, time_3, "power_on", u"永不")
 
-        delay_time_4 = 6
-        start_time_4, set_time_4, cycle4 = self.create_normal_timer(now, delay_time_4, "power_off", u"永不")
+        time_4 = 6
+        start_time_4, set_time_4, cycle4 = self.create_normal_timer(now, time_4, "power_off", u"永不")
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

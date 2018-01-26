@@ -1,6 +1,7 @@
 # coding=utf-8
 import os
 import re
+import subprocess
 
 
 class ShellCommandMac(object):
@@ -18,10 +19,9 @@ class ShellCommandMac(object):
         Avoid system resource crashes.
         such idevicesyslog and mdworker.
         """
-        # 使用popen4没有任何含义，仅仅是为了控制台不打出多余信息
         # 使用popen控制台会有大量 No matching processes belonging to you were found
-        os.popen4("killall -9 idevicesyslog")
-        os.popen4("killall -9 mdworker")
+        os.popen("killall -9 idevicesyslog")
+        os.popen("killall -9 mdworker")
 
     def kill_other_python(self):
         """
@@ -48,7 +48,7 @@ class ShellCommandMac(object):
             raise KeyError("key must be port! Is int, but real %s!" % type(port))
         command = 'lsof -i:%s' % port  # 判断端口是否被占用
         find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+\(LISTEN.+?", os.popen(command).read())))
-        find_pid = map(lambda x: (x[0], int(x[1])), find_pid)
+        find_pid = list(map(lambda x: (x[0], int(x[1])), find_pid))
 
         self.kill_zombie_proc()
         return find_pid
@@ -67,7 +67,7 @@ class ShellCommandMac(object):
             raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
         command = 'lsof -p %s' % pid
         find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())))
-        find_pid = map(lambda x: (x[0], int(x[1])), find_pid)
+        find_pid = list(map(lambda x: (x[0], int(x[1])), find_pid))
 
         self.kill_zombie_proc()
         return find_pid
@@ -80,7 +80,7 @@ class ShellCommandMac(object):
         """
         command = 'lsof -c %s' % proc
         find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+", os.popen(command).read())))
-        find_pid = map(lambda x: (x[0], int(x[1])), find_pid)
+        find_pid = list(map(lambda x: (x[0], int(x[1])), find_pid))
 
         self.kill_zombie_proc()
         return find_pid
@@ -93,7 +93,7 @@ class ShellCommandMac(object):
             raise KeyError("key must be process name! Is string, but real %s!" % type(proc))
 
         command = 'killall -9 %s' % proc  # 通过进程名杀死进程
-        os.popen(command)
+        os.system(command)
         self.kill_zombie_proc()
         if self.find_proc_and_pid_by_proc(proc):
             raise AssertionError("kill %s fail." % proc)
@@ -112,7 +112,7 @@ class ShellCommandMac(object):
             raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
 
         command = 'kill -9 %s' % pid  # 通过pid杀死进程
-        os.popen(command)
+        os.system(command)
         self.kill_zombie_proc()
         if self.find_proc_and_pid_by_pid(pid):
             raise AssertionError("kill %s fail." % pid)
@@ -137,17 +137,17 @@ class ShellCommandMac(object):
         else:
             return addr
 
-    def push_appium_app(self):
+    def push_appium_app(self, udid):
         """
         代替appium安装三大APP
         """
-        command = r"adb install .\apk\unlock_apk-debug.apk"
+        command = r"adb -s %s install .\apk\unlock_apk-debug.apk" % udid
         os.system(command)
 
-        command = r"adb install .\apk\settings_apk-debug.apk"
+        command = r"adb -s %s install .\apk\settings_apk-debug.apk" % udid
         os.system(command)
 
-        command = r"adb install .\apk\UnicodeIME-debug.apk"
+        command = r"adb -s %s install .\apk\UnicodeIME-debug.apk" % udid
         os.system(command)
 
     def replace_appium_js(self):
@@ -157,11 +157,16 @@ class ShellCommandMac(object):
         appium_path = os.popen("where appium").read().split("\n")[0].split(".bin")[0]
         appium_js_path = os.path.join(appium_path, r"appium\lib\devices\android")
 
-        for i in ["android", "android-common"]:
+        for i in ["android", "android-common", "adb"]:
+            if i == "adb":
+                tmp = os.path.join(appium_path, r"appium\node_modules\appium-adb\lib")
+            else:
+                tmp = os.path.join(appium_path, r"appium\lib\devices\android")
+            old_path = os.path.join(tmp, "%s.js" % i)
             try:
-                old_path = os.path.join(appium_js_path, "%s.js" % i)
-                os.renames(old_path, os.path.join(appium_js_path, "%s.bak" % i))
-                os.system("copy %s %s" % (r".\apk\%s.js", old_path))
-                print("%s.js copy finished" % i)
+                os.renames(old_path, os.path.join(tmp, "%s.bak" % i))
             except WindowsError:
                 pass
+
+            if not os.path.isfile(old_path):
+                print(subprocess.check_output("copy %s %s" % (r".\apk\%s.js" % i, old_path), shell=True).decode("gbk"))

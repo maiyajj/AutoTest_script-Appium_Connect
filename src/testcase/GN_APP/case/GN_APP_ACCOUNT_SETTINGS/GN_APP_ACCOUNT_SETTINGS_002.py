@@ -7,7 +7,7 @@ class GNAPPAccountSettings2(WidgetOperation):
     def run(self):
         self.case_module = u"账户设置"  # 用例所属模块
         self.case_title = u'密码修改后页面跳转确认'  # 用例名称
-        self.zentao_id = 1972  # 禅道ID
+        self.zentao_id = "1972"  # 禅道ID
 
     # 用例动作
     def case(self):

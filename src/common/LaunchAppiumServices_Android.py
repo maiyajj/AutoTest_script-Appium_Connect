@@ -3,7 +3,7 @@ import logging
 import logging.handlers
 import shutil
 import traceback
-from subprocess import *
+from functools import reduce
 
 import psutil
 
@@ -21,7 +21,7 @@ def launch_appium_error_log(func):
                     psutil.Process(self.current_pid).kill()
                 func(self)
             except BaseException:
-                with open(os.path.join(self.log_path, "appium_error.log"), "a") as appium_error:
+                with open(os.path.join(self.log_path, "appium_error.log"), "a", encoding="utf-8") as appium_error:
                     appium_error.write(traceback.format_exc())
                 print(traceback.format_exc())
             finally:
@@ -77,7 +77,7 @@ class LaunchAppiumServicesAndroid(object):
         # Screenshot directory in android phone.
         self.folder = "%s{%s}" % (self.model, self.udid)
 
-        self.kill_adb()
+        # self.kill_adb()
         # self.create_adb_folder()
 
     def kill_adb(self):
@@ -110,13 +110,13 @@ class LaunchAppiumServicesAndroid(object):
         print(command)
 
         # 为了后期调试方便，将当前appium启动命令写入文件中，方便使用shell命令调试手机.
-        with open("appium command %s.log" % self.log_name, "a") as filess:
+        with open("./test/appium command %s.log" % self.udid, "a", encoding="utf-8") as filess:
             filess.write(time.strftime("%Y-%m-%d %H-%M") + "\n")
             filess.write(command.replace(' -g "%s"' % log, "") + "\n")
             filess.write("from appium import webdriver" + "\n")
 
         # 启动Appium服务，非阻塞式服务.
-        appium_proc = Popen(command, shell=True)
+        appium_proc = subprocess.Popen(command, shell=True)
         self.debug.info("appium_proc.pid: %s" % appium_proc.pid)
         self.appium_pid = [appium_proc.pid]  # 保证属性一致，初始<subprocess.Popen object at 0x...>也有pid属性
         # 获取所有Appium调用的进程pid

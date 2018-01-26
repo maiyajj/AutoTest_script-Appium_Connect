@@ -7,7 +7,7 @@ class GNY201SEem2(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_EEM_电量计量(#61)"  # 用例所属模块
         self.case_title = u'FUT_EEM_用电图表显示周期设置'  # 用例名称
-        self.zentao_id = 558  # 禅道ID
+        self.zentao_id = "558"  # 禅道ID
 
     # 用例动作
     def case(self):

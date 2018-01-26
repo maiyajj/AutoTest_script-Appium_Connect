@@ -7,7 +7,7 @@ class GNY201HNormalTimer11(WidgetOperation):
     def run(self):
         self.case_module = u"普通定时(#246)"  # 用例所属模块
         self.case_title = u'在线状态，1组单关定时执行状态检查'  # 用例名称
-        self.zentao_id = 2055  # 禅道ID
+        self.zentao_id = "2055"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -25,8 +25,8 @@ class GNY201HNormalTimer11(WidgetOperation):
         now = time.strftime("%H:%M")
         delay_s = 120 + 1 * ((59 + 23) * 1)
 
-        delay_time_1 = 2
-        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, time_off=delay_time_1, delay_s=delay_s)
+        time_1 = 2
+        start_time_1, set_time_1, cycle1 = self.create_normal_timer(now, time_off=time_1, delay_s=delay_s)
 
         self.widget_click(self.page["normal_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

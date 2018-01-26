@@ -7,7 +7,7 @@ class GNY201SNormalTimer11(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_NTIMER_普通定时(#48)"  # 用例所属模块
         self.case_title = u'FUT_NTIMER_普通定时循环信息检查'  # 用例名称
-        self.zentao_id = 417  # 禅道ID
+        self.zentao_id = "417"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -27,17 +27,17 @@ class GNY201SNormalTimer11(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1 = 10
-        self.create_normal_timer(now, delay_time_1, "power_on", u"永不")
+        time_1 = 10
+        self.create_normal_timer(now, time_1, "power_on", u"永不")
 
-        delay_time_2 = 10
-        self.create_normal_timer(now, delay_time_2, "power_off", [u"周一", u"周日"])
+        time_2 = 10
+        self.create_normal_timer(now, time_2, "power_off", [u"周一", u"周日"])
 
-        delay_time_3 = 10
-        self.create_normal_timer(now, delay_time_3, "power_on", u"工作日")
+        time_3 = 10
+        self.create_normal_timer(now, time_3, "power_on", u"工作日")
 
-        delay_time_4 = 10
-        self.create_normal_timer(now, delay_time_4, "power_off", u"每天")
+        time_4 = 10
+        self.create_normal_timer(now, time_4, "power_off", u"每天")
 
         loop_list = [[u"永不"], [u"周一", u"周日"], [u"工作日"], [u"每天"]]
         for i in loop_list:

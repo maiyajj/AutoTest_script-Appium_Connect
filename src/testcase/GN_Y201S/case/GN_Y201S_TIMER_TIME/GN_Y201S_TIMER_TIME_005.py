@@ -7,7 +7,7 @@ class GNY201STimerTime5(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_MTIMER_TIME热水器模式_小夜灯_取暖器模式(#58)"  # 用例所属模块
         self.case_title = u'FUT_MTIMER_TIME_模式定时状态下手动改变设备状态'  # 用例名称
-        self.zentao_id = 443  # 禅道ID
+        self.zentao_id = "443"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -30,8 +30,8 @@ class GNY201STimerTime5(WidgetOperation):
 
             now = time.strftime("%H:%M")
 
-            delay_time_1, delay_time_2 = ["point", "07:00"], ["point", "16:00"]
-            tmp, cycle = self.create_point_mode_timer(page, now, delay_time_1, delay_time_2, u"永不")
+            time_1, time_2 = ["point", "07:00"], ["point", "16:00"]
+            tmp, cycle = self.create_point_mode_timer(page, now, time_1, time_2, u"永不")
             start_time_1, set_time_1 = tmp[0]
             start_time_2, set_time_2 = tmp[1]
 

@@ -7,7 +7,7 @@ class GNY201JOverDay7(WidgetOperation):
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
         self.case_title = u'充电保护模式下延迟23h59min关闭'  # 用例名称
-        self.zentao_id = 1306  # 禅道ID
+        self.zentao_id = "1306"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -25,8 +25,8 @@ class GNY201JOverDay7(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1 = ["delay", "23:59"]
-        start_time_1, set_time_1 = self.create_delay_mode_timer(now, delay_time_1)
+        time_1 = ["delay", "23:59"]
+        start_time_1, set_time_1 = self.create_delay_mode_timer(now, time_1)
 
         self.widget_click(self.page["mode_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

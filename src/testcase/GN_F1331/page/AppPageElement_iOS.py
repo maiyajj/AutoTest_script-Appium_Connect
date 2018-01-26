@@ -1,4 +1,10 @@
 # coding=utf-8
+import sys
+
+if sys.version_info[:1] > (2,):  # python3
+    xrange = range
+
+
 class MainPageWidgetIos(object):
     # 账户设置页
     def account_setting_page(self):
@@ -684,6 +690,7 @@ class PopupWidgetIos(object):
         # 标题
         # d["title"] = ["loading...", "name", u"正在加载中loading..."]
         d["title"] = ["android:id/message", "id", u"正在加载中loading..."]
+        d["control"] = [u"//android.view.View[content-desc='正在控制']", "xpath", u"正在控制"]
         return d
 
     def logout_popup(self):
@@ -718,4 +725,11 @@ class PopupWidgetIos(object):
         d["confirm"] = [u"//android.widget.Button[@content-desc='是']", "xpath", u"确定"]
         # 取消
         d["cancel"] = [u"//android.widget.Button[@content-desc='否']", "xpath", u"取消"]
+        return d
+
+    # 普通定时最大数量弹窗
+    def max_normal_timer_popup(self):
+        d = {}
+        # 标题
+        d["title"] = [u"//android.view.View[contains(@content-desc, '数量已达最大值')]", "xpath", u"普通定时数量最大"]
         return d

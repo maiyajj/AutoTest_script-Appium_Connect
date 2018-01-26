@@ -7,7 +7,7 @@ class GNY201STimerFish4(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_MTIMER_FISH_鱼缸模式(#59)"  # 用例所属模块
         self.case_title = u'FUT_MTIMER_FISH_鱼缸模式开启23小时59分钟，关闭23小时59分钟功能是否正常'  # 用例名称
-        self.zentao_id = 438  # 禅道ID
+        self.zentao_id = "438"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -25,8 +25,8 @@ class GNY201STimerFish4(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1, delay_time_2 = ["delay", "23:59"], ["delay", "23:59"]
-        tmp = self.create_cycle_timer("fish_mode_timer_page", now, delay_time_1, delay_time_2, u"永久循环")
+        time_1, time_2 = ["delay", "23:59"], ["delay", "23:59"]
+        tmp = self.create_cycle_timer("fish_mode_timer_page", now, time_1, time_2, u"永久循环")
         start_time_1, set_time_1, start_time_2, set_time_2 = tmp[0]
 
         self.widget_click(self.page["fish_mode_timer_page"]["to_return"],

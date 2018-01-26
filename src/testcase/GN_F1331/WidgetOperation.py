@@ -4,6 +4,23 @@ from src.testcase.GN_F1331.LaunchApp import *
 from src.utils.GetSerial import *
 
 
+# 多线程返回值
+class MyThread(threading.Thread):
+    def __init__(self, target, args=()):
+        super(MyThread, self).__init__()
+        self.func = target
+        self.args = args
+
+    def run(self):
+        self.result = self.func(*self.args)
+
+    def get_result(self):
+        try:
+            return self.result  # 如果子线程不使用join方法，此处可能会报没有self.result的错误
+        except Exception:
+            return None
+
+
 class WidgetOperation(LaunchApp):
     def __init__(self, device_info):
         super(WidgetOperation, self).__init__(device_info)
@@ -289,13 +306,13 @@ class WidgetOperation(LaunchApp):
         :return: start_time, set_time
         """
         try:
-            self.wait_widget(self.page[page]["delay_timer_button"])
+            self.wait_widget(self.page[page]["delay_timer_state"])
             self.widget_click(self.page[page]["delay_timer"])
         except TimeoutException:
             pass
 
         try:
-            self.wait_widget(self.page[page]["cycle_timer_button"])
+            self.wait_widget(self.page[page]["cycle_timer_state"])
             self.widget_click(self.page[page]["cycle_timer"])
         except TimeoutException:
             pass
@@ -325,10 +342,17 @@ class WidgetOperation(LaunchApp):
         if cycle == ["None"]:
             cycle = [time.strftime("%A", time.localtime(start_set_time)).lower()]
 
-        self.widget_click(self.page["add_normal_timer_page"]["saved"],
-                          self.page[page]["title"])
-
+        self.widget_click(self.page["add_normal_timer_page"]["saved"])
         start_time = int(time.time())
+
+        try:
+            self.wait_widget(self.page["mode_timer_conflict_popup"]["title"])
+            self.widget_click(self.page["mode_timer_conflict_popup"]["confirm"],
+                              self.page[page]["title"])
+            start_time = int(time.time())
+        except TimeoutException:
+            self.wait_widget(self.page[page]["title"])
+
         self.debug.info("[APP_TIMER][%s, %s]Start_time: %s, Start_set_time: %s" % (
             start_time, start_set_time,
             time.strftime("%Y-%m-%d %X", time.localtime(start_time)),
@@ -352,18 +376,18 @@ class WidgetOperation(LaunchApp):
         :return:
         """
         try:
-            self.wait_widget(self.page[page]["delay_timer_button"])
+            self.wait_widget(self.page[page]["delay_timer_state"])
             self.widget_click(self.page[page]["delay_timer"])
         except TimeoutException:
             pass
 
         try:
-            self.wait_widget(self.page[page]["cycle_timer_button"])
+            self.wait_widget(self.page[page]["cycle_timer_state"])
         except TimeoutException:
             self.widget_click(self.page[page]["cycle_timer"],
                               self.page[page]["cycle_timer_button"])
 
-        self.widget_click(self.page[page]["cycle_timer_state"],
+        self.widget_click(self.page[page]["cycle_timer_time"],
                           self.page["cycle_timer_page"]["title"])
 
         self.widget_click(self.page["cycle_timer_page"]["open_time"],
@@ -435,15 +459,15 @@ class WidgetOperation(LaunchApp):
             self.widget_click(self.page["cycle_timer_page"]["cycle_forever"])
         else:
             elem = self.widget_click(self.page["cycle_timer_page"]["cycle_time"])
-            roll_value = int(self.ac.get_attribute(elem, "name"))
-            set_value = int(re.findall(u"(\d)次", loop)[0])
+            roll_value = int(re.findall(u"(\d+)", self.ac.get_attribute(elem, "name"))[0])
+            set_value = int(re.findall(u"(\d+)", loop)[0])
             self.set_count_roll(self.page["cycle_timer_page"]["roll_c"], roll_value, set_value)
 
         self.debug.info("[APP_TIMER]Set loop: %s" % loop)
         if loop == u"永久循环":
             loop_count = loops  # 生成指定数量的时间对个数
         else:
-            loop_count = int(re.findall(u"(\d+)次", loop)[0])  # 同时设置循环模式
+            loop_count = int(re.findall(u"(\d+)", loop)[0])  # 同时设置循环模式
         # 延迟时间段长度，30分钟为1800s，在上一段定时结束后加上1800s就是下一段定时执行时间点
         start_period = start_set_time - start_time
         end_period = end_set_time - end_time
@@ -457,7 +481,7 @@ class WidgetOperation(LaunchApp):
             on_end = on_start + start_period  # power_on关闭时间
             off_start = on_end  # power_off开启时间
             off_end = off_start + end_period  # power_off关闭时间
-            loop_list.append([on_start, on_end, off_start, off_end])  # 写入列表
+            loop_list.append([on_start, on_end, off_end])  # 写入列表
             on_start = off_end  # 下一组power_on开启时间
         self.debug.info("loop_list:\n %s" % loop_list)
 
@@ -471,12 +495,12 @@ class WidgetOperation(LaunchApp):
         return: None
         """
         try:
-            self.wait_widget(self.page[page]["delay_timer_button"])
+            self.wait_widget(self.page[page]["delay_timer_state"])
         except TimeoutException:
             self.widget_click(self.page[page]["delay_timer"],
                               self.page[page]["delay_timer_button"])
 
-        self.widget_click(self.page[page]["delay_timer_state"],
+        self.widget_click(self.page[page]["delay_timer_info"],
                           self.page["delay_timer_page"]["title"])
 
         self.widget_click(self.page["delay_timer_page"]["delay_time"],
@@ -653,6 +677,32 @@ class WidgetOperation(LaunchApp):
                 time.sleep(1)
                 print("[APP_CHECK_TIMER]Out Time %s" % time.strftime("%Y-%m-%d %X"))
 
+    def delete_normal_timer_all(self):
+        # 删除上层定时
+        self.widget_click(self.page["control_device_page"]["up_timer"],
+                          self.page["up_timer_page"]["title"])
+
+        self.delete_normal_timer("mid")
+
+        self.widget_click(self.page["mid_timer_page"]["to_return"],
+                          self.page["control_device_page"]["title"])
+        # 删除中层定时
+        self.widget_click(self.page["control_device_page"]["mid_timer"],
+                          self.page["mid_timer_page"]["title"])
+
+        self.delete_normal_timer("mid")
+
+        self.widget_click(self.page["mid_timer_page"]["to_return"],
+                          self.page["control_device_page"]["title"])
+        # 删除下层定时
+        self.widget_click(self.page["control_device_page"]["down_timer"],
+                          self.page["down_timer_page"]["title"])
+
+        self.delete_normal_timer("down")
+
+        self.widget_click(self.page["down_timer_page"]["to_return"],
+                          self.page["control_device_page"]["title"])
+
     # 删除普通定时
     def delete_normal_timer(self, layer):
         while True:
@@ -660,19 +710,7 @@ class WidgetOperation(LaunchApp):
                 self.wait_widget(self.page["%s_timer_page" % layer]["has_normal_timer"])
                 self.debug.info("[APP_INFO]%s has normal timer" % layer)
 
-                index = 0
-                elements = self.wait_widget(self.page["%s_timer_page" % layer]["normal_timer_modify"])
-                for i, element in elements.items():
-                    if element is not None and self.ac.get_attribute(element, "name") == u"定时开启":
-                        index = i
-                        break
-                    elif element is not None and self.ac.get_attribute(element, "name") == u"定时关闭":
-                        index = i
-                        break
-
-                new_value = copy.copy(self.page["%s_timer_page" % layer]["normal_timer_modify"])
-                new_value[0] = new_value[0][index]
-                self.widget_click(new_value)
+                self.widget_click(self.page["%s_timer_page" % layer]["normal_timer_modify"])
                 self.widget_click(self.page["timer_edit_popup"]["delete"])
             except TimeoutException:
                 self.debug.info("[APP_INFO]%s has not normal timer" % layer)
@@ -951,7 +989,6 @@ class WidgetOperation(LaunchApp):
             except Queue.Empty:
                 break
 
-
         self.serial_command_queue.put_nowait((True, command, self.serial_result_queue))
 
         self.check_flag = 1
@@ -977,7 +1014,7 @@ class WidgetOperation(LaunchApp):
             self.check_flag = 0
 
     # 检查启动按钮状态
-    def check_serial_button_state(self):
+    def check_button_state(self, *args):
         """
         使用消息队列提取所有继电器状态并进行筛选，返回按照时间顺序排列的开关状态列表
         :return: [time, 3层开关状态"000"]
@@ -1005,18 +1042,30 @@ class WidgetOperation(LaunchApp):
             if value[0] == "0":
                 result_queue.put_nowait([now_time, value[1:]])
 
-        result = []
+        d = []
         while True:
             try:
-                result.append(result_queue.get_nowait())
+                d.append(result_queue.get_nowait())
             except Queue.Empty:
                 break
 
-        self.debug.info("btn_state_list: %s" % result)
+        if args:
+            result = {}
+            arg = list(set(args))
+            for i in arg:
+                result[i] = [None, [None, None, None]]
+            for i in arg:
+                for ii in d:
+                    if i - 15 < ii[0] < i + 15:
+                        result[i] = ii
+        else:
+            result = d
+
+        self.debug.info("btn_state_dict: %s" % result)
         return result
 
     # 检查循环定时设置状态
-    def check_serial_set_cycle_timer(self):
+    def check_set_cycle_timer(self, *args):
         """
         使用消息队列提取所有循环定时设置状态并进行筛选，返回按照时间顺序排列的循环定时设置状态列表
         :return: [time, id, times]
@@ -1043,18 +1092,27 @@ class WidgetOperation(LaunchApp):
             now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             result_queue.put_nowait([now_time] + list(value))
 
-        result = []
+        d = []
         while True:
             try:
-                result.append(result_queue.get_nowait())
+                d.append(result_queue.get_nowait())
             except Queue.Empty:
                 break
 
-        self.debug.info("set_cycle_timer_list: %s" % result)
+        result = {}
+        arg = list(set(args))
+        for i in arg:
+            result[i] = [None, None, None]
+        for i in arg:
+            for ii in d:
+                if i - 15 < ii[0] < i + 15:
+                    result[i] = ii
+
+        self.debug.info("set_cycle_timer_dict: %s" % result)
         return result
 
     # 检查循环定时执行开状态
-    def check_serial_launch_cycle_timer_on(self):
+    def check_launch_cycle_timer_on(self, *args):
         """
         使用消息队列提取所有循环定时执行开状态并进行筛选，返回按照时间顺序排列的循环定时执行开状态列表
         :return: [time, id, times]
@@ -1081,18 +1139,27 @@ class WidgetOperation(LaunchApp):
             now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             result_queue.put_nowait([now_time] + list(value))
 
-        result = []
+        d = []
         while True:
             try:
-                result.append(result_queue.get_nowait())
+                d.append(result_queue.get_nowait())
             except Queue.Empty:
                 break
 
-        self.debug.info("launch_cycle_timer_on_list: %s" % result)
+        result = {}
+        arg = list(set(args))
+        for i in arg:
+            result[i] = [None, None, None]
+        for i in arg:
+            for ii in d:
+                if i - 15 < ii[0] < i + 15:
+                    result[i] = ii
+
+        self.debug.info("launch_cycle_timer_on_dict: %s" % result)
         return result
 
     # 检查循环定时执行关状态
-    def check_serial_launch_cycle_timer_off(self):
+    def check_launch_cycle_timer_off(self, *args):
         """
         使用消息队列提取所有循环定时执行关状态并进行筛选，返回按照时间顺序排列的循环定时执行关状态列表
         :return: [time, id, times]
@@ -1119,18 +1186,27 @@ class WidgetOperation(LaunchApp):
             now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             result_queue.put_nowait([now_time] + list(value))
 
-        result = []
+        d = []
         while True:
             try:
-                result.append(result_queue.get_nowait())
+                d.append(result_queue.get_nowait())
             except Queue.Empty:
                 break
 
-        self.debug.info("launch_cycle_timer_off_list: %s" % result)
+        result = {}
+        arg = list(set(args))
+        for i in arg:
+            result[i] = [None, None, None]
+        for i in arg:
+            for ii in d:
+                if i - 15 < ii[0] < i + 15:
+                    result[i] = ii
+
+        self.debug.info("launch_cycle_timer_off_dict: %s" % result)
         return result
 
     # 检查延迟定时设置状态
-    def check_serial_set_delay_timer(self):
+    def check_set_delay_timer(self, *args):
         """
         使用消息队列提取所有延迟定时设置状态并进行筛选，返回按照时间顺序排列的延迟定时设置状态列表
         :return: [time, id]
@@ -1157,18 +1233,27 @@ class WidgetOperation(LaunchApp):
             now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             result_queue.put_nowait([now_time] + value)
 
-        result = []
+        d = []
         while True:
             try:
-                result.append(result_queue.get_nowait())
+                d.append(result_queue.get_nowait())
             except Queue.Empty:
                 break
 
-        self.debug.info("set_delay_timer_list: %s" % result)
+        result = {}
+        arg = list(set(args))
+        for i in arg:
+            result[i] = [None, None]
+        for i in arg:
+            for ii in d:
+                if i - 15 < ii[0] < i + 15:
+                    result[i] = ii
+
+        self.debug.info("set_delay_timer_dict: %s" % result)
         return result
 
     # 检查延迟定时执行状态
-    def check_serial_launch_delay_timer(self):
+    def check_launch_delay_timer(self, *args):
         """
         使用消息队列提取所有延迟定时执行状态并进行筛选，返回按照时间顺序排列的延迟定时执行状态列表
         :return: [time, id]
@@ -1195,18 +1280,27 @@ class WidgetOperation(LaunchApp):
             now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             result_queue.put_nowait([now_time] + value)
 
-        result = []
+        d = []
         while True:
             try:
-                result.append(result_queue.get_nowait())
+                d.append(result_queue.get_nowait())
             except Queue.Empty:
                 break
 
-        self.debug.info("launch_delay_timer_list: %s" % result)
+        result = {}
+        arg = list(set(args))
+        for i in arg:
+            result[i] = [None, None]
+        for i in arg:
+            for ii in d:
+                if i - 15 < ii[0] < i + 15:
+                    result[i] = ii
+
+        self.debug.info("launch_delay_timer_dict: %s" % result)
         return result
 
     # 检查普通定时设置状态
-    def check_serial_set_normal_timer(self):
+    def check_set_normal_timer(self, *args):
         """
         使用消息队列提取所有普通定时设置状态并进行筛选，返回按照时间顺序排列的普通定时设置状态列表
         :return: [time, id, set_time, week, 3层定时开关状态"0FF"]
@@ -1235,22 +1329,32 @@ class WidgetOperation(LaunchApp):
             value = list(re.findall("id : (.+?),.+](.+?) +week:(.+?) cha_ru .+](.+? .+? .+?) .+",
                                     serial_result)[0])
             value[1] = value[1].replace("  ", " ")
+            value[2] = bin(int(value[2]))[2:].zfill(7)
             value[3] = value[3].replace("FF", "").replace("00", "0").replace("01", "1").replace(" ", "")
             now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             result_queue.put_nowait([now_time] + value)
 
-        result = []
+        d = []
         while True:
             try:
-                result.append(result_queue.get_nowait())
+                d.append(result_queue.get_nowait())
             except Queue.Empty:
                 break
 
-        self.debug.info("set_normal_timer_list: %s" % result)
+        result = {}
+        arg = list(set(args))
+        for i in arg:
+            result[i] = [None, None, None, None, None]
+        for i in arg:
+            for ii in d:
+                if i - 15 < ii[0] < i + 15:
+                    result[i] = ii
+
+        self.debug.info("set_normal_timer_dict: %s" % result)
         return result
 
     # 检查普通定时执行状态
-    def check_serial_launch_normal_timer(self):
+    def check_launch_normal_timer(self, *args):
         """
         :param once: 循环
         使用消息队列提取所有普通定时执行状态并进行筛选，返回按照时间顺序排列的普通定时执行状态列表
@@ -1276,25 +1380,35 @@ class WidgetOperation(LaunchApp):
             print(sys._getframe().f_code.co_name, serial_result)
             value = list(re.findall("ID (.+?), start time (.+?) +, week:(.+?) cha_ru ", serial_result)[0])
             value[1] = "%s%s%s" % ("0-0-0 ", value[1][2:], ":0")
+            value[2] = bin(int(value[2]))[2:].zfill(7)
             now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             result_queue.put_nowait([now_time] + value)
 
-        result = []
+        d = []
         while True:
             try:
-                result.append(result_queue.get_nowait())
+                d.append(result_queue.get_nowait())
             except Queue.Empty:
                 break
 
-        self.debug.info("launch_normal_timer_list: %s" % result)
+        result = {}
+        arg = list(set(args))
+        for i in arg:
+            result[i] = [None, None, None, None]
+        for i in arg:
+            for ii in d:
+                if i - 15 < ii[0] < i + 15:
+                    result[i] = ii
+
+        self.debug.info("launch_normal_timer_dict: %s" % result)
         return result
 
     # 检查普通定时执行状态单次
-    def check_serial_launch_normal_timer_once(self):
+    def check_launch_normal_timer_once(self, *args):
         """
         :param once: 执行一次/循环
         使用消息队列提取所有普通定时执行状态并进行筛选，返回按照时间顺序排列的普通定时执行状态列表
-        :return: [time, id, launch_time, week/None]
+        :return: [time, id, launch_time]
         list消息etc：[([2018-01-03 09:47:25:957]Once Timer exe over  the 1 timer, the timer ID 150954030, start time 18-1-4 9:58 cha_ru )]
         """
         key = "launch_normal_timer_once"
@@ -1319,51 +1433,60 @@ class WidgetOperation(LaunchApp):
             now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             result_queue.put_nowait([now_time] + value)
 
-        result = []
+        d = []
         while True:
             try:
-                result.append(result_queue.get_nowait())
+                d.append(result_queue.get_nowait())
             except Queue.Empty:
                 break
 
-        self.debug.info("launch_normal_timer_once_list: %s" % result)
+        result = {}
+        arg = list(set(args))
+        for i in arg:
+            result[i] = [None, None, None]
+        for i in arg:
+            for ii in d:
+                if i - 15 < ii[0] < i + 15:
+                    result[i] = ii
+
+        self.debug.info("launch_normal_timer_once_dict: %s" % result)
         return result
 
     # 传入定时设置信息，获取定时ID
-    def get_timer_id_from_set(self, *args):
-        """
-        从设置定时获取定时id
-        :param args:
-        :return: ["id_1", "id_2", "id_3",...]
-        """
-        timer_list = []
-        for tmp in args:
-            for i in tmp:
-                timer_list.append(i[1])
-
-        self.debug.info("timer_list: %s" % timer_list)
-        return timer_list
-
-    # 传入定时ID列表和定时执行信息，获取ID对应执行信息
-    def get_layer_timer_from_launch(self, timer_list, **kwargs):
-        """
-        根据定时id获取执行结果
-        :param timer_id:
-        :return: {timer_id: {"delay": [[args1],[args2],...]...}}
-        """
-        result = {}
-        for timer_id in timer_list:
-            result[timer_id] = {}
-            for k in kwargs:
-                result[timer_id][k] = []
-
-        for k, v in kwargs.items():
-            for i in v:
-                timer_id = i[1]
-                result[timer_id][k].append(i)
-
-        self.debug.info("result: %s" % result)
-        return result
+    # def get_timer_id_from_set(self, *args):
+    #     """
+    #     从设置定时获取定时id
+    #     :param args:
+    #     :return: ["id_1", "id_2", "id_3",...]
+    #     """
+    #     timer_list = []
+    #     for tmp in args:
+    #         for i in tmp:
+    #             timer_list.append(i[1])
+    #
+    #     self.debug.info("timer_list: %s" % timer_list)
+    #     return timer_list
+    #
+    # # 传入定时ID列表和定时执行信息，获取ID对应执行信息
+    # def get_layer_timer_from_launch(self, timer_list, **kwargs):
+    #     """
+    #     根据定时id获取执行结果
+    #     :param timer_id:
+    #     :return: {timer_id: {"delay": [[args1],[args2],...]...}}
+    #     """
+    #     result = {}
+    #     for timer_id in timer_list:
+    #         result[timer_id] = {}
+    #         for k in kwargs:
+    #             result[timer_id][k] = []
+    #
+    #     for k, v in kwargs.items():
+    #         for i in v:
+    #             timer_id = i[1]
+    #             result[timer_id][k].append(i)
+    #
+    #     self.debug.info("result: %s" % result)
+    #     return result
 
     # 获取设备安全模式，记忆模式，防雷状态
     def check_device_info_state(self, wait=False):
@@ -1422,3 +1545,30 @@ class WidgetOperation(LaunchApp):
 
         self.debug.info("device_info_state: %s" % result)
         return result
+
+    # 根据开关执行时间返回开关执行时间状态字典
+    def get_button_state_dict(self, btn_state_list, *args):
+        """
+        输入开关执行列表，待执行时间点，返回以时间点为键，开关执行状态为值的字典
+        :param btn_state_list: 开关执行列表
+        :param args: 执行时间点
+        :return: list , time_1, time_2... -> dict
+        """
+        result = {}
+        arg = list(set(args))
+        for i in arg:
+            result[i] = [None, None, None, None]
+        for i in arg:
+            for ii in btn_state_list:
+                if i - 15 < ii[0] < i + 15:
+                    result[i] = ii
+        return result
+
+    def check_toast(self, elem):
+        end_time = time.time() + 5
+        while True:
+            try:
+                return self.wait_widget(elem)
+            except TimeoutException:
+                if time.time() > end_time:
+                    raise

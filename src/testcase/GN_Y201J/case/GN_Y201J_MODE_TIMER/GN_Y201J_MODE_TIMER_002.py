@@ -7,7 +7,7 @@ class GNY201JModeTimer2(WidgetOperation):
     def run(self):
         self.case_module = u"模式定时"  # 用例所属模块
         self.case_title = u'热水器模式下当前时间在设定时间内的定时是否正确执行'  # 用例名称
-        self.zentao_id = 1064  # 禅道ID
+        self.zentao_id = "1064"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -25,8 +25,8 @@ class GNY201JModeTimer2(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1, delay_time_2 = -1, 3
-        tmp, cycle = self.create_water_mode_timer(now, delay_time_1, delay_time_2, u"执行一次")
+        time_1, time_2 = -1, 3
+        tmp, cycle = self.create_water_mode_timer(now, time_1, time_2, u"执行一次")
         start_time_1, set_time_1 = tmp[0]
         start_time_2, set_time_2 = tmp[1]
 

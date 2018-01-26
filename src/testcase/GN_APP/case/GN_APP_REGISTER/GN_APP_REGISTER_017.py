@@ -7,7 +7,7 @@ class GNAPPRegister17(WidgetOperation):
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-用户名为数字时(非正确的手机号码)，提示信息检查'  # 用例名称
-        self.zentao_id = 1769  # 禅道ID
+        self.zentao_id = "1769"  # 禅道ID
 
     # 用例动作
     def case(self):

@@ -7,7 +7,7 @@ class GNAPPVersion1(WidgetOperation):
     def run(self):
         self.case_module = u"版本信息"  # 用例所属模块
         self.case_title = u'当前版本为最新版本，页面信息检查'  # 用例名称
-        self.zentao_id = 1992  # 禅道ID
+        self.zentao_id = "1992"  # 禅道ID
 
     # 用例动作
     def case(self):

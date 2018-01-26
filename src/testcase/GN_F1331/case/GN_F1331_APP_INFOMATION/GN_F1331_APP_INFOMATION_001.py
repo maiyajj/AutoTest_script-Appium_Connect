@@ -7,7 +7,7 @@ class GNF1331AppInfomation1(WidgetOperation):
     def run(self):
         self.case_module = u"APP检查(#2)"  # 用例所属模块
         self.case_title = u'设备详细界面，信息检测'  # 用例名称
-        self.zentao_id = 007  # 禅道ID
+        self.zentao_id = "007"  # 禅道ID
 
     # 用例动作
     def case(self):

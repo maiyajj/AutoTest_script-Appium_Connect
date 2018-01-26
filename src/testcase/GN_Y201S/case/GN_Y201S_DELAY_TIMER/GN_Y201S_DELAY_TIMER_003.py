@@ -7,7 +7,7 @@ class GNY201SDelayTimer3(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_DELAYTIMER_延迟定时(#51)"  # 用例所属模块
         self.case_title = u'FUT_DELAYTIMER_延迟定时5分钟开'  # 用例名称
-        self.zentao_id = 466  # 禅道ID
+        self.zentao_id = "466"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -25,8 +25,8 @@ class GNY201SDelayTimer3(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1 = ["delay", "00:05"]
-        start_time_1, set_time_1 = self.create_delay_timer(now, delay_time_1, "power_on")
+        time_1 = ["delay", "00:05"]
+        start_time_1, set_time_1 = self.create_delay_timer(now, time_1, "power_on")
 
         self.widget_click(self.page["delay_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

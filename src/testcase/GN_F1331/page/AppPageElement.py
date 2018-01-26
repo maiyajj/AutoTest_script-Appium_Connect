@@ -1,6 +1,6 @@
 # coding=utf-8
-from AppPageElement_Android import *
-from AppPageElement_iOS import *
+from .AppPageElement_Android import *
+from .AppPageElement_iOS import *
 
 
 class MainPageWidget(object):
@@ -123,6 +123,9 @@ class MainPageWidget(object):
 
     def logout_popup(self):
         return self.wrapper(self.pwa.logout_popup(), self.pwi.logout_popup())
+
+    def max_normal_timer_popup(self):
+        return self.wrapper(self.pwa.max_normal_timer_popup(), self.pwi.max_normal_timer_popup())
 
     def mode_timer_conflict_popup(self):
         return self.wrapper(self.pwa.mode_timer_conflict_popup(), self.pwi.mode_timer_conflict_popup())

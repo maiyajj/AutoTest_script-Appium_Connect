@@ -7,7 +7,7 @@ class GNY201SEem1(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_EEM_电量计量(#61)"  # 用例所属模块
         self.case_title = u'FUT_EEM_峰谷电价设置'  # 用例名称
-        self.zentao_id = 559  # 禅道ID
+        self.zentao_id = "559"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -77,26 +77,26 @@ class GNY201SEem1(WidgetOperation):
         else:
             time_roll = re.findall("(\d+:\d+)", attribute)[0]
 
-        delay_time_1 = ["08:00", "point"]
+        time_1 = ["08:00", "point"]
         self.widget_click(self.page["peak_valley_price_page"]["start_time"],
                           self.page["timer_roll_popup"]["title"])
 
         self.set_timer_roll(self.page["timer_roll_popup"]["roll"],
                             self.page["timer_roll_popup"]["roll_h"],
                             self.page["timer_roll_popup"]["roll_m"],
-                            time_roll, now, delay_time_1)
+                            time_roll, now, time_1)
 
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
                           self.page["peak_valley_price_page"]["title"])
 
-        delay_time_2 = ["22:00", "point"]
+        time_2 = ["22:00", "point"]
         self.widget_click(self.page["peak_valley_price_page"]["end_time"],
                           self.page["peak_valley_price_page"]["end_h"])
 
         self.set_timer_roll(self.page["timer_roll_popup"]["roll"],
                             self.page["timer_roll_popup"]["roll_h"],
                             self.page["timer_roll_popup"]["roll_m"],
-                            time_roll, now, delay_time_2)
+                            time_roll, now, time_2)
 
         self.widget_click(self.page["timer_roll_popup"]["confirm"],
                           self.page["peak_valley_price_page"]["title"])

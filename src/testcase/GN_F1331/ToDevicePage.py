@@ -1,5 +1,4 @@
 # coding=utf-8
-import os
 
 from src.common.WidgetCheckUnit import *
 from src.utils.ReadConf import *
@@ -78,7 +77,7 @@ class ToDevicePage(object):
                     self.widget_click(self.page["app_home_page"]["account_setting"],
                                       self.page["app_home_page"]["title"],
                                       log_record=0)
-        except TimeoutException, e:
+        except TimeoutException as e:
             self.debug.error(str(e))
             self.debug.info(u"[APP_INF] APP进入设备主页失败，退出")
             self.driver.close_app()

@@ -1,6 +1,17 @@
 # coding=utf-8
-from ShellCommand_Mac import *
-from ShellCommand_Windows import *
+import sys
+
+from .ShellCommand_Mac import *
+from .ShellCommand_Windows import *
+
+try:
+    import time
+    from codecs import open
+except ImportError:
+    pass
+
+if sys.version_info[:1] > (2,):  # python3
+    xrange = range
 
 
 class PidTerminalError(Exception):
@@ -84,6 +95,8 @@ class ShellCommand(object):
         :return: [udid] -> list
         """
         command = "idevice_id -l"
+        if self.os == "windows":
+            return []
         udid = re.findall("(.+)", os.popen(command).read())
 
         return udid
@@ -143,7 +156,7 @@ class ShellCommand(object):
                 self.scm.kill_proc_by_proc(proc)
             else:
                 raise KeyError("The OS is wrong!")
-        except AssertionError, e:
+        except AssertionError as e:
             raise PidTerminalError(e)
 
     def kill_proc_by_pid(self, pid):
@@ -157,7 +170,7 @@ class ShellCommand(object):
                 self.scm.kill_proc_by_pid(pid)
             else:
                 raise KeyError("The OS is wrong!")
-        except AssertionError, e:
+        except AssertionError as e:
             raise PidTerminalError(e)
 
     def set_appium_log_addr(self):
@@ -173,14 +186,14 @@ class ShellCommand(object):
 
         return addr
 
-    def push_appium_app(self):
+    def push_appium_app(self, udid):
         """
         代替appium安装三大APP
         """
         if self.os == "windows":
-            self.scw.push_appium_app()
+            self.scw.push_appium_app(udid)
         elif self.os == "mac":
-            self.scm.push_appium_app()
+            self.scm.push_appium_app(udid)
         else:
             raise KeyError("The OS is wrong!")
 

@@ -1,3 +1,4 @@
+# coding=utf-8
 # 打开APP超时时间
 open_app_timeout: 60
 # 搜索设备超时时间
@@ -83,7 +84,7 @@ app_device_name:
 # 手机型号及待运行APP
 phone_name:
   b9388cbb:
-    app: 'GN_201J'
+    app: 'GN_F1331'
     phone_module: '小米5'
     devices_mac: '0'
     serial_com: "COM12"

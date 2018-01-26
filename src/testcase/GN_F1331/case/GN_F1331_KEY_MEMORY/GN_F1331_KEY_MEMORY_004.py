@@ -7,7 +7,7 @@ class GNF1331KeyMemory4(WidgetOperation):
     def run(self):
         self.case_module = u"远程开关(#18)"  # 用例所属模块
         self.case_title = u'手机APP远程分层开关功能检查'  # 用例名称
-        self.zentao_id = 191  # 禅道ID
+        self.zentao_id = "191"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -40,7 +40,7 @@ class GNF1331KeyMemory4(WidgetOperation):
         self.wait_widget(self.page["control_device_page"]["down_button_off"])
 
         #####
-        btn_state_list = self.check_serial_button_state()  # 开关
+        btn_state_list = self.check_button_state()  # 开关
 
         # 开关
         # 111, 000

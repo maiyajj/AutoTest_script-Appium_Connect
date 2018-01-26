@@ -7,7 +7,7 @@ class GNY201SEem4(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_EEM_电量计量(#61)"  # 用例所属模块
         self.case_title = u'FUT_EEM_实时功率显示及精度检查'  # 用例名称
-        self.zentao_id = 550  # 禅道ID
+        self.zentao_id = "550"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -38,7 +38,7 @@ class GNY201SEem4(WidgetOperation):
                 end_time = time.time() + 60
                 i -= 1
 
-        power = map(lambda x: float(x.replace("W", "")), power)
+        power = list(map(lambda x: float(x.replace(" W", "")), power))
 
         power_error = sum(power) / len(power) / 50
         self.debug.info("[ELEC_INFO]power_error is %s" % power_error)

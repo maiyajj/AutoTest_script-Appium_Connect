@@ -7,7 +7,7 @@ class GNAPPAccountSettings10(WidgetOperation):
     def run(self):
         self.case_module = u"账户设置"  # 用例所属模块
         self.case_title = u'密码修改页面，确认密码为空，提示信息检查'  # 用例名称
-        self.zentao_id = 1968  # 禅道ID
+        self.zentao_id = "1968"  # 禅道ID
 
     # 用例动作
     def case(self):

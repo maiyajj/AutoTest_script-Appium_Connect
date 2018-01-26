@@ -7,7 +7,7 @@ class GNAPPLogin4(WidgetOperation):
     def run(self):
         self.case_module = u"登录"  # 用例所属模块
         self.case_title = u'登录页面—成功登录后杀掉APP，再次开启APP的状态查看'  # 用例名称
-        self.zentao_id = 1903  # 禅道ID
+        self.zentao_id = "1903"  # 禅道ID
 
     # 用例动作
     def case(self):

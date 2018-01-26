@@ -7,7 +7,7 @@ class GNY201STimerOvp1(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_MTIMER_OVP_充电保护模式(#47)"  # 用例所属模块
         self.case_title = u'FUT_MTIMER_OVP_充电保护模式_延时功能（1min，2min，1h，23h59min，断电恢复）是否正常'  # 用例名称
-        self.zentao_id = 459  # 禅道ID
+        self.zentao_id = "459"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -27,8 +27,8 @@ class GNY201STimerOvp1(WidgetOperation):
 
             now = time.strftime("%H:%M")
 
-            delay_time_1 = i
-            start_time_1, set_time_1 = self.create_delay_mode_timer("piocc_mode_timer_page", now, delay_time_1)
+            time_1 = i
+            start_time_1, set_time_1 = self.create_delay_mode_timer("piocc_mode_timer_page", now, time_1)
 
             self.widget_click(self.page["piocc_mode_timer_page"]["to_return"],
                               self.page["control_device_page"]["title"])

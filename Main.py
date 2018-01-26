@@ -33,14 +33,14 @@ class MainFunc(object):
 
 
 if __name__ == '__main__':
+    scan_case = Process(target=scan_case_name)
+    scan_case.start()
     # The list of information to be tested.
     # device_list: type dict.
     device_list = AppInit().app_init()
     print(device_list)
     mf = MainFunc()
 
-    scan_case = Process(target=scan_case_name)
-    scan_case.start()
     scan_case.join()
 
     # Create a multi-process communication channel

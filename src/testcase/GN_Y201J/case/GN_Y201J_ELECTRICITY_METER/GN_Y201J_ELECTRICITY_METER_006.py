@@ -7,7 +7,7 @@ class GNY201JElectricityMeter6(WidgetOperation):
     def run(self):
         self.case_module = u"电量计量"  # 用例所属模块
         self.case_title = u'单一电价设置'  # 用例名称
-        self.zentao_id = 1151  # 禅道ID
+        self.zentao_id = "1151"  # 禅道ID
 
     # 用例动作
     def case(self):

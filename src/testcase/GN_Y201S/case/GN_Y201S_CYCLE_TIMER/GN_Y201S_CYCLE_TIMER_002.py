@@ -7,7 +7,7 @@ class GNY201SCycleTimer2(WidgetOperation):
     def run(self):
         self.case_module = u"FUT_CYCLETIMER_循环定时(#50)"  # 用例所属模块
         self.case_title = u'FUT_CYCLETIMER_循环定时执行过程中手动切换设备状态'  # 用例名称
-        self.zentao_id = 471  # 禅道ID
+        self.zentao_id = "471"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -26,8 +26,8 @@ class GNY201SCycleTimer2(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        delay_time_1, delay_time_2 = ["delay", "00:01"], ["delay", "00:01"]
-        tmp = self.create_cycle_timer("cycle_timer_page", now, delay_time_1, delay_time_2, u"永久循环", loops=5)
+        time_1, time_2 = ["delay", "00:01"], ["delay", "00:01"]
+        tmp = self.create_cycle_timer("cycle_timer_page", now, time_1, time_2, u"永久循环", loops=5)
         start_time_1, set_time_1, start_time_2, set_time_2 = tmp[0]
         start_time_3, set_time_3, start_time_4, set_time_4 = tmp[1]
         start_time_5, set_time_5, start_time_6, set_time_6 = tmp[2]

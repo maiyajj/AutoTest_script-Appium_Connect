@@ -7,7 +7,7 @@ class GNAPPThemeStyle6(WidgetOperation):
     def run(self):
         self.case_module = u"主题风格"  # 用例所属模块
         self.case_title = u'页面检查'  # 用例名称
-        self.zentao_id = 1985  # 禅道ID
+        self.zentao_id = "1985"  # 禅道ID
 
     # 用例动作
     def case(self):

@@ -2,240 +2,11 @@
 import linecache
 import os.path
 import re
+import sys
+from codecs import open
 
-
-# from src.testcase.page.AppPageElement import *
-
-
-# from src.testcase.page.AppPageElement_GN_Android import *
-# from src.testcase.page.AppPageElement_JD_Android import *
-
-def create_ReadConf():
-    head = "# coding=utf-8\n" \
-           "# 由IncrementalUpdate.py生成\n" \
-           "import sys\n\n" \
-           "import yaml\n\n" \
-           "reload(sys)\n" \
-           "sys.setdefaultencoding('utf-8')\n\n" \
-           "conf = yaml.load(file(r'config/Conf.yaml'))\n"
-    with open(r"config/Conf.yaml", "r") as files:
-        with open(r"./src/utils/ReadConf.py", "w") as tmp_file:
-            tmp_file.write(head)
-            file = files.readlines()
-            for i in file:
-                tmp = re.findall(r"^\S.+", i)
-                if tmp:
-                    database = tmp[0].split(":")[0].split()
-                    try:
-                        database = [database[0][-1] + " " + database[1]]
-                    except IndexError:
-                        pass
-                    database = database[0]
-                    data = re.findall(r"#.+", database)
-                    if not data:
-                        tmp_file.write('conf_%s = conf["%s"]\n' % (database, database))
-                    else:
-                        tmp_file.write("%s\n" % database)
-
-
-def create_ReadAPPElement():
-    a = []
-    b = []
-    for i in dir(MainPageWidgetAndroid):
-        tmp = re.findall("__.+", i)
-        if not tmp:
-            a.append(i)
-    for i in dir(PopupWidgetAndroid):
-        tmp = re.findall("__.+", i)
-        if not tmp:
-            b.append(i)
-    with open(r"./src/utils/ReadAPPElement.py", "w") as files:
-        files.write("# coding=utf-8\n")
-        files.write("# 由IncrementalUpdate.py生成\n")
-        files.write("from src.testcase.page.AppPageElement import *\n\n\n")
-        files.write("class PageElementJD(object):\n")
-        files.write("    def __init__(self, device, phone_os, app):\n")
-        files.write("        self.mpw = MainPageWidget(phone_os, app).wrapper()\n")
-        files.write("        self.device = device\n\n")
-        files.write("    def get_page_element(self):\n")
-        files.write('''        self.device["page"] = {}\n''')
-        for i in a:
-            files.write('''        self.device["page"]["{0}"] = self.mpw.{0}()\n'''.format(i))
-        files.write('''\n''')
-        for i in b:
-            files.write('''        self.device["page"]["{0}"] = self.mpw.{0}()\n'''.format(i))
-
-
-def create_AppPageElement():
-    a = []
-    b = []
-    for i in dir(MainPageWidgetAndroidJD):
-        tmp = re.findall("__.+", i)
-        if not tmp:
-            a.append(i)
-    for i in dir(PopupWidgetAndroidJD):
-        tmp = re.findall("__.+", i)
-        if not tmp:
-            b.append(i)
-    with open(r"./src/testcase/page/AppPageElement.py", "w") as files:
-        files.write("# coding=utf-8\n")
-        files.write("from AppPageElement_JD_Android import *\n")
-        files.write("from AppPageElement_JD_iOS import *\n\n")
-        files.write("class MainPageWidget(object):\n")
-        files.write("    def __init__(self, phone_os):\n")
-        files.write("        self.phone_os = phone_os\n")
-        files.write("        self.mpwa = MainPageWidgetAndroidJD()\n")
-        files.write("        self.mpwi = MainPageWidgetIosJD()\n")
-        files.write("        self.pwa = PopupWidgetAndroidJD()\n")
-        files.write("        self.pwi = PopupWidgetIosJD()\n")
-        files.write("    def wrapper(self, func1, func2):\n")
-        files.write('''        if self.phone_os == "Android":\n''')
-        files.write('''            return func1\n''')
-        files.write('''        elif self.phone_os == "iOS":\n''')
-        files.write('''            return func2\n''')
-        files.write('''        else:\n''')
-        files.write('''            raise KeyError("The OS is wrong!")\n\n''')
-        for i in a:
-            files.write("    def %s(self):\n" % i)
-            files.write("        return self.wrapper(self.mpwa.{0}(), self.mpwi.{0}())\n\n".format(i))
-        for i in b:
-            files.write("    def %s(self):\n" % i)
-            files.write("        return self.wrapper(self.pwa.{0}(), self.pwi.{0}())\n\n".format(i))
-
-
-def create_INPUT_CASE():
-    # 写INPUT_CASE文件夹内容
-    rootdir = r"./src/testcase/case/GN_APP"  # 指明被遍历的文件夹
-
-    DevicePage = open(r"./src/testcase/case/GN_APP/input_case/GNAppDevicePage.py", "w")
-    ForgetPassword = open(r"./src/testcase/case/GN_APP/input_case/GNAppForgetPassword.py", "w")
-    Login = open(r"./src/testcase/case/GN_APP/input_case/GNAppLogin.py", "w")
-    MessageClassify = open(r"./src/testcase/case/GN_APP/input_case/GNAppMessageClassify.py", "w")
-    AccountSettings = open(r"./src/testcase/case/GN_APP/input_case/GNAppAccountSettings.py", "w")
-    Register = open(r"./src/testcase/case/GN_APP/input_case/GNAppRegister.py", "w")
-    FeedBack = open(r"./src/testcase/case/GN_APP/input_case/GNAppFeedBack.py", "w")
-    UsingHelp = open(r"./src/testcase/case/GN_APP/input_case/GNAppUsingHelp.py", "w")
-    Version = open(r"./src/testcase/case/GN_APP/input_case/GNAppVersion.py", "w")
-    ThemeStyle = open(r"./src/testcase/case/GN_APP/input_case/GNAppThemeStyle.py", "w")
-
-    DevicePage.write("# coding=utf-8\n")
-    ForgetPassword.write("# coding=utf-8\n")
-    Login.write("# coding=utf-8\n")
-    MessageClassify.write("# coding=utf-8\n")
-    AccountSettings.write("# coding=utf-8\n")
-    Register.write("# coding=utf-8\n")
-    FeedBack.write("# coding=utf-8\n")
-    UsingHelp.write("# coding=utf-8\n")
-    Version.write("# coding=utf-8\n")
-    ThemeStyle.write("# coding=utf-8\n")
-
-    tmpDevicePage = []
-    tmpForgetPassword = []
-    tmpLogin = []
-    tmpMessageClassify = []
-    tmpAccountSettings = []
-    tmpRegister = []
-    tmpFeedBack = []
-    tmpUsingHelp = []
-    tmpVersion = []
-    tmpThemeStyle = []
-
-    for parent, dirnames, filenames in os.walk(rootdir):  # 三个参数：分别返回1.父目录 2.所有文件夹名字（不含路径） 3.所有文件名字
-        for filename in filenames:
-            if "GN_APP" in filename and "pyc" not in filename:
-                filename = filename[:-3]
-                if "GNAPP_DEVICE_PAGE" in filename:
-                    DevicePage.write("from src.testcase.case.GN_APP.GNAPP_DEVICE_PAGE.%s import *\n" % filename)
-                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
-                        tmpDevicePage.append(re.findall(r"class (.+)\(", files.read())[0])
-                if "GNAPP_FORGET_PASSWORD" in filename:
-                    ForgetPassword.write("from src.testcase.case.GN_APP.GNAPP_FORGET_PASSWORD.%s import *\n" % filename)
-                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
-                        tmpForgetPassword.append(re.findall(r"class (.+)\(", files.read())[0])
-                if "GNAPP_LOGIN" in filename:
-                    Login.write("from src.testcase.case.GN_APP.GNAPP_LOGIN.%s import *\n" % filename)
-                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
-                        tmpLogin.append(re.findall(r"class (.+)\(", files.read())[0])
-                if "GNAPP_MESSAGE_CLASSIFY" in filename:
-                    MessageClassify.write(
-                        "from src.testcase.case.GN_APP.GNAPP_MESSAGE_CLASSIFY.%s import *\n" % filename)
-                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
-                        tmpMessageClassify.append(re.findall(r"class (.+)\(", files.read())[0])
-                if "GNAPP_ACCOUNT_SETTINGS" in filename:
-                    AccountSettings.write(
-                        "from src.testcase.case.GN_APP.GNAPP_ACCOUNT_SETTINGS.%s import *\n" % filename)
-                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
-                        tmpAccountSettings.append(re.findall(r"class (.+)\(", files.read())[0])
-                if "GNAPP_REGISTER" in filename:
-                    Register.write("from src.testcase.case.GN_APP.GNAPP_REGISTER.%s import *\n" % filename)
-                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
-                        tmpRegister.append(re.findall(r"class (.+)\(", files.read())[0])
-                if "GNAPP_FEED_BACK" in filename:
-                    FeedBack.write("from src.testcase.case.GN_APP.GNAPP_FEED_BACK.%s import *\n" % filename)
-                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
-                        tmpFeedBack.append(re.findall(r"class (.+)\(", files.read())[0])
-                if "GNAPP_USING_HELP" in filename:
-                    UsingHelp.write("from src.testcase.case.GN_APP.GNAPP_USING_HELP.%s import *\n" % filename)
-                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
-                        tmpUsingHelp.append(re.findall(r"class (.+)\(", files.read())[0])
-                if "GNAPP_VERSION" in filename:
-                    Version.write("from src.testcase.case.GN_APP.GNAPP_VERSION.%s import *\n" % filename)
-                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
-                        tmpVersion.append(re.findall(r"class (.+)\(", files.read())[0])
-                if "GNAPP_THEME_STYLE" in filename:
-                    ThemeStyle.write("from src.testcase.case.GN_APP.GNAPP_THEME_STYLE.%s import *\n" % filename)
-                    with open(os.path.join(parent, (filename + ".py")), "r") as files:
-                        tmpThemeStyle.append(re.findall(r"class (.+)\(", files.read())[0])
-    DevicePage.write("\n")
-    for i in tmpDevicePage:
-        DevicePage.write(i + " = " + i + "\n")
-
-    ForgetPassword.write("\n")
-    for i in tmpForgetPassword:
-        ForgetPassword.write(i + " = " + i + "\n")
-
-    Login.write("\n")
-    for i in tmpLogin:
-        Login.write(i + " = " + i + "\n")
-
-    MessageClassify.write("\n")
-    for i in tmpMessageClassify:
-        MessageClassify.write(i + " = " + i + "\n")
-
-    AccountSettings.write("\n")
-    for i in tmpAccountSettings:
-        AccountSettings.write(i + " = " + i + "\n")
-
-    Register.write("\n")
-    for i in tmpRegister:
-        Register.write(i + " = " + i + "\n")
-
-    FeedBack.write("\n")
-    for i in tmpFeedBack:
-        FeedBack.write(i + " = " + i + "\n")
-
-    UsingHelp.write("\n")
-    for i in tmpUsingHelp:
-        UsingHelp.write(i + " = " + i + "\n")
-
-    Version.write("\n")
-    for i in tmpVersion:
-        Version.write(i + " = " + i + "\n")
-
-    ThemeStyle.write("\n")
-    for i in tmpThemeStyle:
-        ThemeStyle.write(i + " = " + i + "\n")
-
-    DevicePage.close()
-    ForgetPassword.close()
-    Login.close()
-    MessageClassify.close()
-    AccountSettings.close()
-    Register.close()
-    FeedBack.close()
-    UsingHelp.close()
-    Version.close()
-    ThemeStyle.close()
+if sys.version_info[:1] > (2,):
+    xrange = range
 
 
 def create_WaitCase():
@@ -244,13 +15,13 @@ def create_WaitCase():
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
             if "GN_APP" in filename and "pyc" not in filename:
-                with open(os.path.join(parent, filename), "r") as files:
+                with open(os.path.join(parent, filename), "r", encoding="utf-8") as files:
                     file = files.read()
                     class_name = re.findall(r"class (.+)\(", file)[0]
-                    case_name = re.findall(r"self.case_title = u(.+) +\#", file)[0][1:-2]
-                    ZenTao_id = re.findall(r"self.ZenTao_id = (.+) +\#", file)[0][:-1]
+                    case_name = re.findall(r"self.case_title = u(.+) +#", file)[0][1:-2]
+                    ZenTao_id = re.findall(r'self.ZenTao_id = "(.+)" +#', file)[0][:-1]
                     CaseList.append([class_name, case_name, ZenTao_id])
-    with open(r"./src/testcase/case/WaitCase.py", "w") as WaitCase:
+    with open(r"./src/testcase/case/WaitCase.py", "w", encoding="utf-8") as WaitCase:
         WaitCase.write('''# coding=utf-8\n''')
         WaitCase.write('''import os\n''')
         WaitCase.write('''import re\n''')
@@ -390,7 +161,7 @@ def insert_code():
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
             if "GN_APP" in filename and "pyc" not in filename:
-                with open(os.path.join(parent, filename), "r+") as files:
+                with open(os.path.join(parent, filename), "r+", encoding="utf-8") as files:
                     first_lines = files.readline()
                     second_lines = files.readlines()
                     files.seek(0)
@@ -418,11 +189,11 @@ def scan_path():
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
             if "py" in filename and "pyc" not in filename and "init" not in filename:
-                with open(os.path.join(parent, filename), "r") as files:
+                with open(os.path.join(parent, filename), "r", encoding="utf-8") as files:
                     name = re.findall(r"\.\./.+", files.read())
                     if name:
-                        print name
-                        print os.path.join(parent, filename)
+                        print(name)
+                        print(os.path.join(parent, filename))
 
 
 # 扫描文件中不是/分隔的
@@ -431,13 +202,13 @@ def scan_backslash():
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
             if "py" in filename and "pyc" not in filename and "init" not in filename:
-                with open(os.path.join(parent, filename), "r") as files:
+                with open(os.path.join(parent, filename), "r", encoding="utf-8") as files:
                     name = re.findall(r'.+\\.+', files.read())
                     if name:
                         for i in name:
                             if "\\n" not in i:
-                                print i
-                                print os.path.join(parent, filename)
+                                print(i)
+                                print(os.path.join(parent, filename))
 
 
 # 全部添加禅道ID
@@ -448,18 +219,18 @@ def add_ZenTao_id():
             if "GN_APP" in filename and "pyc" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
-                with open(filepath, "w") as files:
-                    for i in range(1, lines + 1):
+                with open(filepath, "w", encoding="utf-8") as files:
+                    for i in xrange(1, lines + 1):
                         if "self.case_title = " in linecache.getline(filepath, i):
-                            print i, linecache.getline(filepath, i),
+                            print(i, linecache.getline(filepath, i),)
                             files.write(linecache.getline(filepath, i))
                             files.write("        self.ZenTao_id = \n")
                         elif '[CASE_ID="%s", CASE_TITLE="%s"]' in linecache.getline(filepath, i):
-                            print i, linecache.getline(filepath, i),
+                            print(i, linecache.getline(filepath, i),)
                             files.write(
-                                '''        self.debug.info('[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s"]'\n''')
+                                '''        self.debug.info(u'[GN_INF] <current case> [CASE_ID="%s", CASE_NAME="%s", 禅道ID="%s"]'\n''')
                         elif "os.path.basename" in linecache.getline(filepath, i):
-                            print i, linecache.getline(filepath, i),
+                            print(i, linecache.getline(filepath, i),)
                             files.write(
                                 '''                    % (os.path.basename(__file__).split(".")[0], self.case_title, self.ZenTao_id, self.case_module))\n''')
                         else:
@@ -473,8 +244,8 @@ def add_basename():
             if "GN_APP" in filename and "pyc" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
-                with open(filepath, "w") as files:
-                    for i in range(1, lines + 1):
+                with open(filepath, "w", encoding="utf-8") as files:
+                    for i in xrange(1, lines + 1):
                         if "self.wait_widget = widget_check_unit.wait_widget" in linecache.getline(filepath, i):
                             files.write(linecache.getline(filepath, i))
                             files.write('        self.success = 0\n')
@@ -490,40 +261,28 @@ def modified_utf():
             if "py" in filename and "pyc" not in filename and "init" not in filename and "IncrementalUpdate" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
-                print filename
-                with open(filepath, "w") as files:
-                    for i in range(1, lines + 1):
+                print(filename)
+                with open(filepath, "w", encoding="utf-8") as files:
+                    for i in xrange(1, lines + 1):
                         if "# coding:utf-8" in linecache.getline(filepath, i):
-                            print linecache.getline(filepath, i)
+                            print(linecache.getline(filepath, i))
                             files.write(linecache.getline(filepath, i).replace("# coding:utf-8", "# coding=utf-8"))
                         else:
                             files.write(linecache.getline(filepath, i))
 
 
-def check_AppPageElement():
-    import sys
-    file = r"./src/testcase/page/AppPageElement.py"
-    MainPage = [i for i in dir(MainPageWidgetAndroidJD) if "__" not in i]
-    Popup = [i for i in dir(PopupWidgetAndroidJD) if "__" not in i]
-    with open(file, "r") as app:
-        app = app.read()
-        for i in MainPage:
-            print re.findall(r".+def %s.+" % i, app)
-            print sys._getframe().f_lineno
-
-
 def add_notes():
-    rootdir = r"./src/testcase/"
+    rootdir = r"../testcase/"
     for parent, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if "GN_APP" in filename and "pyc" not in filename:
+            if "GN_" in filename and "pyc" not in filename:
                 filepath = os.path.join(parent, filename)
                 lines = len(linecache.getlines(filepath))
-                # print filename[:-3]
+                print(filename[:-3])
                 # a = -100
                 # with open(filepath, "r") as files:
                 #     print linecache.getline(filepath, lines + 1 - 2)
-                #     for i in range(1, lines + 1 - 2):
+                #     for i in xrange(1, lines + 1 - 2):
                 #         if i == a:
                 #             pass
                 #         else:
@@ -535,13 +294,15 @@ def add_notes():
                 #                 files.write(linecache.getline(filepath, i))
                 #             else:
                 #                 files.write(linecache.getline(filepath, i))
-                with open(filepath, "w") as files:
+                with open(filepath, "r", encoding="utf-8") as files:
                     for i in xrange(1, lines + 1):
-                        if '''(WidgetOperationGN)''' in linecache.getline(filepath, i):
-                            print filename
-                            files.write(linecache.getline(filepath, i).
-                                        replace("(WidgetOperationGN)",
-                                                '(WidgetOperation)'))
+                        if '''self.zentao_id =''' in linecache.getline(filepath, i):
+                            value = linecache.getline(filepath, i)
+                            if not re.findall('= "(.+?)" ', value):
+                                tmp = re.findall('= (.+?) ', value)[0]
+                                value = value.replace(tmp, '"%s"' % tmp)
+                            # print(value)
+                            files.write(value)
                         else:
                             files.write(linecache.getline(filepath, i))
 
@@ -558,6 +319,7 @@ def scan_repet():
     print(len(tmp))
     # print(lines)
 
+
 def src_line():
     rootdir = r"./"
     line = 0
@@ -565,15 +327,11 @@ def src_line():
         for filename in [i for i in filenames if "IncrementalUpdate" not in i and ".py" in i and "pyc" not in i]:
             lines = len(linecache.getlines(os.path.join(parent, filename)))
             line = lines + line
-    print line
+    print(line)
 
 
 # src_line()
 
-# create_ReadConf()  # 创建ReadConf.py 必须
-# create_ReadAPPElement()  # 创建ReadAPPElement.py 必须
-# create_AppPageElement()  # 创建AppPageElement.py 必须
-# create_INPUT_CASE()  # 创建INPUT_CASE.py 必须
 # create_WaitCase()  # 创建WaitCase.py 必须
 # file_renames() # 将文件名后缀从1变成001 可选
 # insert_code() # 将每个用例中插入from appium import webdriver 可选
@@ -583,8 +341,8 @@ def src_line():
 # add_ZenTao_id() # 在每个用例中插入self.ZenTao_id = 可选
 # add_basename() # 在每个用例中插入self.success = 0可选
 # modified_utf()  # 将每个用例的# coding=utf-8变成# coding=utf-8 可选
-# add_notes()
-scan_repet()
+add_notes()
+# scan_repet()
 # check_AppPageElement()
 # a = []
 # b = []

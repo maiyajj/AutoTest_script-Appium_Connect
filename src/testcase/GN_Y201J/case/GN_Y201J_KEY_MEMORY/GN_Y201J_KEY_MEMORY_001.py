@@ -7,7 +7,7 @@ class GNY201JKeyMemory1(WidgetOperation):
     def run(self):
         self.case_module = u"APP功能测试"  # 用例所属模块
         self.case_title = u'开关操作及记忆功能'  # 用例名称
-        self.zentao_id = 1216  # 禅道ID
+        self.zentao_id = "1216"  # 禅道ID
 
     # 用例动作
     def case(self):

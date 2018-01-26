@@ -7,7 +7,7 @@ class GNY201HOtherFunc1(WidgetOperation):
     def run(self):
         self.case_module = u"其他功能(#247)"  # 用例所属模块
         self.case_title = u'APP查看信息功能'  # 用例名称
-        self.zentao_id = 2088  # 禅道ID
+        self.zentao_id = "2088"  # 禅道ID
 
     # 用例动作
     def case(self):

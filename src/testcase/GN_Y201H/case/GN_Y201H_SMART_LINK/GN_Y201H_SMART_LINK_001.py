@@ -7,7 +7,7 @@ class GNY201HSmartLink1(WidgetOperation):
     def run(self):
         self.case_module = u"配网功能(#245)"  # 用例所属模块
         self.case_title = u'设备首次配网操作检查'  # 用例名称
-        self.zentao_id = 2048  # 禅道ID
+        self.zentao_id = "2048"  # 禅道ID
 
     # 用例动作
     def case(self):

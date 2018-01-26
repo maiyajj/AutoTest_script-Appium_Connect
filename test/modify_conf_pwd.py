@@ -1,6 +1,7 @@
 # coding=utf-8
 # 由Conf.py生成
 import sys
+from codecs import open
 
 import yaml
 
@@ -16,7 +17,7 @@ conf = dict(yaml.load(file(conf_path)), **yaml.load(file(pwd_path)))
 #     conf["user_and_pwd"][i]["GN_F1331"] = {'precise_pwd': ['', ''], 'new_pwd': '', 'login_pwd': '', 'user_name': ''}
 
 def modified_conf():
-    with open(conf_path, "w") as conf_yaml:
+    with open(conf_path, "w", encoding="utf-8") as conf_yaml:
         conf_yaml.write("# 打开APP超时时间\n")
         conf_yaml.write("open_app_timeout: %s\n" % conf["search_device_timeout"])
 
@@ -80,7 +81,7 @@ def modified_conf():
 
 
 def modified_pwd():
-    with open(pwd_path, "w") as conf_yaml:
+    with open(pwd_path, "w", encoding="utf-8") as conf_yaml:
         conf_yaml.write("# 邮箱用户名密码\n")
         conf_yaml.write("mail_pwd:\n")
         for k, v in conf["mail_pwd"].items():

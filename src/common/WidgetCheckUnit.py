@@ -1,18 +1,24 @@
 # coding=utf-8
-import copy
-import time
-import traceback
+try:
+    import re
+    import copy
+    import time
+    import traceback
+    import threading
+except ImportError:
+    pass
 
 from selenium.common.exceptions import *
 
 from data.Database import *
 
 
+# class dict(dict):
+#     px_attr = None
+
+
 # 元素操作API，将find_element进行再封装
 class WidgetCheckUnit(object):
-    copy = copy  # 初始化copy函数，避免import copy, traceback函数未使用被自动删除
-    traceback = traceback
-
     def __init__(self, driver, device_info):
         self.driver = driver
         self.page = device_info["page"]  # APP页面元素库
@@ -21,7 +27,7 @@ class WidgetCheckUnit(object):
 
     # 等待元素出现，同于find_element_*
     def wait_widget(self, main_widget, timeout=3.0, interval=1.0, log_record=1):
-        self.px = plural = False  # 元素在屏幕的像素坐标
+        self.px = plural = keys = False  # 元素在屏幕的像素坐标
         if main_widget is None:
             return True
         elif not isinstance(main_widget, list):
@@ -96,8 +102,10 @@ class WidgetCheckUnit(object):
                 if log_record != 0:
                     self.debug.info(log_tmp)
 
+                if not isinstance(element, dict):
+                    element.__setattr__("px_attr", keys)
                 return element
-            except NoSuchElementException, e:
+            except NoSuchElementException as e:
                 if time.time() > end_time:
                     raise TimeoutException("%s;%s" % (e, [widget]))
                 time.sleep(interval)
@@ -148,7 +156,7 @@ class WidgetCheckUnit(object):
                         pxx, pxy = int(lc["x"] + px[0] * sz["width"]), int(lc["y"] + px[1] * sz["height"])
                         try:
                             self.driver.tap([(pxx, pxy)])
-                        except WebDriverException, e:
+                        except WebDriverException as e:
                             raise TimeoutException(e)
                     else:  # 使用pxw方式点击屏幕坐标
                         px = self.px[0]
@@ -156,7 +164,7 @@ class WidgetCheckUnit(object):
                         pxx, pxy = int(ws["width"] * px[0]), int(ws["height"] * px[1])
                         try:
                             self.driver.tap([(pxx, pxy)])
-                        except WebDriverException, e:
+                        except WebDriverException as e:
                             raise TimeoutException(e)
 
                     # 点击元素后会有页面跳转加载动画，等待页面加载完成
@@ -169,7 +177,8 @@ class WidgetCheckUnit(object):
                                     result.append(True)
                                 except TimeoutException:
                                     result.append(False)
-                            if True not in result:
+                            time.sleep(0.1)
+                            if True not in result:  # 没有弹窗
                                 raise TimeoutException()
                         except TimeoutException:
                             break
@@ -183,12 +192,13 @@ class WidgetCheckUnit(object):
                 if wait_page is not None:
                     flag = 1
                     self.wait_widget(wait_page, wait_time2, interval, 0)
+
                 return widget
             except TimeoutException:
                 if wait_page is None:
                     raise
                 run_times -= 1
-                if run_times == 0:
+                if run_times <= 0:
                     if flag == 0:  # 点击操作未完成
                         logger_info = '[APP_CLICK] operate_widget ["%s"] error' % operate_widget[2]
                     else:  # 完成点击操作，等待页面加载失败

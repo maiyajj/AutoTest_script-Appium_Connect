@@ -7,7 +7,7 @@ class GNAPPMessageClassify5(WidgetOperation):
     def run(self):
         self.case_module = u"消息"  # 用例所属模块
         self.case_title = u'消息分类页面，选择多个设备后的消息内容检查'  # 用例名称
-        self.zentao_id = 1924  # 禅道ID
+        self.zentao_id = "1924"  # 禅道ID
 
     # 用例动作
     def case(self):

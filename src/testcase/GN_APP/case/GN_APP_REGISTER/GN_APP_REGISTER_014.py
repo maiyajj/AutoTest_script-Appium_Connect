@@ -7,7 +7,7 @@ class GNAPPRegister14(WidgetOperation):
     def run(self):
         self.case_module = u"注册"  # 用例所属模块
         self.case_title = u'注册页面-用户名为英文字符时，提示信息检查'  # 用例名称
-        self.zentao_id = 1824  # 禅道ID
+        self.zentao_id = "1824"  # 禅道ID
 
     # 用例动作
     def case(self):
