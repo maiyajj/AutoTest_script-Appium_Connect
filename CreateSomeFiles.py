@@ -49,7 +49,7 @@ class CreateFunc(object):
             lb = len(b) - 1
             for i in b:
                 if b.index(i) != lb:
-                    files.write('''            "{0}": self.mpw. {0}(),\n'''.format(i))
+                    files.write('''            "{0}": self.mpw.{0}(),\n'''.format(i))
                 else:
                     files.write('''            "{0}": self.mpw.{0}()\n'''.format(i))
             files.write('''        }\n''')
@@ -183,8 +183,14 @@ class CreateFunc(object):
                         ZenTao_id = re.findall(r'self.zentao_id = "(\d+)"', file)[0]
                         CaseList.append(["self.write_report(%s)" % class_name, u" # %s," % ZenTao_id, case_name])
         for x, y, z in CaseList:
-            print(x),
-            print(y),
+            try:
+                print(x, end='')  # py3换行
+            except SyntaxError:
+                print(x),  # py2
+            try:
+                print(y, end='')
+            except SyntaxError:
+                print(y),
             print(z)
 
 

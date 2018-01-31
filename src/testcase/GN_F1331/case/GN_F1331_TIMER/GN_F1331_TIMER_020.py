@@ -35,8 +35,9 @@ class GNF1331Timer20(WidgetOperation):
         start_time_6, set_time_6, cycle_6 = self.create_normal_timer("up_timer_page", now, time_6, "power_off")
         start_time_7, set_time_7, cycle_7 = self.create_normal_timer("up_timer_page", now, time_7, "power_on")
 
+        max_time = max(set_time_1, set_time_2, set_time_3, set_time_4, set_time_5, set_time_6, set_time_7)
         while True:
-            if time.time() > set_time_7 + 10:
+            if time.time() > max_time + 10:
                 break
             print(time.time())
             time.sleep(1)
@@ -49,8 +50,9 @@ class GNF1331Timer20(WidgetOperation):
         set_normal_dict = self.check_set_normal_timer(start_time_1, start_time_2, start_time_3, start_time_4,
                                                       start_time_5, start_time_6, start_time_7)
         # 定时执行
-        launch_normal_once_dict = self.check_launch_normal_timer_once(set_time_1, set_time_2, set_time_3, set_time_4,
-                                                                      set_time_5, set_time_6, set_time_7)
+        launch_normal_once_dict = self.check_launch_normal_timer_once(set_normal_dict, set_time_1, set_time_2,
+                                                                      set_time_3, set_time_4, set_time_5, set_time_6,
+                                                                      set_time_7)
 
         # 上层
         # 定时1
@@ -58,15 +60,14 @@ class GNF1331Timer20(WidgetOperation):
         set_timer = set_normal_dict[start_time_1]
         s_time, s_id, s_week = set_timer[0], set_timer[1], set_timer[3]
         result = [s_time is not None,
-                  s_week == "0"]
+                  s_week == "0000000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
         launch_timer = launch_normal_once_dict[set_time_1]
-        l_time, l_id, l_week = launch_timer[0], launch_timer[1], launch_timer[3]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
-                  l_id == s_id,
-                  l_week == s_week]
+                  l_id == s_id]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
 
@@ -75,15 +76,14 @@ class GNF1331Timer20(WidgetOperation):
         set_timer = set_normal_dict[start_time_2]
         s_time, s_id, s_week = set_timer[0], set_timer[1], set_timer[3]
         result = [s_time is not None,
-                  s_week == "0"]
+                  s_week == "0000000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
         launch_timer = launch_normal_once_dict[set_time_2]
-        l_time, l_id, l_week = launch_timer[0], launch_timer[1], launch_timer[3]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
-                  l_id == s_id,
-                  l_week == s_week]
+                  l_id == s_id]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
 
@@ -92,15 +92,14 @@ class GNF1331Timer20(WidgetOperation):
         set_timer = set_normal_dict[start_time_3]
         s_time, s_id, s_week = set_timer[0], set_timer[1], set_timer[3]
         result = [s_time is not None,
-                  s_week == "0"]
+                  s_week == "0000000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
         launch_timer = launch_normal_once_dict[set_time_3]
-        l_time, l_id, l_week = launch_timer[0], launch_timer[1], launch_timer[3]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
-                  l_id == s_id,
-                  l_week == s_week]
+                  l_id == s_id]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
 
@@ -109,15 +108,14 @@ class GNF1331Timer20(WidgetOperation):
         set_timer = set_normal_dict[start_time_4]
         s_time, s_id, s_week = set_timer[0], set_timer[1], set_timer[3]
         result = [s_time is not None,
-                  s_week == "0"]
+                  s_week == "0000000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
         launch_timer = launch_normal_once_dict[set_time_4]
-        l_time, l_id, l_week = launch_timer[0], launch_timer[1], launch_timer[3]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
-                  l_id == s_id,
-                  l_week == s_week]
+                  l_id == s_id]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
 
@@ -126,15 +124,14 @@ class GNF1331Timer20(WidgetOperation):
         set_timer = set_normal_dict[start_time_5]
         s_time, s_id, s_week = set_timer[0], set_timer[1], set_timer[3]
         result = [s_time is not None,
-                  s_week == "0"]
+                  s_week == "0000000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
         launch_timer = launch_normal_once_dict[set_time_5]
-        l_time, l_id, l_week = launch_timer[0], launch_timer[1], launch_timer[3]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
-                  l_id == s_id,
-                  l_week == s_week]
+                  l_id == s_id]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
 
@@ -143,15 +140,14 @@ class GNF1331Timer20(WidgetOperation):
         set_timer = set_normal_dict[start_time_6]
         s_time, s_id, s_week = set_timer[0], set_timer[1], set_timer[3]
         result = [s_time is not None,
-                  s_week == "0"]
+                  s_week == "0000000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
         launch_timer = launch_normal_once_dict[set_time_6]
-        l_time, l_id, l_week = launch_timer[0], launch_timer[1], launch_timer[3]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
-                  l_id == s_id,
-                  l_week == s_week]
+                  l_id == s_id]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
 
@@ -160,15 +156,14 @@ class GNF1331Timer20(WidgetOperation):
         set_timer = set_normal_dict[start_time_7]
         s_time, s_id, s_week = set_timer[0], set_timer[1], set_timer[3]
         result = [s_time is not None,
-                  s_week == "0"]
+                  s_week == "0000000"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
         launch_timer = launch_normal_once_dict[set_time_7]
-        l_time, l_id, l_week = launch_timer[0], launch_timer[1], launch_timer[3]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
-                  l_id == s_id,
-                  l_week == s_week]
+                  l_id == s_id]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
 

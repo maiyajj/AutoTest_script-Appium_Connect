@@ -3,7 +3,7 @@ from src.testcase.GN_F1331.WidgetOperation import *
 
 
 class GNF1331AppInfomation1(WidgetOperation):
-    @case_run("")
+    @case_run(False)
     def run(self):
         self.case_module = u"APP检查(#2)"  # 用例所属模块
         self.case_title = u'设备详细界面，信息检测'  # 用例名称

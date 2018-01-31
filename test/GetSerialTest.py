@@ -2,10 +2,9 @@
 import datetime
 import logging
 import logging.handlers
-import multiprocessing as mp
-import traceback
 
 import serial
+import multiprocessing, traceback,psutil
 
 from src.utils.ShellCommand import *
 
@@ -93,23 +92,22 @@ class ReceiveSerial(object):
             try:
                 start_stop, command = self.serial_command_queue.get_nowait()
                 print(start_stop, command)
-                if not start_stop:
+                if start_stop is False:
                     break
             except Queue.Empty:
                 pass
             except BaseException:
                 print(traceback.format_exc())
-            if start_stop:
-                try:
-                    serial_main_data = self.serial_main_data_queue.get_nowait()
-                    self.analysis_data(serial_main_data, command)
-                except Queue.Empty:
-                    pass
-                except BaseException:
-                    print(traceback.format_exc())
+            try:
+                serial_main_data = self.serial_main_data_queue.get_nowait()
+                self.analysis_data(serial_main_data, command)
+            except Queue.Empty:
+                pass
+            except BaseException:
+                print(traceback.format_exc())
 
     # 接收控制命令，开始/结束分析设备log
-    def start_stop_filtrate_data(self, com, port, serial_command_queue, serial_result_queue, alive):
+    def start_stop_filtrate_data(self, com, port, serial_command_queue, serial_result_queue):
         """
         事件驱动，接收command命令，返回log结果
         :param self.serial_command_queue:
@@ -117,16 +115,19 @@ class ReceiveSerial(object):
         """
         self.serial_command_queue = serial_command_queue
         self.serial_result_queue = serial_result_queue
-        self.serial_main_data_queue = mp.Queue()
+        self.serial_main_data_queue = multiprocessing.Queue()
+        print(os.getpid())
+        print([i for i in psutil.Process(self.main_pid).children() if i.pid != os.getpid()][0])
 
-        open_serial = mp.Process(target=self.receive_log, args=(com, port, self.serial_main_data_queue))
+        open_serial = multiprocessing.Process(target=self.receive_log, args=(com, port, self.serial_main_data_queue))
         open_serial.daemon = True
         open_serial.start()
         while True:
             if self.serial_command_queue.qsize():
                 self.filtrate_data()
             else:
-                if not alive.value:  # 主进程关闭
+                if not [i for i in psutil.Process(self.main_pid).children() if i.pid != os.getpid()][0].is_running():
+                    print(222)
                     break
                 while True:
                     try:
@@ -154,3 +155,25 @@ class ReceiveSerial(object):
         self.serial_log = self.init_log(logging.getLogger(self.log_name))  # 初始化完毕
 
         logging.shutdown()
+
+
+# serial_command_queue = multiprocessing.Queue()
+# serial_result_queue = multiprocessing.Queue()
+# rs = ReceiveSerial()
+# def sa():
+
+if __name__ == "__main__":
+    print(os.getpid())
+    serial_command_queue = multiprocessing.Queue()
+    serial_result_queue = multiprocessing.Queue()
+    rs = ReceiveSerial()
+
+    serial_command_queue.put_nowait((False, {"_f133u_uart_recv_event": 1}))
+
+    # rs.start_stop_filtrate_data("COM12", 115200, serial_command_queue, serial_result_queue)
+    ss = multiprocessing.Process(target=rs.start_stop_filtrate_data, args=(
+        "COM12", 115200, serial_command_queue, serial_result_queue))
+    # ss = multiprocessing.Process(target=sa)
+    ss.daemon = True
+    ss.start()
+    ss.join()

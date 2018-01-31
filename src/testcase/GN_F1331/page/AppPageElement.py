@@ -130,6 +130,9 @@ class MainPageWidget(object):
     def mode_timer_conflict_popup(self):
         return self.wrapper(self.pwa.mode_timer_conflict_popup(), self.pwi.mode_timer_conflict_popup())
 
+    def splash_popup(self):
+        return self.wrapper(self.pwa.splash_popup(), self.pwi.splash_popup())
+
     def timer_edit_popup(self):
         return self.wrapper(self.pwa.timer_edit_popup(), self.pwi.timer_edit_popup())
 

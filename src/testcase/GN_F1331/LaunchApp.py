@@ -1,7 +1,6 @@
 # coding=utf-8
 import inspect
 
-import psutil
 from appium import webdriver
 
 from src.testcase.GN_F1331.ToDevicePage import *
@@ -23,6 +22,12 @@ except ImportError:
 # launch()启动APP
 def decor_launch_app(func):
     def wrapper(self, page_login):
+        """
+        启动APP，func(self)函数初始化driver；
+        初始化完成ToLoginPage，ToDevicePage，完成页面跳转工作。抛出异常selenium.common.exceptions.NoSuchElementException
+        :param page_login:
+        :return:
+        """
         self.debug.info("basename: %s" % self.basename)
         self.data_statistics(self.zentao_id)  # 初始化数据统计
         i = 0
@@ -46,6 +51,11 @@ def decor_launch_app(func):
                     break
             except BaseException as e:
                 self.debug.error("case_over: %s" % traceback.format_exc())  # 出了错误就一定要记录
+                try:
+                    self.driver.quit()  # 出现错误关闭连接
+                    self.debug.warn("driver quit success")
+                except BaseException:
+                    self.debug.warn("driver need not quit")
                 i += 1
                 if i >= 3:  # 启动3次失败
                     self.case_over("unknown")
@@ -124,7 +134,6 @@ def case_run(bool):
                     self.reset_port()
             finally:
                 try:
-                    self.driver.close_app()  # 关闭APP
                     self.driver.quit()  # 用例执行结束关闭断开连接
                     self.debug.warn("driver quit success")
                 except BaseException:
@@ -163,7 +172,6 @@ class LaunchApp(object):
         self.zentao_id = 0000  # 禅道ID
         self.basename = ""  # 用例自动化文件名称
         self.success = False  # 初始化用例执行结果
-        self.main_pid = psutil.Process(os.getpid()).parent().parent().pid  # 主进程pid
         self.widget_click = None  # 初始化
         self.wait_widget = None  # 初始化
         self.start_time = None  # 初始化
@@ -219,10 +227,6 @@ class LaunchApp(object):
         """
         end_time = time.time() + 60  # 预留60S给appium启动时间，时间太短会造成10S内appium服务未启动，结果就被杀，造成死循环。
         while True:
-            # 主进程崩溃后有残留子进程，关闭当前子进程
-            if not psutil.pid_exists(self.main_pid):
-                psutil.Process(os.getpid()).kill()
-                self.debug.info("launch_app_port: pid %s" % os.getpid())
             try:
                 self.sc.find_proc_and_pid_by_port(self.port)[0]
             except IndexError:

@@ -53,8 +53,9 @@ class GNF1331Timer9(WidgetOperation):
         time_3 = ["delay", "00:02"]
         start_time_3, set_time_3 = self.create_delay_timer("down_timer_page", now, time_3)
 
+        max_time = max(set_time_1, set_time_2, set_time_3)
         while True:
-            if time.time() > set_time_3 + 10:
+            if time.time() > max_time + 10:
                 break
             print(time.time())
             time.sleep(1)
@@ -65,7 +66,7 @@ class GNF1331Timer9(WidgetOperation):
         # 定时设置
         set_delay_dict = self.check_set_delay_timer(start_time_1, start_time_2, start_time_3)
         # 定时执行
-        launch_delay_dict = self.check_launch_delay_timer(set_time_1, set_time_2, set_time_3)
+        launch_delay_dict = self.check_launch_delay_timer(set_delay_dict, set_time_1, set_time_2, set_time_3)
 
         # 上层
         # 设置
@@ -75,8 +76,8 @@ class GNF1331Timer9(WidgetOperation):
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
-        launch_timer = launch_delay_dict[0]
-        l_time, l_id = launch_timer[0], launch_timer[1]
+        launch_timer = launch_delay_dict[set_time_1]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
                   l_id == s_id]
         if False in result:
@@ -91,7 +92,7 @@ class GNF1331Timer9(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
         launch_timer = launch_delay_dict[set_time_2]
-        l_time, l_id = launch_timer[0], launch_timer[1]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
                   l_id == s_id]
         if False in result:
@@ -106,7 +107,7 @@ class GNF1331Timer9(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
         launch_timer = launch_delay_dict[set_time_3]
-        l_time, l_id = launch_timer[0], launch_timer[1]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
                   l_id == s_id]
         if False in result:

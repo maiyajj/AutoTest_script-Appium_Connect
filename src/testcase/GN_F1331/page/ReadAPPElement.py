@@ -51,6 +51,7 @@ class PageElement(object):
             "logout_popup": self.mpw.logout_popup(),
             "max_normal_timer_popup": self.mpw.max_normal_timer_popup(),
             "mode_timer_conflict_popup": self.mpw.mode_timer_conflict_popup(),
+            "splash_popup": self.mpw.splash_popup(),
             "timer_edit_popup": self.mpw.timer_edit_popup(),
             "unbind_device_popup": self.mpw.unbind_device_popup(),
             "update_popup": self.mpw.update_popup()

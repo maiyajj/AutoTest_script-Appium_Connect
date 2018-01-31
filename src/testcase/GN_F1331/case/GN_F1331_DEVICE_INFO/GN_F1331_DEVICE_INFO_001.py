@@ -3,7 +3,7 @@ from src.testcase.GN_F1331.WidgetOperation import *
 
 
 class GNF1331DeviceInfo1(WidgetOperation):
-    @case_run("")
+    @case_run(False)
     def run(self):
         self.case_module = u"APP功能测试"  # 用例所属模块
         self.case_title = u'设置记忆模式'  # 用例名称
@@ -21,7 +21,7 @@ class GNF1331DeviceInfo1(WidgetOperation):
 
         device_info_state_list = self.check_device_info_state(True)
         time_0 = time.time()
-        safe_memory_0 = self.get_last_device_info_state(device_info_state_list, time_0)[1]
+        safe_memory_0 = self.get_last_device_state(device_info_state_list, time_0)[1]
 
         self.input_serial_command("power", "device_info")
 
@@ -29,22 +29,24 @@ class GNF1331DeviceInfo1(WidgetOperation):
 
         if safe_memory_0 == "1":
             self.widget_click(self.page["control_device_page"]["memory_mode"])
+            time.sleep(5)
             time_1 = time.time()
 
-            time.sleep(1)
             self.widget_click(self.page["control_device_page"]["safe_mode"])
+            time.sleep(5)
             time_2 = time.time()
         else:
             self.widget_click(self.page["control_device_page"]["safe_mode"])
+            time.sleep(5)
             time_1 = time.time()
 
-            time.sleep(1)
             self.widget_click(self.page["control_device_page"]["memory_mode"])
+            time.sleep(5)
             time_2 = time.time()
 
         device_info_state_list = self.check_device_info_state()
-        device_info_state_1_list = self.get_last_device_info_state(device_info_state_list, time_1)
-        device_info_state_2_list = self.get_last_device_info_state(device_info_state_list, time_2)
+        device_info_state_1_list = self.get_last_device_state(device_info_state_list, time_1)
+        device_info_state_2_list = self.get_last_device_state(device_info_state_list, time_2)
 
         if safe_memory_0 == "1":
             # 记忆模式

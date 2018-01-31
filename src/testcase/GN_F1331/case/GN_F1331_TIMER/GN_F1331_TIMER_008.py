@@ -45,9 +45,12 @@ class GNF1331Timer8(WidgetOperation):
             time.sleep(1)
 
         #####
-        btn_dict = self.check_button_state(start_time_1, control_time_1, set_time_1)  # 开关
-        set_delay_dict = self.check_set_delay_timer(start_time_1)  # 定时设置
-        launch_delay_dict = self.check_launch_delay_timer(set_time_1)  # 定时执行
+        #  开关
+        btn_dict = self.check_button_state(start_time_1, control_time_1, set_time_1)
+        # 定时设置
+        set_delay_dict = self.check_set_delay_timer(start_time_1)
+        # 定时执行
+        launch_delay_dict = self.check_launch_delay_timer(set_delay_dict, set_time_1)
 
         # 设置
         set_timer = set_delay_dict[start_time_1]
@@ -57,7 +60,7 @@ class GNF1331Timer8(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
         launch_timer = launch_delay_dict[set_time_1]
-        l_time, l_id = launch_timer[0], launch_timer[1]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
                   l_id == s_id]
         if False in result:
@@ -79,6 +82,6 @@ class GNF1331Timer8(WidgetOperation):
         # 上层关→关
         btn = btn_dict[set_time_1]
         btn_up = btn[1][0]
-        result = [btn_up is None]
+        result = [btn_up == "0"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn, result))

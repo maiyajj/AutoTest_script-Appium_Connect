@@ -18,8 +18,6 @@ class GNF1331Timer28(WidgetOperation):
 
         self.set_power("main_button_off")
 
-        self.input_serial_command("power", "set_normal_timer", "launch_normal_timer_once")
-
         # 上层
         self.widget_click(self.page["control_device_page"]["up_timer"],
                           self.page["up_timer_page"]["title"])

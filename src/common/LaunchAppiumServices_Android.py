@@ -17,8 +17,8 @@ def launch_appium_error_log(func):
         while True:
             try:
                 # 主进程崩溃后有残留子进程，关闭当前子进程
-                if not psutil.pid_exists(self.main_pid):
-                    psutil.Process(self.current_pid).kill()
+                # if not psutil.pid_exists(self.main_pid):
+                #     psutil.Process(self.current_pid).kill()
                 func(self)
             except BaseException:
                 with open(os.path.join(self.log_path, "appium_error.log"), "a", encoding="utf-8") as appium_error:
@@ -27,6 +27,13 @@ def launch_appium_error_log(func):
             finally:
                 # 轮询检测端口占用，若端口已关闭则重启Appium服务。
                 while True:
+                    if not self.alive.value:  # 清理进程垃圾
+                        for i in self.appium_pid:
+                            try:
+                                psutil.Process(i).kill()
+                            except BaseException:
+                                pass
+                        return 0
                     port = [i for i in self.sc.find_proc_and_pid_by_port(self.port) if "node" in i[0].lower()]
                     bp_port = self.sc.find_proc_and_pid_by_port(self.bp_port)
                     self.debug.info("Check! Port_proc: %s; bp_port_proc: %s" % (port, bp_port))
@@ -51,7 +58,7 @@ class LaunchAppiumServicesAndroid(object):
     Start appium service for android system.
     """
 
-    def __init__(self, device_info):
+    def __init__(self, device_info, alive):
         self.device_info = device_info
         self.port = device_info["port"]
         self.bp_port = device_info["bp_port"]
@@ -60,7 +67,7 @@ class LaunchAppiumServicesAndroid(object):
         self.udid = device_info["udid"]
         self.model = device_info["model"]
         self.current_pid = os.getpid()
-        self.main_pid = psutil.Process(self.current_pid).parent().parent().pid  # 主进程pid
+        self.alive = alive
 
         self.sc = ShellCommand()
         self.log_path = os.path.join(self.sc.set_appium_log_addr(), "%s" % time.strftime("%Y-%m-%d_%H.%M"), "Appium")
@@ -148,7 +155,7 @@ class LaunchAppiumServicesAndroid(object):
          for x in map(lambda x: psutil.Process(x) if psutil.pid_exists(x) else None, self.appium_pid)]
 
         # 记录自动化测试工具进程pid和当前appium服务主pid
-        self.debug.info("Pid!Main: %s; Current: %s" % (psutil.Process(self.main_pid), psutil.Process(self.current_pid)))
+        self.debug.info("Pid!Current: %s" % psutil.Process(self.current_pid))
 
         # 优先关闭子进程，关闭所有子进程后再关闭主进程。
         self.appium_pid = list(reversed(self.appium_pid))  # 将主进程pid换至表尾

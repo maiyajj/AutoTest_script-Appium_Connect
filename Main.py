@@ -8,7 +8,7 @@ from src.testcase.WaitCase import *
 from src.utils.SendMail import *
 
 __author__ = "Maiyajj"
-__version__ = "3.2.2.180126"
+__version__ = "3.2.3.180131"
 
 
 class MainFunc(object):
@@ -18,12 +18,13 @@ class MainFunc(object):
         Another process launch test case.
         """
         # These two functions cannot run on the same process and can only be run with multiple processes.
-        appium = Process(target=LaunchAppiumServices, args=(device_list, device_name), name=device_name)
-        appium.daemon = True  # this process will be killed when 'case' is over
+        alive = Value("b", True)  # this process will be killed when 'case' is over
+        appium = Process(target=LaunchAppiumServices, args=(device_list, device_name, alive), name=device_name)
         appium.start()
         case = Process(target=WaitCase, args=(device_list, device_name, m_queue))
         case.start()
         case.join()
+        alive.value = False
 
     def send_mail(self, m_queue):
         """Send mail at set time every day.

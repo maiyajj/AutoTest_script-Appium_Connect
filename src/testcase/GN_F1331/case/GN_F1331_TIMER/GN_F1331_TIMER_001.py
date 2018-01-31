@@ -44,8 +44,9 @@ class GNF1331Timer1(WidgetOperation):
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % ((x, y, w, h, c), result))
 
+        max_time = max(set_time_1, set_time_2)
         while True:
-            if time.time() > set_time_2 + 10:
+            if time.time() > max_time + 10:
                 break
             print(time.time())
             time.sleep(1)
@@ -58,20 +59,20 @@ class GNF1331Timer1(WidgetOperation):
         # 普通定时设置
         set_normal_dict = self.check_set_normal_timer(start_time_2)
         # 延迟定时执行
-        launch_delay_dict = self.check_launch_delay_timer(set_time_1)
+        launch_delay_dict = self.check_launch_delay_timer(set_delay_dict, set_time_1)
         # 普通定时执行
-        launch_normal_once_dict = self.check_launch_normal_timer_once(set_time_2)
+        launch_normal_once_dict = self.check_launch_normal_timer_once(set_normal_dict, set_time_2)
 
         # 上层
         # 设置
         set_timer = set_delay_dict[start_time_1]
-        s_time = set_timer[0]
+        s_time, s_id = set_timer[0], set_timer[1]
         result = [s_time is not None]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (set_timer, result))
         # 执行开→关
         launch_timer = launch_delay_dict[set_time_1]
-        l_time = launch_timer[0]
+        l_time = launch_timer[s_id][0]
         result = [l_time is None]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
@@ -85,7 +86,7 @@ class GNF1331Timer1(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (set_timer, result))
         # 执行开→关
         launch_timer = launch_normal_once_dict[set_time_2]
-        l_time, l_id = launch_timer[0], launch_timer[1]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
                   l_id == s_id]
         if False in result:

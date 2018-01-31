@@ -39,25 +39,26 @@ class GNF1331Timer5(WidgetOperation):
 
         now = time.strftime("%H:%M")
 
-        time_3, time_4 = ["delay", "00:01"], ["delay", "00:01"]
+        time_3, time_4 = ["delay", "00:05"], ["delay", "00:05"]
         tmp = self.create_cycle_timer("mid_timer_page", now, time_3, time_4, u"5次")
         start_time_3, set_time_3, set_time_4 = tmp[0]
 
+        max_time = max(set_time_1, set_time_2, set_time_3, set_time_4)
         while True:
-            if time.time() > set_time_4 + 10:
+            if time.time() > max_time + 10:
                 break
             print(time.time())
             time.sleep(1)
 
         #####
         # 开关
-        btn_dict = self.check_button_state(start_time_1, set_time_1, set_time_2, set_time_3, set_time_4)
+        btn_dict = self.check_button_state(start_time_1, set_time_1, set_time_2, start_time_3, set_time_3, set_time_4)
         # 定时设置
-        set_cycle_dict = self.check_set_cycle_timer(start_time_1)
+        set_cycle_dict = self.check_set_cycle_timer(start_time_1, start_time_3)
         # 定时执行开
-        launch_cycle_on_dict = self.check_launch_cycle_timer_on(set_time_2, set_time_4)
+        launch_cycle_on_dict = self.check_launch_cycle_timer_on(set_cycle_dict, set_time_2, set_time_4)
         # 定时执行关
-        launch_cycle_off_dict = self.check_launch_cycle_timer_off(set_time_1, set_time_3)
+        launch_cycle_off_dict = self.check_launch_cycle_timer_off(set_cycle_dict, set_time_1, set_time_3)
 
         # 上层
         # 设置
@@ -69,18 +70,18 @@ class GNF1331Timer5(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (set_timer, result))
         # 执行开→关
         launch_timer = launch_cycle_off_dict[set_time_1]
-        l_time, l_id, l_times = launch_timer[0], launch_timer[1], launch_timer[2]
+        l_time, l_id, l_times = launch_timer[s_id][0], launch_timer[s_id][1], launch_timer[s_id][2]
         result = [l_time is not None,
                   l_id == s_id,
-                  l_times == s_times]
+                  int(l_times) == int(s_times) - 1]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
         # 执行关→开
         launch_timer = launch_cycle_on_dict[set_time_2]
-        l_time, l_id, l_times = launch_timer[0], launch_timer[1], launch_timer[2]
+        l_time, l_id, l_times = launch_timer[s_id][0], launch_timer[s_id][1], launch_timer[s_id][2]
         result = [l_time is not None,
                   l_id == s_id,
-                  l_times == s_times]
+                  int(l_times) == int(s_times) - 1]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
 
@@ -94,18 +95,18 @@ class GNF1331Timer5(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (set_timer, result))
         # 执行开→关
         launch_timer = launch_cycle_off_dict[set_time_3]
-        l_time, l_id, l_times = launch_timer[0], launch_timer[1], launch_timer[2]
+        l_time, l_id, l_times = launch_timer[s_id][0], launch_timer[s_id][1], launch_timer[s_id][2]
         result = [l_time is not None,
                   l_id == s_id,
-                  l_times == s_times]
+                  int(l_times) == int(s_times) - 1]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
         # 执行关→开
         launch_timer = launch_cycle_on_dict[set_time_4]
-        l_time, l_id, l_times = launch_timer[0], launch_timer[1], launch_timer[2]
+        l_time, l_id, l_times = launch_timer[s_id][0], launch_timer[s_id][1], launch_timer[s_id][2]
         result = [l_time is not None,
                   l_id == s_id,
-                  l_times == s_times]
+                  int(l_times) == int(s_times) - 1]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
 

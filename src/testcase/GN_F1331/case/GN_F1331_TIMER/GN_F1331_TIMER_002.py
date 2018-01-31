@@ -58,8 +58,9 @@ class GNF1331Timer2(WidgetOperation):
         time_5 = ["delay", "00:10"]
         start_time_5, set_time_5 = self.create_delay_timer("down_timer_page", now, time_5)
 
+        max_time = max(set_time_1, set_time_2, set_time_3, set_time_4, set_time_5)
         while True:
-            if time.time() > set_time_5 + 10:
+            if time.time() > max_time + 10:
                 break
             print(time.time())
             time.sleep(1)
@@ -75,13 +76,13 @@ class GNF1331Timer2(WidgetOperation):
         # 普通定时设置
         set_normal_dict = self.check_set_normal_timer(start_time_3, start_time_4)
         # 延迟定时执行
-        launch_delay_dict = self.check_launch_delay_timer(set_time_5)
+        launch_delay_dict = self.check_launch_delay_timer(set_delay_dict, set_time_5)
         # 循环定时执行开
-        launch_cycle_on_dict = self.check_launch_cycle_timer_on(set_time_2)
+        launch_cycle_on_dict = self.check_launch_cycle_timer_on(set_cycle_dict, set_time_2)
         # 循环定时执行关
-        launch_cycle_off_dict = self.check_launch_cycle_timer_off(set_time_1)
+        launch_cycle_off_dict = self.check_launch_cycle_timer_off(set_cycle_dict, set_time_1)
         # 普通定时执行
-        launch_normal_once_dict = self.check_launch_normal_timer_once(set_time_3, set_time_4)
+        launch_normal_once_dict = self.check_launch_normal_timer_once(set_normal_dict, set_time_3, set_time_4)
 
         # 上层
         # 设置
@@ -93,7 +94,7 @@ class GNF1331Timer2(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (set_timer, result))
         # 执行开→关
         launch_timer = launch_cycle_off_dict[set_time_1]
-        l_time, l_id, l_times = launch_timer[0], launch_timer[1], launch_timer[2]
+        l_time, l_id, l_times = launch_timer[s_id][0], launch_timer[s_id][1], launch_timer[s_id][2]
         result = [l_time is not None,
                   l_id == s_id,
                   l_times == s_times]
@@ -101,7 +102,7 @@ class GNF1331Timer2(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
         # 执行关→开
         launch_timer = launch_cycle_on_dict[set_time_2]
-        l_time, l_id, l_times = launch_timer[0], launch_timer[1], launch_timer[2]
+        l_time, l_id, l_times = launch_timer[s_id][0], launch_timer[s_id][1], launch_timer[s_id][2]
         result = [l_time is not None,
                   l_id == s_id,
                   l_times == s_times]
@@ -117,7 +118,7 @@ class GNF1331Timer2(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (set_timer, result))
         # 执行关→开
         launch_timer = launch_normal_once_dict[set_time_3]
-        l_time, l_id = launch_timer[0], launch_timer[1]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
                   l_id == s_id]
         if False in result:
@@ -132,7 +133,7 @@ class GNF1331Timer2(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (set_timer, result))
         # 执行开→关
         launch_timer = launch_normal_once_dict[set_time_4]
-        l_time, l_id = launch_timer[0], launch_timer[1]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
                   l_id == s_id]
         if False in result:
@@ -147,7 +148,7 @@ class GNF1331Timer2(WidgetOperation):
             raise TimeoutException("device state error, current: %s, result: %s" % (set_timer, result))
         # 执行开→关
         launch_timer = launch_delay_dict[set_time_5]
-        l_time, l_id = launch_timer[0], launch_timer[1]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
                   l_id == s_id]
         if False in result:

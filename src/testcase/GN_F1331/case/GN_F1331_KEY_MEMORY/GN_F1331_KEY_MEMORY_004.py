@@ -20,36 +20,41 @@ class GNF1331KeyMemory4(WidgetOperation):
         self.input_serial_command("power")
 
         ##
-        self.widget_click(self.page["control_device_page"]["main_button"],
-                          self.page["control_device_page"]["main_button_on"])
+        self.widget_click(self.page["control_device_page"]["main_button"])
+        self.wait_widget(self.page["control_device_page"]["main_button_on"])
 
         self.wait_widget(self.page["control_device_page"]["up_button_on"])
 
         self.wait_widget(self.page["control_device_page"]["mid_button_on"])
 
         self.wait_widget(self.page["control_device_page"]["down_button_on"])
+        time_1 = time.time()
 
         ##
-        self.widget_click(self.page["control_device_page"]["main_button"],
-                          self.page["control_device_page"]["main_button_off"])
+        self.widget_click(self.page["control_device_page"]["main_button"])
+        self.wait_widget(self.page["control_device_page"]["main_button_off"])
 
         self.wait_widget(self.page["control_device_page"]["up_button_off"])
 
         self.wait_widget(self.page["control_device_page"]["mid_button_off"])
 
         self.wait_widget(self.page["control_device_page"]["down_button_off"])
+        time_2 = time.time()
 
         #####
-        btn_state_list = self.check_button_state()  # 开关
+        # 开关
+        btn_dict = self.check_button_state(time_1, time_2, t_list=True)
 
         # 开关
         # 111, 000
-        btn_state = btn_state_list[0]
-        result = [btn_state[1] == "111"]
+        btn = btn_dict[time_1]
+        btn_all = btn[1]
+        result = [btn_all == "111"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s, result: %s" % (btn, result))
 
-        btn_state = btn_state_list[1]
-        result = [btn_state[1] == "000"]
+        btn = btn_dict[time_2]
+        btn_all = btn[1]
+        result = [btn_all == "000"]
         if False in result:
-            raise TimeoutException("device state error, current: %s" % btn_state)
+            raise TimeoutException("device state error, current: %s, result: %s" % (btn, result))

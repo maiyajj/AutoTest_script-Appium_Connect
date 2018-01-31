@@ -1,5 +1,6 @@
 # coding=utf-8
 import json
+import multiprocessing
 
 from src.testcase.GN_F1331.input_case.GN_F1331_Input_Case import *
 from src.testcase.GN_F1331.page.ReadAPPElement import *
@@ -41,31 +42,34 @@ class WaitCase(object):
         self.device_info["sc"] = self.sc
         database[device_name] = {}  # 初始化设备数据库
         database["case_location"] = 1  # 用例执行次数
-        self.receive_serial = ReceiveSerial(self.serial_com, self.serial_port)
+        self.receive_serial = ReceiveSerial()
 
-        self.serial_receive_t = threading.Thread(target=self.launch_receive_serial)
-        self.serial_command_t = threading.Thread(target=self.receive_serial_command)
-
-        self.serial_command_queue = Queue.Queue()
-        self.serial_result_queue = Queue.Queue()
+        self.serial_command_queue = multiprocessing.Queue()
+        self.serial_result_queue = multiprocessing.Queue()
         self.device_info["serial_command_queue"] = self.serial_command_queue
         self.device_info["serial_result_queue"] = self.serial_result_queue
+
+        self.serial_command_queue.put_nowait((False, ""))
+        # 接收设备串口log
+        alive = multiprocessing.Value('b', True)
+        self.serial_receive_t = multiprocessing.Process(target=self.receive_serial.start_stop_filtrate_data, args=(
+            self.serial_com, self.serial_port, self.serial_command_queue, self.serial_result_queue, alive))
 
         try:
             self.create_debug()
             self.serial_receive_t.start()
-            self.serial_command_t.start()
             self.create_report()
             self.write_xls()
             self.select_page_element()
             self.check_appium()
 
             self.run()
+            alive.value = False
+            # self.serial_receive_t.terminate()
+            # self.serial_receive_t.join()
         except BaseException:
             self.debug.error(traceback.format_exc())
-            self.receive_serial.serial_sever.close()
             self.serial_receive_t.join()
-            self.serial_command_t.join()
             os._exit(-1)
 
     # 从元素库筛选对应APP元素库
@@ -98,14 +102,6 @@ class WaitCase(object):
                 self.debug.info("Appium Sever Launch Success! %s" % time.strftime("%Y-%m-%d %X"))
                 break
 
-    # 接收设备串口log
-    def launch_receive_serial(self):
-        self.receive_serial.receive_log()
-
-    def receive_serial_command(self):
-        self.serial_command_queue.put_nowait((False, "", ""))
-        self.receive_serial.start_stop_filtrate_data(self.serial_command_queue)
-
     # 开始执行用例
     def run(self):
         # 填写设备信息日志
@@ -128,7 +124,7 @@ class WaitCase(object):
         self.debug.info("*" * 30)
 
         # 执行用例
-        times = 3
+        times = 1
         while times:
             self.debug.info("run times [%s]" % database["program_loop_time"])
             self.write_report(GNF1331AppInfomation1)  # 007, 设备详细界面，信息检测
@@ -157,10 +153,10 @@ class WaitCase(object):
             # self.write_report(GNF1331Timer17)  # 90, 在线状态，4组开与3组关按自定义方式执行的普通定时执行状态检查
             # self.write_report(GNF1331Timer18)  # 89, 在线状态，4组开与3组关按周末方式方式执行的普通定时执行状态检查
             # self.write_report(GNF1331Timer19)  # 88, 在线状态，4组开与3组关按工作日方式执行的普通定时执行状态检查
-            self.write_report(GNF1331Timer20)  # 87, 在线状态，单层4组开与3组关单次执行的普通定时执行状态检查
+            # self.write_report(GNF1331Timer20)  # 87, 在线状态，单层4组开与3组关单次执行的普通定时执行状态检查
             # self.write_report(GNF1331Timer21)  # 80, 在线状态，单层1组开与1组关按自定义执行的普通定时执行状态检查
             # self.write_report(GNF1331Timer22)  # 79, 在线状态，单层1组开与1组关按工作日执行的普通定时执行状态检查
-            self.write_report(GNF1331Timer23)  # 78, 在线状态，单层临界点1组开与1组关的普通定时执行状态检查
+            # self.write_report(GNF1331Timer23)  # 78, 在线状态，单层临界点1组开与1组关的普通定时执行状态检查
             self.write_report(GNF1331Timer24)  # 77, 在线状态，单层定时1组开与1组关普通定时执行状态检查
             self.write_report(GNF1331Timer25)  # 76, 在线状态，单层定时单关普通定时执行状态检查
             self.write_report(GNF1331Timer26)  # 75, 在线状态，单层定时单开普通定时执行状态检查

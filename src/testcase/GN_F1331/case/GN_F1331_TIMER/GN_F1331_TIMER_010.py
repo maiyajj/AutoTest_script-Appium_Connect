@@ -41,7 +41,7 @@ class GNF1331Timer10(WidgetOperation):
         # 定时设置
         set_delay_dict = self.check_set_delay_timer(start_time_1)
         # 定时执行
-        launch_delay_dict = self.check_launch_delay_timer(set_time_1)
+        launch_delay_dict = self.check_launch_delay_timer(set_delay_dict, set_time_1)
 
         # 上层
         # 设置
@@ -51,8 +51,8 @@ class GNF1331Timer10(WidgetOperation):
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (s_time, result))
         # 执行
-        launch_timer = launch_delay_dict[0]
-        l_time, l_id = launch_timer[0], launch_timer[1]
+        launch_timer = launch_delay_dict[set_time_1]
+        l_time, l_id = launch_timer[s_id][0], launch_timer[s_id][1]
         result = [l_time is not None,
                   l_id == s_id]
         if False in result:

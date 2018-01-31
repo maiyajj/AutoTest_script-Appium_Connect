@@ -16,6 +16,18 @@ class ToLoginPage(object):
         self.wait_widget = widget_check_unit.wait_widget
         self.case()
 
+    # 引导页
+    def check_splash(self):
+        while True:
+            try:
+                self.wait_widget(self.page["splash_popup"]["title"])
+                self.widget_click(self.page["splash_popup"]["skip"])
+            except TimeoutException:
+                try:
+                    self.wait_widget(self.page["splash_popup"]["title"], 1, 0.5)
+                except TimeoutException:
+                    break
+
     # 检查APP是否升级，取消
     def check_update(self):
         try:
@@ -73,6 +85,7 @@ class ToLoginPage(object):
 
     # 用例动作
     def case(self):
+        self.check_splash()
         self.check_update()
         self.close_ad()
         self.device_to_login()

@@ -7,10 +7,9 @@ class GetPhoneInfoAndroid(ShellCommand):
         self.os = self.get_os()
         # 判断adb端口是否被占用
         try:
-            port = self.find_proc_and_pid_by_port(5037)
-            if not (len(port) == 1 and "adb" in port[0][0]):
-                for i in port:  # 查找占用5037端口进程
-                    self.kill_proc_by_pid(i[1])  # 杀死占用5037端口进程
+            for i in self.find_proc_and_pid_by_port(5037):  # 查找占用5037端口进程
+                self.kill_proc_by_pid(i[1])  # 杀死占用5037端口进程
+                print(u"进程 %s" % i[0])
         except IndexError:
             print(u"5037端口未占用")
 

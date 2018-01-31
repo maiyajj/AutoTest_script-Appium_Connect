@@ -32,13 +32,6 @@ print('appium -a 127.0.0.1 -p %s -bp %s -U %s --no-reset --local-timezone' % (po
 
 driver = webdriver.Remote('http://localhost:%s/wd/hub' % port, device_info['desired_caps'])
 
-try:
-    receive_serial = ReceiveSerial(serial_com, serial_port)
-    serial_sever = receive_serial.serial_sever
-    serial_main_data_queue = receive_serial.serial_main_data_queue
-except serial.SerialException as e:
-    print(e)
-
 page = PageElement(app_os).get_page_element()
 device_info["page"] = page
 
@@ -55,31 +48,28 @@ widget_check_unit = WidgetCheckUnit(driver, device_info)
 widget_click = widget_check_unit.widget_click
 wait_widget = widget_check_unit.wait_widget
 
-serial_command_queue = Queue.Queue()
-serial_result_queue = Queue.Queue()
+receive_serial = ReceiveSerial()
+serial_command_queue = multiprocessing.Queue()
+serial_result_queue = multiprocessing.Queue()
+device_info["serial_command_queue"] = serial_command_queue
+device_info["serial_result_queue"] = serial_result_queue
 
+serial_command_queue.put_nowait((False, ""))
+alive = multiprocessing.Value('b', True)
+# 接收设备串口log
+serial_receive_t = multiprocessing.Process(target=receive_serial.start_stop_filtrate_data, args=(
+    serial_com, serial_port, serial_command_queue, serial_result_queue, alive))
 
-def launch_receive_serial():
-    receive_serial.receive_log()
-
-
-def receive_serial_command():
-    serial_command_queue.put_nowait((False, "", ""))
-    receive_serial.start_stop_filtrate_data(serial_command_queue)
-
-
-serial_receive_t = threading.Thread(target=launch_receive_serial)
-serial_command_t = threading.Thread(target=receive_serial_command)
 serial_receive_t.start()
-serial_command_t.start()
 
 device_info["serial_command_queue"] = serial_command_queue
 device_info["serial_result_queue"] = serial_result_queue
 
 # import src.testcase.GN_F1331.case.GN_F1331_TIMER.GN_F1331_TIMER_027 as tc
-import src.testcase.GN_F1331.case.GN_F1331_KEY_MEMORY.GN_F1331_KEY_MEMORY_002 as tc
+# import src.testcase.GN_F1331.case.GN_F1331_KEY_MEMORY.GN_F1331_KEY_MEMORY_002 as tc
+import src.testcase.GN_F1331.case.GN_F1331_DEVICE_INFO.GN_F1331_DEVICE_INFO_001 as tc
 reload(tc)
-case = tc.GNF1331KeyMemory2(device_info)
+case = tc.GNF1331DeviceInfo1(device_info)
 case.widget_click = widget_click
 case.wait_widget = wait_widget
 case.driver = driver

@@ -660,6 +660,15 @@ class MainPageWidgetAndroid(object):
 
 
 class PopupWidgetAndroid(object):
+    # 引导页
+    def splash_popup(self):
+        d = {}
+        # 引导页
+        d["title"] = ["//android.widget.ImageView[@resource-id='com.jd.smart:id/iv_load']", "xpath", u"引导页"]
+        # 跳过
+        d["skip"] = ["com.jd.smart:id/skip", "id", u"跳过"]
+        return d
+
     # app升级确认弹窗
     def update_popup(self):
         d = {}
