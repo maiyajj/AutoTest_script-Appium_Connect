@@ -170,8 +170,6 @@ class WaitCase(object):
             database["program_loop_time"] += 1
             times -= 1
 
-        Mailer(self.m_queue, conf, True, "chenghao@gongniu.cn")
-
     # 输出报告
     def write_report(self, case_name):
         try:

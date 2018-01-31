@@ -8,7 +8,7 @@ from src.testcase.WaitCase import *
 from src.utils.SendMail import *
 
 __author__ = "Maiyajj"
-__version__ = "V3.2.4.180131"
+__version__ = "V3.2.5.180131"
 
 
 class MainFunc(object):
@@ -26,10 +26,10 @@ class MainFunc(object):
         case.join()
         alive.value = False
 
-    def send_mail(self, m_queue):
+    def send_mail(self, m_queue, alive):
         """Send mail at set time every day.
         """
-        Mailer(m_queue, conf)
+        Mailer(m_queue, alive, conf)
 
 
 if __name__ == '__main__':
@@ -49,8 +49,8 @@ if __name__ == '__main__':
     m_queue = Queue()
 
     # Start send mail process.
-    mail = Process(target=mf.send_mail, args=(m_queue,))
-    mail.daemon = True
+    mail_alive = Value("b", True)
+    mail = Process(target=mf.send_mail, args=(m_queue, mail_alive))
     mail.start()
 
     # Start app auto test process.
@@ -61,3 +61,5 @@ if __name__ == '__main__':
 
     for i in process:
         i.join()
+
+    mail_alive.value = False

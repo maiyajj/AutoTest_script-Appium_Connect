@@ -14,7 +14,7 @@ class Mailer(object):
     The function of sending an email.
     """
 
-    def __init__(self, m_queue, conf, send_now=False, sendTo="all"):
+    def __init__(self, m_queue, alive, conf, send_now=False, sendTo="all"):
         # Receiver/Sender for mail.
         mail_list = ["chenghao@gongniu.cn",
                      "zhulei@gongniu.cn",
@@ -63,7 +63,7 @@ class Mailer(object):
         else:
             while True:
                 now_time = time.strftime("%X")
-                if "07:00:00" in now_time:
+                if "07:00:00" in now_time or not alive.value:
                     self.send_mail()
                 time.sleep(1)
 
