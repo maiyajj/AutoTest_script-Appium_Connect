@@ -16,7 +16,7 @@ class GNY201JLogin1(WidgetOperation):
 
         # 发送数据
         data = self.user["user_name"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["用户名"] input success')
@@ -28,7 +28,7 @@ class GNY201JLogin1(WidgetOperation):
                                       self.page["login_page"]["title"])
 
         data = self.user["login_pwd"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         login_pwd.clear()
         self.ac.send_keys(login_pwd, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["密码"] input success')

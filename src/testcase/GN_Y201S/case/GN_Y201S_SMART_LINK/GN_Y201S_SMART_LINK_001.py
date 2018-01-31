@@ -52,7 +52,7 @@ class GNY201SSmartLink1(WidgetOperation):
         pwd = self.widget_click(self.page["input_wifi_password_page"]["password"],
                                 self.page["input_wifi_password_page"]["title"])
         data = conf["wifi_pwd"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         pwd.clear()
         self.ac.send_keys(pwd, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["wifi密码"] input success')

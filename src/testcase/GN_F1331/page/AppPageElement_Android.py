@@ -96,7 +96,7 @@ class MainPageWidgetAndroid(object):
         # 公牛Wi-Fi智能插座2代加强版
         d["gn_y2011dl"] = [u"//android.widget.TextView[@text='公牛Wi-Fi智能插座2代加强版']", "xpath", u"公牛Wi-Fi智能插座2代加强版"]
         # 公牛WiFi智控魔盒USB插座
-        d["gn_f1331"] = [u"//android.widget.TextView[@text='公牛WiFi智控魔盒USB插座']", "xpath", u"公牛WiFi智控魔盒USB插座"]
+        d["gn_f1331"] = [u"//android.widget.TextView[@text='公牛智立方USB插座（WiFi版）']", "xpath", u"公牛WiFi智控魔盒USB插座"]
         return d
 
     # 进入插座列表页面

@@ -19,7 +19,7 @@ class GNAPPRegister18(WidgetOperation):
 
         # 发送数据
         data = self.user["user_name"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["已注册用户名"] input success')

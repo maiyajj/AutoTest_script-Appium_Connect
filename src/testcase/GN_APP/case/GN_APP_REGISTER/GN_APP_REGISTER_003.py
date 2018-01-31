@@ -19,7 +19,7 @@ class GNAPPRegister3(WidgetOperation):
 
         # 发送数据
         data = self.user["user_name"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["用户名"] input success')
@@ -30,7 +30,7 @@ class GNAPPRegister3(WidgetOperation):
                                 self.page["register_page"]["title"])  # 点击密码输入框
 
         data = self.user["login_pwd"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         pwd.clear()
         self.ac.send_keys(pwd, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["密码"] input success')

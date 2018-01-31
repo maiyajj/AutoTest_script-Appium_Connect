@@ -24,7 +24,7 @@ class GNAPPAccountSettings2(WidgetOperation):
                                     self.page["change_pwd_page"]["title"])
 
         data = self.user["login_pwd"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         old_pwd.clear()
         self.ac.send_keys(old_pwd, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["旧密码"] input success')
@@ -34,7 +34,7 @@ class GNAPPAccountSettings2(WidgetOperation):
                                     self.page["change_pwd_page"]["title"])
 
         data = self.user["new_pwd"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         new_pwd.clear()
         self.ac.send_keys(new_pwd, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["新密码"] input success')
@@ -44,7 +44,7 @@ class GNAPPAccountSettings2(WidgetOperation):
                                         self.page["change_pwd_page"]["title"])
 
         data = self.user["new_pwd"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         conform_pwd.clear()
         self.ac.send_keys(conform_pwd, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["确认新密码"] input success')

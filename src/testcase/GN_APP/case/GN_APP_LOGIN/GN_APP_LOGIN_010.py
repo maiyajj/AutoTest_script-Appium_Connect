@@ -26,7 +26,7 @@ class GNAPPLogin10(WidgetOperation):
                                       self.page["login_page"]["title"])
 
         data = self.user["login_pwd"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         login_pwd.clear()
         self.ac.send_keys(login_pwd, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["登录密码"] input success')
@@ -51,7 +51,7 @@ class GNAPPLogin10(WidgetOperation):
 
             # 发送数据
             data = self.user["user_name"]
-            data = str(data).decode('hex').replace(" ", "")
+            data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
             user_name.clear()
             self.ac.send_keys(user_name, data, self.driver)
             self.debug.info(u'[APP_INPUT] ["正确用户名"] input success')
@@ -62,7 +62,7 @@ class GNAPPLogin10(WidgetOperation):
                                           self.page["login_page"]["title"])
 
             data = self.user["login_pwd"]
-            data = str(data).decode('hex').replace(" ", "")
+            data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
             login_pwd.clear()
             self.ac.send_keys(login_pwd, data, self.driver)
             self.debug.info(u'[APP_INPUT] ["正确密码"] input success')

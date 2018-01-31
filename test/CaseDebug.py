@@ -27,6 +27,7 @@ phone_model = device_info["deviceName"]
 serial_port = int(conf["phone_name"][device_name]["serial_port"])
 serial_com = conf["phone_name"][device_name]["serial_com"]
 device_mac = conf["phone_name"][device_name]["devices_mac"]
+user = conf["user_and_pwd"][device_name][app]
 
 print('appium -a 127.0.0.1 -p %s -bp %s -U %s --no-reset --local-timezone' % (port, bp_port, deviceName))
 
@@ -65,11 +66,10 @@ serial_receive_t.start()
 device_info["serial_command_queue"] = serial_command_queue
 device_info["serial_result_queue"] = serial_result_queue
 
-# import src.testcase.GN_F1331.case.GN_F1331_TIMER.GN_F1331_TIMER_027 as tc
-# import src.testcase.GN_F1331.case.GN_F1331_KEY_MEMORY.GN_F1331_KEY_MEMORY_002 as tc
-import src.testcase.GN_F1331.case.GN_F1331_DEVICE_INFO.GN_F1331_DEVICE_INFO_001 as tc
+import src.testcase.GN_F1331.case.GN_F1331_ELECTRICITY.GN_F1331_ELECTRICITY_001 as tc
+
 reload(tc)
-case = tc.GNF1331DeviceInfo1(device_info)
+case = tc.GNF1331Electricity1(device_info)
 case.widget_click = widget_click
 case.wait_widget = wait_widget
 case.driver = driver

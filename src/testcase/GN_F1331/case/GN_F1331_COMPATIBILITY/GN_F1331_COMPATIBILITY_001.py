@@ -1,13 +1,13 @@
 # coding=utf-8
-from src.testcase.GN_Y201J.WidgetOperation import *
+from src.testcase.GN_F1331.WidgetOperation import *
 
 
-class GNY201JCompatibility1(WidgetOperation):
+class GNF1331Compatibility1(WidgetOperation):
     @case_run(False)
     def run(self):
-        self.case_module = u"兼容性测试"  # 用例所属模块
-        self.case_title = u'在TP-link品牌的路由器下添加设备检查'  # 用例名称
-        self.zentao_id = "1272"  # 禅道ID
+        self.case_module = u"兼容性检查(#12)"  # 用例所属模块
+        self.case_title = u'不同路由器同一手机一键配网兼容性检查'  # 用例名称
+        self.zentao_id = "162"  # 禅道ID
 
     # 用例动作
     def case(self):
@@ -17,22 +17,21 @@ class GNY201JCompatibility1(WidgetOperation):
         self.widget_click(self.page["add_device_method_page"]["history"],
                           self.page["add_history_list_page"]["title"])
 
-        self.widget_click(self.page["add_history_list_page"]["y201J"],
+        self.widget_click(self.page["add_history_list_page"]["gn_f1331"],
                           self.page["add_specification_page"]["title"])
 
-        time.sleep(4)
+        time.sleep(5)
+
         self.widget_click(self.page["add_specification_page"]["next"],
                           self.page["input_wifi_password_page"]["title"])
 
-        self.show_pwd(self.wait_widget(self.page["input_wifi_password_page"]["check_box"]), param="checked")
         pwd = self.widget_click(self.page["input_wifi_password_page"]["password"],
                                 self.page["input_wifi_password_page"]["title"])
 
         data = conf["wifi_pwd"]
-        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode("utf-8").replace(" ", "")
         pwd.clear()
         self.ac.send_keys(pwd, data, self.driver)
-        self.debug.info(u'[APP_INPUT] ["wifi密码"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["input_wifi_password_page"]["confirm"],
@@ -52,10 +51,12 @@ class GNY201JCompatibility1(WidgetOperation):
                 time.sleep(1)
             try:
                 self.wait_widget(self.page["search_device_success_page"]["title"])
-                self.choose_device(conf["MAC"]["JD"][0],
+
+                self.choose_device(conf["MAC"]["GN_F1331"]["0"],
                                    self.page["search_device_success_page"]["device_box"],
-                                   self.page["search_device_success_page"]["confirm"],
-                                   self.page["control_device_page"]["title"])
+                                   self.page["search_device_success_page"]["confirm"])
+
+                self.wait_widget(self.page["control_device_page"]["title"])
                 break
             except TimeoutException:
                 if time.time() > end_time:
@@ -64,35 +65,31 @@ class GNY201JCompatibility1(WidgetOperation):
 
         i = 3
         while i > 0:
-            try:
-                self.widget_click(self.page["control_device_page"]["power_button"])
-            except TimeoutException:
-                pass
-            try:
-                self.widget_click(self.page["control_device_page"]["power_button"])
-            except TimeoutException:
-                pass
+            self.widget_click(self.page["control_device_page"]["main_button"])
             i -= 1
 
-        self.widget_click(self.page["control_device_page"]["device_info"],
-                          self.page["device_info_page"]["title"])
+        self.widget_click(self.page["control_device_page"]["device_setting"],
+                          self.page["device_setting_page"]["title"])
 
-        self.widget_click(self.page["device_info_page"]["nickname"],
+        self.widget_click(self.page["device_setting_page"]["nickname"],
                           self.page["change_nickname_page"]["title"])
 
         nickname = self.widget_click(self.page["change_nickname_page"]["nickname"],
                                      self.page["change_nickname_page"]["title"])
-        data = conf["MAC"]["JD"][0]
+        data = conf["MAC"]["GN_F1331"]["0"]
         nickname.clear()
         self.ac.send_keys(nickname, data, self.driver)
-        self.debug.info(u'[APP_INPUT] ["设备备注"] input success')
         time.sleep(0.5)
 
         self.widget_click(self.page["change_nickname_page"]["saved"],
-                          self.page["device_info_page"]["title"])
+                          self.page["device_setting_page"]["title"])
 
-        self.widget_click(self.page["device_info_page"]["unbind"],
+        self.widget_click(self.page["device_setting_page"]["unbind"],
                           self.page["unbind_device_popup"]["title"])
 
         self.widget_click(self.page["unbind_device_popup"]["confirm"],
-                          self.page["app_home_page"]["title"])
+                          self.page["control_device_page"]["title"])
+
+        v = self.get_index(conf["MAC"][self.app][self.device_mac], self.page["app_home_page"]["device"])
+        if not v:
+            raise TimeoutException()

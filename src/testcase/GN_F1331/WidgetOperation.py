@@ -28,7 +28,7 @@ class WidgetOperation(LaunchApp):
 
     # 获取元素索引
     def get_index(self, device, element1):
-        end_time = time.time() + 30
+        end_time = time.time() + 15
         while True:
             elements = self.wait_widget(element1)  # 返回元素字典
             for index, element in elements.items():
@@ -56,21 +56,22 @@ class WidgetOperation(LaunchApp):
                 time.sleep(1)
 
     # 选择设备
-    def choose_device(self, device, element1, element2, element3):
+    def choose_device(self, device, element1, element2):
+        end_time = time.time() + 60
         while True:
-            try:
-                elements = self.wait_widget(element1)
-                new_value = copy.copy(element2)
-                for index, element in elements.items():
-                    if element is not None and self.ac.get_attribute(element, "name") == device:
-                        new_value[0] = new_value[0][index]
-                        self.widget_click(new_value, element3)
-                        raise ValueError()
-                    else:
-                        self.ac.swipe(0.6, 0.9, 0.6, 0.4, self.driver)
-                        time.sleep(1)
-            except ValueError:
-                break
+            elements = self.wait_widget(element1)
+            new_value = copy.copy(element2)
+            for index, element in elements.items():
+                if element is not None and self.ac.get_attribute(element, "name") == device.replace(":", "-"):
+                    new_value[0] = new_value[0][index]
+                    self.widget_click(new_value)
+                    return 0
+                else:
+                    self.ac.swipe(0.6, 0.6, 0.6, 0.5, self.driver)
+                    time.sleep(1)
+
+            if time.time() > end_time:
+                raise TimeoutException()
 
     # 设置电源状态
     def set_power(self, state):
@@ -1031,13 +1032,18 @@ class WidgetOperation(LaunchApp):
             self.check_flag = 0
 
     # 检查启动按钮状态
-    def check_button_state(self, *args, t_list=False):
+    def check_button_state(self, *args, t_list=False, wait=False):
         """
         使用消息队列提取所有继电器状态并进行筛选，返回按照时间顺序排列的开关状态列表
         :return: [time, 3层开关状态"000"]
         list消息etc：[([2018-01-03 09:47:25:957]_f133u_uart_recv_event: cha_ru [2018-01-03 09:47:25:957]FF 02 00 07 09 FE cha_ru )]
         """
         key = "power"
+        if wait:
+            while True:
+                if self.serial_result_queue.qsize():
+                    break
+                time.sleep(1)
         self.check_serial_result()
         tmp = []
 
@@ -1071,6 +1077,10 @@ class WidgetOperation(LaunchApp):
                 for ii in tmp:
                     if i - 6 < ii[0] < i + 6:
                         result[i] = ii
+
+        if wait:
+            result = tmp
+            self.debug.info("btn_list: %s" % result)
 
         self.debug.info("btn_dict: %s" % result)
         return result

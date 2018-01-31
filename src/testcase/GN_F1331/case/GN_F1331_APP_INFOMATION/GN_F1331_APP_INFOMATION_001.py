@@ -20,11 +20,11 @@ class GNF1331AppInfomation1(WidgetOperation):
                           self.page["device_info_page"]["title"])
 
         attr = self.wait_widget(self.page["device_info_page"]["name"])
-        name = self.ac.get_attribute(attr, "name")
-        if not name == u"公牛智立方USB插座（WiFi版）":
-            raise TimeoutException("device state error, current: %s" % name)
+        value = self.ac.get_attribute(attr, "name")
+        if not value == u"公牛智立方USB插座（WiFi版）":
+            raise TimeoutException("device state error, current: %s" % value)
 
         attr = self.wait_widget(self.page["device_info_page"]["mac"])
-        name = self.ac.get_attribute(attr, "name")
-        if not name == conf["MAC"][self.app][self.device_mac].replace(":", "-"):
-            raise TimeoutException("device state error, current: %s" % name)
+        value = self.ac.get_attribute(attr, "name")
+        if not value == conf["MAC"][self.app][self.device_mac].replace(":", "-"):
+            raise TimeoutException("device state error, current: %s" % value)

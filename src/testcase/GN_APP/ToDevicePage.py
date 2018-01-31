@@ -90,7 +90,7 @@ class ToDevicePage(object):
 
         # 发送数据
         data = self.user["user_name"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         user_name.clear()
         self.ac.send_keys(user_name, data, self.driver)
         time.sleep(0.5)
@@ -102,7 +102,7 @@ class ToDevicePage(object):
                 login_pwd = self.widget_click(self.page["login_page"]["password"],
                                               self.page["login_page"]["title"])
 
-                pwd_data = x.decode('hex').replace(" ", "")
+                pwd_data = bytearray.fromhex(str(x)).decode('utf-8').replace(" ", "")
                 login_pwd.clear()
                 self.ac.send_keys(login_pwd, pwd_data, self.driver)
                 try:

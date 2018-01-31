@@ -35,7 +35,7 @@ class GNAPPAccountSettings9(WidgetOperation):
 
         # 发送数据
         data = self.user["login_pwd"]
-        data = str(data).decode('hex').replace(" ", "")
+        data = bytearray.fromhex(str(data)).decode('utf-8').replace(" ", "")
         new_pwd.clear()
         self.ac.send_keys(new_pwd, data, self.driver)
         self.debug.info(u'[APP_INPUT] ["新密码"] input success')

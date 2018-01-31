@@ -127,7 +127,9 @@ class WaitCase(object):
         times = 1
         while times:
             self.debug.info("run times [%s]" % database["program_loop_time"])
-            self.write_report(GNF1331AppInfomation1)  # 007, 设备详细界面，信息检测
+            self.write_report(GNF1331AppInfomation1)  # 007,设备详细界面，信息检测
+            # self.write_report(GNF1331Compatibility1)  # 162,不同路由器同一手机一键配网兼容性检查
+            # self.write_report(GNF1331Electricity1)  # 71,app显示功率为0，显示效果检查
             self.write_report(GNF1331DeviceInfo1)  # 1170, 设置记忆模式
             # self.write_report(GNF1331DeviceInfo2)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
             self.write_report(GNF1331KeyMemory1)  # 194, 手机APP远程频繁操作总开关，设备状态检查
@@ -162,6 +164,8 @@ class WaitCase(object):
             self.write_report(GNF1331Timer26)  # 75, 在线状态，单层定时单开普通定时执行状态检查
             self.write_report(GNF1331Timer27)  # 73, 设备可接受最大额外定时组数检测
             self.write_report(GNF1331Timer28)  # 72, APP默认定时数组检测
+            # self.write_report(GNF1331Unbind1)  # 167,带负载APP端解绑功能检查
+            # self.write_report(GNF1331Unbind2)  # 166,APP端解绑功能检查
 
             database["program_loop_time"] += 1
             times -= 1
