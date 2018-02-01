@@ -82,8 +82,7 @@ class GNF1331Timer4(WidgetOperation):
         # 上层关→开
         btn = btn_dict[start_time_1]
         btn_up = btn[1][0]
-        result = [start_time_1 - 15 <= btn[0] <= start_time_1 + 15,
-                  btn_up == "1"]
+        result = [btn_up == "1"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn, result))
         # 上层手动开→关
@@ -101,6 +100,6 @@ class GNF1331Timer4(WidgetOperation):
         # 上层关→开
         btn = btn_dict[set_time_2]
         btn_up = btn[1][0]
-        result = [btn_up is None]
+        result = [btn_up == "0"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn, result))

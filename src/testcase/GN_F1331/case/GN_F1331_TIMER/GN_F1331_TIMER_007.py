@@ -89,6 +89,6 @@ class GNF1331Timer7(WidgetOperation):
         # 上层关→开
         btn = btn_dict[set_time_2]
         btn_up = btn[1][0]
-        result = [btn_up is None]
+        result = [btn_up == "0"]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (btn, result))

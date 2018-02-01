@@ -26,8 +26,8 @@ class GNF1331Timer11(WidgetOperation):
         now = time.strftime("%H:%M")
 
         time_1, time_2 = 5, 10
-        start_time_1, set_time_1, cycle_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on")
-        start_time_2, set_time_2, cycle_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off")
+        start_time_1, set_time_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on")
+        start_time_2, set_time_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off")
 
         self.widget_click(self.page["up_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

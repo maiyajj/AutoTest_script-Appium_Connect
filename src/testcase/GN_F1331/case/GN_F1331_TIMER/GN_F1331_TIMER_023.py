@@ -27,10 +27,8 @@ class GNF1331Timer23(WidgetOperation):
         now = time.strftime("%H:%M")
 
         time_1, time_2 = ["point", "23:59"], ["point", "00:00"]
-        start_time_1, set_time_1, cycle_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on",
-                                                                     loop=u"工作日")
-        start_time_2, set_time_2, cycle_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off",
-                                                                     loop=u"工作日")
+        start_time_1, set_time_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on", loop=u"工作日")
+        start_time_2, set_time_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off", loop=u"工作日")
 
         max_time = max(set_time_1, set_time_2)
         while True:

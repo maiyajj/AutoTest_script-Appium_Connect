@@ -16,24 +16,21 @@ class Mailer(object):
 
     def __init__(self, m_queue, alive, conf, send_now=False, sendTo="all"):
         # Receiver/Sender for mail.
-        mail_list = ["chenghao@gongniu.cn",
-                     "zhulei@gongniu.cn",
-                     "fanrt@gongniu.cn",
-                     "sunsy@gongniu.cn",
-                     "dongjz@gongniu.cn"]
+        mail_list = list(conf["mail_to"].values())
+        print("mail_pid:", os.getpid())
 
         if sendTo == "all":
             self.mail_list = mail_list
         else:
-            if isinstance(sendTo, list):
-                self.mail_list = sendTo
+            if not isinstance(sendTo, str):
+                self.mail_list = map(lambda x: conf["mail_to"][x], sendTo)
             else:
-                self.mail_list = [sendTo]
+                self.mail_list = [conf["mail_to"][sendTo]]
 
         self.mail_pwd = conf["mail_pwd"]
         self.mail_host = "smtp.163.com"
         self.mail_user = bytearray.fromhex(self.mail_pwd["163"]["user_name"]).decode("utf-8")
-        self.mail_pass = bytearray.fromhex(self.mail_pwd["163"]["pwd"]).decode("utf-8")
+        self.mail_password = bytearray.fromhex(self.mail_pwd["163"]["pwd"]).decode("utf-8")
         self.mail_postfix = self.mail_user.split("@")[1]
 
         self.sc = ShellCommand()
@@ -63,9 +60,13 @@ class Mailer(object):
         else:
             while True:
                 now_time = time.strftime("%X")
-                if "07:00:00" in now_time or not alive.value:
+                if "07:00:00" in now_time:
                     self.send_mail()
-                time.sleep(1)
+                elif not alive.value:
+                    self.send_mail()
+                    break
+                else:
+                    time.sleep(1)
 
     def send_mail(self):
         me = "%s<%s@%s>" % (self.mail_user, self.mail_user, self.mail_postfix)
@@ -110,7 +111,7 @@ class Mailer(object):
         try:
             s = smtplib.SMTP()  # 创建邮件服务器对象
             s.connect(self.mail_host)  # 连接到指定的smtp服务器。参数分别表示smpt主机和端口
-            s.login(self.mail_user, self.mail_pass)  # 登录到你邮箱
+            s.login(self.mail_user, self.mail_password)  # 登录到你邮箱
             s.sendmail(me, self.mail_list, msg.as_string())  # 发送内容
             s.close()
             print("send mail success !!")

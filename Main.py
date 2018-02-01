@@ -8,7 +8,7 @@ from src.testcase.WaitCase import *
 from src.utils.SendMail import *
 
 __author__ = "Maiyajj"
-__version__ = "V3.2.5.180131"
+__version__ = "V3.2.6.180201"
 
 
 class MainFunc(object):
@@ -29,7 +29,7 @@ class MainFunc(object):
     def send_mail(self, m_queue, alive):
         """Send mail at set time every day.
         """
-        Mailer(m_queue, alive, conf)
+        Mailer(m_queue, alive, conf, sendTo="all")
 
 
 if __name__ == '__main__':

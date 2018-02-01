@@ -31,7 +31,7 @@ class GNF1331Timer1(WidgetOperation):
         start_time_1, set_time_1 = self.create_delay_timer("up_timer_page", now, time_1)
 
         time_2 = 10
-        start_time_2, set_time_2, cycle_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off")
+        start_time_2, set_time_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off")
 
         try:
             self.wait_widget(self.page["up_timer_page"]["delay_timer_button"])

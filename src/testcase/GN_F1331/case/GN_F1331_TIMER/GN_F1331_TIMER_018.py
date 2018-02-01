@@ -28,20 +28,13 @@ class GNF1331Timer18(WidgetOperation):
 
         time_1, time_2, time_3 = ["point", "09:00"], ["point", "10:00"], ["point", "11:00"]
         time_4, time_5, time_6, time_7 = ["point", "12:00"], ["point", "13:00"], ["point", "14:00"], ["point", "15:00"]
-        start_time_1, set_time_1, cycle_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on",
-                                                                     loop=u"周末")
-        start_time_2, set_time_2, cycle_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off",
-                                                                     loop=u"周末")
-        start_time_3, set_time_3, cycle_3 = self.create_normal_timer("up_timer_page", now, time_3, "power_on",
-                                                                     loop=u"周末")
-        start_time_4, set_time_4, cycle_4 = self.create_normal_timer("up_timer_page", now, time_4, "power_off",
-                                                                     loop=u"周末")
-        start_time_5, set_time_5, cycle_5 = self.create_normal_timer("up_timer_page", now, time_5, "power_on",
-                                                                     loop=u"周末")
-        start_time_6, set_time_6, cycle_6 = self.create_normal_timer("up_timer_page", now, time_6, "power_off",
-                                                                     loop=u"周末")
-        start_time_7, set_time_7, cycle_7 = self.create_normal_timer("up_timer_page", now, time_7, "power_on",
-                                                                     loop=u"周末")
+        start_time_1, set_time_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on", loop=u"周末")
+        start_time_2, set_time_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off", loop=u"周末")
+        start_time_3, set_time_3 = self.create_normal_timer("up_timer_page", now, time_3, "power_on", loop=u"周末")
+        start_time_4, set_time_4 = self.create_normal_timer("up_timer_page", now, time_4, "power_off", loop=u"周末")
+        start_time_5, set_time_5 = self.create_normal_timer("up_timer_page", now, time_5, "power_on", loop=u"周末")
+        start_time_6, set_time_6 = self.create_normal_timer("up_timer_page", now, time_6, "power_off", loop=u"周末")
+        start_time_7, set_time_7 = self.create_normal_timer("up_timer_page", now, time_7, "power_on", loop=u"周末")
 
         max_time = max(set_time_1, set_time_2, set_time_3, set_time_4, set_time_5, set_time_6, set_time_7)
         while True:

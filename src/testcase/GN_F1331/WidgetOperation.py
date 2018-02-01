@@ -344,10 +344,7 @@ class WidgetOperation(LaunchApp):
 
         self.widget_click(self.page["add_normal_timer_page"][power])
 
-        cycle = self.set_timer_loop("add_normal_timer_page", loop)
-
-        if cycle == ["None"]:
-            cycle = [time.strftime("%A", time.localtime(start_set_time)).lower()]
+        self.set_timer_loop("add_normal_timer_page", loop)
 
         self.widget_click(self.page["add_normal_timer_page"]["saved"])
         start_time = int(time.time())
@@ -367,7 +364,7 @@ class WidgetOperation(LaunchApp):
 
         self.debug.info(u"[APP_TIMER]Start Time: %s[%s]" % (time.strftime("%X"), time.time()))
 
-        return start_time, start_set_time, cycle
+        return start_time, start_set_time
 
     # 创建循环定时
     def create_cycle_timer(self, page, now_time, set_start_time, set_end_time, loop, delay_s=120, cycle=False, loops=1):

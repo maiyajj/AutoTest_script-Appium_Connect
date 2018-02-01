@@ -27,9 +27,9 @@ class GNF1331Timer16(WidgetOperation):
         now = time.strftime("%H:%M")
 
         time_1, time_2, time_3 = 60, 120, 180
-        start_time_1, set_time_1, cycle_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on")
-        start_time_2, set_time_2, cycle_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off")
-        start_time_3, set_time_3, cycle_3 = self.create_normal_timer("up_timer_page", now, time_3, "power_on")
+        start_time_1, set_time_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on")
+        start_time_2, set_time_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off")
+        start_time_3, set_time_3 = self.create_normal_timer("up_timer_page", now, time_3, "power_on")
 
         self.widget_click(self.page["up_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -41,9 +41,9 @@ class GNF1331Timer16(WidgetOperation):
         now = time.strftime("%H:%M")
 
         time_4, time_5, time_6 = 60, 120, 180
-        start_time_4, set_time_4, cycle_4 = self.create_normal_timer("mid_timer_page", now, time_4, "power_on")
-        start_time_5, set_time_5, cycle_5 = self.create_normal_timer("mid_timer_page", now, time_5, "power_off")
-        start_time_6, set_time_6, cycle_6 = self.create_normal_timer("mid_timer_page", now, time_6, "power_on")
+        start_time_4, set_time_4 = self.create_normal_timer("mid_timer_page", now, time_4, "power_on")
+        start_time_5, set_time_5 = self.create_normal_timer("mid_timer_page", now, time_5, "power_off")
+        start_time_6, set_time_6 = self.create_normal_timer("mid_timer_page", now, time_6, "power_on")
 
         self.widget_click(self.page["mid_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])
@@ -55,9 +55,9 @@ class GNF1331Timer16(WidgetOperation):
         now = time.strftime("%H:%M")
 
         time_7, time_8, time_9 = 60, 120, 180
-        start_time_7, set_time_7, cycle_7 = self.create_normal_timer("down_timer_page", now, time_7, "power_on")
-        start_time_8, set_time_8, cycle_8 = self.create_normal_timer("up_timer_page", now, time_8, "power_off")
-        start_time_9, set_time_9, cycle_9 = self.create_normal_timer("up_timer_page", now, time_9, "power_on")
+        start_time_7, set_time_7 = self.create_normal_timer("down_timer_page", now, time_7, "power_on")
+        start_time_8, set_time_8 = self.create_normal_timer("up_timer_page", now, time_8, "power_off")
+        start_time_9, set_time_9 = self.create_normal_timer("up_timer_page", now, time_9, "power_on")
 
         max_time = max(set_time_1, set_time_2, set_time_3, set_time_4, set_time_5,
                        set_time_6, set_time_7, set_time_8, set_time_9)

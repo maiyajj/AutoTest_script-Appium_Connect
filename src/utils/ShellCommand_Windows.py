@@ -53,8 +53,7 @@ class ShellCommandWindows(object):
             command = 'tasklist|findstr %s' % i
             find_pid.append(re.findall(r"(.+?) .+?(\d+).+?Console.+", os.popen(command).read()))
         find_pid = sum(find_pid, [])  # 递归列表[[(),()],[()]] → [(),(),()]
-        find_pid = [i for i in find_pid if i[1] in bind_pid]
-        find_pid = list(map(lambda x: (x[0], int(x[1])), find_pid))
+        find_pid = [(i[0], int(i[1])) for i in find_pid if i[1] in bind_pid]
 
         return find_pid
 
@@ -72,7 +71,7 @@ class ShellCommandWindows(object):
             raise KeyError("key must be pid! Is int, but real %s!" % type(pid))
         command = 'tasklist|findstr %s' % pid
         find_pid = list(set(re.findall(r"(.+?) .+?(\d+).+?Console.+", os.popen(command).read())))
-        find_pid = list(map(lambda x: (x[0], int(x[1])), find_pid))
+        find_pid = [(i[0], int(i[1])) for i in find_pid if i[1] == pid]
 
         return find_pid
 

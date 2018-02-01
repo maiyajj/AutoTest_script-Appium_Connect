@@ -44,6 +44,7 @@ class ReceiveSerial(object):
     def receive_log(self, com, port, serial_main_data_queue):
         self.com = com
         self.port = port
+        self.serial_log("receive_log_pid: %s" % os.getpid())
         self.open_serial()
         while True:
             if not self.serial_sever.is_open:
@@ -122,6 +123,7 @@ class ReceiveSerial(object):
         open_serial = mp.Process(target=self.receive_log, args=(com, port, self.serial_main_data_queue))
         open_serial.daemon = True
         open_serial.start()
+        print("serial_command_pid", os.getpid())
         while True:
             if self.serial_command_queue.qsize():
                 self.filtrate_data()

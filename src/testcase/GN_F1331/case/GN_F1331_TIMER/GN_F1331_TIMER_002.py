@@ -43,8 +43,8 @@ class GNF1331Timer2(WidgetOperation):
 
         normal_time_3 = 5
         normal_time_4 = 10
-        start_time_3, set_time_3, cycle_3 = self.create_normal_timer("mid_timer_page", now, normal_time_3, "power_on")
-        start_time_4, set_time_4, cycle_4 = self.create_normal_timer("mid_timer_page", now, normal_time_4, "power_off")
+        start_time_3, set_time_3 = self.create_normal_timer("mid_timer_page", now, normal_time_3, "power_on")
+        start_time_4, set_time_4 = self.create_normal_timer("mid_timer_page", now, normal_time_4, "power_off")
 
         self.widget_click(self.page["mid_timer_page"]["to_return"],
                           self.page["control_device_page"]["title"])

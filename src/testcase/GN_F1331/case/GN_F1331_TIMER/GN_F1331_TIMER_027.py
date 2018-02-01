@@ -27,13 +27,13 @@ class GNF1331Timer27(WidgetOperation):
         now = time.strftime("%H:%M")
 
         time_1, time_2, time_3, time_4, time_5, time_6, time_7, time_8 = 2, 4, 6, 8, 10, 12, 14, 16
-        start_time_1, set_time_1, cycle_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on")
-        start_time_2, set_time_2, cycle_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off")
-        start_time_3, set_time_3, cycle_3 = self.create_normal_timer("up_timer_page", now, time_3, "power_on")
-        start_time_4, set_time_4, cycle_4 = self.create_normal_timer("up_timer_page", now, time_4, "power_off")
-        start_time_5, set_time_5, cycle_5 = self.create_normal_timer("up_timer_page", now, time_5, "power_on")
-        start_time_6, set_time_6, cycle_6 = self.create_normal_timer("up_timer_page", now, time_6, "power_off")
-        start_time_7, set_time_7, cycle_7 = self.create_normal_timer("up_timer_page", now, time_7, "power_on")
+        start_time_1, set_time_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on")
+        start_time_2, set_time_2 = self.create_normal_timer("up_timer_page", now, time_2, "power_off")
+        start_time_3, set_time_3 = self.create_normal_timer("up_timer_page", now, time_3, "power_on")
+        start_time_4, set_time_4 = self.create_normal_timer("up_timer_page", now, time_4, "power_off")
+        start_time_5, set_time_5 = self.create_normal_timer("up_timer_page", now, time_5, "power_on")
+        start_time_6, set_time_6 = self.create_normal_timer("up_timer_page", now, time_6, "power_off")
+        start_time_7, set_time_7 = self.create_normal_timer("up_timer_page", now, time_7, "power_on")
 
         try:
             self.create_normal_timer("up_timer_page", now, time_1, "power_on")
