@@ -44,8 +44,8 @@ class ReceiveSerial(object):
     def receive_log(self, com, port, serial_main_data_queue):
         self.com = com
         self.port = port
-        self.serial_log("receive_log_pid: %s" % os.getpid())
         self.open_serial()
+        self.serial_log.info("receive_log_pid: %s" % os.getpid())
         while True:
             if not self.serial_sever.is_open:
                 break

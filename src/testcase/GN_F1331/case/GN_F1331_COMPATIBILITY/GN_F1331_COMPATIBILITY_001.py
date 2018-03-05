@@ -45,11 +45,6 @@ class GNF1331Compatibility1(WidgetOperation):
             except TimeoutException:
                 time.sleep(1)
             try:
-                self.wait_widget(self.page["bind_device_page"]["title"])
-                raise TimeoutException("current page is bind_device_page")
-            except TimeoutException:
-                time.sleep(1)
-            try:
                 self.wait_widget(self.page["search_device_success_page"]["title"])
 
                 self.choose_device(conf["MAC"]["GN_F1331"]["0"],
