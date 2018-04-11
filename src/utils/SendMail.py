@@ -14,7 +14,7 @@ class Mailer(object):
     The function of sending an email.
     """
 
-    def __init__(self, m_queue, alive, conf, send_now=False, sendTo="all"):
+    def __init__(self, m_queue, alive, conf, send_now=False, sendTo="all", main_test_start_time=0):
         # Receiver/Sender for mail.
         mail_list = list(conf["mail_to"].values())
         print("mail_pid:", os.getpid())
@@ -63,8 +63,12 @@ class Mailer(object):
                 if "07:00:00" in now_time:
                     self.send_mail()
                 elif not alive.value:
-                    self.send_mail()
-                    break
+                    # 如果当前进程在主程序运行时间60S内就被关闭，则表示程序发生错误，不发送邮件
+                    if time.time() < main_test_start_time + 60:
+                        break
+                    else:
+                        self.send_mail()
+                        break
                 else:
                     time.sleep(1)
 

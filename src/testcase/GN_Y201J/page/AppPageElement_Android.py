@@ -374,7 +374,7 @@ class MainPageWidgetAndroid(object):
         # 返回按钮
         d["to_return"] = ["com.jd.smart:id/button1", "id", u"返回"]
         # 执行记录
-        d["timer_log"] = [u"//android.view.View[@content-desc='执行记录 ']", "xpath", u"执行记录"]
+        d["timer_log"] = [u"//android.view.View[contains(@content-desc, '执行记录')]", "xpath", u"执行记录"]
         # 编辑定时
         d["timer_edit"] = ["//android.webkit.WebView/android.view.View/android.view.View[2]", "xpath",
                            u"编辑定时", {"px": [0.9975, 0.5]}]

@@ -132,6 +132,8 @@ class LaunchAppiumServicesAndroid(object):
         # port_proc = ["node", "adb ]
         # bp_port_proc = ["adb", ]
         while True:
+            if not self.alive.value:
+                os._exit(0)
             port = [i for i in self.sc.find_proc_and_pid_by_port(self.port) if "node" in i[0].lower()]
             bp_port = self.sc.find_proc_and_pid_by_port(self.bp_port)
             self.debug.info("Port_proc: %s; bp_port_proc: %s" % (port, bp_port))

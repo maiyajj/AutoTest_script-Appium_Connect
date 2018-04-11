@@ -207,6 +207,27 @@ class WidgetOperation(LaunchApp):
         # 滚轮相关操作
         roll_h, roll_m = time.strftime("%H:%M", time.localtime(time_roll)).split(":")
         set_h, set_m = time.strftime("%H:%M", time.localtime(time_set)).split(":")
+        if set_h == "00" and roll_h != "00":
+            time_et_h = int(set_h) - int(roll_h)  # 时间滚轮的“时”时间和待设置时间差值
+            time_et_h_a = abs(time_et_h) % 24  # “时”时间滚轮滑动次数
+
+            try:  # 若time_et不相等
+                # time_et / time_et_a计算结果为1/-1，获取“时”滚轮滑动目的坐标值，用于计算时间滚轮是往上滑还是往下滑
+                pm_value = time_et_h / time_et_h_a
+                if pm_value > 0:  # 往下滑
+                    aszh_h = int(szh_h * 1.9)  # 根据滚轮显示时间点滚条个数计算单个时间点滚条的元素宽度
+                else:  # 往上滑
+                    aszh_h = int(szh_h * 1.4)
+                end_y_h = start_y_h - pm_value * aszh_h
+            except ZeroDivisionError:  # 若time_et相等
+                end_y_h = start_y_h
+
+            while time_et_h_a > 0:
+                self.ac.swipe(start_x_h, start_y_h, start_x_h, end_y_h, self.driver, 0, False)
+                print(time_et_h_a)
+                time_et_h_a -= 1
+                time.sleep(swipe_time)
+            roll_h, roll_m = "00", "01"
 
         time_et_h = int(set_h) - int(roll_h)  # 时间滚轮的“时”时间和待设置时间差值
         time_et_h_a = abs(time_et_h) % 24  # “时”时间滚轮滑动次数
@@ -235,14 +256,13 @@ class WidgetOperation(LaunchApp):
             end_y_m = start_y_m
 
         # 分钟在前，时钟在后，若为00:00，滚轮会自动加一
-        swipe = self.ac.swipe
         while time_et_m_a > 0:
-            swipe(start_x_m, start_y_m, start_x_m, end_y_m, self.driver, 0, False)
+            self.ac.swipe(start_x_m, start_y_m, start_x_m, end_y_m, self.driver, 0, False)
             print(time_et_m_a)
             time_et_m_a -= 1
             time.sleep(swipe_time)
         while time_et_h_a > 0:
-            swipe(start_x_h, start_y_h, start_x_h, end_y_h, self.driver, 0, False)
+            self.ac.swipe(start_x_h, start_y_h, start_x_h, end_y_h, self.driver, 0, False)
             print(time_et_h_a)
             time_et_h_a -= 1
             time.sleep(swipe_time)
@@ -289,10 +309,9 @@ class WidgetOperation(LaunchApp):
         except ZeroDivisionError:
             end_y = start_y
 
-        swipe = self.ac.swipe
         swipe_time = conf["roll_time"]["GN_F1331"]
         while diff_a > 0:
-            swipe(start_x, start_y, start_x, end_y, self.driver, percent=False)  # step=25
+            self.ac.swipe(start_x, start_y, start_x, end_y, self.driver, percent=False)  # step=25
             print(diff_a)
             diff_a -= 1
             time.sleep(swipe_time)
@@ -632,64 +651,6 @@ class WidgetOperation(LaunchApp):
             cycle = [loop_mode[i] for i in loop_attr]
         return cycle
 
-    # 定时检查模板
-    # def check_timer(self, start_time, set_time, power_state, cycle=None):
-    #     # 开始时间, 设置时间
-    #     start_times = time.strftime("%Y-%m-%d %X", time.localtime(start_time))
-    #     self.debug.info("[APP_CHECK_TIMER]Now time: %s. Start time: %s" % (time.strftime("%Y-%m-%d %X"), start_times))
-    #     now_week = time.strftime("%A").lower()
-    #     if cycle is None:
-    #         set_week = now_week
-    #     else:
-    #         if len(cycle) == 1:
-    #             set_week = cycle[0]
-    #         else:
-    #             set_week = ",".join(cycle)
-    #     self.debug.info("[APP_CHECK_TIMER]Now week: %s, Set week: %s" % (now_week, set_week))
-    #     while True:
-    #         now_week = time.strftime("%A").lower()
-    #         if now_week in set_week:
-    #             tmp = time.strftime("%Y-%m-%d ")
-    #             tmp = tmp + time.strftime("%X", time.localtime(set_time))
-    #             set_times = int(time.mktime(time.strptime(tmp, "%Y-%m-%d %X")))
-    #             break
-    #         else:
-    #             if time.strftime("%M") == "00":
-    #                 self.debug.info("now week: %s" % now_week)
-    #             else:
-    #                 print("********************")
-    #                 print("now week: %s" % now_week)
-    #                 print("********************")
-    #                 time.sleep(1)
-    #
-    #     delay_times = set_times - start_time
-    #     self.debug.info("[APP_CHECK_TIMER]Delay Time: %s" % delay_times)
-    #     if delay_times < 0:
-    #         raise TimeoutException("Set time is before now time, delay time is: %s" % delay_times)
-    #
-    #     element = self.wait_widget(self.page["control_device_page"]["power_state"])
-    #     end_time = set_times + 30
-    #     self.debug.info("[APP_CHECK_TIMER]End Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(end_time)))
-    #     self.debug.info("[APP_CHECK_TIMER]Set Time: %s" % time.strftime("%Y-%m-%d %X", time.localtime(set_times)))
-    #     while True:
-    #         current_time = int(time.time())
-    #         if current_time >= set_times:
-    #             while True:
-    #                 state = self.ac.get_attribute(element, "name")
-    #                 if state == power_state:
-    #                     self.debug.info("[APP_CHECK_TIMER]Current Time: %s" % time.strftime("%Y-%m-%d %X"))
-    #                     self.debug.info("[APP_CHECK_TIMER]Device Info: %s" % power_state)
-    #                     break
-    #                 else:
-    #                     time.sleep(1)
-    #                     print("[APP_CHECK_TIMER]In Time %s" % time.strftime("%Y-%m-%d %X"))
-    #                     if time.time() > end_time:
-    #                         raise TimeoutException("Device state Error, current: %s" % state)
-    #             break
-    #         else:
-    #             time.sleep(1)
-    #             print("[APP_CHECK_TIMER]Out Time %s" % time.strftime("%Y-%m-%d %X"))
-
     def delete_normal_timer_all(self):
         # 删除上层定时
         self.widget_click(self.page["control_device_page"]["up_timer"],
@@ -964,7 +925,7 @@ class WidgetOperation(LaunchApp):
                              "set_normal_timer": [{"bull_joy_base_timer_set base_timer": 3}],
                              "launch_normal_timer_once": [{"Once Timer exe over": 0}],
                              "launch_normal_timer": [{"Repeat Timer exe over": 0}],
-                             "device_info": [{"]control data send buf": 1}],
+                             "device_info": [{"joylink_lan_control data send buf": 1}],  # 钱宗进改了设备log，匹配错了
                              "device_mac": [{"<MAC": 0}]}
         tmp = {}
         command = {}
@@ -1082,48 +1043,6 @@ class WidgetOperation(LaunchApp):
         self.debug.info("btn_dict: %s" % result)
         return result
 
-    # def check_button_state(self, *args):
-    #     """
-    #     使用消息队列提取所有继电器状态并进行筛选，返回按照时间顺序排列的开关状态列表
-    #     :return: [time, 3层开关状态"000"]
-    #     list消息etc：[([2018-01-03 09:47:25:957]_f133u_uart_recv_event: cha_ru [2018-01-03 09:47:25:957]FF 02 00 07 09 FE cha_ru )]
-    #     """
-    #     key = "power"
-    #     self.check_serial_result()
-    #     tmp = []
-    #
-    #     command = list(self.command_dict[key][0].keys())[0]
-    #
-    #     tmp_queue = self.queue_dict[command]
-    #
-    #     print(command, tmp_queue.qsize())
-    #
-    #     while True:
-    #         try:
-    #             serial_result = tmp_queue.get_nowait()
-    #             self.debug.info(serial_result)
-    #         except Queue.Empty:
-    #             break
-    #
-    #         print(sys._getframe().f_code.co_name, serial_result)
-    #         value = bin(int(re.findall("FF .+ (.+?) .+? FE", serial_result)[0], 16))[2:].zfill(4)
-    #         now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
-    #         if value[0] == "0":
-    #             tmp.append([now_time, value[1:]])
-    #
-    #     if args:
-    #         result = {}
-    #         arg = set(args)
-    #         for i in arg:
-    #             result[i] = [None, [None, None, None]]
-    #             for ii in tmp:
-    #                 if i - 6 < ii[0] < i + 6:
-    #                     result[i] = ii
-    #     else:
-    #         result = tmp
-    #
-    #     self.debug.info("btn_dict: %s" % result)
-    #     return result
     # 检查循环定时设置状态
     def check_set_cycle_timer(self, *args):
         """
@@ -1190,7 +1109,7 @@ class WidgetOperation(LaunchApp):
                 break
 
             print(sys._getframe().f_code.co_name, serial_result)
-            value = re.findall("ID (.+?),times (.+?) cha_ru ", serial_result)[0]
+            value = re.findall("ID (.+?),times (.+?) .+ cha_ru ", serial_result)[0]
             now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             tmp.append([now_time] + list(value))
 
@@ -1237,7 +1156,7 @@ class WidgetOperation(LaunchApp):
                 break
 
             print(sys._getframe().f_code.co_name, serial_result)
-            value = re.findall("ID (.+?),times (.+?) cha_ru ", serial_result)[0]
+            value = re.findall("ID (.+?),times (.+?) .+ cha_ru ", serial_result)[0]
             now_time = time.mktime(time.strptime(serial_result[1:20], "%Y-%m-%d %X"))
             tmp.append([now_time] + list(value))
 
@@ -1490,42 +1409,6 @@ class WidgetOperation(LaunchApp):
         self.debug.info("launch_normal_once_dict: %s" % result)
         return result
 
-    # 传入定时设置信息，获取定时ID
-    # def get_timer_id_from_set(self, *args):
-    #     """
-    #     从设置定时获取定时id
-    #     :param args:
-    #     :return: ["id_1", "id_2", "id_3",...]
-    #     """
-    #     timer_list = []
-    #     for tmp in args:
-    #         for i in tmp:
-    #             timer_list.append(i[1])
-    #
-    #     self.debug.info("timer_list: %s" % timer_list)
-    #     return timer_list
-    #
-    # # 传入定时ID列表和定时执行信息，获取ID对应执行信息
-    # def get_layer_timer_from_launch(self, timer_list, **kwargs):
-    #     """
-    #     根据定时id获取执行结果
-    #     :param timer_id:
-    #     :return: {timer_id: {"delay": [[args1],[args2],...]...}}
-    #     """
-    #     result = {}
-    #     for timer_id in timer_list:
-    #         result[timer_id] = {}
-    #         for k in kwargs:
-    #             result[timer_id][k] = []
-    #
-    #     for k, v in kwargs.items():
-    #         for i in v:
-    #             timer_id = i[1]
-    #             result[timer_id][k].append(i)
-    #
-    #     self.debug.info("result: %s" % result)
-    #     return result
-
     # 获取设备安全模式，记忆模式，防雷状态
     def check_device_info_state(self, wait=False):
         """
@@ -1534,10 +1417,12 @@ class WidgetOperation(LaunchApp):
         """
         key = "device_info"
         if wait:
+            print("Wait device_info, the key is: %s" % self.command_dict[key])
             while True:
                 if self.serial_result_queue.qsize():
                     break
                 time.sleep(1)
+                print("wait check_device_info_state：等待获取设备安全模式，记忆模式，防雷状态 ")
         self.check_serial_result()
         result = []
 
@@ -1577,24 +1462,7 @@ class WidgetOperation(LaunchApp):
 
         return result
 
-    # 根据开关执行时间返回开关执行时间状态字典
-    # def get_button_state_dict(self, btn_state_list, *args):
-    #     """
-    #     输入开关执行列表，待执行时间点，返回以时间点为键，开关执行状态为值的字典
-    #     :param btn_state_list: 开关执行列表
-    #     :param args: 执行时间点
-    #     :return: list , time_1, time_2... -> dict
-    #     """
-    #     result = {}
-    #     arg = set(args)
-    #     for i in arg:
-    #         result[i] = [None, [None, None, None]]
-    #         for ii in btn_state_list:
-    #             if i - 6 < ii[0] < i + 6:
-    #                 result[i] = ii
-    #
-    #     return result
-
+    # 检查提示框
     def check_toast(self, elem):
         end_time = time.time() + 5
         while True:

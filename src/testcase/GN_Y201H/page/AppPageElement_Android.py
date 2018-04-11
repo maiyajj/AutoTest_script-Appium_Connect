@@ -10,7 +10,7 @@ class MainPageWidgetAndroid(object):
     def app_home_page(self):
         d = {}
         # 标题
-        d["title"] = [u"//android.widget.TextView[@text='智家']", "xpath", u"App主页面"]
+        d["title"] = ["com.huawei.smarthome:id/tab_item_name", "id", u"App主页面", {"index": 2}]
         # +号
         d["add_device"] = ["com.huawei.smarthome:id/myhome__tool_bar", "id", u"+号"]
         # 账户管理

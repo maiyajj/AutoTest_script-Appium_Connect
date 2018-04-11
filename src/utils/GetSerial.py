@@ -35,17 +35,23 @@ class ReceiveSerial(object):
             try:
                 # Python3 报错，Pycharm针对decode关键词会提示 Unresolved attribute reference 'decode' for class 'str'。
                 # 使用exec语法避免提示错误，无其他含义
-                exec(u'''py2_3 = re.findall(".+'(.+?)'", str(e))[0].decode("string-escape").decode("gbk")''')
+                exec(u'''py2_3 = re.findall(".+?'(.+)'", str(e))[0].decode("string-escape").decode("gbk")''')
             except AttributeError:
-                exec(u'''py2_3 = re.findall(".+'(.+?)'", str(e))[0]''')
-            print(u"%s打开失败，%s请检查串口设置。" % (self.com, py2_3))
-            os._exit(-1)
+                exec(u'''py2_3 = re.findall(".+?'(.+)'", str(e))[0]''')
+            finally:
+                tmp = u"****%s,请检查串口设置。****" % py2_3
+                print(u"*" * len(tmp))
+                print(tmp)
+                print(u"*" * len(tmp))
+                os._exit(-1)
 
     def receive_log(self, com, port, serial_main_data_queue):
+        # ‘空数据标志位’：串口数据为空的读取次数，3s超时，超过10次(从0计数，值为9即10次)，即30s没有串口输出表示串口断开连接
+        no_data_count = 0
         self.com = com
         self.port = port
         self.open_serial()
-        self.serial_log.info("receive_log_pid: %s" % os.getpid())
+        print("receive_log_pid: %s" % os.getpid())
         while True:
             if not self.serial_sever.is_open:
                 break
@@ -54,13 +60,22 @@ class ReceiveSerial(object):
                     try:
                         data = self.serial_sever.readline().decode("utf-8")  # 读取数据
                     except BaseException as e:
+                        print(traceback.format_exc())
                         self.serial_log.info(str(e))
                         data = ""
-                    if data is '':
-                        continue
+                    if data is "":
+                        if no_data_count < 9:
+                            no_data_count += 1
+                            continue
+                        else:
+                            raise serial.SerialException("Serial has no data over 30S!")
+                    else:
+                        # 串口有数据 ‘空数据标志位’ 清零
+                        no_data_count = 0
                     data = data.strip()
                     data_time = datetime.datetime.now().strftime('%Y-%m-%d %X:%f')[:-3]
                     data = "[%s]%s" % (data_time, data)
+
                     serial_main_data_queue.put_nowait(data)
                     self.serial_log.info(data)
                 except AttributeError:
@@ -93,7 +108,7 @@ class ReceiveSerial(object):
         while True:
             try:
                 start_stop, command = self.serial_command_queue.get_nowait()
-                print(start_stop, command)
+                print("serial_command_queue, start_stop:%s; command:%s" % (start_stop, command))
                 if not start_stop:
                     break
             except Queue.Empty:
@@ -128,7 +143,7 @@ class ReceiveSerial(object):
             if self.serial_command_queue.qsize():
                 self.filtrate_data()
             else:
-                if not alive.value:  # 主进程关闭
+                if not alive.value or not open_serial.is_alive():  # 主进程关闭
                     break
                 while True:
                     try:

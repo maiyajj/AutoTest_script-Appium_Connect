@@ -11,8 +11,7 @@ class GNY201JAppFunction1(WidgetOperation):
 
     # 用例动作
     def case(self):
-        raise KeyError("dsffffffffffffffffffffffffffffffffffffffffffffff")
-        self.choose_home_device(conf["MAC"]["JD"][0])
+        self.choose_home_device(conf["MAC"][self.app][self.device_mac])
 
         self.set_power("power_off")
 

@@ -7,7 +7,6 @@ from src.testcase.GN_F1331.page.ReadAPPElement import *
 from src.utils.Debug import *
 from src.utils.GetSerial import *
 from src.utils.OutputReport import *
-from src.utils.SendMail import *
 from src.utils.WriteXls import *
 
 
@@ -54,22 +53,23 @@ class WaitCase(object):
         alive = multiprocessing.Value('b', True)
         self.serial_receive_t = multiprocessing.Process(target=self.receive_serial.start_stop_filtrate_data, args=(
             self.serial_com, self.serial_port, self.serial_command_queue, self.serial_result_queue, alive))
+        self.device_info["serial_receive_t"] = self.serial_receive_t
 
         try:
             self.create_debug()
-            self.serial_receive_t.start()
             self.create_report()
             self.write_xls()
+            if self.check_serial():
+                self.serial_receive_t.start()
             self.select_page_element()
             self.check_appium()
 
             self.run()
             alive.value = False
-            # self.serial_receive_t.terminate()
-            # self.serial_receive_t.join()
         except BaseException:
             self.debug.error(traceback.format_exc())
-            self.serial_receive_t.join()
+            if self.serial_receive_t.is_alive():
+                self.serial_receive_t.join()
             os._exit(-1)
 
     # 从元素库筛选对应APP元素库
@@ -90,6 +90,26 @@ class WaitCase(object):
     # 实例化Excel文件
     def write_xls(self):
         self.xls = WriteXls(self.device_info)
+
+    # 检查串口是否可用
+    def check_serial(self):
+        try:
+            serial_sever = serial.Serial(str(self.serial_com), int(self.serial_port), timeout=1)
+            serial_sever.close()
+            return True
+        except serial.SerialException as e:
+            # e: '\\xcf\\xb5\\xcd...'
+            # 需要通过decode("string-escape")转义\\，结果'\xcf\xb5\xcd...'
+            py2_3 = str(e)
+            try:
+                # Python3 报错，Pycharm针对decode关键词会提示 Unresolved attribute reference 'decode' for class 'str'。
+                # 使用exec语法避免提示错误，无其他含义
+                exec(u'''py2_3 = re.findall(".+?'(.+)'", str(e))[0].decode("string-escape").decode("gbk")''')
+            except AttributeError:
+                exec(u'''py2_3 = re.findall(".+?'(.+)'", str(e))[0]''')
+            finally:
+                print(u"%s,请检查串口设置。" % py2_3)
+                os._exit(-1)
 
     # 检查Appium服务是否启动
     def check_appium(self):
@@ -131,7 +151,6 @@ class WaitCase(object):
             # self.write_report(GNF1331Compatibility1)  # 162,不同路由器同一手机一键配网兼容性检查
             # self.write_report(GNF1331Electricity1)  # 71,app显示功率为0，显示效果检查
             self.write_report(GNF1331DeviceInfo1)  # 1170, 设置记忆模式
-            # self.write_report(GNF1331DeviceInfo2)  # 1307, 启动鱼缸模式定时，APP中开关状态检查
             self.write_report(GNF1331KeyMemory1)  # 194, 手机APP远程频繁操作总开关，设备状态检查
             self.write_report(GNF1331KeyMemory2)  # 193, 手机APP远程总开关功能检查
             self.write_report(GNF1331KeyMemory3)  # 192, 手机APP远程频繁操作分层开关，设备状态检查
@@ -151,21 +170,21 @@ class WaitCase(object):
             self.write_report(GNF1331Timer13)  # 101, 随机各层设置9组普通定时，执行完成后删除原有定时，再次设置9组普通定时
             # self.write_report(GNF1331Timer14)  # 97, 在线状态，随机各层设置9组普通定时，周末执行的定时执行状态检查
             # self.write_report(GNF1331Timer15)  # 96, 在线状态，随机各层设置9组普通定时，工作日执行的定时执行状态检查
-            # self.write_report(GNF1331Timer16)  # 95, 在线状态，随机各层设置9组普通定时，单次执行的定时执行状态检查
+            self.write_report(GNF1331Timer16)  # 95, 在线状态，随机各层设置9组普通定时，单次执行的定时执行状态检查
             # self.write_report(GNF1331Timer17)  # 90, 在线状态，4组开与3组关按自定义方式执行的普通定时执行状态检查
             # self.write_report(GNF1331Timer18)  # 89, 在线状态，4组开与3组关按周末方式方式执行的普通定时执行状态检查
             # self.write_report(GNF1331Timer19)  # 88, 在线状态，4组开与3组关按工作日方式执行的普通定时执行状态检查
             # self.write_report(GNF1331Timer20)  # 87, 在线状态，单层4组开与3组关单次执行的普通定时执行状态检查
             # self.write_report(GNF1331Timer21)  # 80, 在线状态，单层1组开与1组关按自定义执行的普通定时执行状态检查
             # self.write_report(GNF1331Timer22)  # 79, 在线状态，单层1组开与1组关按工作日执行的普通定时执行状态检查
-            # self.write_report(GNF1331Timer23)  # 78, 在线状态，单层临界点1组开与1组关的普通定时执行状态检查
+            self.write_report(GNF1331Timer23)  # 78, 在线状态，单层临界点1组开与1组关的普通定时执行状态检查
             self.write_report(GNF1331Timer24)  # 77, 在线状态，单层定时1组开与1组关普通定时执行状态检查
             self.write_report(GNF1331Timer25)  # 76, 在线状态，单层定时单关普通定时执行状态检查
             self.write_report(GNF1331Timer26)  # 75, 在线状态，单层定时单开普通定时执行状态检查
             self.write_report(GNF1331Timer27)  # 73, 设备可接受最大额外定时组数检测
             self.write_report(GNF1331Timer28)  # 72, APP默认定时数组检测
-            # self.write_report(GNF1331Unbind1)  # 167,带负载APP端解绑功能检查
-            # self.write_report(GNF1331Unbind2)  # 166,APP端解绑功能检查
+            self.write_report(GNF1331Unbind1)  # 167,带负载APP端解绑功能检查
+            self.write_report(GNF1331Unbind2)  # 166,APP端解绑功能检查
 
             database["program_loop_time"] += 1
             times -= 1

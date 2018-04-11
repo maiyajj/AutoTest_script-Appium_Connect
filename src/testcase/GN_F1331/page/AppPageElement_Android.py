@@ -691,7 +691,8 @@ class PopupWidgetAndroid(object):
     def unbind_device_popup(self):
         d = {}
         # 删除设备弹窗
-        d["title"] = [u"//android.widget.TextView[contains(@text, '您的设备尚有定时任务')]", "xpath", u"删除设备按钮"]
+        d["title1"] = [u"//android.widget.TextView[contains(@text, '您的设备尚有定时任务')]", "xpath", u"删除设备按钮"]
+        d["title2"] = [u"//android.widget.TextView[contains(@text, '确定要删除设备吗？')]", "xpath", u"删除设备按钮"]
         # 确认
         d["confirm"] = ["com.jd.smart:id/confirm", "id", u"确认"]
         # 取消

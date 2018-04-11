@@ -27,7 +27,7 @@ class GNF1331Timer26(WidgetOperation):
         now = time.strftime("%H:%M")
 
         time_1 = 2
-        start_time_1, set_time_1, cycle_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on")
+        start_time_1, set_time_1 = self.create_normal_timer("up_timer_page", now, time_1, "power_on")
 
         while True:
             if time.time() > set_time_1 + 10:

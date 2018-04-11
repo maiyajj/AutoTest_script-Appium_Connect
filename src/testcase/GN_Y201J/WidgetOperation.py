@@ -209,10 +209,10 @@ class WidgetOperation(LaunchApp):
         self.widget_click(self.page["normal_timer_page"]["add_timer"],
                           self.page["add_normal_timer_page"]["title"])
 
+        elem_t = self.ac.get_attribute(self.wait_widget(self.page["add_normal_timer_page"]["set_timer"]), "name")
         start_time, start_set_time = self.set_timer_roll(self.page["add_normal_timer_page"]["roll_h"],
                                                          self.page["add_normal_timer_page"]["roll_m"],
-                                                         self.page["add_normal_timer_page"]["set_timer"],
-                                                         now_time, delay_time, delay_s=delay_s)
+                                                         elem_t, now_time, delay_time, delay_s=delay_s)
         now = time.mktime(time.strptime(time.strftime("%Y-%m-%d r:00").replace("r", now_time), "%Y-%m-%d %X"))
 
         if start_set_time <= now:

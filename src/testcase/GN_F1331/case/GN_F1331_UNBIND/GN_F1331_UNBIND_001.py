@@ -13,28 +13,19 @@ class GNF1331Unbind1(WidgetOperation):
     def case(self):
         self.choose_home_device(conf["MAC"][self.app][self.device_mac])
 
-        self.set_power("main_button_on")
-
-        self.input_serial_command("power")
-
         self.widget_click(self.page["control_device_page"]["device_setting"],
                           self.page["device_setting_page"]["title"])
 
-        self.widget_click(self.page["device_setting_page"]["unbind"],
-                          self.page["unbind_device_popup"]["title"])
+        self.widget_click(self.page["device_setting_page"]["unbind"])
+        try:
+            self.wait_widget(self.page["unbind_device_popup"]["title1"])
+        except TimeoutException:
+            self.wait_widget(self.page["unbind_device_popup"]["title2"])
+
 
         self.widget_click(self.page["unbind_device_popup"]["confirm"],
-                          self.page["control_device_page"]["title"])
+                          self.page["app_home_page"]["title"])
 
         v = self.get_index(conf["MAC"][self.app][self.device_mac], self.page["app_home_page"]["device"])
-        if not v:
+        if v:
             raise TimeoutException()
-
-        btn_list = self.check_button_state(wait=True)
-        time_1 = time.time()
-
-        btn = self.get_last_device_state(btn_list, time_1)
-        btn_all = btn[1]
-        result = [btn_all == "111"]
-        if False in result:
-            raise TimeoutException("device state error, current: %s, result: %s" % (btn, result))

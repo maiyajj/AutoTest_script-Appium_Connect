@@ -177,6 +177,10 @@ class LaunchApp(object):
         self.start_time = None  # 初始化
         self.serial_command_queue = device_info["serial_command_queue"]
         self.serial_result_queue = device_info["serial_result_queue"]
+        self.serial_receive_t = device_info["serial_receive_t"]
+
+        # 检查串口
+        self.check_serial()
 
     # 关闭占用端口来停止相应服务
     def reset_port(self):
@@ -219,6 +223,12 @@ class LaunchApp(object):
                 # 再次启动失败只能用例判执行错误
                 self.debug.error("URLError driver(URLError)")
                 break
+
+    # 检查串口是否正常
+    def check_serial(self):
+        if not self.serial_receive_t.is_alive():
+            self.debug.error("\n{0}\n{1}串口出现异常，串口可能已关闭或串口无输出，脚本已终止{1}\n{0}".format(u"！" * 50, u"！" * 12))
+            os._exit(-1)
 
     # 检查Appium服务是否已启动
     def check_appium_launch(self):
@@ -279,11 +289,11 @@ class LaunchApp(object):
 
     # 记录用例执行结果
     def result(self):
-        d_result = {True: ["success", "test_pass"],
-                    False: ["failed", "test_fail"],
-                    "unknown": ["unknown", "test_error"],
-                    "screen": ["wait", "test_wait"]}
+        d_result = {True: ["Pass", "test_pass"],
+                    False: ["Failed", "test_fail"],
+                    "unknown": ["Error", "test_error"],
+                    "screen": ["Wait", "test_wait"]}
         result = d_result[self.success]
         self.debug.info(u'[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
         database[self.device_name][self.zentao_id][result[1]] += 1
-        return self.zentao_id, "%s,%s" % (result[0], " " * (7 - len(result[0]))), self.case_title, self.start_time
+        return self.zentao_id, result[0], self.case_title, self.start_time

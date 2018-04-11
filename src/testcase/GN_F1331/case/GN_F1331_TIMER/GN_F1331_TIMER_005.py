@@ -73,7 +73,7 @@ class GNF1331Timer5(WidgetOperation):
         l_time, l_id, l_times = launch_timer[s_id][0], launch_timer[s_id][1], launch_timer[s_id][2]
         result = [l_time is not None,
                   l_id == s_id,
-                  int(l_times) == int(s_times) - 1]
+                  int(l_times) == int(s_times)]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
         # 执行关→开
@@ -98,7 +98,7 @@ class GNF1331Timer5(WidgetOperation):
         l_time, l_id, l_times = launch_timer[s_id][0], launch_timer[s_id][1], launch_timer[s_id][2]
         result = [l_time is not None,
                   l_id == s_id,
-                  int(l_times) == int(s_times) - 1]
+                  int(l_times) == int(s_times)]
         if False in result:
             raise TimeoutException("device state error, current: %s, result: %s" % (launch_timer, result))
         # 执行关→开

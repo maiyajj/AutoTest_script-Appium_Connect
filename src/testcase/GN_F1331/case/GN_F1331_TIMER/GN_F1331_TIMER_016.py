@@ -56,8 +56,8 @@ class GNF1331Timer16(WidgetOperation):
 
         time_7, time_8, time_9 = 60, 120, 180
         start_time_7, set_time_7 = self.create_normal_timer("down_timer_page", now, time_7, "power_on")
-        start_time_8, set_time_8 = self.create_normal_timer("up_timer_page", now, time_8, "power_off")
-        start_time_9, set_time_9 = self.create_normal_timer("up_timer_page", now, time_9, "power_on")
+        start_time_8, set_time_8 = self.create_normal_timer("down_timer_page", now, time_8, "power_off")
+        start_time_9, set_time_9 = self.create_normal_timer("down_timer_page", now, time_9, "power_on")
 
         max_time = max(set_time_1, set_time_2, set_time_3, set_time_4, set_time_5,
                        set_time_6, set_time_7, set_time_8, set_time_9)

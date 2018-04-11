@@ -275,4 +275,4 @@ class LaunchApp(object):
         result = d_result[self.success]
         self.debug.info(u'[GN_INF] <current case> [CASE_TITLE="%s"] %s!' % (self.case_title, result[0]))
         database[self.device_name][self.zentao_id][result[1]] += 1
-        return self.zentao_id, "%s,%s" % (result[0], " " * (7 - len(result[0]))), self.case_title, self.start_time
+        return self.zentao_id, result[0], self.case_title, self.start_time
